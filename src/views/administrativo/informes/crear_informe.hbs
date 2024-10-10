@@ -7,46 +7,119 @@
     <style>
         body {
             font-family: Arial, sans-serif;
+            font-size: 12px;
+            margin: 0;
+            padding: 0;
+        }
+        .report-container {
+            width: 100%;
+            max-width: 800px; /* Ancho máximo para mantener consistencia */
+            margin: 0 auto;
+            border: 1px solid #000;
+            padding: 10px;
+        }
+        .header-info {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 10px;
+        }
+        .logo {
+            width: 100px;
+        }
+        .info-section {
+            font-size: 10px;
+            line-height: 1.5;
+            text-align: left;
+        }
+        .info-section div {
+            display: flex;
+            align-items: center;
+            margin-bottom: 4px;
+        }
+        .info-section strong {
+            min-width: 100px; /* Ancho mínimo para las etiquetas */
+        }
+        .info-section input {
+            width: 150px;
+            font-size: 10px;
+            margin-left: 5px;
+            padding: 2px;
+            border: 1px solid #ccc;
+        }
+        .registro-container {
+            text-align: center;
+            margin-bottom: 10px;
+        }
+        .table-container {
+            overflow-x: auto;
         }
         .combined-table {
             border-collapse: collapse;
             width: 100%;
-            border: 1px solid #000;
+            font-size: 10px;
         }
         .combined-table th, .combined-table td {
-            border: 1px solid #000;
-            padding: 8px;
-            text-align: center;
+            border: 0.5px solid #000;
+            padding: 1px;
+            text-align: left;
         }
         .header {
             background-color: #6da8d6;
             color: white;
         }
-        .hidrosistema-header {
-            background-color: #90c9a7;
-            color: white;
-        }
         .input-field {
-            width: 50px;
-            text-align: center;
+            width: 25px;
+            text-align: left;
             border: none;
             background-color: #f0f0f0;
+            font-size: 10px;
+            margin: 0;
+            padding: 0;
         }
         .hidrosistema-input {
-            width: 100px;
+            width: 50px;
+            text-align: left;
+        }
+        h2 {
+            font-size: 14px;
+            margin: 10px 0;
         }
     </style>
 </head>
 <body>
 
-    <h2 style="text-align:center;">Registro de Mantenimiento</h2>
-    <table class="combined-table">
-        <thead>
-            <tr class="header">
-                <th colspan="5">TABLERO DE CONTROL</th>
-                <th colspan="2">HIDROSISTEMA</th>
-                <th colspan="5">SISTEMAEYECTOR</th>
-            </tr>
+    <div class="report-container">
+        <div class="header-info">
+            <div class="logo">
+                <img src="imagenes/logo_ingenieria.jpeg-removebg-preview.png" alt="Logo" width="100"> <!-- Ajusta la ruta del logo -->
+            </div>
+            <div class="info-section">
+                <div><strong>Cliente:</strong> <input type="text"></div>
+                <div><strong>Equipo:</strong> <input type="text"></div>
+                <div><strong>Técnico:</strong> <input type="text"></div>
+            </div>
+            <div class="info-section">
+                <div><strong>Hora Entrada:</strong> <input type="text"></div>
+                <div><strong>Hora Salida:</strong> <input type="text"></div>
+                <div><strong>Fecha:</strong> <input type="text"></div>
+                <div><strong>Número:</strong> <input type="text"></div>
+            </div>
+        </div>
+
+
+        <div class="registro-container">
+            <h2>Registro de Mantenimiento</h2>
+        </div>
+
+        <div class="table-container">
+            <table class="combined-table">
+                <thead>
+                    <tr class="header">
+                        <th colspan="5">TABLERO DE CONTROL</th>
+                        <th colspan="2">HIDROSISTEMA</th>
+                        <th colspan="5">SISTEMAEYECTOR</th>
+                    </tr>
             <tr>
                 <th>Parámetro</th>
                 <th>B1</th>
