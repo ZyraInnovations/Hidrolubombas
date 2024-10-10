@@ -240,26 +240,25 @@ app.get('/consultar_usuarios', async (req, res) => {
 
 
 
+
+
+
+
+
+
+
+
+
+
 // Ruta para el menú administrativo - Mostrar formulario para nuevo usuario
 app.get('/realizar_informe', (req, res) => {
     if (req.session.loggedin === true) {
         const nombreUsuario = req.session.user.name; // Usa los datos de la sesión del usuario
-        res.render('administrativo/usuarios/crear_usuarios.hbs', { nombreUsuario });
+        res.render('administrativo/informes/crear_informe.hbs', { nombreUsuario });
     } else {
         res.redirect('/login');
     }
 });
-
-
-
-
-
-
-
-
-
-
-
 
 
 
