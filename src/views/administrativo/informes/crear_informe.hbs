@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Registro de Mantenimiento</title>
-    <style>
+  <style>
         body {
             font-family: Arial, sans-serif;
             font-size: 12px;
@@ -17,6 +17,11 @@
             margin: 0 auto;
             border: 1px solid #000;
             padding: 10px;
+        }
+        .company-info {
+            text-align: center;
+            font-size: 12px;
+            margin-bottom: 10px;
         }
         .header-info {
             display: flex;
@@ -62,7 +67,7 @@
         .combined-table th, .combined-table td {
             border: 0.5px solid #000;
             padding: 1px;
-            text-align: left;
+            text-align: center;
         }
         .header {
             background-color: #6da8d6;
@@ -85,15 +90,33 @@
             font-size: 14px;
             margin: 10px 0;
         }
+          /* Estilo para los indicadores de estado */
+        .indicator-column div {
+            display: flex;
+            align-items: center;
+            margin-bottom: 4px;
+        }
+        .status-input {
+            width: 50px;
+            margin-left: 5px;
+        }
     </style>
 </head>
 <body>
 
+
     <div class="report-container">
+        <!-- Company information section -->
+        <div class="company-info">
+            <strong>INGENIERÍA HIDRAULIBOMBAS S.A.S</strong><br>
+            NIT: 901.454.224-1
+        </div>
+
         <div class="header-info">
             <div class="logo">
                 <img src="imagenes/logo_ingenieria.jpeg-removebg-preview.png" alt="Logo" width="100"> <!-- Ajusta la ruta del logo -->
             </div>
+
             <div class="info-section">
                 <div><strong>Cliente:</strong> <input type="text"></div>
                 <div><strong>Equipo:</strong> <input type="text"></div>
@@ -316,6 +339,212 @@
             </tr>
         </tbody>
     </table>
+<div class="table-container">
+    <table class="combined-table">
+        <thead>
+            <tr class="header">
+                <th colspan="5">MOTOR</th>
+                <th colspan="5">BOMBAS</th>
+                <th colspan="5">Indicador</th> <!-- Cambiado de rowspan a colspan -->
+            </tr>
+            <tr>
+                <th>Parámetro</th>
+                <th>M1</th>
+                <th>M2</th>
+                <th>M3</th>
+                <th>M4</th>
+                <th>Parámetro</th>
+                <th>B1</th>
+                <th>B2</th>
+                <th>B3</th>
+                <th>B4</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>Rodamientos</td>
+                <td><input type="text" class="input-field"></td>
+                <td><input type="text" class="input-field"></td>
+                <td><input type="text" class="input-field"></td>
+                <td><input type="text" class="input-field"></td>
+                <td>Impulsor</td>
+                <td><input type="text" class="input-field"></td>
+                <td><input type="text" class="input-field"></td>
+                <td><input type="text" class="input-field"></td>
+                <td><input type="text" class="input-field"></td>
+                <td rowspan="6" class="indicator-column">
+                    <!-- Indicadores de estado con campos de entrada -->
+                          <div>
+                        <input type="text" placeholder=" " class="status-input" style="width: 50px;">
+        <span style="margin-left: 10px;">Cambio</span>
+                    </div>
+                    <div>
+                        <input type="text" placeholder="" class="status-input" style="width: 50px;">
+        <span style="margin-left: 10px;">Falla</span>
+                    </div>
+                    <div>
+                        <input type="text" placeholder=" " class="status-input" style="width: 50px;">
+        <span style="margin-left: 10px;">Pendiente</span>
+                    </div>
+                    <div>
+                        <input type="text" placeholder="" class="status-input" style="width: 50px;">
+        <span style="margin-left: 10px;">Diagnóstico</span>
+                    </div>
+                    <div>
+                        <input type="text" placeholder="" class="status-input" style="width: 50px;">
+        <span style="margin-left: 10px;">Verificado</span>
+                    </div>
+                    <div>
+                        <input type="text" placeholder=" " class="status-input" style="width: 50px;">
+        <span style="margin-left: 10px;">Operando</span>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td>Casquillo</td>
+                <td><input type="text" class="input-field"></td>
+                <td><input type="text" class="input-field"></td>
+                <td><input type="text" class="input-field"></td>
+                <td><input type="text" class="input-field"></td>
+                <td>Sello Mecánico</td>
+                <td><input type="text" class="input-field"></td>
+                <td><input type="text" class="input-field"></td>
+                <td><input type="text" class="input-field"></td>
+                <td><input type="text" class="input-field"></td>
+            </tr>
+            <tr>
+                <td>Empaque</td>
+                <td><input type="text" class="input-field"></td>
+                <td><input type="text" class="input-field"></td>
+                <td><input type="text" class="input-field"></td>
+                <td><input type="text" class="input-field"></td>
+                <td>Empaque</td>
+                <td><input type="text" class="input-field"></td>
+                <td><input type="text" class="input-field"></td>
+                <td><input type="text" class="input-field"></td>
+                <td><input type="text" class="input-field"></td>
+            </tr>
+            <tr>
+                <td>Ventilador</td>
+                <td><input type="text" class="input-field"></td>
+                <td><input type="text" class="input-field"></td>
+                <td><input type="text" class="input-field"></td>
+                <td><input type="text" class="input-field"></td>
+                <td>Carcasa</td>
+                <td><input type="text" class="input-field"></td>
+                <td><input type="text" class="input-field"></td>
+                <td><input type="text" class="input-field"></td>
+                <td><input type="text" class="input-field"></td>
+            </tr>
+            <tr>
+                <td>Bornes</td>
+                <td><input type="text" class="input-field"></td>
+                <td><input type="text" class="input-field"></td>
+                <td><input type="text" class="input-field"></td>
+                <td><input type="text" class="input-field"></td>
+                <td>Casquillo</td>
+                <td><input type="text" class="input-field"></td>
+                <td><input type="text" class="input-field"></td>
+                <td><input type="text" class="input-field"></td>
+                <td><input type="text" class="input-field"></td>
+            </tr>
+            <tr>
+                <td>Bobinado</td>
+                <td><input type="text" class="input-field"></td>
+                <td><input type="text" class="input-field"></td>
+                <td><input type="text" class="input-field"></td>
+                <td><input type="text" class="input-field"></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+<!-- Campo de texto adicional debajo de la última tabla -->
+<div class="additional-field">
+    <h3>Partes para Cambio:</h3> <!-- Título similar al de la imagen -->
+    <textarea rows="4" style="width: 100%; font-size: 12px; border: 1px solid #000;"></textarea> <!-- Campo de texto -->
+</div>
+<div class="additional-field">
+    <h3>Observaciones:</h3> <!-- Título para las observaciones -->
+    <textarea rows="4" style="width: 100%; font-size: 12px; border: 1px solid #000;"></textarea> <!-- Campo de texto -->
+</div>
+<!-- Sección de firmas debajo de "Observaciones" -->
+<div class="signature-section">
+    <div style="display: flex; justify-content: space-between; margin-top: 20px;">
+        <!-- Campo de firma del técnico -->
+        <div style="text-align: center; width: 45%;">
+            <canvas id="signatureCanvas1" width="300" height="100" style="border: 1px solid #000;"></canvas>
+            <br>
+            <button onclick="clearCanvas('signatureCanvas1')">Borrar</button>
+            <br>
+            <span>TÉCNICO</span>
+        </div>
+        <!-- Campo de firma del supervisor -->
+        <div style="text-align: center; width: 45%;">
+            <canvas id="signatureCanvas2" width="300" height="100" style="border: 1px solid #000;"></canvas>
+            <br>
+            <button onclick="clearCanvas('signatureCanvas2')">Borrar</button>
+            <br>
+            <span>SUPERVISOR</span>
+        </div>
+    </div>
+</div>
+<!-- Información de contacto debajo de las firmas -->
+<div class="contact-info" style="text-align: center; margin-top: 20px; font-size: 12px; color: #0000FF;">
+    Carrera 96A No. 65-52 // ingenieriahidraulibombas@gmail.com // Tels.: 6016496010 - 3115989023
+</div>
+<br>
+<!-- Script para habilitar la firma en los canvas -->
+<!-- Script para habilitar la firma en los canvas -->
+<script>
+    function initSignaturePad(canvasId) {
+        const canvas = document.getElementById(canvasId);
+        const ctx = canvas.getContext('2d');
+        let drawing = false;
 
-</body>
-</html>
+        canvas.addEventListener('mousedown', startDrawing);
+        canvas.addEventListener('mouseup', stopDrawing);
+        canvas.addEventListener('mousemove', draw);
+        canvas.addEventListener('touchstart', startDrawing);
+        canvas.addEventListener('touchend', stopDrawing);
+        canvas.addEventListener('touchmove', draw);
+
+        function startDrawing(event) {
+            drawing = true;
+            ctx.beginPath();
+            const rect = canvas.getBoundingClientRect();
+            const x = (event.clientX || event.touches[0].clientX) - rect.left;
+            const y = (event.clientY || event.touches[0].clientY) - rect.top;
+            ctx.moveTo(x, y);
+        }
+
+        function stopDrawing() {
+            drawing = false;
+        }
+
+        function draw(event) {
+            if (!drawing) return;
+            const rect = canvas.getBoundingClientRect();
+            const x = (event.clientX || event.touches[0].clientX) - rect.left;
+            const y = (event.clientY || event.touches[0].clientY) - rect.top;
+            ctx.lineTo(x, y);
+            ctx.stroke();
+        }
+    }
+
+    function clearCanvas(canvasId) {
+        const canvas = document.getElementById(canvasId);
+        const ctx = canvas.getContext('2d');
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+    }
+
+    // Inicializar los pads de firma para cada canvas
+    window.onload = function() {
+        initSignaturePad('signatureCanvas1');
+        initSignaturePad('signatureCanvas2');
+    };
+</script>

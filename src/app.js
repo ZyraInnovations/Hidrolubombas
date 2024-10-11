@@ -219,6 +219,9 @@ app.post('/agregar_usuario', (req, res) => {
 });
 
 
+
+
+
 // Ruta para consultar los usuarios
 app.get('/consultar_usuarios', async (req, res) => {
     if (req.session.loggedin === true) {
