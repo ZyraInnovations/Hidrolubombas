@@ -1,15 +1,17 @@
 const mysql = require('mysql2');
-
-// Crear la conexión a la base de datos
+// Configuración del pool de conexiones
 const pool = mysql.createPool({
-    host: '127.0.0.1',
-    user: 'root',
-    password: '',
-    database: 'cerceta',
+    host: "34.66.173.227",
+    user: "soporte",
+    password: "1034277764C",
+    database: "viancoapp",
+    port: 3306,
     waitForConnections: true,
-    connectionLimit: 10,
-    queueLimit: 0
+    connectionLimit: 100,  // Aumentado para permitir más conexiones simultáneas si es necesario
+    queueLimit: 0,  // Sin límite en la cola de conexiones
+    connectTimeout: 5000  // Reducido a 5 segundos para intentar conexiones más rápidas
 }).promise();  // Esto convierte el pool en una versión que utiliza promesas
 
-// Exportar la conexión para usarla en otros módulos
+
+
 module.exports = pool;

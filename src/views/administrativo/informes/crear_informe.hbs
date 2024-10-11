@@ -145,12 +145,14 @@
             <div class="logo">
                 <img src="imagenes/logo_ingenieria.jpeg-removebg-preview.png" alt="Logo" width="100"> <!-- Ajusta la ruta del logo -->
             </div>
+<form action="/insertar-datos" method="POST">
+    <!-- Tu contenido de formulario aquí -->
 
         <div class="info-section">
-    <div><strong>Cliente:</strong> <input type="text" name="cliente"></div>
+   
+</div> <div><strong>Cliente:</strong> <input type="text" name="cliente"></div>
     <div><strong>Equipo:</strong> <input type="text" name="equipo"></div>
     <div><strong>Técnico:</strong> <input type="text" name="tecnico"></div>
-</div>
 
    <div class="info-section">
     <div><strong>Hora Entrada:</strong> <input type="text" name="hora_entrada"></div>
@@ -201,10 +203,10 @@
 <td><input type="text" class="hidrosistema-input" name="precarga"></td>
 
 <td>Guarda motor</td>
-<td><input type="text" class="input-field" name="guarda_motor_b1"></td>
-<td><input type="text" class="input-field" name="guarda_motor_b2"></td>
-<td><input type="text" class="input-field" name="guarda_motor_b3"></td>
-<td><input type="text" class="input-field" name="guarda_motor_b4"></td>
+<td><input type="text" class="input-field" name="guarda_motor_b11"></td>
+<td><input type="text" class="input-field" name="guarda_motor_b22"></td>
+<td><input type="text" class="input-field" name="guarda_motor_b33"></td>
+<td><input type="text" class="input-field" name="guarda_motor_b44"></td>
 
             </tr>
 <tr>
@@ -276,25 +278,25 @@
     <td>Presion de linea</td>
     <td><input type="text" class="hidrosistema-input" name="presion_linea"></td>
     <td>Conexiones</td>
-    <td><input type="text" class="input-field" name="conexiones_b1"></td>
-    <td><input type="text" class="input-field" name="conexiones_b2"></td>
-    <td><input type="text" class="input-field" name="conexiones_b3"></td>
-    <td><input type="text" class="input-field" name="conexiones_b4"></td>
+    <td><input type="text" class="input-field" name="conexiones_b11"></td>
+    <td><input type="text" class="input-field" name="conexiones_b22"></td>
+    <td><input type="text" class="input-field" name="conexiones_b33"></td>
+    <td><input type="text" class="input-field" name="conexiones_b44"></td>
 </tr>
 
 <tr>
     <td>Guarda motor</td>
-    <td><input type="text" class="input-field" name="guarda_motor_b11"></td>
-    <td><input type="text" class="input-field" name="guarda_motor_b22"></td>
-    <td><input type="text" class="input-field" name="guarda_motor_b33"></td>
-    <td><input type="text" class="input-field" name="guarda_motor_b44"></td>
+    <td><input type="text" class="input-field" name="guarda_motor_b1"></td>
+    <td><input type="text" class="input-field" name="guarda_motor_b2"></td>
+    <td><input type="text" class="input-field" name="guarda_motor_b3"></td>
+    <td><input type="text" class="input-field" name="guarda_motor_b4"></td>
     <td>Registros</td>
     <td><input type="text" class="hidrosistema-input" name="registros"></td>
     <td>Amperaje</td>
- <td><input type="text" class="input-field" name="amperaje_b1"></td>
-    <td><input type="text" class="input-field" name="amperaje_b2"></td>
-    <td><input type="text" class="input-field" name="amperaje_b3"></td>
-    <td><input type="text" class="input-field" name="amperaje_b4"></td>
+ <td><input type="text" class="input-field" name="amperaje_b11"></td>
+    <td><input type="text" class="input-field" name="amperaje_b22"></td>
+    <td><input type="text" class="input-field" name="amperaje_b33"></td>
+    <td><input type="text" class="input-field" name="amperaje_b44"></td>
 </tr>
 
 <tr>
@@ -306,10 +308,10 @@
     <td>Membrana</td>
     <td><input type="text" class="hidrosistema-input" name="membrana"></td>
     <td>Voltaje</td>
-   <td><input type="text" class="input-field" name="voltaje_b1"></td>
-    <td><input type="text" class="input-field" name="voltaje_b2"></td>
-    <td><input type="text" class="input-field" name="voltaje_b3"></td>
-    <td><input type="text" class="input-field" name="voltaje_b4"></td>
+   <td><input type="text" class="input-field" name="voltaje_b11"></td>
+    <td><input type="text" class="input-field" name="voltaje_b22"></td>
+    <td><input type="text" class="input-field" name="voltaje_b33"></td>
+    <td><input type="text" class="input-field" name="voltaje_b44"></td>
 </tr>
 
  <tr>
@@ -335,7 +337,7 @@
     <td><input type="text" class="input-field" name="flotador_electrico_b4"></td>
     <td>Cargador de Aire</td>
     <td><input type="text" class="hidrosistema-input" name="cargador_aire"></td>
-    <td>Rele terminco</td>
+    <td>Rele termico</td>
     <td><input type="text" class="input-field" name="rele_terminco_b1"></td>
     <td><input type="text" class="input-field" name="rele_terminco_b2"></td>
     <td><input type="text" class="input-field" name="rele_terminco_b3"></td>
@@ -344,10 +346,10 @@
 
      <tr>
     <td>Conexiones</td>
-    <td><input type="text" class="input-field" name="conexiones_b11"></td>
-    <td><input type="text" class="input-field" name="conexiones_b22"></td>
-    <td><input type="text" class="input-field" name="conexiones_b33"></td>
-    <td><input type="text" class="input-field" name="conexiones_b44"></td>
+    <td><input type="text" class="input-field" name="conexiones_b1"></td>
+    <td><input type="text" class="input-field" name="conexiones_b2"></td>
+    <td><input type="text" class="input-field" name="conexiones_b3"></td>
+    <td><input type="text" class="input-field" name="conexiones_b4"></td>
     <td>Tanque Reserva</td>
     <td><input type="text" class="hidrosistema-input" name="tanque_reserva"></td>
     <td>Residuos sólidos</td>
@@ -359,10 +361,10 @@
 
  <tr>
     <td>Amperaje</td>
-    <td><input type="text" class="input-field" name="amperaje_b11"></td>
-    <td><input type="text" class="input-field" name="amperaje_b22"></td>
-    <td><input type="text" class="input-field" name="amperaje_b33"></td>
-    <td><input type="text" class="input-field" name="amperaje_b44"></td>
+    <td><input type="text" class="input-field" name="amperaje_b1"></td>
+    <td><input type="text" class="input-field" name="amperaje_b2"></td>
+    <td><input type="text" class="input-field" name="amperaje_b3"></td>
+    <td><input type="text" class="input-field" name="amperaje_b4"></td>
     <td>Flauta de descarga</td>
     <td><input type="text" class="hidrosistema-input" name="flauta_descarga"></td>
     <td></td>
@@ -499,10 +501,10 @@
     <td><input type="text" name="bornes_b3" class="input-field"></td>
     <td><input type="text" name="bornes_b4" class="input-field"></td>
     <td>Casquillo</td>
-    <td><input type="text" name="casquillo_b1" class="input-field"></td>
-    <td><input type="text" name="casquillo_b2" class="input-field"></td>
-    <td><input type="text" name="casquillo_b3" class="input-field"></td>
-    <td><input type="text" name="casquillo_b4" class="input-field"></td>
+    <td><input type="text" name="casquillo_b11" class="input-field"></td>
+    <td><input type="text" name="casquillo_b22" class="input-field"></td>
+    <td><input type="text" name="casquillo_b33" class="input-field"></td>
+    <td><input type="text" name="casquillo_b44" class="input-field"></td>
 </tr>
 
 <tr>
@@ -531,7 +533,8 @@
     <h3>Observaciones:</h3> <!-- Título para las observaciones -->
     <textarea name="observaciones" rows="4" style="width: 100%; font-size: 12px; border: 1px solid #000;"></textarea> <!-- Campo de texto -->
 </div>
-
+   <input type="submit" value="Enviar Datos">
+  </form>
 <!-- Sección de firmas debajo de "Observaciones" -->
 <div class="signature-section">
     <div style="display: flex; justify-content: space-between; margin-top: 20px;">
@@ -553,12 +556,16 @@
         </div>
     </div>
 </div>
-
+  
 <!-- Información de contacto debajo de las firmas -->
 <div class="contact-info" style="text-align: center; margin-top: 20px; font-size: 12px; color: #0000FF;">
     Carrera 96A No. 65-52 // ingenieriahidraulibombas@gmail.com // Tels.: 6016496010 - 3115989023
 </div>
 <br>
+ </div>
+
+ <!-- Botón para enviar el formulario -->
+
 <!-- Script para habilitar la firma en los canvas -->
 <!-- Script para habilitar la firma en los canvas -->
 <script>
@@ -608,4 +615,30 @@
         initSignaturePad('signatureCanvas1');
         initSignaturePad('signatureCanvas2');
     };
+    function getSignatureData(canvasId) {
+    const canvas = document.getElementById(canvasId);
+    return canvas.toDataURL(); // Esto devuelve una cadena base64 de la firma
+}
+
+// Al enviar el formulario, captura las firmas
+document.querySelector('form').onsubmit = function() {
+    const firmaTecnico = getSignatureData('signatureCanvas1');
+    const firmaSupervisor = getSignatureData('signatureCanvas2');
+    
+    // Añadir las firmas al formulario antes de enviar
+    const inputFirmaTecnico = document.createElement('input');
+    inputFirmaTecnico.type = 'hidden';
+    inputFirmaTecnico.name = 'firma_tecnico';
+    inputFirmaTecnico.value = firmaTecnico;
+    
+    const inputFirmaSupervisor = document.createElement('input');
+    inputFirmaSupervisor.type = 'hidden';
+    inputFirmaSupervisor.name = 'firma_supervisor';
+    inputFirmaSupervisor.value = firmaSupervisor;
+
+    this.appendChild(inputFirmaTecnico);
+    this.appendChild(inputFirmaSupervisor);
+};
+
+
 </script>

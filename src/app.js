@@ -218,6 +218,133 @@ app.post('/agregar_usuario', (req, res) => {
     }
 });
 
+const mysql = require('mysql2');
+
+app.use(express.urlencoded({ extended: true })); // Esto es importante para manejar datos de formularios
+
+
+// Configuración de la base de datos
+const db = mysql.createConnection({
+    host: "34.66.173.227",
+    user: "soporte",
+    password: "1034277764C",
+    database: "viancoapp",
+    port: 3306,
+    waitForConnections: true,
+    connectionLimit: 100,  // Aumentado para permitir más conexiones simultáneas si es necesario
+    queueLimit: 0,  // Sin límite en la cola de conexiones
+    connectTimeout: 5000  // Reducido a 5 segundos para intentar conexiones más rápidas
+  });
+  
+  // Conectar a la base de datos
+  db.connect((err) => {
+    if (err) {
+      console.error('Error conectando a la base de datos:', err);
+    } else {
+      console.log('Conectado a la base de datos.');
+    }
+  });
+  
+  // Ruta para manejar la inserción de datos del formulario
+  app.post('/insertar-datos', (req, res) => {
+    const datos = req.body;
+  
+    // Crear la consulta SQL
+    const query = `INSERT INTO mantenimiento_hidro (
+      cliente, equipo, tecnico, hora_entrada, hora_salida, fecha, numero,
+      variador_b1, variador_b2, variador_b3, variador_b4, precarga,
+      guarda_motor_b11, guarda_motor_b22, guarda_motor_b33, guarda_motor_b44,
+      mutelillas_b1, mutelillas_b2, mutelillas_b3, mutelillas_b4, flotador_mecanico,
+      breaker_b1, breaker_b2, breaker_b3, breaker_b4, piloto_b1, piloto_b2,
+      piloto_b3, piloto_b4, valvulas_succion, muletillas_b1, muletillas_b2,
+      muletillas_b3, muletillas_b4, contactores_b1, contactores_b2, contactores_b3,
+      contactores_b4, tanque_hidro, contacores_b1, contacores_b2, contacores_b3,
+      contacores_b4, presostatos_b1, presostatos_b2, presostatos_b3, presostatos_b4,
+      cheques, flotador_electricos_b1, flotador_electricos_b2, flotador_electricos_b3,
+      flotador_electricos_b4, alternador_b1, alternador_b2, alternador_b3, alternador_b4,
+      presion_linea, conexiones_b11, conexiones_b22, conexiones_b33, conexiones_b44,
+      guarda_motor_b1, guarda_motor_b2, guarda_motor_b3, guarda_motor_b4, registros,
+      amperaje_b11, amperaje_b22, amperaje_b33, amperaje_b44, temporizador_b1,
+      temporizador_b2, temporizador_b3, temporizador_b4, membrana, voltaje_b11,
+      voltaje_b22, voltaje_b33, voltaje_b44, rele_termico_b1, rele_termico_b2,
+      rele_termico_b3, rele_termico_b4, manometro, sierena_b1, sierena_b2,
+      sierena_b3, sierena_b4, flotador_electrico_b1, flotador_electrico_b2,
+      flotador_electrico_b3, flotador_electrico_b4, cargador_aire, rele_terminco_b1,
+      rele_terminco_b2, rele_terminco_b3, rele_terminco_b4, conexiones_b1,
+      conexiones_b2, conexiones_b3, conexiones_b4, tanque_reserva, residuos_b1,
+      residuos_b2, residuos_b3, residuos_b4, amperaje_b1, amperaje_b2, amperaje_b3,
+      amperaje_b4, flauta_descarga, voltaje_b1, voltaje_b2, voltaje_b3, voltaje_b4,
+      rodamientos_m1, rodamientos_m2, rodamientos_m3, rodamientos_m4, impulsor_m1,
+      impulsor_m2, impulsor_m3, impulsor_m4, cambio, falla, pendiente, diagnostico,
+      verificado, operando, casquillo_b1, casquillo_b2, casquillo_b3, casquillo_b4,
+      sello_mecanico_b1, sello_mecanico_b2, sello_mecanico_b3, sello_mecanico_b4,
+      empaque_b1, empaque_b2, empaque_b3, empaque_b4, empaque_2_b1, empaque_2_b2,
+      empaque_2_b3, empaque_2_b4, ventilador_b1, ventilador_b2, ventilador_b3,
+      ventilador_b4, carcasa_b1, carcasa_b2, carcasa_b3, carcasa_b4, bornes_b1,
+      bornes_b2, bornes_b3, bornes_b4, casquillo_b11, casquillo_b22, casquillo_b33,
+      casquillo_b44, bobinado_b1, bobinado_b2, bobinado_b3, bobinado_b4,
+      partes_para_cambio, observaciones
+    ) VALUES ?`;
+  
+    // Extraer valores del objeto req.body
+    const values = [
+      [
+        datos.cliente, datos.equipo, datos.tecnico, datos.hora_entrada, datos.hora_salida,
+        datos.fecha, datos.numero, datos.variador_b1, datos.variador_b2, datos.variador_b3,
+        datos.variador_b4, datos.precarga, datos.guarda_motor_b11, datos.guarda_motor_b22,
+        datos.guarda_motor_b33, datos.guarda_motor_b44, datos.mutelillas_b1,
+        datos.mutelillas_b2, datos.mutelillas_b3, datos.mutelillas_b4, datos.flotador_mecanico,
+        datos.breaker_b1, datos.breaker_b2, datos.breaker_b3, datos.breaker_b4, datos.piloto_b1,
+        datos.piloto_b2, datos.piloto_b3, datos.piloto_b4, datos.valvulas_succion,
+        datos.muletillas_b1, datos.muletillas_b2, datos.muletillas_b3, datos.muletillas_b4,
+        datos.contactores_b1, datos.contactores_b2, datos.contactores_b3, datos.contactores_b4,
+        datos.tanque_hidro, datos.contacores_b1, datos.contacores_b2, datos.contacores_b3,
+        datos.contacores_b4, datos.presostatos_b1, datos.presostatos_b2, datos.presostatos_b3,
+        datos.presostatos_b4, datos.cheques, datos.flotador_electricos_b1, datos.flotador_electricos_b2,
+        datos.flotador_electricos_b3, datos.flotador_electricos_b4, datos.alternador_b1,
+        datos.alternador_b2, datos.alternador_b3, datos.alternador_b4, datos.presion_linea,
+        datos.conexiones_b11, datos.conexiones_b22, datos.conexiones_b33, datos.conexiones_b44,
+        datos.guarda_motor_b1, datos.guarda_motor_b2, datos.guarda_motor_b3, datos.guarda_motor_b4,
+        datos.registros, datos.amperaje_b11, datos.amperaje_b22, datos.amperaje_b33,
+        datos.amperaje_b44, datos.temporizador_b1, datos.temporizador_b2, datos.temporizador_b3,
+        datos.temporizador_b4, datos.membrana, datos.voltaje_b11, datos.voltaje_b22,
+        datos.voltaje_b33, datos.voltaje_b44, datos.rele_termico_b1, datos.rele_termico_b2,
+        datos.rele_termico_b3, datos.rele_termico_b4, datos.manometro, datos.sierena_b1,
+        datos.sierena_b2, datos.sierena_b3, datos.sierena_b4, datos.flotador_electrico_b1,
+        datos.flotador_electrico_b2, datos.flotador_electrico_b3, datos.flotador_electrico_b4,
+        datos.cargador_aire, datos.rele_terminco_b1, datos.rele_terminco_b2, datos.rele_terminco_b3,
+        datos.rele_terminco_b4, datos.conexiones_b1, datos.conexiones_b2, datos.conexiones_b3,
+        datos.conexiones_b4, datos.tanque_reserva, datos.residuos_b1, datos.residuos_b2,
+        datos.residuos_b3, datos.residuos_b4, datos.amperaje_b1, datos.amperaje_b2,
+        datos.amperaje_b3, datos.amperaje_b4, datos.flauta_descarga, datos.voltaje_b1,
+        datos.voltaje_b2, datos.voltaje_b3, datos.voltaje_b4, datos.rodamientos_m1,
+        datos.rodamientos_m2, datos.rodamientos_m3, datos.rodamientos_m4, datos.impulsor_m1,
+        datos.impulsor_m2, datos.impulsor_m3, datos.impulsor_m4, datos.cambio, datos.falla,
+        datos.pendiente, datos.diagnostico, datos.verificado, datos.operando,
+        datos.casquillo_b1, datos.casquillo_b2, datos.casquillo_b3, datos.casquillo_b4,
+        datos.sello_mecanico_b1, datos.sello_mecanico_b2, datos.sello_mecanico_b3,
+        datos.sello_mecanico_b4, datos.empaque_b1, datos.empaque_b2, datos.empaque_b3,
+        datos.empaque_b4, datos.empaque_2_b1, datos.empaque_2_b2, datos.empaque_2_b3,
+        datos.empaque_2_b4, datos.ventilador_b1, datos.ventilador_b2, datos.ventilador_b3,
+        datos.ventilador_b4, datos.carcasa_b1, datos.carcasa_b2, datos.carcasa_b3,
+        datos.carcasa_b4, datos.bornes_b1, datos.bornes_b2, datos.bornes_b3,
+        datos.bornes_b4, datos.casquillo_b11, datos.casquillo_b22, datos.casquillo_b33,
+        datos.casquillo_b44, datos.bobinado_b1, datos.bobinado_b2, datos.bobinado_b3,
+        datos.bobinado_b4, datos.partes_para_cambio, datos.observaciones
+      ]
+    ];
+  
+    // Ejecutar la consulta para insertar los datos
+    db.query(query, [values], (err, result) => {
+      if (err) {
+        console.error('Error al insertar los datos:', err);
+        res.status(500).send('Error al insertar los datos');
+      } else {
+        res.send('Datos insertados correctamente');
+      }
+    });
+  });
+  
 
 
 
@@ -268,7 +395,8 @@ app.get('/realizar_informe', (req, res) => {
 
 
 
-
+app.use(bodyParser.json()); // Para parsear JSON
+app.use(bodyParser.urlencoded({ extended: true })); // Para parsear datos de formularios
 
 
 
