@@ -100,6 +100,35 @@
             width: 50px;
             margin-left: 5px;
         }
+           /* Estilo responsive */
+        @media (max-width: 600px) {
+            .header-info, .info-section {
+                flex-direction: column;
+                align-items: flex-start;
+                width: 100%;
+            }
+            .info-section strong {
+                min-width: auto;
+            }
+            .info-section input {
+                max-width: 100%;
+            }
+            .logo {
+                width: 60px;
+            }
+            .combined-table {
+                font-size: 8px;
+            }
+            .input-field, .hidrosistema-input {
+                width: 25px;
+            }
+            .status-input {
+                width: 30px;
+            }
+            .signature-section div {
+                width: 100%;
+            }
+        }
     </style>
 </head>
 <body>
@@ -117,17 +146,19 @@
                 <img src="imagenes/logo_ingenieria.jpeg-removebg-preview.png" alt="Logo" width="100"> <!-- Ajusta la ruta del logo -->
             </div>
 
-            <div class="info-section">
-                <div><strong>Cliente:</strong> <input type="text"></div>
-                <div><strong>Equipo:</strong> <input type="text"></div>
-                <div><strong>Técnico:</strong> <input type="text"></div>
-            </div>
-            <div class="info-section">
-                <div><strong>Hora Entrada:</strong> <input type="text"></div>
-                <div><strong>Hora Salida:</strong> <input type="text"></div>
-                <div><strong>Fecha:</strong> <input type="text"></div>
-                <div><strong>Número:</strong> <input type="text"></div>
-            </div>
+        <div class="info-section">
+    <div><strong>Cliente:</strong> <input type="text" name="cliente"></div>
+    <div><strong>Equipo:</strong> <input type="text" name="equipo"></div>
+    <div><strong>Técnico:</strong> <input type="text" name="tecnico"></div>
+</div>
+
+   <div class="info-section">
+    <div><strong>Hora Entrada:</strong> <input type="text" name="hora_entrada"></div>
+    <div><strong>Hora Salida:</strong> <input type="text" name="hora_salida"></div>
+    <div><strong>Fecha:</strong> <input type="text" name="fecha"></div>
+    <div><strong>Número:</strong> <input type="text" name="numero"></div>
+</div>
+
         </div>
 
 
@@ -160,183 +191,197 @@
         </thead>
         <tbody>
             <tr>
-                <td>Variador</td>
-                <td><input type="text" class="input-field"></td>
-                <td><input type="text" class="input-field"></td>
-                <td><input type="text" class="input-field"></td>
-                <td><input type="text" class="input-field"></td>
-                <td>Precarga</td>
-                <td><input type="text" class="hidrosistema-input"></td>
-                <td>Guarda motor</td>
-                <td><input type="text" class="input-field"></td>
-                <td><input type="text" class="input-field"></td>
-                <td><input type="text" class="input-field"></td>
-                <td><input type="text" class="input-field"></td>
+        <td>Variador</td>
+<td><input type="text" class="input-field" name="variador_b1"></td>
+<td><input type="text" class="input-field" name="variador_b2"></td>
+<td><input type="text" class="input-field" name="variador_b3"></td>
+<td><input type="text" class="input-field" name="variador_b4"></td>
+
+              <td>Precarga</td>
+<td><input type="text" class="hidrosistema-input" name="precarga"></td>
+
+<td>Guarda motor</td>
+<td><input type="text" class="input-field" name="guarda_motor_b1"></td>
+<td><input type="text" class="input-field" name="guarda_motor_b2"></td>
+<td><input type="text" class="input-field" name="guarda_motor_b3"></td>
+<td><input type="text" class="input-field" name="guarda_motor_b4"></td>
+
             </tr>
-            <tr>
-                <td>Mutelillas</td>
-                <td><input type="text" class="input-field"></td>
-                <td><input type="text" class="input-field"></td>
-                <td><input type="text" class="input-field"></td>
-                <td><input type="text" class="input-field"></td>
-                <td>Flotador Mecánico</td>
-                <td><input type="text" class="hidrosistema-input"></td>
-                <td>Guarda motor</td>
-                <td><input type="text" class="input-field"></td>
-                <td><input type="text" class="input-field"></td>
-                <td><input type="text" class="input-field"></td>
-                <td><input type="text" class="input-field"></td>
-            </tr>
-            <tr>
-                <td>Piloto</td>
-                <td><input type="text" class="input-field"></td>
-                <td><input type="text" class="input-field"></td>
-                <td><input type="text" class="input-field"></td>
-                <td><input type="text" class="input-field"></td>
-                <td>Válvulas de Succión</td>
-                <td><input type="text" class="hidrosistema-input"></td>
-                <td>Breaker</td>
-                <td><input type="text" class="input-field"></td>
-                <td><input type="text" class="input-field"></td>
-                <td><input type="text" class="input-field"></td>
-                <td><input type="text" class="input-field"></td>
-            </tr>
-            <tr>
-                <td>Contactores</td>
-                <td><input type="text" class="input-field"></td>
-                <td><input type="text" class="input-field"></td>
-                <td><input type="text" class="input-field"></td>
-                <td><input type="text" class="input-field"></td>
-                <td>Tanque Hidro</td>
-                <td><input type="text" class="hidrosistema-input"></td>
-                <td>Muletillas</td>
-                <td><input type="text" class="input-field"></td>
-                <td><input type="text" class="input-field"></td>
-                <td><input type="text" class="input-field"></td>
-                <td><input type="text" class="input-field"></td>
-            </tr>
-            <tr>
-                <td>Presostatos</td>
-                <td><input type="text" class="input-field"></td>
-                <td><input type="text" class="input-field"></td>
-                <td><input type="text" class="input-field"></td>
-                <td><input type="text" class="input-field"></td>
-                <td>Cheques</td>
-                <td><input type="text" class="hidrosistema-input"></td>
-                <td>Contacores</td>
-                <td><input type="text" class="input-field"></td>
-                <td><input type="text" class="input-field"></td>
-                <td><input type="text" class="input-field"></td>
-                <td><input type="text" class="input-field"></td>
-            </tr>
-            <tr>
-                <td>Alternador</td>
-                <td><input type="text" class="input-field"></td>
-                <td><input type="text" class="input-field"></td>
-                <td><input type="text" class="input-field"></td>
-                <td><input type="text" class="input-field"></td>
-                <td>Cheques</td>
-                <td><input type="text" class="hidrosistema-input"></td>
-                <td>Flotador Electricos</td>
-                <td><input type="text" class="input-field"></td>
-                <td><input type="text" class="input-field"></td>
-                <td><input type="text" class="input-field"></td>
-                <td><input type="text" class="input-field"></td>
-            </tr>
-           <tr>
-                <td>Guarda motor</td>
-                <td><input type="text" class="input-field"></td>
-                <td><input type="text" class="input-field"></td>
-                <td><input type="text" class="input-field"></td>
-                <td><input type="text" class="input-field"></td>
-                <td>Presion de linea</td>
-                <td><input type="text" class="hidrosistema-input"></td>
-                <td>Conexiones</td>
-                <td><input type="text" class="input-field"></td>
-                <td><input type="text" class="input-field"></td>
-                <td><input type="text" class="input-field"></td>
-                <td><input type="text" class="input-field"></td>
-            </tr>
-               <tr>
-                <td>Temporizador</td>
-                <td><input type="text" class="input-field"></td>
-                <td><input type="text" class="input-field"></td>
-                <td><input type="text" class="input-field"></td>
-                <td><input type="text" class="input-field"></td>
-                <td>Registros</td>
-                <td><input type="text" class="hidrosistema-input"></td>
-                <td>Amperaje</td>
-                <td><input type="text" class="input-field"></td>
-                <td><input type="text" class="input-field"></td>
-                <td><input type="text" class="input-field"></td>
-                <td><input type="text" class="input-field"></td>
-            </tr>
-                   <tr>
-                <td>Rele Termico</td>
-                <td><input type="text" class="input-field"></td>
-                <td><input type="text" class="input-field"></td>
-                <td><input type="text" class="input-field"></td>
-                <td><input type="text" class="input-field"></td>
-                <td>Membrana</td>
-                <td><input type="text" class="hidrosistema-input"></td>
-                <td>Voltaje</td>
-                <td><input type="text" class="input-field"></td>
-                <td><input type="text" class="input-field"></td>
-                <td><input type="text" class="input-field"></td>
-                <td><input type="text" class="input-field"></td>
-            </tr>
-                   <tr>
-                <td>Flotador Electrico</td>
-                <td><input type="text" class="input-field"></td>
-                <td><input type="text" class="input-field"></td>
-                <td><input type="text" class="input-field"></td>
-                <td><input type="text" class="input-field"></td>
-                <td>Manometro</td>
-                <td><input type="text" class="hidrosistema-input"></td>
-                <td>Sierena</td>
-                <td><input type="text" class="input-field"></td>
-                <td><input type="text" class="input-field"></td>
-                <td><input type="text" class="input-field"></td>
-                <td><input type="text" class="input-field"></td>
-            </tr>
-                   <tr>
-                <td>Conexiones</td>
-                <td><input type="text" class="input-field"></td>
-                <td><input type="text" class="input-field"></td>
-                <td><input type="text" class="input-field"></td>
-                <td><input type="text" class="input-field"></td>
-                <td>Cargador de Aire</td>
-                <td><input type="text" class="hidrosistema-input"></td>
-                <td>Rele terminco</td>
-                <td><input type="text" class="input-field"></td>
-                <td><input type="text" class="input-field"></td>
-                <td><input type="text" class="input-field"></td>
-                <td><input type="text" class="input-field"></td>
-            </tr>
-                   <tr>
-                <td>Amperaje</td>
-                <td><input type="text" class="input-field"></td>
-                <td><input type="text" class="input-field"></td>
-                <td><input type="text" class="input-field"></td>
-                <td><input type="text" class="input-field"></td>
-                <td>Tanque Reserva</td>
-                <td><input type="text" class="hidrosistema-input"></td>
-                <td>Residuos solidos</td>
-                <td><input type="text" class="input-field"></td>
-                <td><input type="text" class="input-field"></td>
-                <td><input type="text" class="input-field"></td>
-                <td><input type="text" class="input-field"></td>
-            </tr>
-                   <tr>
-                <td>Voltaje</td>
-                <td><input type="text" class="input-field"></td>
-                <td><input type="text" class="input-field"></td>
-                <td><input type="text" class="input-field"></td>
-                <td><input type="text" class="input-field"></td>
-                <td>Flauta de descarga</td>
-                <td><input type="text" class="hidrosistema-input"></td>
-            
-            </tr>
+<tr>
+    <td>Mutelillas</td>
+    <td><input type="text" class="input-field" name="mutelillas_b1"></td>
+    <td><input type="text" class="input-field" name="mutelillas_b2"></td>
+    <td><input type="text" class="input-field" name="mutelillas_b3"></td>
+    <td><input type="text" class="input-field" name="mutelillas_b4"></td>
+    <td>Flotador Mecánico</td>
+    <td><input type="text" class="hidrosistema-input" name="flotador_mecanico"></td>
+    <td>Breaker </td>
+    <td><input type="text" class="input-field" name="breaker_b1"></td>
+    <td><input type="text" class="input-field" name="breaker_b2"></td>
+    <td><input type="text" class="input-field" name="breaker_b3"></td>
+    <td><input type="text" class="input-field" name="breaker_b4"></td>
+</tr>
+
+<tr>
+    <td>Piloto</td>
+    <td><input type="text" class="input-field" name="piloto_b1"></td>
+    <td><input type="text" class="input-field" name="piloto_b2"></td>
+    <td><input type="text" class="input-field" name="piloto_b3"></td>
+    <td><input type="text" class="input-field" name="piloto_b4"></td>
+    <td>Válvulas de Succión</td>
+    <td><input type="text" class="hidrosistema-input" name="valvulas_succion"></td>
+    <td>Muletillas</td>
+      <td><input type="text" class="input-field" name="muletillas_b1"></td>
+    <td><input type="text" class="input-field" name="muletillas_b2"></td>
+    <td><input type="text" class="input-field" name="muletillas_b3"></td>
+    <td><input type="text" class="input-field" name="muletillas_b4"></td>
+</tr>
+
+   <tr>
+    <td>Contactores</td>
+    <td><input type="text" class="input-field" name="contactores_b1"></td>
+    <td><input type="text" class="input-field" name="contactores_b2"></td>
+    <td><input type="text" class="input-field" name="contactores_b3"></td>
+    <td><input type="text" class="input-field" name="contactores_b4"></td>
+    <td>Tanque Hidro</td>
+    <td><input type="text" class="hidrosistema-input" name="tanque_hidro"></td>
+    <td>Contacores</td>
+    <td><input type="text" class="input-field" name="contacores_b1"></td>
+    <td><input type="text" class="input-field" name="contacores_b2"></td>
+    <td><input type="text" class="input-field" name="contacores_b3"></td>
+    <td><input type="text" class="input-field" name="contacores_b4"></td>
+</tr>
+
+   <tr>
+    <td>Presostatos</td>
+    <td><input type="text" class="input-field" name="presostatos_b1"></td>
+    <td><input type="text" class="input-field" name="presostatos_b2"></td>
+    <td><input type="text" class="input-field" name="presostatos_b3"></td>
+    <td><input type="text" class="input-field" name="presostatos_b4"></td>
+    <td>Cheques</td>
+    <td><input type="text" class="hidrosistema-input" name="cheques"></td>
+    <td>Flotador Electricos</td>
+    <td><input type="text" class="input-field" name="flotador_electricos_b1"></td>
+    <td><input type="text" class="input-field" name="flotador_electricos_b2"></td>
+    <td><input type="text" class="input-field" name="flotador_electricos_b3"></td>
+    <td><input type="text" class="input-field" name="flotador_electricos_b4"></td>
+</tr>
+
+<tr>
+    <td>Alternador</td>
+    <td><input type="text" class="input-field" name="alternador_b1"></td>
+    <td><input type="text" class="input-field" name="alternador_b2"></td>
+    <td><input type="text" class="input-field" name="alternador_b3"></td>
+    <td><input type="text" class="input-field" name="alternador_b4"></td>
+    <td>Presion de linea</td>
+    <td><input type="text" class="hidrosistema-input" name="presion_linea"></td>
+    <td>Conexiones</td>
+    <td><input type="text" class="input-field" name="conexiones_b1"></td>
+    <td><input type="text" class="input-field" name="conexiones_b2"></td>
+    <td><input type="text" class="input-field" name="conexiones_b3"></td>
+    <td><input type="text" class="input-field" name="conexiones_b4"></td>
+</tr>
+
+<tr>
+    <td>Guarda motor</td>
+    <td><input type="text" class="input-field" name="guarda_motor_b11"></td>
+    <td><input type="text" class="input-field" name="guarda_motor_b22"></td>
+    <td><input type="text" class="input-field" name="guarda_motor_b33"></td>
+    <td><input type="text" class="input-field" name="guarda_motor_b44"></td>
+    <td>Registros</td>
+    <td><input type="text" class="hidrosistema-input" name="registros"></td>
+    <td>Amperaje</td>
+ <td><input type="text" class="input-field" name="amperaje_b1"></td>
+    <td><input type="text" class="input-field" name="amperaje_b2"></td>
+    <td><input type="text" class="input-field" name="amperaje_b3"></td>
+    <td><input type="text" class="input-field" name="amperaje_b4"></td>
+</tr>
+
+<tr>
+    <td>Temporizador</td>
+    <td><input type="text" class="input-field" name="temporizador_b1"></td>
+    <td><input type="text" class="input-field" name="temporizador_b2"></td>
+    <td><input type="text" class="input-field" name="temporizador_b3"></td>
+    <td><input type="text" class="input-field" name="temporizador_b4"></td>
+    <td>Membrana</td>
+    <td><input type="text" class="hidrosistema-input" name="membrana"></td>
+    <td>Voltaje</td>
+   <td><input type="text" class="input-field" name="voltaje_b1"></td>
+    <td><input type="text" class="input-field" name="voltaje_b2"></td>
+    <td><input type="text" class="input-field" name="voltaje_b3"></td>
+    <td><input type="text" class="input-field" name="voltaje_b4"></td>
+</tr>
+
+ <tr>
+    <td>Rele Termico</td>
+    <td><input type="text" class="input-field" name="rele_termico_b1"></td>
+    <td><input type="text" class="input-field" name="rele_termico_b2"></td>
+    <td><input type="text" class="input-field" name="rele_termico_b3"></td>
+    <td><input type="text" class="input-field" name="rele_termico_b4"></td>
+    <td>Manometro</td>
+    <td><input type="text" class="hidrosistema-input" name="manometro"></td>
+    <td>Sierena</td>
+    <td><input type="text" class="input-field" name="sierena_b1"></td>
+    <td><input type="text" class="input-field" name="sierena_b2"></td>
+    <td><input type="text" class="input-field" name="sierena_b3"></td>
+    <td><input type="text" class="input-field" name="sierena_b4"></td>
+</tr>
+
+       <tr>
+    <td>Flotador Electrico</td>
+    <td><input type="text" class="input-field" name="flotador_electrico_b1"></td>
+    <td><input type="text" class="input-field" name="flotador_electrico_b2"></td>
+    <td><input type="text" class="input-field" name="flotador_electrico_b3"></td>
+    <td><input type="text" class="input-field" name="flotador_electrico_b4"></td>
+    <td>Cargador de Aire</td>
+    <td><input type="text" class="hidrosistema-input" name="cargador_aire"></td>
+    <td>Rele terminco</td>
+    <td><input type="text" class="input-field" name="rele_terminco_b1"></td>
+    <td><input type="text" class="input-field" name="rele_terminco_b2"></td>
+    <td><input type="text" class="input-field" name="rele_terminco_b3"></td>
+    <td><input type="text" class="input-field" name="rele_terminco_b4"></td>
+</tr>
+
+     <tr>
+    <td>Conexiones</td>
+    <td><input type="text" class="input-field" name="conexiones_b11"></td>
+    <td><input type="text" class="input-field" name="conexiones_b22"></td>
+    <td><input type="text" class="input-field" name="conexiones_b33"></td>
+    <td><input type="text" class="input-field" name="conexiones_b44"></td>
+    <td>Tanque Reserva</td>
+    <td><input type="text" class="hidrosistema-input" name="tanque_reserva"></td>
+    <td>Residuos sólidos</td>
+    <td><input type="text" class="input-field" name="residuos_b1"></td>
+    <td><input type="text" class="input-field" name="residuos_b2"></td>
+    <td><input type="text" class="input-field" name="residuos_b3"></td>
+    <td><input type="text" class="input-field" name="residuos_b4"></td>
+</tr>
+
+ <tr>
+    <td>Amperaje</td>
+    <td><input type="text" class="input-field" name="amperaje_b11"></td>
+    <td><input type="text" class="input-field" name="amperaje_b22"></td>
+    <td><input type="text" class="input-field" name="amperaje_b33"></td>
+    <td><input type="text" class="input-field" name="amperaje_b44"></td>
+    <td>Flauta de descarga</td>
+    <td><input type="text" class="hidrosistema-input" name="flauta_descarga"></td>
+    <td></td>
+    <td></td>
+    <td></td>
+    <td></td>
+    <td></td>
+</tr>
+
+  <tr>
+    <td>Voltaje</td>
+    <td><input type="text" class="input-field" name="voltaje_b1"></td>
+    <td><input type="text" class="input-field" name="voltaje_b2"></td>
+    <td><input type="text" class="input-field" name="voltaje_b3"></td>
+    <td><input type="text" class="input-field" name="voltaje_b4"></td>
+    <td></td>
+    <td></td>
+</tr>
+
         </tbody>
     </table>
 <div class="table-container">
@@ -362,122 +407,137 @@
         </thead>
         <tbody>
             <tr>
-                <td>Rodamientos</td>
-                <td><input type="text" class="input-field"></td>
-                <td><input type="text" class="input-field"></td>
-                <td><input type="text" class="input-field"></td>
-                <td><input type="text" class="input-field"></td>
-                <td>Impulsor</td>
-                <td><input type="text" class="input-field"></td>
-                <td><input type="text" class="input-field"></td>
-                <td><input type="text" class="input-field"></td>
-                <td><input type="text" class="input-field"></td>
+
+    <td>Rodamientos</td>
+    <td><input type="text" class="input-field" name="rodamientos_m1"></td>
+    <td><input type="text" class="input-field" name="rodamientos_m2"></td>
+    <td><input type="text" class="input-field" name="rodamientos_m3"></td>
+    <td><input type="text" class="input-field" name="rodamientos_m4"></td>
+
+     <td>Impulsor</td>
+    <td><input type="text" class="input-field" name="impulsor_m1"></td>
+    <td><input type="text" class="input-field" name="impulsor_m2"></td>
+    <td><input type="text" class="input-field" name="impulsor_m3"></td>
+    <td><input type="text" class="input-field" name="impulsor_m4"></td>
                 <td rowspan="6" class="indicator-column">
                     <!-- Indicadores de estado con campos de entrada -->
                           <div>
-                        <input type="text" placeholder=" " class="status-input" style="width: 50px;">
-        <span style="margin-left: 10px;">Cambio</span>
+                     <input type="text" name="cambio" placeholder=" " class="status-input" style="width: 50px;">
+<span style="margin-left: 10px;">Cambio</span>
+
                     </div>
                     <div>
-                        <input type="text" placeholder="" class="status-input" style="width: 50px;">
-        <span style="margin-left: 10px;">Falla</span>
+<input type="text" name="falla" placeholder="" class="status-input" style="width: 50px;">
+<span style="margin-left: 10px;">Falla</span>
+
                     </div>
                     <div>
-                        <input type="text" placeholder=" " class="status-input" style="width: 50px;">
-        <span style="margin-left: 10px;">Pendiente</span>
+<input type="text" name="pendiente" placeholder=" " class="status-input" style="width: 50px;">
+<span style="margin-left: 10px;">Pendiente</span>
+
                     </div>
                     <div>
-                        <input type="text" placeholder="" class="status-input" style="width: 50px;">
-        <span style="margin-left: 10px;">Diagnóstico</span>
+<input type="text" name="diagnostico" placeholder="" class="status-input" style="width: 50px;">
+<span style="margin-left: 10px;">Diagnóstico</span>
+
                     </div>
                     <div>
-                        <input type="text" placeholder="" class="status-input" style="width: 50px;">
-        <span style="margin-left: 10px;">Verificado</span>
+<input type="text" name="verificado" placeholder="" class="status-input" style="width: 50px;">
+<span style="margin-left: 10px;">Verificado</span>
+
                     </div>
                     <div>
-                        <input type="text" placeholder=" " class="status-input" style="width: 50px;">
-        <span style="margin-left: 10px;">Operando</span>
+<input type="text" name="operando" placeholder=" " class="status-input" style="width: 50px;">
+<span style="margin-left: 10px;">Operando</span>
+
                     </div>
                 </td>
             </tr>
-            <tr>
-                <td>Casquillo</td>
-                <td><input type="text" class="input-field"></td>
-                <td><input type="text" class="input-field"></td>
-                <td><input type="text" class="input-field"></td>
-                <td><input type="text" class="input-field"></td>
-                <td>Sello Mecánico</td>
-                <td><input type="text" class="input-field"></td>
-                <td><input type="text" class="input-field"></td>
-                <td><input type="text" class="input-field"></td>
-                <td><input type="text" class="input-field"></td>
-            </tr>
-            <tr>
-                <td>Empaque</td>
-                <td><input type="text" class="input-field"></td>
-                <td><input type="text" class="input-field"></td>
-                <td><input type="text" class="input-field"></td>
-                <td><input type="text" class="input-field"></td>
-                <td>Empaque</td>
-                <td><input type="text" class="input-field"></td>
-                <td><input type="text" class="input-field"></td>
-                <td><input type="text" class="input-field"></td>
-                <td><input type="text" class="input-field"></td>
-            </tr>
-            <tr>
-                <td>Ventilador</td>
-                <td><input type="text" class="input-field"></td>
-                <td><input type="text" class="input-field"></td>
-                <td><input type="text" class="input-field"></td>
-                <td><input type="text" class="input-field"></td>
-                <td>Carcasa</td>
-                <td><input type="text" class="input-field"></td>
-                <td><input type="text" class="input-field"></td>
-                <td><input type="text" class="input-field"></td>
-                <td><input type="text" class="input-field"></td>
-            </tr>
-            <tr>
-                <td>Bornes</td>
-                <td><input type="text" class="input-field"></td>
-                <td><input type="text" class="input-field"></td>
-                <td><input type="text" class="input-field"></td>
-                <td><input type="text" class="input-field"></td>
-                <td>Casquillo</td>
-                <td><input type="text" class="input-field"></td>
-                <td><input type="text" class="input-field"></td>
-                <td><input type="text" class="input-field"></td>
-                <td><input type="text" class="input-field"></td>
-            </tr>
-            <tr>
-                <td>Bobinado</td>
-                <td><input type="text" class="input-field"></td>
-                <td><input type="text" class="input-field"></td>
-                <td><input type="text" class="input-field"></td>
-                <td><input type="text" class="input-field"></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-            </tr>
+<tr>
+    <td>Casquillo</td>
+    <td><input type="text" name="casquillo_b1" class="input-field"></td>
+    <td><input type="text" name="casquillo_b2" class="input-field"></td>
+    <td><input type="text" name="casquillo_b3" class="input-field"></td>
+    <td><input type="text" name="casquillo_b4" class="input-field"></td>
+    <td>Sello Mecánico</td>
+    <td><input type="text" name="sello_mecanico_b1" class="input-field"></td>
+    <td><input type="text" name="sello_mecanico_b2" class="input-field"></td>
+    <td><input type="text" name="sello_mecanico_b3" class="input-field"></td>
+    <td><input type="text" name="sello_mecanico_b4" class="input-field"></td>
+</tr>
+
+<tr>
+    <td>Empaque</td>
+    <td><input type="text" name="empaque_b1" class="input-field"></td>
+    <td><input type="text" name="empaque_b2" class="input-field"></td>
+    <td><input type="text" name="empaque_b3" class="input-field"></td>
+    <td><input type="text" name="empaque_b4" class="input-field"></td>
+    <td>Empaque</td>
+    <td><input type="text" name="empaque_2_b1" class="input-field"></td>
+    <td><input type="text" name="empaque_2_b2" class="input-field"></td>
+    <td><input type="text" name="empaque_2_b3" class="input-field"></td>
+    <td><input type="text" name="empaque_2_b4" class="input-field"></td>
+</tr>
+
+<tr>
+    <td>Ventilador</td>
+    <td><input type="text" name="ventilador_b1" class="input-field"></td>
+    <td><input type="text" name="ventilador_b2" class="input-field"></td>
+    <td><input type="text" name="ventilador_b3" class="input-field"></td>
+    <td><input type="text" name="ventilador_b4" class="input-field"></td>
+    <td>Carcasa</td>
+    <td><input type="text" name="carcasa_b1" class="input-field"></td>
+    <td><input type="text" name="carcasa_b2" class="input-field"></td>
+    <td><input type="text" name="carcasa_b3" class="input-field"></td>
+    <td><input type="text" name="carcasa_b4" class="input-field"></td>
+</tr>
+
+<tr>
+    <td>Bornes</td>
+    <td><input type="text" name="bornes_b1" class="input-field"></td>
+    <td><input type="text" name="bornes_b2" class="input-field"></td>
+    <td><input type="text" name="bornes_b3" class="input-field"></td>
+    <td><input type="text" name="bornes_b4" class="input-field"></td>
+    <td>Casquillo</td>
+    <td><input type="text" name="casquillo_b1" class="input-field"></td>
+    <td><input type="text" name="casquillo_b2" class="input-field"></td>
+    <td><input type="text" name="casquillo_b3" class="input-field"></td>
+    <td><input type="text" name="casquillo_b4" class="input-field"></td>
+</tr>
+
+<tr>
+    <td>Bobinado</td>
+    <td><input type="text" name="bobinado_b1" class="input-field"></td>
+    <td><input type="text" name="bobinado_b2" class="input-field"></td>
+    <td><input type="text" name="bobinado_b3" class="input-field"></td>
+    <td><input type="text" name="bobinado_b4" class="input-field"></td>
+    <td></td>
+    <td></td>
+    <td></td>
+    <td></td>
+    <td></td>
+</tr>
+
         </tbody>
     </table>
 </div>
 <!-- Campo de texto adicional debajo de la última tabla -->
 <div class="additional-field">
     <h3>Partes para Cambio:</h3> <!-- Título similar al de la imagen -->
-    <textarea rows="4" style="width: 100%; font-size: 12px; border: 1px solid #000;"></textarea> <!-- Campo de texto -->
+    <textarea name="partes_para_cambio" rows="4" style="width: 100%; font-size: 12px; border: 1px solid #000;"></textarea> <!-- Campo de texto -->
 </div>
+
 <div class="additional-field">
     <h3>Observaciones:</h3> <!-- Título para las observaciones -->
-    <textarea rows="4" style="width: 100%; font-size: 12px; border: 1px solid #000;"></textarea> <!-- Campo de texto -->
+    <textarea name="observaciones" rows="4" style="width: 100%; font-size: 12px; border: 1px solid #000;"></textarea> <!-- Campo de texto -->
 </div>
+
 <!-- Sección de firmas debajo de "Observaciones" -->
 <div class="signature-section">
     <div style="display: flex; justify-content: space-between; margin-top: 20px;">
         <!-- Campo de firma del técnico -->
         <div style="text-align: center; width: 45%;">
-            <canvas id="signatureCanvas1" width="300" height="100" style="border: 1px solid #000;"></canvas>
+            <canvas id="signatureCanvas1" name="firma_tecnico" width="300" height="100" style="border: 1px solid #000;"></canvas>
             <br>
             <button onclick="clearCanvas('signatureCanvas1')">Borrar</button>
             <br>
@@ -485,7 +545,7 @@
         </div>
         <!-- Campo de firma del supervisor -->
         <div style="text-align: center; width: 45%;">
-            <canvas id="signatureCanvas2" width="300" height="100" style="border: 1px solid #000;"></canvas>
+            <canvas id="signatureCanvas2" name="firma_supervisor" width="300" height="100" style="border: 1px solid #000;"></canvas>
             <br>
             <button onclick="clearCanvas('signatureCanvas2')">Borrar</button>
             <br>
@@ -493,6 +553,7 @@
         </div>
     </div>
 </div>
+
 <!-- Información de contacto debajo de las firmas -->
 <div class="contact-info" style="text-align: center; margin-top: 20px; font-size: 12px; color: #0000FF;">
     Carrera 96A No. 65-52 // ingenieriahidraulibombas@gmail.com // Tels.: 6016496010 - 3115989023
