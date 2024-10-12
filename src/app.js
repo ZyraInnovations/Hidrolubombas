@@ -1,6 +1,5 @@
 const express = require('express');
 const session = require('express-session');
-const hbs = require('hbs');
 const pool = require('./db'); // Importamos la configuración de la base de datos
 const path = require('path');
 const bodyParser = require('body-parser');
@@ -17,6 +16,28 @@ app.use(session({
     saveUninitialized: true,
     cookie: { secure: false } // 'secure' debe ser 'true' si usas HTTPS
 }));
+
+
+const exphbs = require('express-handlebars');
+
+
+
+
+
+
+const hbs = exphbs.create({
+    defaultLayout: 'main',
+    extname: '.hbs',
+    helpers: {
+        eq: function (arg1, arg2, options) {
+            return (arg1 == arg2) ? options.fn(this) : options.inverse(this);
+        }
+    }
+});
+
+
+
+
 // Configurar el motor de plantillas
 app.set('view engine', 'hbs');
 app.set('views', path.join(__dirname, 'views'));  // Asegúrate de que apunte correctamente a tu carpeta de vistas
@@ -374,24 +395,59 @@ app.get('/realizar_informe', (req, res) => {
 });
 
 
+app.get('/consulta_informe', (req, res) => {
+    if (req.session.loggedin === true) {
+        const nombreUsuario = req.session.user.name;
 
-// Ruta para ver informes
+        // Query to get distinct technicians from the database
+        const query = 'SELECT DISTINCT tecnico FROM mantenimiento_hidro';
+        db.query(query, (err, results) => {
+            if (err) {
+                console.error('Error al obtener la lista de técnicos:', err);
+                res.status(500).send('Error en el servidor');
+            } else {
+                // Extract just the technician names from the results
+                const tecnicos = results.map(row => row.tecnico);
+                res.render('administrativo/informes/consulta_informe.hbs', {
+                    nombreUsuario,
+                    tecnicos
+                });
+            }
+        });
+    } else {
+        res.redirect('/login');
+    }
+});
+
+
 app.get('/ver_informe', (req, res) => {
     if (req.session.loggedin === true) {
         const nombreUsuario = req.session.user.name;
-        const informeId = req.query.id; // Obtener el ID del informe desde el formulario
+        const informeId = req.query.id; // Obtener el ID del informe desde el formulario (manually or from dropdown)
+        const tecnico = req.query.tecnico; // Obtener el técnico seleccionado
 
-        if (!informeId) {
+        if (!informeId && !tecnico) {
             res.render('administrativo/informes/consulta_informe.hbs', {
                 nombreUsuario,
-                mensajeError: 'Por favor, ingrese un ID válido para buscar el informe.'
+                mensajeError: 'Por favor, ingrese un ID o seleccione un técnico para buscar el informe.'
             });
             return;
         }
 
+        let query;
+        let queryParams;
+
+        // Prioritize searching by ID if it's provided, otherwise search by technician
+        if (informeId) {
+            query = 'SELECT * FROM mantenimiento_hidro WHERE id = ?';
+            queryParams = [informeId];
+        } else if (tecnico) {
+            query = 'SELECT * FROM mantenimiento_hidro WHERE tecnico = ?';
+            queryParams = [tecnico];
+        }
+
         // Realizar la consulta en la base de datos
-        const query = 'SELECT * FROM mantenimiento_hidro WHERE id = ?';
-        db.query(query, [informeId], (err, results) => {
+        db.query(query, queryParams, (err, results) => {
             if (err) {
                 console.error('Error al realizar la consulta:', err);
                 res.status(500).send('Error en el servidor');
@@ -414,7 +470,7 @@ app.get('/ver_informe', (req, res) => {
             } else {
                 res.render('administrativo/informes/consulta_informe.hbs', {
                     nombreUsuario,
-                    mensajeError: 'No se encontró ningún informe con el ID proporcionado.'
+                    mensajeError: 'No se encontró ningún informe con los criterios proporcionados.'
                 });
             }
         });
@@ -422,6 +478,37 @@ app.get('/ver_informe', (req, res) => {
         res.redirect('/login');
     }
 });
+
+
+
+app.get('/get_informe_ids', (req, res) => {
+    const tecnico = req.query.tecnico;
+
+    if (!tecnico) {
+        return res.status(400).json({ error: 'Técnico no proporcionado' });
+    }
+
+    const query = 'SELECT id FROM mantenimiento_hidro WHERE tecnico = ?';
+    db.query(query, [tecnico], (err, results) => {
+        if (err) {
+            console.error('Error al obtener los IDs del informe:', err);
+            return res.status(500).json({ error: 'Error en el servidor' });
+        }
+
+        res.json(results); // Send back the list of IDs as JSON
+    });
+});
+
+
+
+
+
+
+
+
+
+
+
 
 app.get('/api/informes-count', (req, res) => {
     const query = 'SELECT COUNT(*) AS count FROM mantenimiento_hidro';

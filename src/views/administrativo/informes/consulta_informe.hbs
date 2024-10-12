@@ -9,6 +9,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.6.0/chart.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
   <style>
         body {
@@ -862,6 +863,45 @@ strong {
     font-weight: bold; /* Aplicar negrilla */
     color: black; /* Color del texto (ajústalo según prefieras) */
 }
+    .info-section {
+        margin-right: 5%;
+        font-size: 10px;
+        line-height: 1.5;
+        text-align: left;
+    }
+    .info-row {
+        display: flex;
+        align-items: center;
+        margin-bottom: 4px;
+    }
+    .info-row strong {
+        min-width: 150px; /* Asegura que todas las etiquetas tengan el mismo ancho */
+    }
+    .info-row span {
+        flex: 1; /* Alinea el contenido en la misma línea */
+    }
+
+
+
+    #downloadPdf {
+    background-color: #e74c3c; /* Rojo */
+    color: #ffffff;
+    border: none;
+    padding: 10px 20px;
+    font-size: 16px;
+    border-radius: 5px;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+}
+
+#downloadPdf:hover {
+    background-color: #c0392b; /* Un rojo más oscuro para el hover */
+}
+
+#downloadPdf i {
+    margin-right: 8px; /* Espacio entre el ícono y el texto */
+}
 </style>
 
 <body>
@@ -982,23 +1022,44 @@ strong {
 
 
 
-
 <div class="search-container">
     <h1>Consulta de Informe de Mantenimiento Hidro</h1>
-<p>Bienvenido, {{nombreUsuario}}</p>
+    <p>Bienvenido, {{nombreUsuario}}</p>
 
     <form action="/ver_informe" method="GET" class="search-form">
+        <!-- Technician selection -->
         <div class="input-group">
-            <label for="id">Buscar Informe por ID:</label>
-            <input type="text" id="id" name="id" placeholder="Ej. 12345" required class="input-field">
+            <label for="tecnico">Buscar por Técnico:</label>
+            <select id="tecnico" name="tecnico" class="input-field">
+                <option value="">Seleccionar Técnico</option>
+                {{#each tecnicos}}
+                    <option value="{{this}}">{{this}}</option>
+                {{/each}}
+            </select>
         </div>
+
+        <!-- ID dropdown populated by selected technician -->
+        <div class="input-group">
+            <label for="idDropdown">Seleccionar ID relacionado con Técnico:</label>
+            <select id="idDropdown" class="input-field">
+                <option value="">Seleccionar ID</option>
+            </select>
+        </div>
+
+        <!-- Manual ID input field -->
+        <div class="input-group">
+            <label for="id">O ingresar ID manualmente:</label>
+            <input type="text" id="id" name="id" placeholder="Escribe el ID si lo tienes" class="input-field">
+        </div>
+
         <button type="submit" class="btn-search">Buscar</button>
     </form>
-    <button id="downloadPdf" class="btn btn-primary no-pdf">Descargar PDF</button>
 
-</div>
-
-
+<br>
+<button id="downloadPdf" class="btn btn-primary no-pdf">
+    <i class="fas fa-file-pdf"></i> Descargar PDF
+</button>
+<br>
 <!-- Mostrar mensaje de resultado si existe -->
 {{#if informe}}
     
@@ -1033,21 +1094,40 @@ strong {
 
     
 <div class="info-section">
-           
-
-    <div><strong>Cliente:</strong>   {{informe.cliente}}</li></div>
-
-    <div><strong>Equipo:</strong> {{informe.equipo}}</div>
-    <div><strong>Técnico:</strong> {{informe.tecnico}} </div>
-
-    <div><strong>Hora Entrada:</strong>  {{informe.hora_entrada}}  </div>
-    <div><strong>Hora Salida:</strong>   {{informe.hora_salida}}</div>
-    <div><strong>Fecha:</strong>  {{informe.fecha}}</div>
-   
-    <div><strong>Número:</strong>  {{informe.id}} </div>
-  <div class="correr"> <div id="tipo" ><strong>Tipo de mantenimiento:</strong> </div>{{informe.tipo_de_mantenimiento}} </div>
-
+    <div class="info-row">
+        <strong>Cliente:</strong>
+        <span>{{informe.cliente}}</span>
+    </div>
+    <div class="info-row">
+        <strong>Equipo:</strong>
+        <span>{{informe.equipo}}</span>
+    </div>
+    <div class="info-row">
+        <strong>Técnico:</strong>
+        <span>{{informe.tecnico}}</span>
+    </div>
+    <div class="info-row">
+        <strong>Hora Entrada:</strong>
+        <span>{{informe.hora_entrada}}</span>
+    </div>
+    <div class="info-row">
+        <strong>Hora Salida:</strong>
+        <span>{{informe.hora_salida}}</span>
+    </div>
+    <div class="info-row">
+        <strong>Fecha:</strong>
+        <span>{{informe.fecha}}</span>
+    </div>
+    <div class="info-row">
+        <strong>Número:</strong>
+        <span>{{informe.id}}</span>
+    </div>
+    <div class="info-row">
+        <strong>Tipo de mantenimiento:</strong>
+        <span>{{informe.tipo_de_mantenimiento}}</span>
+    </div>
 </div>
+
 
 
         </div>
@@ -1582,6 +1662,57 @@ strong {
         </section>
     </div>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.2/html2pdf.bundle.min.js"></script>
+
+
+
+<script>
+// Event listener for when the user selects a technician
+document.getElementById('tecnico').addEventListener('change', function() {
+    const tecnico = this.value;
+
+    // If a technician is selected, fetch related report IDs
+    if (tecnico) {
+        fetch(`/get_informe_ids?tecnico=${encodeURIComponent(tecnico)}`)
+            .then(response => response.json())
+            .then(data => {
+                const idDropdown = document.getElementById('idDropdown');
+                idDropdown.innerHTML = ''; // Clear previous options
+                
+                // Populate the ID dropdown field with new options
+                if (data.length > 0) {
+                    const defaultOption = document.createElement('option');
+                    defaultOption.textContent = 'Seleccionar ID';
+                    defaultOption.value = '';
+                    idDropdown.appendChild(defaultOption);
+
+                    data.forEach(informe => {
+                        const option = document.createElement('option');
+                        option.value = informe.id;
+                        option.textContent = informe.id;
+                        idDropdown.appendChild(option);
+                    });
+                } else {
+                    const option = document.createElement('option');
+                    option.textContent = 'No hay informes disponibles';
+                    idDropdown.appendChild(option);
+                }
+            })
+            .catch(error => {
+                console.error('Error al obtener los IDs del informe:', error);
+            });
+    } else {
+        document.getElementById('idDropdown').innerHTML = '<option value="">Seleccionar ID</option>'; // Reset if no technician selected
+    }
+});
+
+// Copy selected ID from the dropdown to the manual ID input field
+document.getElementById('idDropdown').addEventListener('change', function() {
+    const selectedId = this.value;
+    if (selectedId) {
+        document.getElementById('id').value = selectedId;
+    }
+});
+</script>
 <script>
     document.getElementById('downloadPdf').addEventListener('click', function () {
         var element = document.querySelector('.report-container');
