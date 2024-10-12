@@ -231,11 +231,7 @@ margin-left: 40%;
   font-style: normal;
 }
 /* Efecto al pasar el ratón */
-strong {
-    font-weight: bold; /* Aplicar negrilla */
-    color: #333; /* Color del texto (ajústalo según prefieras) */
-    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3); /* Agrega un efecto de sombra al texto */
-}
+
 @media print {
     .no-pdf {
         display: none !important;
@@ -849,11 +845,23 @@ button:hover {
     right: 10%;
 }
 .correr{
-   right: 10%;
+    position: relative;
+   right: 30%;
 }
 
 
+*{
 
+  font-family: "Roboto", sans-serif;
+  font-weight: 200;
+  font-style: normal;
+}
+/* Efecto al pasar el ratón */
+strong {
+    font-size: 10px;
+    font-weight: bold; /* Aplicar negrilla */
+    color: black; /* Color del texto (ajústalo según prefieras) */
+}
 </style>
 
 <body>
@@ -986,6 +994,8 @@ button:hover {
         </div>
         <button type="submit" class="btn-search">Buscar</button>
     </form>
+    <button id="downloadPdf" class="btn btn-primary no-pdf">Descargar PDF</button>
+
 </div>
 
 
@@ -1009,12 +1019,13 @@ button:hover {
 <br>
 
     <div class="report-container">
+        <br>
         <!-- Company information section -->
         <div class="company-info">
             <strong>INGENIERÍA HIDRAULIBOMBAS S.A.S</strong><br>
             NIT: 901.454.224-1
         </div>
-
+      <br>
         <div class="header-info">
      <div class="logo">
     <img id="logo" src="imagenes/logo_ingenieria.jpeg-removebg-preview.png" alt="Logo" width="200"> <!-- Ajusta la ruta del logo -->
@@ -1552,7 +1563,6 @@ button:hover {
 <br>
 
 
-<button id="downloadPdf" class="btn btn-primary no-pdf">Descargar PDF</button>
 
 
 
@@ -1581,7 +1591,7 @@ var opt = {
     margin: [0.2, 0.2, 0.2, 0.5],  // [top, left, bottom, right] ajusta el margen derecho
     filename: 'informe_mantenimiento.pdf',
     image: { type: 'jpeg', quality: 0.98 },
-    html2canvas: { scale: 3 },
+    html2canvas: { scale: 6 }, // Aumenta la escala para mejorar la resolución
     jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' }
 };
 
