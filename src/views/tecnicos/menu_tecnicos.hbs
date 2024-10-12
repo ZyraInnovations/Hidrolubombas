@@ -67,7 +67,7 @@ body {
   height: 100%;
   width: 60px;
   overflow: hidden;
-  background: #0009;
+  background: white;
   transition: width .05s linear, background 0.3s;
   -webkit-transition: width .05s linear, background 0.3s;
   z-index: 10;
@@ -95,7 +95,7 @@ body {
   flex-direction: row;
   align-items: center;
   justify-content: center;
-  color:white;
+  color:black;
   font-size: 1rem;
   transition: all 0.1s linear;
   -webkit-transition: all 0.1s linear;
@@ -1124,6 +1124,27 @@ body {
   background-color: #666567;
   color: black;
 }
+
+.light-theme .main-menu > ul > li > a {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  color:white;
+  font-size: 1rem;
+  transition: all 0.1s linear;
+  -webkit-transition: all 0.1s linear;
+  padding: 10px 0;
+  font-weight: bold;
+}
+
+.light-theme .main-menu > ul > li {
+  border-bottom: 1px solid #ffffff; /* Cambia el color y el grosor según tu preferencia */
+}
+.main-menu > ul > li {
+  border-bottom: 1px solid black; /* Cambia el color y el grosor según tu preferencia */
+}
+
 /* Tema claro */
 /* Tema claro */
 .light-theme .notification-bell i.fa-bell {
@@ -1369,6 +1390,9 @@ body {
   width: 100%; /* Ancho fijo para ocupar el mismo espacio que los otros botones */
   height: 40px; /* Altura fija para igualar el tamaño de los otros botones */
 }
+/* Estilo inicial del logo */
+
+/* Estilo del logo cuando el menú está desplegado */
 
 </style>
 
@@ -1424,19 +1448,17 @@ body {
     <span class="nav-text">Atras</span>
   </a>
 </li>
-<br>
+
 <li >
 
 
-<br>
+
   <li class="active">
   <a href="/menutecnicos">
     <i class="fa fa-tools nav-icon"></i>
     <span class="nav-text">TECNICO</span>
   </a>
 </li>
-
-<br>
 
 
 
@@ -1513,7 +1535,7 @@ body {
           </div>
           <div class="cuerpo">
             <div class="boton-container">
-              <a href="/formulario"><i class="fas fa-user-plus"></i>REALIZAR INFORME</a>
+              <a href="/realizar_informe"><i class="fas fa-user-plus"></i>REALIZAR INFORME</a>
               <a href="/buscar_por_fecha" class="consultar"><i class="fas fa-search"></i>CONSULTAR MIS IFORMES</a>
             </div>
           </div>

@@ -3,32 +3,41 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>BioPolab</title>
+    <title>HIDRAULIBOMBAS</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
-   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
-
     <link href="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.6.0/chart.min.css" rel="stylesheet">
+    <!-- Incluye el CSS de Leaflet -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
 </head>
 <style>
-:root {
-    --bg-dark: #1d1f27; /* Darker background for better contrast */
-    --bg-darker: #15161c; /* Even darker background */
-    --primary-color: #ff7f50; /* Coral color for a striking primary tone */
-    --text-light: #f5f5f5; /* Light text for readability */
-    --text-muted: #b0b0b0; /* Softer muted text */
-    --accent-color: #4caf50; /* Green accent for highlights */
-    --sidebar-width: 250px;
-}
+    @font-face {
+        font-family: 'sensation';
+        src:url(fuentes/Sansation/Sansation_Regular.ttf) ;
+        font-weight: bold;
+        font-style: bold;
+    }
+  :root {
+        --bg-dark: #f0f0f0; /* Invertir a claro */
+        --bg-darker: #2d2d2d; /* Invertir a oscuro */
+        --primary-color: #0769B3; /* Mantener color primario */
+        --text-light: #2d2d2d; /* Texto oscuro */
+        --text-muted: #666666; /* Texto suavizado oscuro */
+        --accent-color: #0769b3; /* Mantener color acento */
+        --sidebar-width: 250px;
+    }
     * {
+        font-family:'sensation';
+       font-weight: bold;
+        font-style: bold;
         margin: 0;
         padding: 0;
         box-sizing: border-box;
     }
 
     body {
-        font-family: 'Inter', sans-serif;
-        background-color: var(--bg-darker);
+        font-family:'sensation';
+        background-color: #d6cec3;
         color: var(--text-light);
         display: flex;
     }
@@ -36,7 +45,7 @@
 .container {
     display: flex;
     width: 100%;
-    transition: width 0.3s ease; /* Añadimos transición suave para el contenedor */
+    transition: width 0.3s ease;
 }
     .sidebar {
         width: var(--sidebar-width);
@@ -54,7 +63,7 @@
     }
 
     .sidebar-header img.logo {
-        width: 200px;
+        width: 250px;
         margin-bottom: 10px;
     }
 
@@ -75,10 +84,12 @@
         align-items: center;
         color: var(--text-light);
         position: relative;
+        border-bottom: 1px solid black; /* Agregar una división blanca */
+
     }
 
     .sidebar-menu li:hover {
-    background-color: var(--primary-color); /* Highlighted coral hover */
+    background-color: var(--primary-color);
         border-radius: 10px;
     }
 
@@ -92,13 +103,13 @@
 }
 
 .main-content {
-    width: calc(100% - var(--sidebar-width)); /* Cuando el sidebar está visible */
+    width: calc(100% - var(--sidebar-width));
     padding: 20px;
-    transition: width 0.3s ease; /* Transición suave */
+    transition: width 0.3s ease;
 }
 
 .main-content.expanded-content {
-    width: 100% !important; /* Ancho completo cuando el sidebar está oculto */
+    width: 100% !important;
 }
 
     .top-navbar {
@@ -106,11 +117,14 @@
         justify-content: space-between;
         align-items: center;
         padding: 15px;
-    background-color: white ; /* Coral navbar */
+        background-color:#0769b3;
         border-radius: 10px;
         margin-bottom: 20px;
-        color: black;
+        color: white;
+            font-weight: bold; /* Añadir negrilla */
+font-size: 25px;
     }
+
 
     .top-right {
         display: flex;
@@ -169,7 +183,6 @@
         border-radius: 10px;
     }
 
-    /* Dropdown menu styling */
     .profile-menu {
         position: relative;
         display: inline-block;
@@ -200,7 +213,6 @@
         border-radius: 5px;
     }
 
-    /* Class to toggle visibility */
     .hidden {
         display: none;
     }
@@ -209,7 +221,6 @@
         display: flex;
     }
 
-    /* Submenu styles */
     .submenu {
         list-style: none;
         padding-left: 0;
@@ -221,7 +232,7 @@
         top: 100%;
         left: 0;
         width: 200px;
-        background-color: var(--bg-dark);
+        background-color: white;
         border-radius: 5px;
         z-index: 1000;
         transition: max-height 0.3s ease-out;
@@ -244,6 +255,8 @@
         padding: 10px;
         cursor: pointer;
         color: black;
+            border-bottom: 1px solid black; /* División negra entre items del submenu */
+
     }
 
     .submenu li:hover {
@@ -252,35 +265,32 @@
         border-radius: 5px;
     }
 
-    /* Active item styles */
     .menu-item.active {
-        background-color: #4b6b96;
+        background-color: #0769B3;
         color: white;
         border-radius: 10px;
     }
 
     .submenu li.active {
-        background-color: #4b6b96;
+        background-color: #0769B3;
         color: white;
         border-radius: 5px;
     }
     A{
-
-text-decoration: none;
-
-
+        text-decoration: none;
     }
 
 .toggle-menu-btn {
     background: none;
     border: none;
-    color: black;
+    color: white;
     font-size: 24px;
     cursor: pointer;
-    margin-right: 20px; /* Ajuste de espaciado entre los íconos */
+    margin-right: 20px;
     display: flex;
     align-items: center;
 }
+
 .hidden-sidebar {
     transform: translateX(-100%);
     transition: transform 0.3s ease;
@@ -290,48 +300,77 @@ text-decoration: none;
     transition: transform 0.3s ease;
 }
 
-
 .main-content {
-    width: calc(100% - var(--sidebar-width)); /* Ancho calculado cuando el menú está visible */
+    width: calc(100% - var(--sidebar-width));
     padding: 20px;
-    transition: width 0.3s ease; /* Transición suave */
+    transition: width 0.3s ease;
 }
-
-
-
-
-
 
 .sidebar.hidden-sidebar ~ .main-content {
-    width: 100% !important; /* Ancho completo cuando el menú está oculto */
+    width: 100% !important;
 }
-
-
-
-
 
 .sidebar.hidden-sidebar {
     transform: translateX(-100%);
     transition: transform 0.3s ease;
 }
 
-.main-content {
-    width: calc(100% - var(--sidebar-width)); /* Ancho calculado cuando el menú está visible */
-    padding: 20px;
-    transition: width 0.3s ease; /* Transición suave */
-}
-
 .main-content.expanded-content {
-    width: 100% !important; /* Ancho completo cuando el menú está oculto */
+    width: 100% !important;
 }
-#home{
 
+#home {
     text-decoration: none;
-    color: white;
+    color: black;
 }
+h2 {
+    font-weight: 600;
+    font-size: 2rem; /* Mejora la visibilidad del título */
+}
+
+p {
+    font-size: 1rem;
+    color: var(--text-muted); /* Texto más sutil */
+}
+.card {
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Sombra ligera */
+    transition: box-shadow 0.3s ease-in-out;
+}
+
+.card:hover {
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15); /* Sombra más intensa al pasar el ratón */
+}
+.submenu {
+    transition: max-height 0.5s ease, opacity 0.5s ease;
+    opacity: 0;
+}
+
+.submenu.show {
+    opacity: 1;
+}
+
+button, .menu-item:hover {
+    transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+button:hover {
+    transform: scale(1.05); /* Ligero zoom */
+}
+.dropdown-menu {
+    opacity: 0;
+    transform: translateY(-10px);
+    transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.dropdown-menu.show {
+    opacity: 1;
+    transform: translateY(0);
+}
+
 </style>
 
 <body>
+
     <div class="container">
 
 
@@ -339,12 +378,17 @@ text-decoration: none;
 
         <aside class="sidebar">
        <div class="sidebar-header">
-
-    <img class="logo" src="imagenes/2022cercetafinal-BLANCO_Mesa de trabajo 1.png" alt="AdminKit Logo">
+<br>
+<br>
+<div class="fondologo"></div>
+    <img class="logo" src="imagenes/logo_ingenieria.jpeg-removebg-preview.png" alt="AdminKit Logo">
     <br>
     <br>
     <p>MENU</p>
 </div>
+
+
+
             <ul class="sidebar-menu">
                      <li class="menu-item">
                     <i class="fas fa-home"></i> <a id="home" href="/menuAdministrativo">INICIO</a> 
@@ -353,69 +397,72 @@ text-decoration: none;
                 <li class="menu-item">
                     <i class="fas fa-user"></i> USUARIOS
                     <ul class="submenu">
-                        <li>Agregar Usuario</li>
-                        <li>Ver Usuarios</li>
+                    <a href="/agregar_usuario"><li>Agregar Usuario</li></a>    
+                      <a href="/consultar_usuarios"><li>consultar Usuarios</li></a>  
                     </ul>
                 </li>
 
 
                 
-                <li class="menu-item">
-                    <i class="fas fa-file-alt"></i> TAREAS
+               
+              
+               
+          
+           
+            <li class="menu-item">
+<i class="fas fa-file-alt"></i> INFORMES 
                     <ul class="submenu">
-                        <li>Crear Tarea</li>
-                          <li>Importar tareas</li>
-                          <li>Consulta Tareas</li>
-                         <li>Editar Tareas</li>
-                        <li>Seguimiento</li>
+
+
+                     <a href="/realizar_informe"><li>Realizar informe</li></a>   
+                     <a href="/consulta_informe"><li>Consulta de informe</li></a>   
+
+
                     </ul>
                 </li>
-                <li class="menu-item">
-                    <i class="fas fa-calendar"></i> CALENDARIO
+                
+            <li class="menu-item">
+    <i class="fas fa-map-marker-alt"></i> GEOLOCALIZACION
                     <ul class="submenu">
-                        <li>Ver Calendario</li>
-                        <li>Agregar Evento</li>
+
+
+                    <a href="/geolocalizacion"><li>Ver mapa</li></a>     
+
+
+
+
                     </ul>
                 </li>
-                <li class="menu-item">
-                    <i class="fas fa-chart-line"></i> SEGUIMIENTO
-                    <ul class="submenu">
-                        <li>Ver Reportes</li>
-                        <li>Generar Reporte</li>
-                    </ul>
-                </li>
-                <li class="menu-item">
+                
+
+
+      <li class="menu-item">
                     <i class="fas fa-cogs"></i> CONFIGURACION
                     <ul class="submenu">
-                        <li>Preferencias</li>
-                        <li>Seguridad</li>
-                    </ul>
-                </li>
-                <li class="menu-item">
-                    <i class="fas fa-map-marker-alt"></i> MAPA-GEOLOCALIZACION
-                    <ul class="submenu">
-                        
-                        <li><a href="/geolocalizacion">VER MAPA</a></li>
-                        <li>Agregar Ubicación</li>
-                    </ul>
-                </li>
-            </ul>
-    
 
-     
+                    <a href=""><li>Preferencias</li></a>   
+                    <a href=""> <li>Seguridad</li></a>   
+
+                    </ul>
+                </li>
+
+
+
+            </ul>
+
+
         </aside>
+
+
+
+
+
+
 
         <section class="main-content">
 
-
-
-
-
-
-
-
 <nav class="top-navbar">
-    <div class="brand">BioPolab-Administracion</div>
+    <div class="brand">geolocalizacion</div>
     <div class="top-right">
         <i class="fas fa-bell"></i> <span class="badge"></span>
         <i class="fas fa-envelope"></i> <span class="badge"></span>
@@ -434,156 +481,69 @@ text-decoration: none;
 </nav>
 
 
+         
+        <section class="main-content">
+         
 
 
-
-
-
-         <div class="dashboard-content">
-    <div id="map" style="height: 500px; width: 100%;"></div>
-</div>
-
+                <!-- Contenedor del mapa -->
+                <div id="map" style="height: 500px; width: 100%;"></div>
+            </div>
         </section>
     </div>
-<script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+        <!-- Incluye el script de Leaflet -->
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
 
-    <!-- Include Chart.js library -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.6.0/chart.min.js"></script>
+    <!-- Script del mapa debe ir después de la inclusión de Leaflet -->
     <script>
-    
+        document.addEventListener('DOMContentLoaded', function () {
+            // Inicializa el mapa centrado en Bogotá
+            var map = L.map('map').setView([4.60971, -74.08175], 13);
 
-        // Toggle profile dropdown menu
-        document.getElementById('profile-icon').addEventListener('click', function () {
-            var dropdown = document.getElementById('dropdown-menu');
-            dropdown.classList.toggle('show');
-        });
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+                maxZoom: 19
+            }).addTo(map);
 
-        // Close dropdown if clicked outside
-        window.onclick = function (event) {
-            if (!event.target.matches('#profile-icon')) {
-                var dropdowns = document.getElementsByClassName("dropdown-menu");
-                for (var i = 0; i < dropdowns.length; i++) {
-                    var openDropdown = dropdowns[i];
-                    if (openDropdown.classList.contains('show')) {
-                        openDropdown.classList.remove('show');
-                    }
-                }
-            }
-        }
-        
+            // Definir los iconos personalizados
+            var clienteIcon = L.icon({
+                iconUrl: 'imagenes/placeholder_2110941.png',
+                iconSize: [45, 39],
+                iconAnchor: [22, 38],
+                popupAnchor: [-3, -38]
+            });
 
+            var oficinaIcon = L.icon({
+                iconUrl: 'imagenes/gps_14956287.png',
+                iconSize: [45, 39],
+                iconAnchor: [22, 38],
+                popupAnchor: [-3, -38]
+            });
 
-        // Toggle submenu visibility
-        const menuItems = document.querySelectorAll('.menu-item');
+            var tecnicoIcon = L.icon({
+                iconUrl: 'imagenes/pin_1149859.png',
+                iconSize: [45, 39],
+                iconAnchor: [22, 38],
+                popupAnchor: [-3, -38]
+            });
 
-        menuItems.forEach(item => {
-            item.addEventListener('click', function () {
-                // Remove active class from all menu items
-                menuItems.forEach(i => i.classList.remove('active'));
-                this.classList.add('active');
+            // Ubicaciones de los marcadores
+            var ubicaciones = [
+                { name: "Cliente 1", coords: [4.68972, -74.05585], type: 'cliente' },
+                { name: "Cliente 2", coords: [4.65607, -74.05959], type: 'cliente' },
+                { name: "Cliente 3", coords: [4.68972, -74.04585], type: 'cliente' },
+                { name: "Oficina Central", coords: [4.60971, -74.08175], type: 'oficina' },
+                { name: "Técnico 1", coords: [4.6485, -74.0930], type: 'tecnico' },
+                { name: "Técnico 2", coords: [4.6702, -74.0365], type: 'tecnico' }
+            ];
 
-                // Show or hide the submenu
-                const submenu = this.querySelector('.submenu');
-                if (submenu) {
-                    submenu.classList.toggle('show');
-                    submenu.style.maxHeight = submenu.classList.contains('show') ? submenu.scrollHeight + "px" : null;
-                }
+            // Añadir los marcadores
+            ubicaciones.forEach(function (location) {
+                var icon = location.type === 'cliente' ? clienteIcon :
+                           location.type === 'oficina' ? oficinaIcon : tecnicoIcon;
+                L.marker(location.coords, { icon: icon }).addTo(map).bindPopup(location.name);
             });
         });
-
-        // Handle submenu item selection
-        const submenuItems = document.querySelectorAll('.submenu li');
-
-        submenuItems.forEach(subitem => {
-            subitem.addEventListener('click', function (e) {
-                e.stopPropagation();  // Prevent click from closing the submenu
-
-                // Remove active class from all submenu items
-                submenuItems.forEach(i => i.classList.remove('active'));
-                this.classList.add('active');
-            });
-        });
-        // Toggle sidebar visibility
-document.getElementById('toggle-menu').addEventListener('click', function () {
-    const sidebar = document.querySelector('.sidebar');
-    const mainContent = document.querySelector('.main-content');
-
-    // Toggle visibility of the sidebar
-    sidebar.classList.toggle('hidden-sidebar');
-
-    // Adjust the main content width accordingly
-    if (sidebar.classList.contains('hidden-sidebar')) {
-        mainContent.classList.add('expanded-content');
-    } else {
-        mainContent.classList.remove('expanded-content');
-    }
-});
-
-
-
-
-
-document.addEventListener('DOMContentLoaded', function () {
-    // Inicializa el mapa centrado en Bogotá
-    var map = L.map('map').setView([4.60971, -74.08175], 13);
-
-L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
-    maxZoom: 19
-}).addTo(map);
-
-
-    // Icono personalizado para clientes
-    var clienteIcon = L.icon({
-        iconUrl: 'imagenes/placeholder_2110941.png', // URL del icono del cliente
-        iconSize: [45, 39], // tamaño del icono
-        iconAnchor: [22, 38], // punto donde se posiciona el icono
-        popupAnchor: [-3, -38] // posición del popup respecto al icono
-    });
-
-    // Icono personalizado para oficina
-    var oficinaIcon = L.icon({
-        iconUrl: 'imagenes/gps_14956287.png', // URL del icono de la oficina
-        iconSize: [45, 39], // tamaño del icono
-        iconAnchor: [22, 38], // punto donde se posiciona el icono
-        popupAnchor: [-3, -38] // posición del popup respecto al icono
-    });
-
-    // Icono personalizado para técnicos
-    var tecnicoIcon = L.icon({
-        iconUrl: 'imagenes/pin_1149859.png', // URL del icono del técnico
-        iconSize: [45, 39], // tamaño del icono
-        iconAnchor: [22, 38], // punto donde se posiciona el icono
-        popupAnchor: [-3, -38] // posición del popup respecto al icono
-    });
-
-    // Definir las ubicaciones de tus clientes, oficina y técnicos
-    var ubicaciones = [
-        { name: "Cliente 1", coords: [4.68972, -74.05585], type: 'cliente' },
-        { name: "Cliente 2", coords: [4.65607, -74.05959], type: 'cliente' },
-        { name: "Cliente 3", coords: [4.68972, -74.04585], type: 'cliente' },
-        { name: "Oficina Central", coords: [4.60971, -74.08175], type: 'oficina' },
-        { name: "Técnico 1", coords: [4.6485, -74.0930], type: 'tecnico' }, // Ubicación de un técnico
-        { name: "Técnico 2", coords: [4.6702, -74.0365], type: 'tecnico' }  // Otra ubicación de técnico
-    ];
-
-    // Agregar los marcadores con iconos personalizados
-    ubicaciones.forEach(function (location) {
-        var icon;
-        if (location.type === 'cliente') {
-            icon = clienteIcon;
-        } else if (location.type === 'oficina') {
-            icon = oficinaIcon;
-        } else if (location.type === 'tecnico') {
-            icon = tecnicoIcon;
-        }
-        
-        var marker = L.marker(location.coords, { icon: icon }).addTo(map)
-            .bindPopup(location.name);
-    });
-});
-
-
     </script>
 </body>
 </html>
