@@ -183,40 +183,6 @@ app.get('/nuevousuario', (req, res) => {
     }
 });
 
-// Ruta para manejar la creación de un nuevo usuario
-app.post('/agregar_usuario', (req, res) => {
-    if (req.session.loggedin === true) {
-        const { nombre, email, password, role } = req.body;
-        console.log('Datos recibidos:', { nombre, email, password, role });
-
-        if (!nombre || !email || !password || !role) {
-            console.log('Campos faltantes');
-            return res.status(400).send('Todos los campos son obligatorios');
-        }
-
-        pool.getConnection((err, connection) => {
-            if (err) {
-                console.error('Error al obtener la conexión:', err);
-                return res.status(500).send('Error en el servidor');
-            }
-
-            connection.query('INSERT INTO usuarios_hidro (nombre, email, password, role) VALUES (?, ?, ?, ?)', 
-            [nombre, email, password, role], (err, results) => {
-                connection.release(); // Liberar la conexión
-
-                if (err) {
-                    console.error('Error al agregar el usuario:', err);
-                    res.status(500).send('Error al agregar el usuario');
-                } else {
-                    console.log('Usuario agregado con éxito');
-                    res.redirect('/consultar_usuarios');
-                }
-            });
-        });
-    } else {
-        res.redirect('/login');
-    }
-});
 
 const mysql = require('mysql2');
 
@@ -517,6 +483,49 @@ app.get('/api/clientes-count', (req, res) => {
         res.json(results[0]);
     });
 });
+
+
+
+
+
+// Ruta para el menú administrativo - Mostrar formulario para nuevo usuario
+app.get('/agregar_usuario', (req, res) => {
+    if (req.session.loggedin === true) {
+        const nombreUsuario = req.session.user.name; // Usa los datos de la sesión del usuario
+        res.render('administrativo/usuarios/crear_usuarios.hbs', { nombreUsuario });
+    } else {
+        res.redirect('/login');
+    }
+});
+
+
+
+
+// Ruta para manejar la inserción de un nuevo usuario
+app.post('/agregar_usuario', (req, res) => {
+    const { nombre, email, password, role } = req.body;
+
+    // Validar que todos los datos están presentes
+    if (!nombre || !email || !password || !role) {
+        return res.status(400).send('Todos los campos son obligatorios.');
+    }
+
+    // Insertar el usuario en la base de datos
+    const query = `INSERT INTO usuarios_hidro (nombre, email, password, role) VALUES (?, ?, ?, ?)`;
+    db.query(query, [nombre, email, password, role], (error, results) => {
+        if (error) {
+            console.error('Error al insertar el usuario:', error);
+            return res.status(500).send('Error al insertar el usuario.');
+        }
+
+        res.redirect('/menuAdministrativo'); // Redirigir al menú administrativo tras agregar un usuario
+    });
+});
+
+
+
+
+
 
 
 // Iniciar el servidor
