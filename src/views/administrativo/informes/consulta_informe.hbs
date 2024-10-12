@@ -235,9 +235,87 @@ strong {
     color: #333; /* Color del texto (ajústalo según prefieras) */
     text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3); /* Agrega un efecto de sombra al texto */
 }
+@media print {
+    .no-pdf {
+        display: none !important;
+    }
+}
+.pdf-mode {
+    max-width: 100%;
+    margin: 0 0.5in 0 0;  /* Añade un margen extra a la derecha */
+    padding: 0;
+    box-shadow: none;
+}
 
+.pdf-mode #logo {
+    width: 150px !important; /* Ajustar el tamaño del logo para PDF */
+}
+.pdf-mode .combined-table {
+    width: 100%; /* Asegura que las tablas también ocupen todo el ancho */
+    font-size: 9px; /* Ajusta el tamaño de fuente si es necesario */
+}
 </style>
 </Style>
+
+
+  <style>
+        body {
+            font-family: Arial, sans-serif;
+            font-size: 12px;
+            margin: 0;
+            padding: 0;
+        }
+        .report-container {
+            width: 100%;
+            max-width: 800px;
+            margin: 0 auto;
+            border: 1px solid #000;
+            padding: 10px;
+        }
+        /* Ajustes específicos para el PDF */
+        .pdf-mode {
+            max-width: 100%;
+            margin: 0;
+            padding: 0;
+            box-shadow: none;
+        }
+        .pdf-mode .table-container {
+            width: 100%;
+        }
+        .pdf-mode .combined-table {
+            width: 100%;
+            font-size: 9px;
+        }
+
+        /* Otros estilos */
+        .company-info, .header-info, .contact-info {
+            text-align: center;
+            margin-bottom: 10px;
+        }
+        .combined-table {
+            border-collapse: collapse;
+            width: 100%;
+            font-size: 10px;
+        }
+        .combined-table th, .combined-table td {
+            border: 0.5px solid #000;
+            padding: 1px;
+            text-align: center;
+        }
+        /* Estilos específicos para imprimir */
+        @media print {
+            .no-pdf {
+                display: none !important;
+            }
+        }
+        .combined-table {
+    border-collapse: collapse;
+    width: calc(100% - 0.5in);  /* Reducir un poco el ancho para dar más espacio en la derecha */
+    font-size: 10px;
+}
+
+    </style>
+
 <body>
     
 
@@ -276,6 +354,7 @@ strong {
 
 
 <br>
+
     <div class="report-container">
         <!-- Company information section -->
         <div class="company-info">
@@ -811,12 +890,33 @@ strong {
     Carrera 96A No. 65-52 // ingenieriahidraulibombas@gmail.com // Tels.: 6016496010 - 3115989023
 </div>
 
- </div>
-<br>
-    <input id="boton" type="submit" value="ENVIAR INFORME">
+
 <br>
 
 
+<button id="downloadPdf" class="btn btn-primary no-pdf">Descargar PDF</button>
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.2/html2pdf.bundle.min.js"></script>
+<script>
+    document.getElementById('downloadPdf').addEventListener('click', function () {
+        var element = document.querySelector('.report-container');
+        element.classList.add('pdf-mode');
+
+var opt = {
+    margin: [0.2, 0.2, 0.2, 0.5],  // [top, left, bottom, right] ajusta el margen derecho
+    filename: 'informe_mantenimiento.pdf',
+    image: { type: 'jpeg', quality: 0.98 },
+    html2canvas: { scale: 3 },
+    jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' }
+};
+
+
+        html2pdf().from(element).set(opt).save().then(() => {
+            element.classList.remove('pdf-mode');
+        });
+    });
+  </script>
 
 </body>
 </html>
