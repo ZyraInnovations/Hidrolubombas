@@ -77,7 +77,7 @@ app.post('/login', async (req, res) => {
             if (role === 'admin') {
                 return res.redirect('/menuAdministrativo');
             } else if (role === 'tecnico') {
-                return res.redirect('/tecnico');
+                return res.redirect('/menutecnicos');
             } else if (role === 'cliente') {
                 return res.redirect('/cliente');
             }
@@ -178,7 +178,27 @@ app.get("/menuAdministrativo", (req, res) => {
 });
 
 
+app.get("/menutecnicos", (req, res) => {
+    if (req.session.loggedin === true) {
+        const nombreUsuario = req.session.name || req.session.user.name;  // Use the session name or fallback
+        console.log(`El usuario ${nombreUsuario} está autenticado.`);
+        req.session.nombreGuardado = nombreUsuario; // Guarda el nombre en la sesión
 
+        const rolesString = req.session.roles;
+        const roles = Array.isArray(rolesString) ? rolesString : [];
+
+        const jefe = roles.includes('jefe');
+        const empleado = roles.includes('empleado');
+
+        res.render("tecnicos/menu_tecnicos.hbs", {
+            name: nombreUsuario, // Pass the name to the template
+            jefe,
+            empleado
+        });
+    } else {
+        res.redirect("/login");
+    }
+});
 
 
 const multer = require('multer');

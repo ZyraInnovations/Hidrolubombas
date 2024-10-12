@@ -260,24 +260,23 @@ strong {
     <!-- Tu contenido de formulario aquí -->
 
 <div class="info-section">
-    <div><strong>Cliente:</strong> <input type="text" name="cliente"></div>
+    <div><strong>Cliente:</strong> <input type="text" name="cliente" required ></div>
 <div>
   <strong>Tipo de Mantenimiento:</strong> 
-  <select name="tipo_de_manteninimiento">
+<select name="tipo_de_mantenimiento" required>
     <option value="">Seleccione un tipo</option>
     <option value="Preventivo">Preventivo</option>
     <option value="Correctivo">Correctivo</option>
-    <option value="Predictivo">Predictivo</option>
         <option value="emergencia">emergencia</option>
 
     <option value="Otro">Otro</option>
   </select>
 </div>
-    <div><strong>Equipo:</strong> <input type="text" name="equipo"></div>
-    <div><strong>Técnico:</strong> <input type="text" name="tecnico"></div>
-    <div><strong>Hora Entrada:</strong> <input type="time" name="hora_entrada"></div>
-    <div><strong>Hora Salida:</strong> <input type="time" name="hora_salida"></div>
-    <div><strong>Fecha:</strong> <input type="date" name="fecha"></div>
+    <div><strong>Equipo:</strong> <input type="text" name="equipo" required ></div>
+    <div><strong>Técnico:</strong> <input type="text" name="tecnico" required ></div>
+    <div><strong>Hora Entrada:</strong> <input type="time" name="hora_entrada" required ></div>
+    <div><strong>Hora Salida:</strong> <input type="time" name="hora_salida" required ></div>
+    <div><strong>Fecha:</strong> <input type="date" name="fecha" required ></div>
 </div>
 
 
@@ -661,7 +660,7 @@ strong {
         <div style="text-align: center; width: 45%;">
             <canvas id="signatureCanvas1" name="firma_tecnico" width="300" height="100" style="border: 1px solid #000;"></canvas>
             <br>
-            <button onclick="clearCanvas('signatureCanvas1')">Borrar</button>
+<button type="button" onclick="clearCanvas('signatureCanvas1')">Borrar</button>
             <br>
             <span>TÉCNICO</span>
         </div>
@@ -669,7 +668,7 @@ strong {
         <div style="text-align: center; width: 45%;">
             <canvas id="signatureCanvas2" name="firma_supervisor" width="300" height="100" style="border: 1px solid #000;"></canvas>
             <br>
-            <button onclick="clearCanvas('signatureCanvas2')">Borrar</button>
+<button type="button" onclick="clearCanvas('signatureCanvas2')">Borrar</button>
             <br>
             <span>SUPERVISOR</span>
         </div>
