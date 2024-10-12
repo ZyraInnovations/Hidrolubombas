@@ -631,7 +631,39 @@ app.post('/agregar_usuario', (req, res) => {
 
 
 
-
+app.post('/enviar-correo', upload.single('pdf'), (req, res) => {
+    const correoDestino = req.body.correo;
+    const archivoPDF = req.file; // El archivo PDF adjunto
+    
+    const transporter = nodemailer.createTransport({
+        service: 'gmail', // O el servicio de correo que uses
+        auth: {
+            user: 'nexus.innovationss@gmail.com', // Coloca tu correo electrónico
+        pass: 'dhmtnkcehxzfwzbd' // Coloca tu contraseña de correo electrónico
+        }
+    });
+    
+    const mailOptions = {
+        from: 'nexus.innovationss@gmail.com',
+        to: correoDestino,
+        subject: 'Informe de Mantenimiento',
+        text: 'Adjunto se encuentra el informe de mantenimiento en formato PDF.',
+        attachments: [
+            {
+                filename: 'informe_mantenimiento.pdf',
+                content: archivoPDF.buffer
+            }
+        ]
+    };
+    
+    transporter.sendMail(mailOptions, (error, info) => {
+        if (error) {
+            console.log(error);
+            return res.status(500).json({ success: false, message: 'Error al enviar el correo' });
+        }
+        res.status(200).json({ success: true, message: 'Correo enviado con éxito' });
+    });
+});
 
 
 

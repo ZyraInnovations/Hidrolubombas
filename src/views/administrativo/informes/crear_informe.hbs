@@ -4,16 +4,15 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Registro de Mantenimiento</title>
+
+    <link rel="stylesheet" href="stilos/crear.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap" rel="stylesheet">
   <style>
-        body {
-            font-family: Arial, sans-serif;
-            font-size: 12px;
-            margin: 0;
-            padding: 0;
-        }
+    
+      
+        
         .report-container {
             width: 100%;
             max-width: 800px; /* Ancho máximo para mantener consistencia */
@@ -26,12 +25,7 @@
             font-size: 12px;
             margin-bottom: 10px;
         }
-        .header-info {
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-start;
-            margin-bottom: 10px;
-        }
+    
         .logo {
             width: 120px;
         }
@@ -140,6 +134,863 @@
 margin-left: 40%;
 
         }
+
+    input[type="submit"] {
+        background-color: #4CAF50; /* Color de fondo */
+        color: white; /* Color del texto */
+        padding: 12px 24px; /* Espaciado interno */
+        font-size: 16px; /* Tamaño de la fuente */
+        font-weight: bold; /* Negrita */
+        border: none; /* Sin borde */
+        border-radius: 8px; /* Bordes redondeados */
+        cursor: pointer; /* Cambia el cursor al pasar por encima */
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Sombra para dar profundidad */
+        transition: background-color 0.3s ease, transform 0.2s ease; /* Transición para animaciones */
+        margin-top: 20px; /* Espacio superior */
+        display: inline-block; /* Asegura que se comporte como un botón */
+    }
+
+    input[type="submit"]:hover {
+        background-color: #45a049; /* Color al pasar el cursor */
+        transform: scale(1.05); /* Efecto de aumento al pasar el cursor */
+    }
+
+    input[type="submit"]:active {
+        background-color: #3e8e41; /* Color al hacer clic */
+        transform: scale(0.98); /* Efecto de pulsación */
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); /* Sombra reducida al hacer clic */
+    }
+
+    input[type="submit"]:focus {
+        outline: none; /* Elimina el contorno por defecto */
+        box-shadow: 0 0 0 3px rgba(76, 175, 80, 0.4); /* Resalta el botón al enfocar */
+    }
+
+    .btn-volver {
+        background-color: #f44336; /* Color de fondo */
+        color: white; /* Color del texto */
+        padding: 12px 24px; /* Espaciado interno */
+        font-size: 16px; /* Tamaño de la fuente */
+        font-weight: bold; /* Negrita */
+        border: none; /* Sin borde */
+        border-radius: 8px; /* Bordes redondeados */
+        cursor: pointer; /* Cambia el cursor al pasar por encima */
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Sombra para dar profundidad */
+        transition: background-color 0.3s ease, transform 0.2s ease; /* Transición para animaciones */
+        margin-top: 20px; /* Espacio superior */
+        display: inline-block; /* Asegura que se comporte como un botón */
+    }
+
+    .btn-volver:hover {
+        background-color: #d32f2f; /* Color al pasar el cursor */
+        transform: scale(1.05); /* Efecto de aumento al pasar el cursor */
+    }
+
+    .btn-volver:active {
+        background-color: #c62828; /* Color al hacer clic */
+        transform: scale(0.98); /* Efecto de pulsación */
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); /* Sombra reducida al hacer clic */
+    }
+
+    .btn-volver:focus {
+        outline: none; /* Elimina el contorno por defecto */
+        box-shadow: 0 0 0 3px rgba(244, 67, 54, 0.4); /* Resalta el botón al enfocar */
+    }
+    #boton{
+        margin-left: 50%;
+    }
+    body{
+        background-color:    #f0f0f0; /* Invertir a claro */
+;
+
+    }
+  .report-container {
+    background-color: white;
+    border-radius: 15px; /* Bordes redondeados */
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2), 
+                0 6px 20px rgba(0, 0, 0, 0.15); /* Sombra para efecto 3D */
+    padding: 20px; /* Espaciado interno */
+    transition: transform 0.3s ease, box-shadow 0.3s ease; /* Transición suave */
+}
+
+*{
+
+  font-family: "Roboto", sans-serif;
+  font-weight: 200;
+  font-style: normal;
+}
+/* Efecto al pasar el ratón */
+
+@media print {
+    .no-pdf {
+        display: none !important;
+    }
+}
+.pdf-mode {
+    max-width: 100%;
+    margin: 0 0.5in 0 0;  /* Añade un margen extra a la derecha */
+    padding: 0;
+    box-shadow: none;
+}
+
+.pdf-mode #logo {
+    width: 150px !important; /* Ajustar el tamaño del logo para PDF */
+}
+.pdf-mode .combined-table {
+    width: 100%; /* Asegura que las tablas también ocupen todo el ancho */
+    font-size: 9px; /* Ajusta el tamaño de fuente si es necesario */
+}
+
+
+
+        body {
+            font-family: Arial, sans-serif;
+            font-size: 12px;
+            margin: 0;
+            padding: 0;
+        }
+        .report-container {
+            width: 100%;
+            max-width: 800px;
+            margin: 0 auto;
+            border: 1px solid #000;
+            padding: 10px;
+        }
+        /* Ajustes específicos para el PDF */
+        .pdf-mode {
+            max-width: 100%;
+            margin: 0;
+            padding: 0;
+            box-shadow: none;
+        }
+        .pdf-mode .table-container {
+            width: 100%;
+        }
+        .pdf-mode .combined-table {
+            width: 100%;
+            font-size: 9px;
+        }
+
+        /* Otros estilos */
+        .company-info, .header-info, .contact-info {
+            text-align: center;
+            margin-bottom: 10px;
+        }
+        .combined-table {
+            border-collapse: collapse;
+            width: 100%;
+            font-size: 10px;
+        }
+        .combined-table th, .combined-table td {
+            border: 0.5px solid #000;
+            padding: 1px;
+            text-align: center;
+        }
+        /* Estilos específicos para imprimir */
+        @media print {
+            .no-pdf {
+                display: none !important;
+            }
+        }
+        .combined-table {
+    border-collapse: collapse;
+    width: calc(100% - 0.5in);  /* Reducir un poco el ancho para dar más espacio en la derecha */
+    font-size: 10px;
+}
+/* Contenedor para el área de búsqueda */
+.search-container {
+    width: 100%;
+    max-width: 600px;
+    margin: 20px auto;
+    padding: 20px;
+    background-color: #ffffff;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 15px;
+    transition: all 0.3s ease;
+}
+
+/* Formulario de búsqueda */
+.search-form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* Grupo de entrada de búsqueda */
+.input-group {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    margin-bottom: 15px;
+}
+
+/* Etiqueta de entrada */
+.input-group label {
+    font-size: 16px;
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 8px;
+}
+
+/* Campo de entrada */
+.input-field {
+    width: 100%;
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+}
+
+/* Estilo para el botón de búsqueda */
+.btn-search {
+    background-color: #007bff;
+    color: white;
+    padding: 12px 24px;
+    font-size: 16px;
+    font-weight: bold;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+}
+
+.btn-search:hover {
+    background-color: #0056b3;
+    transform: scale(1.05);
+}
+
+.btn-search:active {
+    background-color: #004494;
+    transform: scale(0.98);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+/* Efecto al pasar el cursor sobre el campo de entrada */
+.input-field:focus {
+    outline: none;
+    box-shadow: 0 0 10px rgba(0, 118, 179, 0.3);
+    border-color: #007bff;
+}
+
+/* Diseño responsive */
+@media (max-width: 600px) {
+    .search-container {
+        padding: 15px;
+        box-shadow: none;
+    }
+
+    .btn-search {
+        width: 100%;
+        font-size: 14px;
+    }
+
+    .input-field {
+        font-size: 14px;
+    }
+}
+
+
+    
+    @font-face {
+        font-family: 'sensation';
+        src:url(fuentes/Sansation/Sansation_Regular.ttf) ;
+        font-weight: bold;
+        font-style: bold;
+    }
+  :root {
+        --bg-dark: #f0f0f0; /* Invertir a claro */
+        --bg-darker: #2d2d2d; /* Invertir a oscuro */
+        --primary-color: #0769B3; /* Mantener color primario */
+        --text-light: #2d2d2d; /* Texto oscuro */
+        --text-muted: #666666; /* Texto suavizado oscuro */
+        --accent-color: #0769b3; /* Mantener color acento */
+        --sidebar-width: 250px;
+    }
+    * {
+        font-family:'sensation';
+       font-weight: bold;
+        font-style: bold;
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+
+    body {
+        font-family:'sensation';
+        background-color: #d6cec3;
+        color: var(--text-light);
+        display: flex;
+    }
+
+.container {
+    display: flex;
+    width: 100%;
+    transition: width 0.3s ease;
+}
+    .sidebar {
+        width: var(--sidebar-width);
+        background-color: var(--bg-dark);
+        padding: 20px;
+        height: 100vh;
+    }
+
+    .sidebar-header {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+        margin-bottom: 30px;
+    }
+
+    .sidebar-header img.logo {
+        width: 250px;
+        margin-bottom: 10px;
+    }
+
+    .sidebar-header p {
+        font-size: 20px;
+        color: var(--text-light);
+    }
+
+    .sidebar-menu {
+        list-style: none;
+        padding: 0;
+    }
+
+    .sidebar-menu li {
+        padding: 15px 10px;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        color: var(--text-light);
+        position: relative;
+        border-bottom: 1px solid black; /* Agregar una división blanca */
+
+    }
+
+    .sidebar-menu li:hover {
+    background-color: var(--primary-color);
+        border-radius: 10px;
+    }
+
+    .sidebar-menu li i {
+        margin-right: 10px;
+    }
+
+.sidebar.hidden-sidebar {
+    transform: translateX(-100%);
+    transition: transform 0.3s ease;
+}
+
+
+
+
+    .top-navbar {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 15px;
+        background-color:#0769b3;
+        border-radius: 10px;
+        margin-bottom: 20px;
+        color: white;
+            font-weight: bold; /* Añadir negrilla */
+font-size: 25px;
+    }
+
+
+    .top-right {
+        display: flex;
+        align-items: center;
+    }
+
+    .top-right i {
+        margin-left: 20px;
+        font-size: 24px;
+        position: relative;
+    }
+
+    .badge {
+        position: absolute;
+        top: -10px;
+        right: -10px;
+        background-color: var(--accent-color);
+        color: white;
+        padding: 5px 8px;
+        border-radius: 50%;
+        font-size: 12px;
+    }
+
+    .dashboard-content {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .card {
+        background-color: var(--bg-dark);
+        padding: 20px;
+        border-radius: 10px;
+        margin-bottom: 20px;
+    }
+
+    .stat {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+
+    .stat-icon {
+        font-size: 40px;
+        color: var(--accent-color);
+    }
+
+    .grid-container {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        grid-gap: 20px;
+    }
+
+    .chart-container {
+        padding: 20px;
+        background-color: var(--bg-dark);
+        border-radius: 10px;
+    }
+
+    .profile-menu {
+        position: relative;
+        display: inline-block;
+    }
+
+    .dropdown-menu {
+        position: absolute;
+        top: 40px;
+        right: 0;
+        background-color: var(--bg-dark);
+        border-radius: 10px;
+        padding: 10px;
+        display: none;
+        flex-direction: column;
+        width: 150px;
+        z-index: 1;
+    }
+
+    .dropdown-menu a {
+        padding: 10px;
+        text-decoration: none;
+        color: var(--text-light);
+        display: block;
+    }
+
+    .dropdown-menu a:hover {
+        background-color: var(--primary-color);
+        border-radius: 5px;
+    }
+
+    .hidden {
+        display: none;
+    }
+
+    .show {
+        display: flex;
+    }
+
+    .submenu {
+        list-style: none;
+        padding-left: 0;
+        margin-top: 0;
+        display: none;
+        max-height: 0;
+        overflow: hidden;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        width: 200px;
+        background-color: white;
+        border-radius: 5px;
+        z-index: 1000;
+        transition: max-height 0.3s ease-out;
+    }
+
+    .menu-item {
+        display: block;
+        margin-bottom: 10px;
+        position: relative;
+    }
+
+    .submenu.show {
+        display: block;
+        max-height: 500px;
+        transition: max-height 0.3s ease-in;
+    }
+
+    .submenu li {
+        background-color: white;
+        padding: 10px;
+        cursor: pointer;
+        color: black;
+            border-bottom: 1px solid black; /* División negra entre items del submenu */
+
+    }
+
+    .submenu li:hover {
+        background-color: var(--primary-color);
+        color: white;
+        border-radius: 5px;
+    }
+
+    .menu-item.active {
+        background-color: #0769B3;
+        color: white;
+        border-radius: 10px;
+    }
+
+    .submenu li.active {
+        background-color: #0769B3;
+        color: white;
+        border-radius: 5px;
+    }
+    A{
+        text-decoration: none;
+    }
+
+.toggle-menu-btn {
+    background: none;
+    border: none;
+    color: white;
+    font-size: 24px;
+    cursor: pointer;
+    margin-right: 20px;
+    display: flex;
+    align-items: center;
+}
+
+.hidden-sidebar {
+    transform: translateX(-100%);
+    transition: transform 0.3s ease;
+}
+
+.sidebar {
+    transition: transform 0.3s ease;
+}
+
+
+.sidebar.hidden-sidebar {
+    transform: translateX(-100%);
+    transition: transform 0.3s ease;
+}
+
+.main-content.expanded-content {
+    width: 100% !important;
+}
+
+#home {
+    text-decoration: none;
+    color: black;
+}
+h2 {
+    font-weight: 600;
+    font-size: 2rem; /* Mejora la visibilidad del título */
+}
+
+p {
+    font-size: 1rem;
+    color: var(--text-muted); /* Texto más sutil */
+}
+.card {
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Sombra ligera */
+    transition: box-shadow 0.3s ease-in-out;
+}
+
+.card:hover {
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15); /* Sombra más intensa al pasar el ratón */
+}
+.submenu {
+    transition: max-height 0.5s ease, opacity 0.5s ease;
+    opacity: 0;
+}
+
+.submenu.show {
+    opacity: 1;
+}
+
+button, .menu-item:hover {
+    transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+button:hover {
+    transform: scale(1.05); /* Ligero zoom */
+}
+.dropdown-menu {
+    opacity: 0;
+    transform: translateY(-10px);
+    transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.dropdown-menu.show {
+    opacity: 1;
+    transform: translateY(0);
+}
+.table-container {
+    overflow-x: auto; /* Para hacer que la tabla sea desplazable en pantallas pequeñas */
+    margin: 20px auto; /* Centrar la tabla con espacio alrededor */
+    max-width: 1000px; /* Limitar el ancho máximo para mejorar la apariencia */
+}
+
+.styled-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 25px 0;
+    font-size: 1rem;
+    text-align: left;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+    overflow: hidden; /* Para aplicar el borde redondeado a toda la tabla */
+}
+
+.styled-table thead tr {
+    background-color: var(--primary-color);
+    color: #ffffff;
+    text-align: left;
+    font-weight: bold;
+}
+
+.styled-table th,
+.styled-table td {
+    padding: 12px 15px;
+    border-bottom: 1px solid #dddddd; /* Línea para separar filas */
+}
+
+.styled-table tbody tr {
+    background-color: #ffffff;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+.styled-table tbody tr:nth-of-type(even) {
+    background-color: #f3f3f3; /* Colorear las filas pares */
+}
+
+.styled-table tbody tr:hover {
+    background-color: #f1f7ff; /* Fondo más claro al pasar el cursor */
+    transform: scale(1.01); /* Ligeramente aumentar el tamaño para resaltar */
+}
+
+.styled-table tbody tr td {
+    vertical-align: middle;
+}
+
+.styled-table tbody td:last-child {
+    text-transform: capitalize; /* Convertir el rol a capitalización (admin -> Admin) */
+}
+
+.styled-table th {
+    position: sticky;
+    top: 0; /* La cabecera se queda fija mientras se desplaza */
+    z-index: 2;
+}
+
+.filter-container {
+    display: flex;
+    gap: 15px;
+    margin: 20px 0;
+}
+
+.filter-input {
+    padding: 10px;
+    font-size: 1rem;
+    border: 1px solid #cccccc;
+    border-radius: 5px;
+    width: 200px;
+    transition: box-shadow 0.3s ease;
+}
+
+.filter-input:focus {
+    box-shadow: 0 0 8px rgba(0, 118, 179, 0.5);
+}
+#tipo{
+    position: relative;
+    right: 10%;
+}
+.correr{
+    position: relative;
+   right: 30%;
+}
+
+
+*{
+
+  font-family: "Roboto", sans-serif;
+  font-weight: 200;
+  font-style: normal;
+}
+/* Efecto al pasar el ratón */
+strong {
+    font-size: 10px;
+    font-weight: bold; /* Aplicar negrilla */
+    color: black; /* Color del texto (ajústalo según prefieras) */
+}
+    .info-section {
+        margin-right: 5%;
+        font-size: 10px;
+        line-height: 1.5;
+        text-align: left;
+    }
+    .info-row {
+        display: flex;
+        align-items: center;
+        margin-bottom: 4px;
+    }
+    .info-row strong {
+        min-width: 150px; /* Asegura que todas las etiquetas tengan el mismo ancho */
+    }
+    .info-row span {
+        flex: 1; /* Alinea el contenido en la misma línea */
+    }
+
+
+
+
+  </style>
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  <style>
+
+        .report-container {
+            width: 100%;
+            max-width: 700px; /* Ancho máximo para mantener consistencia */
+            margin: 0 auto;
+            border: 1px solid #000;
+            padding: 10px;
+        }
+        .company-info {
+            text-align: center;
+            font-size: 12px;
+            margin-bottom: 10px;
+        }
+        .header-info {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 10px;
+        }
+        .logo {
+            width: 120px;
+        }
+        .info-section {
+            position: relative;
+            font-size: 10px;
+            line-height: 1.5;
+            text-align: left;
+            right: 30px;
+        }
+        .info-section div {
+            display: flex;
+            align-items: center;
+            margin-bottom: 4px;
+        }
+        .info-section strong {
+            min-width: 100px; /* Ancho mínimo para las etiquetas */
+        }
+        .info-section input {
+            width: 120px;
+            font-size: 10px;
+            margin-left: 5px;
+            padding: 2px;
+            border: 1px solid #ccc;
+        }
+        .registro-container {
+            text-align: center;
+            margin-bottom: 10px;
+        }
+      
+        .combined-table {
+            border-collapse: collapse;
+            width: 100%;
+            font-size: 10px;
+        }
+        .combined-table th, .combined-table td {
+            border: 0.5px solid #000;
+            padding: 1px;
+            text-align: center;
+        }
+        .header {
+            background-color: #6da8d6;
+            color: white;
+        }
+        .input-field {
+            width: 25px;
+            text-align: left;
+            border: none;
+            background-color: #f0f0f0;
+            font-size: 10px;
+            margin: 0;
+            padding: 0;
+        }
+        .hidrosistema-input {
+            width: 30px;
+            text-align: left;
+        }
+        h2 {
+            font-size: 14px;
+            margin: 10px 0;
+        }
+          /* Estilo para los indicadores de estado */
+        .indicator-column div {
+            display: flex;
+            align-items: center;
+            margin-bottom: 4px;
+        }
+        .status-input {
+            width: 50px;
+            margin-left: 5px;
+        }
+           /* Estilo responsive */
+        @media (max-width: 600px) {
+            .header-info, .info-section {
+                flex-direction: column;
+                align-items: flex-start;
+                width: 100%;
+            }
+            .info-section strong {
+                min-width: auto;
+            }
+            .info-section input {
+                max-width: 100%;
+            }
+            .logo {
+                width: 60px;
+            }
+            .combined-table {
+                font-size: 8px;
+            }
+            .input-field, .hidrosistema-input {
+                width: 10px;
+            }
+            .status-input {
+                width: 30px;
+            }
+            .signature-section div {
+                width: 100%;
+            }
+              #logo {
+                width: 10%;
+            }
+        }
+        #logo{
+            width: 300px;
+margin-left: 40%;
+
+        }
     </style>
     <style>
     input[type="submit"] {
@@ -229,18 +1080,385 @@ margin-left: 40%;
 }
 /* Efecto al pasar el ratón */
 strong {
-    font-size: 15px;
+    font-size: 14px;
     font-weight: bold; /* Aplicar negrilla */
-    color: black; /* Color del texto (ajústalo según prefieras) */
+}
+.combined-table {
+    border-collapse: collapse;
+    width: 100%; /* Asegura que la tabla ocupe el 100% del contenedor */
+    table-layout: auto; /* Deja que la tabla ajuste automáticamente sus columnas */
+    font-size: 9px; /* Reduce el tamaño de fuente si es necesario */
+}
+body {
+    font-family: Arial, sans-serif;
+    font-size: 10px;  /* Reduce el tamaño general de la fuente */
+    margin: 0;
+    padding: 0;
+}
+.combined-table {
+    width: 100%;
+    table-layout: fixed;
+    word-wrap: break-word; /* Para que el texto largo no desborde */
+}
+
+.combined-table th, .combined-table td {
+    border: 0.5px solid #000;
+    padding: 5px;  /* Aumenta el padding para mayor claridad */
+    text-align: center;
+}
+
+.header {
+    background-color: #6da8d6;
+    color: white;
+}
+
+#logo {
+    width: 180px;  /* Ajusta el tamaño del logo si es necesario */
+    margin-left: 40%;
+}
+/* Clase para ocultar el borde del canvas cuando se genera el PDF */
+.no-border {
+    border: none !important;
+}
+   .report-container {
+            width: 100%;
+            max-width: 900px; /* Ancho máximo para mantener consistencia */
+            margin: 0 auto;
+            border: 1px solid #000;
+            padding: 10px;
+        }
+
+
+.hidden-pdf {
+    display: none !important;
+}
+
+
+
+
+
+.combined-table {
+    font-size: 11px; /* Aumentar un poco el tamaño de la fuente */
+    padding: 3px;
+}
+
+.combined-table th, .combined-table td {
+    padding: 4px;  /* Mejorar el espaciado */
+    text-align: center;
+}
+
+.combined-table th, .combined-table td {
+    border: 1px solid #000;
+    padding: 5px;  /* Aumenta el padding para mayor claridad */
+    text-align: center;
+}
+
+
+
+h2 {
+    font-size: 16px;
+    font-weight: bold;
+    margin: 15px 0;
+    text-align: center;
+}
+
+.info-section strong {
+    min-width: 150px; /* Aumenta el ancho mínimo para alinear correctamente */
+    display: inline-block; /* Asegura que todos los elementos tengan el mismo ancho */
+}
+
+.info-section div {
+    display: flex;
+    align-items: center;
+    margin-bottom: 8px; /* Espaciado entre filas */
+}
+
+
+    td {
+        padding: 10px;
+    font-weight: bold; /* Aplica negrita al texto dentro de las celdas td */
+}
+
+
+ .report-container {
+      width: 100%;
+      max-width: 800px; /* Ajustado para que no se corte */
+      margin: 0 auto;
+      border: 1px solid #000;
+      padding: 10px;
+      background-color: white;
+      border-radius: 15px; /* Bordes redondeados */
+      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2),
+                  0 6px 20px rgba(0, 0, 0, 0.15); /* Efecto 3D */
+  }
+
+  /* Tablas ajustadas */
+.combined-table {
+    width: 100%;
+    table-layout: fixed;
+    word-wrap: break-word; /* Para que el texto largo no desborde */
+}
+
+  .combined-table th, .combined-table td {
+      border: 0.5px solid #000;
+      padding: 4px; /* Mejora el espaciado */
+      text-align: center;
+  }
+
+  .header {
+      background-color: #6da8d6;
+      color: white;
+  }
+
+  /* Ocultar borde del canvas y botones para PDF */
+  .no-border {
+      border: none !important;
+  }
+
+  .hidden-pdf {
+      display: none !important;
+  }
+
+  /* Ajuste del logo */
+  #logo {
+      width: 180px;
+      margin-left: auto;
+      margin-right: auto;
+  }    
+  .report-container {
+    max-width: 900px; /* Aumentar el ancho máximo */
+    margin: 0 auto;
+    padding: 20px;
+}
+.combined-table {
+    width: 100%;
+    table-layout: fixed;
+    word-wrap: break-word; /* Para que el texto largo no desborde */
+}
+
+.report-container {
+    width: 100%;
+    max-width: 1000px; /* Ajustado para evitar cortes */
+    margin: 0 auto;
+    padding: 20px;
+    background-color: white;
+    border-radius: 15px;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2), 0 6px 20px rgba(0, 0, 0, 0.15);
+}
+
+.combined-table {
+    border-collapse: collapse;
+    width: 100%;
+    table-layout: fixed;  /* Asegúrate de usar siempre fixed */
+    font-size: 10px;
+    word-wrap: break-word; /* Para que el texto largo no se desborde */
+}
+
+.combined-table th, .combined-table td {
+    border: 1px solid #000;
+    padding: 4px;
+    text-align: center;
+}
+
+.input-field, .hidrosistema-input {
+    width: 50px; /* Ajusta el ancho de los campos de entrada */
+    text-align: center;
+}
+
+#logo {
+    position: relative;
+    top: -65PX;
+    width: 95px;
+    margin-left: auto;
+    margin-right: auto;
+}
+#boton {
+    margin-left: 0; /* O ajusta según sea necesario */
+    display: block; /* Para asegurar que el botón se muestre en línea */
+    margin: 20px auto; /* Para centrar el botón */
+}
+body {
+    display: block; /* Cambiar de flex a block si no necesitas distribución horizontal */
+}
+body {
+    font-family: Arial, sans-serif;
+    font-size: 9px; /* Reducción general del tamaño de fuente */
+}
+
+.combined-table {
+    width: 100%;
+    table-layout: fixed;
+    word-wrap: break-word;
+}
+
+.combined-table th, .combined-table td {
+    padding: 4px; /* Reduce el padding para ahorrar espacio */
+    text-align: center;
+}
+
+.pdf-mode .combined-table {
+    font-size: 8px; /* Reducir tamaño de fuente específico para el PDF */
+}
+
+.pdf-mode .report-container {
+    padding: 5px; /* Reducir el padding en el contenedor principal */
+}
+
+.pdf-mode .info-section input {
+    width: 80px; /* Reducir los campos de entrada para aprovechar espacio */
+}
+
+.pdf-mode #logo {
+    width: 150px; /* Ajustar el tamaño del logo para el PDF */
+}
+.info-section {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px; /* Espacio entre columnas */
+}
+
+.info-row {
+    display: flex;
+    align-items: center;
+}
+
+.info-row strong {
+    width: 150px; /* Ancho fijo para los labels */
+}
+
+.info-row input, .info-row select {
+    flex: 1;
+    padding: 5px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 12px;
 }
 
 </style>
 
+
+<style>
+    
+</style>
+
+
+
+
+
+
+
 </head>
 <body>
+  <div class="container">
 
+
+
+
+        <aside class="sidebar">
+       <div class="sidebar-header">
 <br>
-<button type="button" onclick="window.history.back()" class="btn-volver">Volver Atrás</button>
+<br>
+<div class="fondologo"></div>
+    <img class="logo" src="imagenes/logo_ingenieria.jpeg-removebg-preview.png" alt="AdminKit Logo">
+    <br>
+    <br>
+    <p>MENU</p>
+</div>
+
+
+
+            <ul class="sidebar-menu">
+                     <li class="menu-item">
+                    <i class="fas fa-home"></i> <a id="home" href="/menuAdministrativo">INICIO</a> 
+                 
+                </li>
+                <li class="menu-item">
+                    <i class="fas fa-user"></i> USUARIOS
+                    <ul class="submenu">
+                    <a href="/agregar_usuario"><li>Agregar Usuario</li></a>    
+                      <a href="/consultar_usuarios"><li>consultar Usuarios</li></a>  
+                    </ul>
+                </li>
+
+
+                
+               
+              
+               
+          
+           
+            <li class="menu-item">
+<i class="fas fa-file-alt"></i> INFORMES 
+                    <ul class="submenu">
+
+
+                     <a href="/realizar_informe"><li>Realizar informe</li></a>   
+                     <a href="/ver_informe"><li>Consulta de informe</li></a>   
+
+
+                    </ul>
+                </li>
+                
+            <li class="menu-item">
+    <i class="fas fa-map-marker-alt"></i> GEOLOCALIZACION
+                    <ul class="submenu">
+
+
+                    <a href=""><li>Ver mapa</li></a>     
+
+
+
+
+                    </ul>
+                </li>
+                
+
+
+      <li class="menu-item">
+                    <i class="fas fa-cogs"></i> CONFIGURACION
+                    <ul class="submenu">
+
+                    <a href=""><li>Preferencias</li></a>   
+                    <a href=""> <li>Seguridad</li></a>   
+
+                    </ul>
+                </li>
+
+
+
+            </ul>
+
+
+        </aside>
+
+
+
+
+
+
+
+        <section class="main-content">
+
+<nav class="top-navbar">
+    <div class="brand">Administracion</div>
+    <div class="top-right">
+        <i class="fas fa-bell"></i> <span class="badge"></span>
+        <i class="fas fa-envelope"></i> <span class="badge"></span>
+        <div class="profile-menu">
+            <i class="fas fa-user-circle" id="profile-icon"></i>
+            <div id="dropdown-menu" class="dropdown-menu hidden">
+                <a href="#">Editar</a>
+                <a href="/logout">Cerrar Sesión</a>
+            </div>
+        </div>
+        <!-- Aquí está el botón corregido -->
+        <button id="toggle-menu" class="toggle-menu-btn">
+            <i class="fas fa-bars"></i>
+        </button>
+    </div>
+</nav>
+<br>
+
 <br>
 <br>
 <br>
@@ -256,33 +1474,60 @@ strong {
     <img id="logo" src="imagenes/logo_ingenieria.jpeg-removebg-preview.png" alt="Logo" width="200"> <!-- Ajusta la ruta del logo -->
 </div>
 
+
+
 <form id="maintenanceForm">
     <!-- Tu contenido de formulario aquí -->
 
+
+
+
+
+
+
+
+
+
+
 <div class="info-section">
-   
-    <div><strong>Cliente:</strong> <input type="text" name="cliente" required ></div>
-    <div><strong>Correo:</strong> <input type="text" name="Correo" required ></div>
-
-<div>
-
-    
-  <strong>Tipo de Mantenimiento:</strong> 
-<select name="tipo_de_mantenimiento" required>
-    <option value="">Seleccione un tipo</option>
-    <option value="Preventivo">Preventivo</option>
-    <option value="Correctivo">Correctivo</option>
-        <option value="emergencia">emergencia</option>
-
-    <option value="Otro">Otro</option>
-  </select>
-</div>
-
-    <div><strong>Equipo:</strong> <input type="text" name="equipo" required ></div>
-    <div><strong>Técnico:</strong> <input type="text" name="tecnico" required ></div>
-    <div><strong>Hora Entrada:</strong> <input type="time" name="hora_entrada" required ></div>
-    <div><strong>Hora Salida:</strong> <input type="time" name="hora_salida" required ></div>
-    <div><strong>Fecha:</strong> <input type="date" name="fecha" required ></div>
+    <div class="info-row">
+        <strong>Cliente:</strong> 
+        <input type="text" name="cliente" required>
+    </div>
+    <div class="info-row">
+        <strong>Correo:</strong> 
+        <input type="text" name="Correo" required>
+    </div>
+    <div class="info-row">
+        <strong>Tipo de Mantenimiento:</strong> 
+        <select name="tipo_de_mantenimiento" required>
+            <option value="">Seleccione un tipo</option>
+            <option value="Preventivo">Preventivo</option>
+            <option value="Correctivo">Correctivo</option>
+            <option value="Emergencia">Emergencia</option>
+            <option value="Otro">Otro</option>
+        </select>
+    </div>
+    <div class="info-row">
+        <strong>Equipo:</strong> 
+        <input type="text" name="equipo" required>
+    </div>
+    <div class="info-row">
+        <strong>Técnico:</strong> 
+        <input type="text" name="tecnico" required>
+    </div>
+    <div class="info-row">
+        <strong>Hora Entrada:</strong> 
+        <input type="time" name="hora_entrada" required>
+    </div>
+    <div class="info-row">
+        <strong>Hora Salida:</strong> 
+        <input type="time" name="hora_salida" required>
+    </div>
+    <div class="info-row">
+        <strong>Fecha:</strong> 
+        <input type="date" name="fecha" required>
+    </div>
 </div>
 
 
@@ -297,7 +1542,7 @@ strong {
             <table class="combined-table">
                 <thead>
                     <tr class="header">
-                        <th colspan="5">TABLERO DE CONTROL</th>
+                       <strong><th  colspan="5">TABLERO DE CONTROL</th></strong>
                         <th colspan="2">HIDROSISTEMA</th>
                         <th colspan="5">SISTEMAEYECTOR</th>
                     </tr>
@@ -517,7 +1762,7 @@ strong {
             <tr class="header">
                 <th colspan="5">MOTOR</th>
                 <th colspan="5">BOMBAS</th>
-                <th colspan="5">Indicador</th> <!-- Cambiado de rowspan a colspan -->
+                <th colspan="2">Indicador</th> <!-- Cambiado de rowspan a colspan -->
             </tr>
             <tr>
                 <th>Parámetro</th>
@@ -546,7 +1791,14 @@ strong {
     <td><input type="text" class="input-field" name="impulsor_m2"></td>
     <td><input type="text" class="input-field" name="impulsor_m3"></td>
     <td><input type="text" class="input-field" name="impulsor_m4"></td>
+              
+              
+              
+              
+              
+              
                 <td rowspan="6" class="indicator-column">
+             
                     <!-- Indicadores de estado con campos de entrada -->
                           <div>
                      <input type="text" name="cambio" placeholder=" " class="status-input" style="width: 50px;">
@@ -688,14 +1940,61 @@ strong {
 
  </div>
 <br>
-    <input id="boton" type="submit" value="ENVIAR INFORME">
 <br>
+  </div>
+  </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <input id="boton" type="submit" value="ENVIAR INFORME">
+
+
+
+
+
+
+
+
+
+
+
+
+  
 </form>
+
  <!-- Botón para enviar el formulario -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.2/html2pdf.bundle.min.js"></script>
 
 <!-- Script para habilitar la firma en los canvas -->
 <!-- Script para habilitar la firma en los canvas -->
 <script>
+    function replaceInputsWithText() {
+    const inputs = document.querySelectorAll('input, select, textarea');
+    inputs.forEach(input => {
+        const value = input.value || input.placeholder;
+        const textElement = document.createElement('span');
+        textElement.textContent = value;
+        textElement.style.border = "1px solid #ccc"; // Opcional: Simula el borde de los inputs
+        textElement.style.padding = "2px"; // Opcional: Añade padding para parecerse al input
+        input.parentNode.replaceChild(textElement, input);
+    });
+}
+
     // Initialize the signature pad for a given canvas
     function initSignaturePad(canvasId) {
         const canvas = document.getElementById(canvasId);
@@ -791,5 +2090,73 @@ strong {
             alert('Error al insertar los datos');
         });
     }
+    
 </script>
 
+<script>
+
+
+    
+document.getElementById('maintenanceForm').addEventListener('submit', function(event) {
+    event.preventDefault(); // Evita el envío tradicional del formulario
+    
+    var element = document.querySelector('.report-container'); // Solo lo declaramos aquí
+    
+    const email = document.querySelector('input[name="Correo"]').value;
+
+    // Quitar el borde del canvas y ocultar botones de borrar
+    document.getElementById('signatureCanvas1').classList.add('no-border');
+    document.getElementById('signatureCanvas2').classList.add('no-border');
+    document.querySelectorAll('button').forEach(button => button.classList.add('hidden-pdf'));  // Ocultar botones de borrar
+
+
+
+
+
+    // Configuración del PDF ajustada
+var opt = {
+    margin: [0.1, 0.1, 0.1, 0.3],  // Márgenes ajustados para PDF
+    filename: 'informe_mantenimiento.pdf',
+    image: { type: 'jpeg', quality: 0.98 },
+    html2canvas: { scale: 6 },  // Escala aumentada para mejorar la resolución sin sacrificar espacio
+    jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' }
+};
+
+    // Genera el PDF y lo envía como blob
+    html2pdf().from(element).set(opt).outputPdf('blob').then(function (pdfBlob) {
+        // Restaurar los botones después de generar el PDF
+        document.getElementById('signatureCanvas1').classList.remove('no-border');
+        document.getElementById('signatureCanvas2').classList.remove('no-border');
+        document.querySelectorAll('button').forEach(button => button.classList.remove('hidden-pdf'));  // Mostrar de nuevo los botones
+
+        // Enviar el informe por correo
+        enviarInformePorCorreo(email, pdfBlob);
+    });
+});
+
+
+
+function enviarInformePorCorreo(correo, pdfBlob) {
+    const formData = new FormData();
+    formData.append('correo', correo);
+    formData.append('pdf', pdfBlob, 'informe_mantenimiento.pdf');
+    
+    fetch('/enviar-correo', {
+        method: 'POST',
+        body: formData
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            alert('Correo enviado con éxito');
+        } else {
+            alert('Error al enviar el correo');
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        alert('Hubo un error al enviar el correo');
+    });
+}
+
+</script>
