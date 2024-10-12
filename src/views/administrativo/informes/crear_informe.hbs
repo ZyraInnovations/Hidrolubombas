@@ -229,9 +229,9 @@ margin-left: 40%;
 }
 /* Efecto al pasar el ratón */
 strong {
+    font-size: 15px;
     font-weight: bold; /* Aplicar negrilla */
-    color: #333; /* Color del texto (ajústalo según prefieras) */
-    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3); /* Agrega un efecto de sombra al texto */
+    color: black; /* Color del texto (ajústalo según prefieras) */
 }
 
 </style>
@@ -261,6 +261,18 @@ strong {
 
 <div class="info-section">
     <div><strong>Cliente:</strong> <input type="text" name="cliente"></div>
+<div>
+  <strong>Tipo de Mantenimiento:</strong> 
+  <select name="tipo_de_manteninimiento">
+    <option value="">Seleccione un tipo</option>
+    <option value="Preventivo">Preventivo</option>
+    <option value="Correctivo">Correctivo</option>
+    <option value="Predictivo">Predictivo</option>
+        <option value="emergencia">emergencia</option>
+
+    <option value="Otro">Otro</option>
+  </select>
+</div>
     <div><strong>Equipo:</strong> <input type="text" name="equipo"></div>
     <div><strong>Técnico:</strong> <input type="text" name="tecnico"></div>
     <div><strong>Hora Entrada:</strong> <input type="time" name="hora_entrada"></div>

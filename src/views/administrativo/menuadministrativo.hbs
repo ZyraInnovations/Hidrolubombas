@@ -495,29 +495,26 @@ button:hover {
 
 
       <div class="card stat">
-    <i class="fas fa-users stat-icon"></i>
+    <i class="fas fa-tools stat-icon"></i> <!-- Cambiado de 'fa-users' a 'fa-tools' -->
     <div>
         <h3 id="tecnicos-count">Cargando...</h3> <!-- Marcador de posición para el conteo dinámico -->
         <p>Técnicos</p>
     </div>
 </div>
-                    <div class="card stat">
-                        <i class="fas fa-users stat-icon"></i>
-                        <div>
-                            <h3>5,245</h3>
-                            <p>Users</p>
-                        </div>
-                    </div>
+              <div class="card stat">
+    <i class="fas fa-users stat-icon"></i>
+    <div>
+        <h3 id="clientes-count">Cargando...</h3> <!-- Marcador de posición para el conteo dinámico -->
+        <p>Clientes</p>
+    </div>
+</div>
                     <div class="card chart-container">
                         <canvas id="barChart"></canvas>
                     </div>
                     <div class="card chart-container">
                         <canvas id="lineChart"></canvas>
                     </div>
-                    <div class="card settings">
-                        <h3>Settings</h3>
-                        <canvas id="settingsChart"></canvas>
-                    </div>
+                 
                 </div>
             </div>
         </section>
@@ -526,61 +523,162 @@ button:hover {
     <!-- Include Chart.js library -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.6.0/chart.min.js"></script>
     <script>
-        // Bar Chart
-        const barCtx = document.getElementById('barChart').getContext('2d');
-        new Chart(barCtx, {
-            type: 'bar',
-            data: {
-                labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August'],
-                datasets: [{
-                    label: 'Data Set 1',
-                    data: [45, 25, 50, 30, 55, 25, 45, 20],
-                    backgroundColor: '#0769b3',
-                }, {
-                    label: 'Data Set 2',
-                    data: [20, 40, 30, 45, 25, 35, 20, 50],
-                    backgroundColor: '#C92458',
-                }]
-            },
-            options: {
-                responsive: true,
-                scales: {
-                    y: {
-                        beginAtZero: true
+document.addEventListener("DOMContentLoaded", function () {
+    // Obtener datos de mantenimiento de la API
+    fetch('/api/mantenimientos-por-mes')
+        .then(response => response.json())
+        .then(data => {
+            console.log(data); // Verifica los datos recibidos
+
+            // Definir los nombres de los meses
+const monthNames = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"];
+
+            // Procesar los datos para obtener el mes y los tipos de mantenimiento
+            const processedData = data.map(item => {
+                const monthIndex = new Date(item.fecha).getMonth(); // Extraer el índice del mes (0-11)
+                return {
+                    mes: monthNames[monthIndex], // Obtener el nombre del mes
+                    tipo_de_mantenimiento: item.tipo_de_mantenimiento,
+                    count: item.count
+                };
+            });
+
+            // Tipos de mantenimiento únicos presentes en los datos
+            const tipos = [...new Set(processedData.map(item => item.tipo_de_mantenimiento))];
+            const meses = monthNames; // Todos los meses en orden
+
+            // Crear los datasets para cada tipo de mantenimiento
+            const datasets = tipos.map((tipo, index) => {
+                // Para cada tipo de mantenimiento, obtiene la cantidad para cada mes
+                const counts = meses.map(mes => {
+                    const record = processedData.find(item => item.mes === mes && item.tipo_de_mantenimiento === tipo);
+                    return record ? record.count : 0;
+                });
+                return {
+                    label: tipo,
+                    data: counts,
+                    backgroundColor: `hsl(${index * 60}, 70%, 50%)`, // Color distinto para cada tipo
+                };
+            });
+
+            // Crear la gráfica de barras con los datos reales
+            const barCtx = document.getElementById('barChart').getContext('2d');
+            new Chart(barCtx, {
+                type: 'bar',
+                data: {
+                    labels: meses,
+                    datasets: datasets
+                },
+                options: {
+                    responsive: true,
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
                     }
                 }
-            }
-        });
+            });
+        })
+        .catch(error => console.error('Error al obtener datos de mantenimiento:', error));
+});
+
 
         // Line Chart
-        const lineCtx = document.getElementById('lineChart').getContext('2d');
-        new Chart(lineCtx, {
-            type: 'line',
-            data: {
-                labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August'],
-                datasets: [{
-                    label: 'Data Set 1',
-                    data: [10, 20, 15, 30, 25, 20, 30, 35],
-                    borderColor: '#0769b3',
+     document.addEventListener("DOMContentLoaded", function () {
+    // Obtener datos de mantenimiento de la API
+    fetch('/api/mantenimientos-por-mes')
+        .then(response => response.json())
+        .then(data => {
+            console.log(data); // Verifica los datos recibidos
+
+            // Definir los nombres de los meses en español
+            const monthNames = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"];
+
+            // Procesar los datos para obtener el mes y los tipos de mantenimiento
+            const processedData = data.map(item => {
+                const monthIndex = new Date(item.fecha).getMonth(); // Extraer el índice del mes (0-11)
+                return {
+                    mes: monthNames[monthIndex], // Obtener el nombre del mes
+                    tipo_de_mantenimiento: item.tipo_de_mantenimiento,
+                    count: item.count
+                };
+            });
+
+            // Tipos de mantenimiento únicos presentes en los datos
+            const tipos = [...new Set(processedData.map(item => item.tipo_de_mantenimiento))];
+            const meses = monthNames; // Todos los meses en orden
+
+            // Definir colores específicos para cada tipo (para replicar la imagen)
+            const colores = ["#0769b3", "#C92458"]; // Ajusta los colores según el número de tipos de mantenimiento
+
+            // Crear los datasets para cada tipo de mantenimiento
+            const datasets = tipos.map((tipo, index) => {
+                // Para cada tipo de mantenimiento, obtiene la cantidad para cada mes
+                const counts = meses.map(mes => {
+                    const record = processedData.find(item => item.mes === mes && item.tipo_de_mantenimiento === tipo);
+                    return record ? record.count : 0;
+                });
+                return {
+                    label: tipo,
+                    data: counts,
+                    borderColor: colores[index % colores.length], // Color distinto para cada tipo
+                    backgroundColor: colores[index % colores.length], // Color de fondo de los puntos
                     fill: false,
-                    tension: 0.1
-                }, {
-                    label: 'Data Set 2',
-                    data: [15, 25, 20, 35, 30, 25, 40, 45],
-                    borderColor: '#C92458',
-                    fill: false,
-                    tension: 0.1
-                }]
-            },
-            options: {
-                responsive: true,
-                scales: {
-                    y: {
-                        beginAtZero: true
+                    tension: 0.3, // Suaviza las líneas como en la imagen
+                    borderWidth: 3, // Hacer la línea más gruesa
+                    pointRadius: 5, // Tamaño de los puntos en las líneas
+                    pointHoverRadius: 7,
+                    pointBackgroundColor: colores[index % colores.length], // Color del punto
+                    pointBorderWidth: 2
+                };
+            });
+
+            // Crear la gráfica de líneas con los datos reales
+            const lineCtx = document.getElementById('lineChart').getContext('2d');
+            new Chart(lineCtx, {
+                type: 'line',
+                data: {
+                    labels: meses,
+                    datasets: datasets
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: {
+                            display: true,
+                            position: 'top',
+                            labels: {
+                                usePointStyle: true, // Usar puntos para hacer la leyenda más clara
+                                boxWidth: 20 // Tamaño de las cajas en la leyenda
+                            }
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            title: {
+                                display: true,
+                                text: 'Cantidad de Mantenimientos'
+                            }
+                        },
+                        x: {
+                            title: {
+                                display: true,
+                                text: 'Meses'
+                            }
+                        }
+                    },
+                    elements: {
+                        line: {
+                            tension: 0.3 // Suavizar las líneas, pero sin demasiada curvatura
+                        }
                     }
                 }
-            }
-        });
+            });
+        })
+        .catch(error => console.error('Error al obtener datos de mantenimiento:', error));
+});
+
 
         // Toggle profile dropdown menu
         document.getElementById('profile-icon').addEventListener('click', function () {
@@ -693,9 +791,18 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 
 
-
+    document.addEventListener("DOMContentLoaded", function () {
+        // Hacer una petición a la API para obtener el conteo de clientes
+        fetch('/api/clientes-count')
+            .then(response => response.json())
+            .then(data => {
+                // Actualizar el número de clientes en el HTML
+                document.getElementById('clientes-count').innerText = data.count;
+            })
+            .catch(error => console.error('Error al obtener el conteo de clientes:', error));
+    });
 
 
     </script>
 </body>
-</html>w
+</html>

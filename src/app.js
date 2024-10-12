@@ -297,7 +297,7 @@ function bufferFromBase64(base64Data) {
       ventilador_b4, carcasa_b1, carcasa_b2, carcasa_b3, carcasa_b4, bornes_b1,
       bornes_b2, bornes_b3, bornes_b4, casquillo_b11, casquillo_b22, casquillo_b33,
       casquillo_b44, bobinado_b1, bobinado_b2, bobinado_b3, bobinado_b4,
-      partes_para_cambio, observaciones,firma_tecnico, firma_supervisor
+      partes_para_cambio, observaciones,firma_tecnico, firma_supervisor,tipo_de_mantenimiento
     ) VALUES ?`;
   
     // Extraer valores del objeto req.body
@@ -344,7 +344,7 @@ function bufferFromBase64(base64Data) {
         datos.carcasa_b4, datos.bornes_b1, datos.bornes_b2, datos.bornes_b3,
         datos.bornes_b4, datos.casquillo_b11, datos.casquillo_b22, datos.casquillo_b33,
         datos.casquillo_b44, datos.bobinado_b1, datos.bobinado_b2, datos.bobinado_b3,
-        datos.bobinado_b4, datos.partes_para_cambio, datos.observaciones,  firmaTecnicoBlob, firmaSupervisorBlob
+        datos.bobinado_b4, datos.partes_para_cambio, datos.observaciones,  firmaTecnicoBlob, firmaSupervisorBlob,datos.tipo_de_manteninimiento
       ]
     ];
   
@@ -485,7 +485,38 @@ app.get('/api/tecnicos-count', (req, res) => {
 });
 
 
+app.get('/api/mantenimientos-por-mes', (req, res) => {
+    const query = `
+        SELECT 
+            fecha,
+            tipo_de_mantenimiento,
+            COUNT(*) AS count
+        FROM mantenimiento_hidro
+        GROUP BY fecha, tipo_de_mantenimiento
+        ORDER BY fecha
+    `;
+    
+    db.query(query, (error, results) => {
+        if (error) {
+            console.error('Error al obtener los datos de mantenimiento:', error);
+            return res.status(500).json({ error: 'Error al obtener los datos' });
+        }
+        res.json(results);
+    });
+});
 
+
+app.get('/api/clientes-count', (req, res) => {
+    const query = `SELECT COUNT(DISTINCT cliente) AS count FROM mantenimiento_hidro`;
+
+    db.query(query, (error, results) => {
+        if (error) {
+            console.error('Error al obtener el conteo de clientes:', error);
+            return res.status(500).json({ error: 'Error al obtener el conteo de clientes' });
+        }
+        res.json(results[0]);
+    });
+});
 
 
 // Iniciar el servidor
