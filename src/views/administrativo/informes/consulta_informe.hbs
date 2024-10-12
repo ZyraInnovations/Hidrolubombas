@@ -1,3 +1,246 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<Style>
+
+
+      <style>
+        body {
+            font-family: Arial, sans-serif;
+            font-size: 12px;
+            margin: 0;
+            padding: 0;
+        }
+        .report-container {
+            width: 100%;
+            max-width: 800px; /* Ancho máximo para mantener consistencia */
+            margin: 0 auto;
+            border: 1px solid #000;
+            padding: 10px;
+        }
+        .company-info {
+            text-align: center;
+            font-size: 12px;
+            margin-bottom: 10px;
+        }
+        .header-info {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 10px;
+        }
+        .logo {
+            width: 120px;
+        }
+        .info-section {
+            font-size: 10px;
+            line-height: 1.5;
+            text-align: left;
+        }
+        .info-section div {
+            display: flex;
+            align-items: center;
+            margin-bottom: 4px;
+        }
+        .info-section strong {
+            min-width: 100px; /* Ancho mínimo para las etiquetas */
+        }
+        .info-section input {
+            width: 150px;
+            font-size: 10px;
+            margin-left: 5px;
+            padding: 2px;
+            border: 1px solid #ccc;
+        }
+        .registro-container {
+            text-align: center;
+            margin-bottom: 10px;
+        }
+        .table-container {
+            overflow-x: auto;
+        }
+        .combined-table {
+            border-collapse: collapse;
+            width: 100%;
+            font-size: 10px;
+        }
+        .combined-table th, .combined-table td {
+            border: 0.5px solid #000;
+            padding: 1px;
+            text-align: center;
+        }
+        .header {
+            background-color: #6da8d6;
+            color: white;
+        }
+        .input-field {
+            width: 25px;
+            text-align: left;
+            border: none;
+            background-color: #f0f0f0;
+            font-size: 10px;
+            margin: 0;
+            padding: 0;
+        }
+        .hidrosistema-input {
+            width: 50px;
+            text-align: left;
+        }
+        h2 {
+            font-size: 14px;
+            margin: 10px 0;
+        }
+          /* Estilo para los indicadores de estado */
+        .indicator-column div {
+            display: flex;
+            align-items: center;
+            margin-bottom: 4px;
+        }
+        .status-input {
+            width: 50px;
+            margin-left: 5px;
+        }
+           /* Estilo responsive */
+        @media (max-width: 600px) {
+            .header-info, .info-section {
+                flex-direction: column;
+                align-items: flex-start;
+                width: 100%;
+            }
+            .info-section strong {
+                min-width: auto;
+            }
+            .info-section input {
+                max-width: 100%;
+            }
+            .logo {
+                width: 60px;
+            }
+            .combined-table {
+                font-size: 8px;
+            }
+            .input-field, .hidrosistema-input {
+                width: 25px;
+            }
+            .status-input {
+                width: 30px;
+            }
+            .signature-section div {
+                width: 100%;
+            }
+              #logo {
+                width: 10%;
+            }
+        }
+        #logo{
+            width: 300px;
+margin-left: 40%;
+
+        }
+    </style>
+    <style>
+    input[type="submit"] {
+        background-color: #4CAF50; /* Color de fondo */
+        color: white; /* Color del texto */
+        padding: 12px 24px; /* Espaciado interno */
+        font-size: 16px; /* Tamaño de la fuente */
+        font-weight: bold; /* Negrita */
+        border: none; /* Sin borde */
+        border-radius: 8px; /* Bordes redondeados */
+        cursor: pointer; /* Cambia el cursor al pasar por encima */
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Sombra para dar profundidad */
+        transition: background-color 0.3s ease, transform 0.2s ease; /* Transición para animaciones */
+        margin-top: 20px; /* Espacio superior */
+        display: inline-block; /* Asegura que se comporte como un botón */
+    }
+
+    input[type="submit"]:hover {
+        background-color: #45a049; /* Color al pasar el cursor */
+        transform: scale(1.05); /* Efecto de aumento al pasar el cursor */
+    }
+
+    input[type="submit"]:active {
+        background-color: #3e8e41; /* Color al hacer clic */
+        transform: scale(0.98); /* Efecto de pulsación */
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); /* Sombra reducida al hacer clic */
+    }
+
+    input[type="submit"]:focus {
+        outline: none; /* Elimina el contorno por defecto */
+        box-shadow: 0 0 0 3px rgba(76, 175, 80, 0.4); /* Resalta el botón al enfocar */
+    }
+</style>
+<style>
+    .btn-volver {
+        background-color: #f44336; /* Color de fondo */
+        color: white; /* Color del texto */
+        padding: 12px 24px; /* Espaciado interno */
+        font-size: 16px; /* Tamaño de la fuente */
+        font-weight: bold; /* Negrita */
+        border: none; /* Sin borde */
+        border-radius: 8px; /* Bordes redondeados */
+        cursor: pointer; /* Cambia el cursor al pasar por encima */
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Sombra para dar profundidad */
+        transition: background-color 0.3s ease, transform 0.2s ease; /* Transición para animaciones */
+        margin-top: 20px; /* Espacio superior */
+        display: inline-block; /* Asegura que se comporte como un botón */
+    }
+
+    .btn-volver:hover {
+        background-color: #d32f2f; /* Color al pasar el cursor */
+        transform: scale(1.05); /* Efecto de aumento al pasar el cursor */
+    }
+
+    .btn-volver:active {
+        background-color: #c62828; /* Color al hacer clic */
+        transform: scale(0.98); /* Efecto de pulsación */
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); /* Sombra reducida al hacer clic */
+    }
+
+    .btn-volver:focus {
+        outline: none; /* Elimina el contorno por defecto */
+        box-shadow: 0 0 0 3px rgba(244, 67, 54, 0.4); /* Resalta el botón al enfocar */
+    }
+    #boton{
+        margin-left: 50%;
+    }
+    body{
+        background-color:    #f0f0f0; /* Invertir a claro */
+;
+
+    }
+  .report-container {
+    background-color: white;
+    border-radius: 15px; /* Bordes redondeados */
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2), 
+                0 6px 20px rgba(0, 0, 0, 0.15); /* Sombra para efecto 3D */
+    padding: 20px; /* Espaciado interno */
+    transition: transform 0.3s ease, box-shadow 0.3s ease; /* Transición suave */
+}
+
+*{
+
+  font-family: "Roboto", sans-serif;
+  font-weight: 200;
+  font-style: normal;
+}
+/* Efecto al pasar el ratón */
+strong {
+    font-weight: bold; /* Aplicar negrilla */
+    color: #333; /* Color del texto (ajústalo según prefieras) */
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3); /* Agrega un efecto de sombra al texto */
+}
+
+</style>
+</Style>
+<body>
+    
+
 <h1>Consulta de Informe de Mantenimiento Hidro</h1>
 <p>Bienvenido, {{nombreUsuario}}</p>
 
@@ -10,26 +253,584 @@
 
 <!-- Mostrar mensaje de resultado si existe -->
 {{#if informe}}
-    <h2>Detalles del Informe</h2>
-    <ul>
-        <li><strong>Cliente:</strong> {{informe.cliente}}</li>
-        <li><strong>Equipo:</strong> {{informe.equipo}}</li>
-        <li><strong>Técnico:</strong> {{informe.tecnico}}</li>
-        <li><strong>Fecha:</strong> {{informe.fecha}}</li>
-        <!-- Agrega más campos según sea necesario -->
-    </ul>
-
-    <!-- Mostrar las firmas si existen -->
-    {{#if informe.firma_tecnico}}
-        <h3>Firma del Técnico</h3>
-        <img src="data:image/png;base64,{{informe.firma_tecnico}}" alt="Firma Técnico">
-    {{/if}}
-
-    {{#if informe.firma_supervisor}}
-        <h3>Firma del Supervisor</h3>
-        <img src="data:image/png;base64,{{informe.firma_supervisor}}" alt="Firma Supervisor">
-    {{/if}}
+    
+ 
 
 {{else}}
     <p>{{mensajeError}}</p>
 {{/if}}
+
+
+
+
+
+
+
+
+
+
+
+
+<hr>
+
+
+
+<br>
+    <div class="report-container">
+        <!-- Company information section -->
+        <div class="company-info">
+            <strong>INGENIERÍA HIDRAULIBOMBAS S.A.S</strong><br>
+            NIT: 901.454.224-1
+        </div>
+
+        <div class="header-info">
+     <div class="logo">
+    <img id="logo" src="imagenes/logo_ingenieria.jpeg-removebg-preview.png" alt="Logo" width="200"> <!-- Ajusta la ruta del logo -->
+</div>
+
+    
+<div class="info-section">
+           
+
+    <div><strong>Cliente:</strong>   {{informe.cliente}}</li></div>
+    <div><strong>Equipo:</strong> {{informe.equipo}}</div>
+    <div><strong>Técnico:</strong> {{informe.tecnico}} </div>
+    <div><strong>Hora Entrada:</strong>  {{informe.hora_entrada}}  </div>
+    <div><strong>Hora Salida:</strong>   {{informe.hora_salida}}</div>
+    <div><strong>Fecha:</strong>  {{informe.fecha}}</div>
+    <div><strong>Número:</strong>  {{informe.numero}} </div>
+</div>
+
+
+        </div>
+
+
+        <div class="registro-container">
+            <h2>Registro de Mantenimiento</h2>
+        </div>
+
+        <div class="table-container">
+            <table class="combined-table">
+                <thead>
+                    <tr class="header">
+                        <th colspan="5">TABLERO DE CONTROL</th>
+                        <th colspan="2">HIDROSISTEMA</th>
+                        <th colspan="5">SISTEMAEYECTOR</th>
+                    </tr>
+            <tr>
+                <th>Parámetro</th>
+                <th>B1</th>
+                <th>B2</th>
+                <th>B3</th>
+                <th>B4</th>
+                <th>Descripción</th>
+                <th>Estado</th>
+                <th>Parámetro</th>
+                <th>B1</th>
+                <th>B2</th>
+                <th>B3</th>
+                <th>B4</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+        <td>Variador</td>
+<td> {{informe.variador_b1}} </td>
+<td>  {{informe.variador_b2}}    </td>
+<td>  {{informe.variador_b3}}    </td>
+<td>  {{informe.variador_b4}}    </td>
+
+              <td>Precarga</td>
+<td>       {{informe.precarga}}    </td>
+
+<td>Guarda motor</td>
+<td> {{informe.guarda_motor_b11}}</td>
+<td> {{informe.guarda_motor_b22}}</td>
+<td> {{informe.guarda_motor_b33}}</td>
+<td> {{informe.guarda_motor_b44}}</td>
+
+
+
+            </tr>
+<tr>
+    <td>Mutelillas</td>
+
+
+<td> {{informe.mutelillas_b1}}</td>
+<td> {{informe.mutelillas_b2}}</td>
+<td> {{informe.mutelillas_b3}}</td>
+<td> {{informe.mutelillas_b4}}</td>
+
+
+
+
+    <td>Flotador Mecánico</td>
+    <td>{{informe.flotador_mecanico}}</td>
+    <td>Breaker </td>
+
+    <td> {{informe.breaker_b1}}</td>
+<td> {{informe.breaker_b2}}</td>
+<td> {{informe.breaker_b3}}</td>
+<td> {{informe.breaker_b4}}</td>
+
+</tr>
+
+<tr>
+    <td>Piloto</td>
+
+<td> {{informe.piloto_b1}}</td>
+<td> {{informe.piloto_b2}}</td>
+<td> {{informe.piloto_b3}}</td>
+<td> {{informe.piloto_b4}}</td>
+
+    <td>Válvulas de valvulas_succion</td>
+    
+<td> {{informe.piloto_b4}}</td>
+    <td>Muletillas</td>
+    <td> {{informe.muletillas_b1}}</td>
+<td> {{informe.muletillas_b2}}</td>
+<td> {{informe.muletillas_b3}}</td>
+<td> {{informe.muletillas_b4}}</td>
+
+</tr>
+
+   <tr>
+    <td>Contactores</td>
+
+<td> {{informe.contactores_b1}}</td>
+<td> {{informe.contactores_b2}}</td>
+<td> {{informe.contactores_b3}}</td>
+<td> {{informe.contactores_b4}}</td>
+
+
+    <td>Tanque Hidro</td>
+<td> {{informe.tanque_hidro}}</td>
+
+    <td>Contacores</td>
+    <td> {{informe.contacores_b1}}</td>
+<td> {{informe.contacores_b2}}</td>
+<td> {{informe.contacores_b3}}</td>
+<td> {{informe.contacores_b4}}</td>
+
+
+</tr>
+
+   <tr>
+    <td>Presostatos</td>
+
+    <td> {{informe.presostatos_b1}}</td>
+<td> {{informe.presostatos_b2}}</td>
+<td> {{informe.presostatos_b3}}</td>
+<td> {{informe.presostatos_b4}}</td>
+
+    <td>Cheques</td>
+<td> {{informe.cheques}}</td>
+
+    <td>Flotador Electricos</td>
+
+    <td> {{informe.flotador_electricos_b1}}</td>
+<td> {{informe.flotador_electricos_b2}}</td>
+<td> {{informe.flotador_electricos_b3}}</td>
+<td> {{informe.flotador_electricos_b4}}</td>
+
+</tr>
+
+<tr>
+    <td>Alternador</td>
+        <td> {{informe.alternador_b1}}</td>
+<td> {{informe.alternador_b2}}</td>
+<td> {{informe.alternador_b3}}</td>
+<td> {{informe.alternador_b4}}</td>
+
+    <td>Presion de linea</td>
+<td> {{informe.presion_linea}}</td>
+
+    <td>Conexiones</td>
+
+        <td> {{informe.conexiones_b11}}</td>
+<td> {{informe.conexiones_b22}}</td>
+<td> {{informe.conexiones_b33}}</td>
+<td> {{informe.conexiones_b44}}</td>
+
+
+</tr>
+
+<tr>
+    <td>Guarda motor</td>
+
+  <td> {{informe.guarda_motor_b1}}</td>
+<td> {{informe.guarda_motor_b2}}</td>
+<td> {{informe.guarda_motor_b3}}</td>
+<td> {{informe.guarda_motor_b4}}</td>
+
+
+    <td>Registros</td>
+    <td> {{informe.registros}}</td>
+
+    <td>Amperaje</td>
+
+  <td> {{informe.amperaje_b11}}</td>
+<td> {{informe.amperaje_b22}}</td>
+<td> {{informe.amperaje_b33}}</td>
+<td> {{informe.amperaje_b44}}</td>
+
+
+</tr>
+
+<tr>
+    <td>Temporizador</td>
+
+      <td> {{informe.temporizador_b1}}</td>
+<td> {{informe.temporizador_b2}}</td>
+<td> {{informe.temporizador_b3}}</td>
+<td> {{informe.temporizador_b4}}</td>
+
+
+
+  
+    <td>Membrana</td>
+    <td> {{informe.membrana}}</td>
+
+    <td>Voltaje</td>
+      <td> {{informe.voltaje_b11}}</td>
+<td> {{informe.voltaje_b22}}</td>
+<td> {{informe.voltaje_b33}}</td>
+<td> {{informe.voltaje_b44}}</td>
+
+
+
+</tr>
+
+ <tr>
+    <td>Rele Termico</td>
+
+
+      <td> {{informe.rele_termico_b1}}</td>
+<td> {{informe.rele_termico_b2}}</td>
+<td> {{informe.rele_termico_b3}}</td>
+<td> {{informe.rele_termico_b4}}</td>
+
+
+    <td>Manometro</td>
+    <td> {{informe.manometro}}</td>
+
+    <td>Sierena</td>
+
+
+      <td> {{informe.sierena_b1}}</td>
+<td> {{informe.sierena_b2}}</td>
+<td> {{informe.sierena_b3}}</td>
+<td> {{informe.sierena_b4}}</td>
+
+
+
+</tr>
+
+       <tr>
+    <td>Flotador Electrico</td>
+
+
+
+      <td> {{informe.flotador_electrico_b1}}</td>
+<td> {{informe.flotador_electrico_b2}}</td>
+<td> {{informe.flotador_electrico_b3}}</td>
+<td> {{informe.flotador_electrico_b4}}</td>
+
+    <td>Cargador de Aire</td>
+    <td> {{informe.cargador_aire}}</td>
+
+    <td>Rele termico</td>
+
+
+      <td> {{informe.rele_terminco_b1}}</td>
+<td> {{informe.rele_terminco_b2}}</td>
+<td> {{informe.rele_terminco_b3}}</td>
+<td> {{informe.rele_terminco_b4}}</td>
+
+
+</tr>
+
+     <tr>
+    <td>Conexiones</td>
+       <td> {{informe.conexiones_b1}}</td>
+<td> {{informe.conexiones_b2}}</td>
+<td> {{informe.conexiones_b3}}</td>
+<td> {{informe.conexiones_b4}}</td>
+
+
+    <td>Tanque Reserva</td>
+    <td> {{informe.tanque_reserva}}</td>
+
+    <td>Residuos sólidos</td>
+       <td> {{informe.residuos_b1}}</td>
+<td> {{informe.residuos_b2}}</td>
+<td> {{informe.residuos_b3}}</td>
+<td> {{informe.residuos_b4}}</td>
+
+
+
+</tr>
+
+ <tr>
+    <td>Amperaje</td>
+           <td> {{informe.amperaje_b1}}</td>
+<td> {{informe.amperaje_b2}}</td>
+<td> {{informe.amperaje_b3}}</td>
+<td> {{informe.amperaje_b4}}</td>
+
+
+
+    <td>Flauta de descarga</td>
+    <td> {{informe.flauta_descarga}}</td>
+
+    <td></td>
+    <td></td>
+    <td></td>
+    <td></td>
+    <td></td>
+</tr>
+
+  <tr>
+    <td>Voltaje</td>
+
+           <td> {{informe.voltaje_b1}}</td>
+<td> {{informe.voltaje_b2}}</td>
+<td> {{informe.voltaje_b3}}</td>
+<td> {{informe.voltaje_b4}}</td>
+
+
+
+   
+    <td></td>
+    <td></td>
+</tr>
+
+        </tbody>
+    </table>
+<div class="table-container">
+    <table class="combined-table">
+        <thead>
+            <tr class="header">
+                <th colspan="5">MOTOR</th>
+                <th colspan="5">BOMBAS</th>
+                <th colspan="5">Indicador</th> <!-- Cambiado de rowspan a colspan -->
+            </tr>
+            <tr>
+                <th>Parámetro</th>
+                <th>M1</th>
+                <th>M2</th>
+                <th>M3</th>
+                <th>M4</th>
+                <th>Parámetro</th>
+                <th>B1</th>
+                <th>B2</th>
+                <th>B3</th>
+                <th>B4</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+
+    <td>Rodamientos</td>
+    
+           <td> {{informe.rodamientos_m1}}</td>
+<td> {{informe.rodamientos_m2}}</td>
+<td> {{informe.rodamientos_m3}}</td>
+<td> {{informe.rodamientos_m4}}</td>
+
+
+
+
+     <td>Impulsor</td>
+            <td> {{informe.impulsor_m1}}</td>
+<td> {{informe.impulsor_m2}}</td>
+<td> {{informe.impulsor_m3}}</td>
+<td> {{informe.impulsor_m4}}</td>
+
+
+<td rowspan="6" class="indicator-column">
+    <!-- Indicadores de estado con líneas separadoras -->
+    <div style="border-bottom: 1px solid #ccc; padding-bottom: 5px; margin-bottom: 5px;">
+        <span class="status-input" style="width: 50px; display: inline-block;">{{informe.cambio}}</span>
+        <span style="margin-left: 10px;">Cambio</span>
+    </div>
+    <div style="border-bottom: 1px solid #ccc; padding-bottom: 5px; margin-bottom: 5px;">
+        <span class="status-input" style="width: 50px; display: inline-block;">{{informe.falla}}</span>
+        <span style="margin-left: 10px;">Falla</span>
+    </div>
+    <div style="border-bottom: 1px solid #ccc; padding-bottom: 5px; margin-bottom: 5px;">
+        <span class="status-input" style="width: 50px; display: inline-block;">{{informe.pendiente}}</span>
+        <span style="margin-left: 10px;">Pendiente</span>
+    </div>
+    <div style="border-bottom: 1px solid #ccc; padding-bottom: 5px; margin-bottom: 5px;">
+        <span class="status-input" style="width: 50px; display: inline-block;">{{informe.diagnostico}}</span>
+        <span style="margin-left: 10px;">Diagnóstico</span>
+    </div>
+    <div style="border-bottom: 1px solid #ccc; padding-bottom: 5px; margin-bottom: 5px;">
+        <span class="status-input" style="width: 50px; display: inline-block;">{{informe.verificado}}</span>
+        <span style="margin-left: 10px;">Verificado</span>
+    </div>
+    <div>
+        <span class="status-input" style="width: 50px; display: inline-block;">{{informe.operando}}</span>
+        <span style="margin-left: 10px;">Operando</span>
+    </div>
+</td>
+
+
+
+
+            </tr>
+<tr>
+    <td>Casquillo</td>
+
+        <td> {{informe.casquillo_b1}}</td>
+<td> {{informe.casquillo_b2}}</td>
+<td> {{informe.casquillo_b3}}</td>
+<td> {{informe.casquillo_b4}}</td>
+
+
+    <td>Sello Mecánico</td>
+            <td> {{informe.sello_mecanico_b1}}</td>
+<td> {{informe.sello_mecanico_b2}}</td>
+<td> {{informe.sello_mecanico_b3}}</td>
+<td> {{informe.sello_mecanico_b4}}</td>
+
+</tr>
+
+<tr>
+    <td>Empaque</td>
+           <td> {{informe.empaque_b1}}</td>
+<td> {{informe.empaque_b2}}</td>
+<td> {{informe.empaque_b3}}</td>
+<td> {{informe.empaque_b4}}</td>
+
+
+
+    <td>Empaque</td>
+
+           <td> {{informe.empaque_2_b1}}</td>
+<td> {{informe.empaque_2_b2}}</td>
+<td> {{informe.empaque_2_b3}}</td>
+<td> {{informe.empaque_2_b4}}</td>
+
+
+</tr>
+
+<tr>
+    <td>Ventilador</td>
+           <td> {{informe.ventilador_b1}}</td>
+<td> {{informe.ventilador_b2}}</td>
+<td> {{informe.ventilador_b3}}</td>
+<td> {{informe.ventilador_b4}}</td>
+
+
+    <td>Carcasa</td>
+           <td> {{informe.carcasa_b1}}</td>
+<td> {{informe.carcasa_b2}}</td>
+<td> {{informe.carcasa_b3}}</td>
+<td> {{informe.carcasa_b4}}</td>
+
+
+</tr>
+
+<tr>
+    <td>Bornes</td>
+     <td> {{informe.bornes_b1}}</td>
+<td> {{informe.bornes_b2}}</td>
+<td> {{informe.bornes_b3}}</td>
+<td> {{informe.bornes_b4}}</td>
+
+    <td>Casquillo</td>
+         <td> {{informe.casquillo_b11}}</td>
+<td> {{informe.casquillo_b22}}</td>
+<td> {{informe.casquillo_b33}}</td>
+<td> {{informe.casquillo_b44}}</td>
+
+</tr>
+
+<tr>
+    <td>Bobinado</td>
+
+         <td> {{informe.bobinado_b1}}</td>
+<td> {{informe.bobinado_b2}}</td>
+<td> {{informe.bobinado_b3}}</td>
+<td> {{informe.bobinado_b4}}</td>
+  
+    <td></td>
+    <td></td>
+    <td></td>
+    <td></td>
+    <td></td>
+</tr>
+
+        </tbody>
+    </table>
+</div>
+<!-- Campo de texto adicional debajo de la última tabla -->
+<div class="additional-field">
+    <h3>Partes para Cambio:</h3> <!-- Título similar al de la imagen -->
+    <td rows="4" style="width: 100%; font-size: 12px; border: 1px solid #000;" > {{informe.partes_para_cambio}}</td>
+  
+</div>
+
+<div class="additional-field">
+    <h3>Observaciones:</h3> <!-- Título para las observaciones -->
+        <td rows="4" style="width: 100%; font-size: 12px; border: 1px solid #000;" > {{informe.observaciones}}</td>
+
+</div>
+  
+<!-- Sección de firmas debajo de "Observaciones" -->
+<div class="signature-section">
+    <div style="display: flex; justify-content: space-between; margin-top: 20px;">
+        <!-- Campo de firma del técnico -->
+        <div style="text-align: center; width: 45%;">
+    {{#if informe.firma_tecnico}}
+            <h3>Firma del Supervisor</h3>
+
+        <img src="data:image/png;base64,{{informe.firma_tecnico}}" alt="Firma Técnico">
+               {{/if}}
+ 
+            <br>
+            <br>
+        </div>
+        <!-- Campo de firma del supervisor -->
+        <div style="text-align: center; width: 45%;">
+          {{#if informe.firma_supervisor}}
+        <h3>Firma del Supervisor</h3>
+        <img src="data:image/png;base64,{{informe.firma_supervisor}}" alt="Firma Supervisor">
+    {{/if}}
+            
+            <br>
+            <br>
+        </div>
+    </div>
+</div>
+  
+<!-- Información de contacto debajo de las firmas -->
+<div class="contact-info" style="text-align: center; margin-top: 20px; font-size: 12px; color: #0000FF;">
+    Carrera 96A No. 65-52 // ingenieriahidraulibombas@gmail.com // Tels.: 6016496010 - 3115989023
+</div>
+
+ </div>
+<br>
+    <input id="boton" type="submit" value="ENVIAR INFORME">
+<br>
+
+
+
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
