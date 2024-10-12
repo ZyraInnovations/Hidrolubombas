@@ -240,7 +240,7 @@ strong {
 <body>
 
 <br>
-<button type="button" onclick="window.location.href='/menuAdministrativo'" class="btn-volver">Volver al Menú</button>
+<button type="button" onclick="window.history.back()" class="btn-volver">Volver Atrás</button>
 <br>
 <br>
 <br>
@@ -260,8 +260,13 @@ strong {
     <!-- Tu contenido de formulario aquí -->
 
 <div class="info-section">
+   
     <div><strong>Cliente:</strong> <input type="text" name="cliente" required ></div>
+    <div><strong>Correo:</strong> <input type="text" name="Correo" required ></div>
+
 <div>
+
+    
   <strong>Tipo de Mantenimiento:</strong> 
 <select name="tipo_de_mantenimiento" required>
     <option value="">Seleccione un tipo</option>
@@ -272,6 +277,7 @@ strong {
     <option value="Otro">Otro</option>
   </select>
 </div>
+
     <div><strong>Equipo:</strong> <input type="text" name="equipo" required ></div>
     <div><strong>Técnico:</strong> <input type="text" name="tecnico" required ></div>
     <div><strong>Hora Entrada:</strong> <input type="time" name="hora_entrada" required ></div>

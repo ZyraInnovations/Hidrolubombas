@@ -304,7 +304,7 @@ function bufferFromBase64(base64Data) {
       ventilador_b4, carcasa_b1, carcasa_b2, carcasa_b3, carcasa_b4, bornes_b1,
       bornes_b2, bornes_b3, bornes_b4, casquillo_b11, casquillo_b22, casquillo_b33,
       casquillo_b44, bobinado_b1, bobinado_b2, bobinado_b3, bobinado_b4,
-      partes_para_cambio, observaciones,firma_tecnico, firma_supervisor,tipo_de_mantenimiento
+      partes_para_cambio, observaciones,firma_tecnico, firma_supervisor,tipo_de_mantenimiento,Correo
     ) VALUES ?`;
   
     // Extraer valores del objeto req.body
@@ -351,7 +351,7 @@ function bufferFromBase64(base64Data) {
         datos.carcasa_b4, datos.bornes_b1, datos.bornes_b2, datos.bornes_b3,
         datos.bornes_b4, datos.casquillo_b11, datos.casquillo_b22, datos.casquillo_b33,
         datos.casquillo_b44, datos.bobinado_b1, datos.bobinado_b2, datos.bobinado_b3,
-        datos.bobinado_b4, datos.partes_para_cambio, datos.observaciones,  firmaTecnicoBlob, firmaSupervisorBlob,datos.tipo_de_manteninimiento
+        datos.bobinado_b4, datos.partes_para_cambio, datos.observaciones,  firmaTecnicoBlob, firmaSupervisorBlob,datos.tipo_de_manteninimiento,datos.Correo
       ]
     ];
   
