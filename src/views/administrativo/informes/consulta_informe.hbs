@@ -848,6 +848,11 @@ button:hover {
     position: relative;
     right: 10%;
 }
+.correr{
+   right: 10%;
+}
+
+
 
 </style>
 
@@ -1020,7 +1025,6 @@ button:hover {
            
 
     <div><strong>Cliente:</strong>   {{informe.cliente}}</li></div>
-            <div id="tipo" ><strong>Tipo de mantenimiento:</strong> {{informe.tipo_de_manteninimiento}} </div>
 
     <div><strong>Equipo:</strong> {{informe.equipo}}</div>
     <div><strong>Técnico:</strong> {{informe.tecnico}} </div>
@@ -1028,7 +1032,10 @@ button:hover {
     <div><strong>Hora Entrada:</strong>  {{informe.hora_entrada}}  </div>
     <div><strong>Hora Salida:</strong>   {{informe.hora_salida}}</div>
     <div><strong>Fecha:</strong>  {{informe.fecha}}</div>
+   
     <div><strong>Número:</strong>  {{informe.id}} </div>
+  <div class="correr"> <div id="tipo" ><strong>Tipo de mantenimiento:</strong> </div>{{informe.tipo_de_mantenimiento}} </div>
+
 </div>
 
 
