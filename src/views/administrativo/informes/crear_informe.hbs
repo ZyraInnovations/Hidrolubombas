@@ -291,6 +291,10 @@ margin-left: 40%;
             .no-pdf {
                 display: none !important;
             }
+            .td{
+width: 2%;
+
+            }
         }
         .combined-table {
     border-collapse: collapse;
@@ -1333,6 +1337,221 @@ body {
     border-radius: 5px;
     font-size: 12px;
 }
+@media print {
+    input, select, textarea {
+        background-color: white !important; /* Cambia el fondo a blanco */
+        color: black !important; /* Asegura que el texto sea visible */
+        border: 1px solid #000 !important; /* Añade un borde visible */
+    }
+}
+.sidebar{
+    display: none;
+}
+/* Ajustes para pantallas pequeñas (responsive) */
+@media (max-width: 700px) {
+  
+    
+    .info-row {
+        display: flex;
+        flex-direction: column; /* Coloca uno debajo del otro */
+        align-items: flex-start;
+        margin-bottom: 10px;
+    }
+
+    .info-row strong {
+        margin-bottom: 5px; /* Espacio entre el label y el campo de entrada */
+    }
+
+    .info-row input, 
+    .info-row select {
+        width: 100%; /* Ocupa todo el ancho disponible */
+        max-width: 100%; /* Asegura que no se exceda el ancho */
+    }
+
+    .table-container {
+        overflow-x: auto; /* Para que las tablas se puedan desplazar horizontalmente */
+    }
+}
+/* Ajuste de las tablas para pantallas más pequeñas */
+
+
+/* Estilos de tablas mejorados */
+.combined-table {
+    table-layout: auto; /* Deja que las columnas se ajusten automáticamente */
+    font-size: 10px; /* Tamaño de fuente ajustable */
+}
+
+.combined-table th, .combined-table td {
+    padding: 5px; /* Espaciado uniforme */
+}
+
+.combined-table tbody tr:nth-child(even) {
+    background-color: #f9f9f9; /* Color alternado de fondo para las filas */
+}
+
+.combined-table th {
+    background-color: #6da8d6;
+    color: white;
+}
+
+/* Para imprimir y PDF */
+@media print {
+    .combined-table {
+        font-size: 9px; /* Reducir tamaño para PDF */
+    }
+
+    .info-section input, .info-section select {
+        border: 1px solid black; /* Agregar bordes visibles en PDF */
+    }
+
+    /* Ajuste del logo para PDF */
+    #logo {
+        width: 120px;
+        margin: 0 auto;
+    }
+}
+
+/* Efecto hover en botones */
+input[type="submit"]:hover, 
+.btn-volver:hover {
+    background-color: #45a049; /* Cambiar el color de fondo */
+    transform: scale(1.05); /* Aumentar tamaño ligeramente */
+}
+
+/* Efecto en tablas */
+.styled-table tbody tr:hover {
+    background-color: #f1f7ff; /* Fondo más claro al pasar el cursor */
+    transform: scale(1.01); /* Ligeramente aumentar el tamaño */
+}
+
+/* Mejoras generales */
+body {
+    font-family: "Roboto", sans-serif;
+    background-color: #f0f0f0;
+}
+
+.report-container {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: white;
+    border-radius: 15px;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+}
+/* Estilos generales para la pantalla */
+body {
+    font-family: "Roboto", sans-serif;
+    background-color: #f0f0f0;
+    margin: 0;
+    padding: 0;
+}
+
+.report-container {
+    width: 100%;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: white;
+    border-radius: 15px;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+}
+
+/* Estilos que aplican solo cuando se genera el PDF */
+.pdf-mode {
+    width: 100%; 
+    padding: 0; 
+    box-shadow: none;
+    max-width: 100%;
+}
+
+.pdf-mode .report-container {
+    max-width: 900px; /* Mantén el ancho de escritorio */
+    padding: 0; /* Elimina cualquier padding adicional */
+    box-shadow: none; /* Sin sombras en el PDF */
+    border-radius: 0; /* Elimina los bordes redondeados */
+}
+
+.pdf-mode .combined-table {
+    font-size: 9px; /* Ajuste de fuente para PDF */
+    width: 100%; /* Asegura que la tabla ocupe todo el ancho */
+    table-layout: fixed;
+}
+
+.pdf-mode .info-section input,
+.pdf-mode .info-section select {
+    border: 1px solid black; /* Asegura que los inputs se vean correctamente en el PDF */
+    padding: 5px;
+    width: 100%; /* Asegura que ocupen todo el ancho disponible */
+}
+
+.pdf-mode .combined-table th,
+.pdf-mode .combined-table td {
+    padding: 5px;
+    border: 1px solid black;
+}
+
+/* Ajuste del logo para PDF */
+.pdf-mode #logo {
+    width: 150px;
+    margin: 0 auto;
+}
+/* Estilos responsivos para pantallas pequeñas (móviles y tablets) */
+@media (max-width: 1024px) { /* Para tablets */
+    .main-content {
+        width: 95%; /* Ajustar el ancho para tablets */
+        margin: 0 auto;
+        padding: 15px;
+    }
+
+    .combined-table {
+        font-size: 10px; /* Reducir el tamaño de la fuente para ajustar el contenido */
+        overflow-x: auto; /* Habilitar el desplazamiento horizontal si es necesario */
+    }
+
+    .combined-table th, .combined-table td {
+        padding: 6px; /* Reducir el padding para ahorrar espacio */
+    }
+}
+
+/* Estilos de pantalla responsive */
+@media (max-width: 600px) {
+   
+.main-content {
+    width: 90%;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: white;
+    border-radius: 15px;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+}
+  
+    .info-section {
+        position: relative;
+        margin-left: 50px;
+    }
+
+  
+
+    .info-row strong {
+        margin-bottom: 5px;
+    }
+
+    .info-row input,
+    .info-row select {
+        width: 100%;
+    }
+
+    .combined-table {
+        font-size: 9px;
+    }
+
+    #logo {
+        width: 80px;
+    }
+
+    .table-container {
+        overflow-x: auto;
+    }
+}
 
 </style>
 
@@ -1354,84 +1573,6 @@ body {
 
 
 
-        <aside class="sidebar">
-       <div class="sidebar-header">
-<br>
-<br>
-<div class="fondologo"></div>
-    <img class="logo" src="imagenes/logo_ingenieria.jpeg-removebg-preview.png" alt="AdminKit Logo">
-    <br>
-    <br>
-    <p>MENU</p>
-</div>
-
-
-
-            <ul class="sidebar-menu">
-                     <li class="menu-item">
-                    <i class="fas fa-home"></i> <a id="home" href="/menuAdministrativo">INICIO</a> 
-                 
-                </li>
-                <li class="menu-item">
-                    <i class="fas fa-user"></i> USUARIOS
-                    <ul class="submenu">
-                    <a href="/agregar_usuario"><li>Agregar Usuario</li></a>    
-                      <a href="/consultar_usuarios"><li>consultar Usuarios</li></a>  
-                    </ul>
-                </li>
-
-
-                
-               
-              
-               
-          
-           
-            <li class="menu-item">
-<i class="fas fa-file-alt"></i> INFORMES 
-                    <ul class="submenu">
-
-
-                     <a href="/realizar_informe"><li>Realizar informe</li></a>   
-                     <a href="/ver_informe"><li>Consulta de informe</li></a>   
-
-
-                    </ul>
-                </li>
-                
-            <li class="menu-item">
-    <i class="fas fa-map-marker-alt"></i> GEOLOCALIZACION
-                    <ul class="submenu">
-
-
-                    <a href=""><li>Ver mapa</li></a>     
-
-
-
-
-                    </ul>
-                </li>
-                
-
-
-      <li class="menu-item">
-                    <i class="fas fa-cogs"></i> CONFIGURACION
-                    <ul class="submenu">
-
-                    <a href=""><li>Preferencias</li></a>   
-                    <a href=""> <li>Seguridad</li></a>   
-
-                    </ul>
-                </li>
-
-
-
-            </ul>
-
-
-        </aside>
-
-
 
 
 
@@ -1439,24 +1580,6 @@ body {
 
         <section class="main-content">
 
-<nav class="top-navbar">
-    <div class="brand">Administracion</div>
-    <div class="top-right">
-        <i class="fas fa-bell"></i> <span class="badge"></span>
-        <i class="fas fa-envelope"></i> <span class="badge"></span>
-        <div class="profile-menu">
-            <i class="fas fa-user-circle" id="profile-icon"></i>
-            <div id="dropdown-menu" class="dropdown-menu hidden">
-                <a href="#">Editar</a>
-                <a href="/logout">Cerrar Sesión</a>
-            </div>
-        </div>
-        <!-- Aquí está el botón corregido -->
-        <button id="toggle-menu" class="toggle-menu-btn">
-            <i class="fas fa-bars"></i>
-        </button>
-    </div>
-</nav>
 <br>
 
 <br>
@@ -1983,7 +2106,7 @@ body {
 <!-- Script para habilitar la firma en los canvas -->
 <!-- Script para habilitar la firma en los canvas -->
 <script>
-    function replaceInputsWithText() {
+function replaceInputsWithText() {
     const inputs = document.querySelectorAll('input, select, textarea');
     inputs.forEach(input => {
         const value = input.value || input.placeholder;
@@ -2096,44 +2219,34 @@ body {
 <script>
 
 
-    
 document.getElementById('maintenanceForm').addEventListener('submit', function(event) {
     event.preventDefault(); // Evita el envío tradicional del formulario
     
-    var element = document.querySelector('.report-container'); // Solo lo declaramos aquí
+    var element = document.querySelector('.report-container'); // Selecciona el contenedor principal
+    
+    // Aplica la clase 'pdf-mode' antes de generar el PDF
+    element.classList.add('pdf-mode');
     
     const email = document.querySelector('input[name="Correo"]').value;
 
-    // Quitar el borde del canvas y ocultar botones de borrar
-    document.getElementById('signatureCanvas1').classList.add('no-border');
-    document.getElementById('signatureCanvas2').classList.add('no-border');
-    document.querySelectorAll('button').forEach(button => button.classList.add('hidden-pdf'));  // Ocultar botones de borrar
-
-
-
-
-
     // Configuración del PDF ajustada
-var opt = {
-    margin: [0.1, 0.1, 0.1, 0.3],  // Márgenes ajustados para PDF
-    filename: 'informe_mantenimiento.pdf',
-    image: { type: 'jpeg', quality: 0.98 },
-    html2canvas: { scale: 6 },  // Escala aumentada para mejorar la resolución sin sacrificar espacio
-    jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' }
-};
+    var opt = {
+        margin: [0.1, 0.1, 0.1, 0.3],  // Márgenes ajustados para PDF
+        filename: 'informe_mantenimiento.pdf',
+        image: { type: 'jpeg', quality: 0.98 },
+        html2canvas: { scale: 6 },  // Escala aumentada para mejorar la resolución sin sacrificar espacio
+        jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' }
+    };
 
-    // Genera el PDF y lo envía como blob
+    // Genera el PDF
     html2pdf().from(element).set(opt).outputPdf('blob').then(function (pdfBlob) {
-        // Restaurar los botones después de generar el PDF
-        document.getElementById('signatureCanvas1').classList.remove('no-border');
-        document.getElementById('signatureCanvas2').classList.remove('no-border');
-        document.querySelectorAll('button').forEach(button => button.classList.remove('hidden-pdf'));  // Mostrar de nuevo los botones
-
+        // Remueve la clase 'pdf-mode' después de generar el PDF
+        element.classList.remove('pdf-mode');
+        
         // Enviar el informe por correo
         enviarInformePorCorreo(email, pdfBlob);
     });
 });
-
 
 
 function enviarInformePorCorreo(correo, pdfBlob) {
