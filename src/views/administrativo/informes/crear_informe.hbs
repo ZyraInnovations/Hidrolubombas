@@ -4,6 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Registro de Mantenimiento</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap" rel="stylesheet">
   <style>
         body {
             font-family: Arial, sans-serif;
@@ -128,6 +131,9 @@
             .signature-section div {
                 width: 100%;
             }
+              #logo {
+                width: 10%;
+            }
         }
         #logo{
             width: 300px;
@@ -198,6 +204,36 @@ margin-left: 40%;
         outline: none; /* Elimina el contorno por defecto */
         box-shadow: 0 0 0 3px rgba(244, 67, 54, 0.4); /* Resalta el botón al enfocar */
     }
+    #boton{
+        margin-left: 50%;
+    }
+    body{
+        background-color:    #f0f0f0; /* Invertir a claro */
+;
+
+    }
+  .report-container {
+    background-color: white;
+    border-radius: 15px; /* Bordes redondeados */
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2), 
+                0 6px 20px rgba(0, 0, 0, 0.15); /* Sombra para efecto 3D */
+    padding: 20px; /* Espaciado interno */
+    transition: transform 0.3s ease, box-shadow 0.3s ease; /* Transición suave */
+}
+
+*{
+
+  font-family: "Roboto", sans-serif;
+  font-weight: 200;
+  font-style: normal;
+}
+/* Efecto al pasar el ratón */
+strong {
+    font-weight: bold; /* Aplicar negrilla */
+    color: #333; /* Color del texto (ajústalo según prefieras) */
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3); /* Agrega un efecto de sombra al texto */
+}
+
 </style>
 
 </head>
@@ -205,7 +241,9 @@ margin-left: 40%;
 
 <br>
 <button type="button" onclick="window.location.href='/menuAdministrativo'" class="btn-volver">Volver al Menú</button>
-
+<br>
+<br>
+<br>
     <div class="report-container">
         <!-- Company information section -->
         <div class="company-info">
@@ -634,7 +672,7 @@ margin-left: 40%;
 
  </div>
 <br>
-    <input type="submit" value="Enviar Datos">
+    <input id="boton" type="submit" value="ENVIAR INFORME">
 <br>
 </form>
  <!-- Botón para enviar el formulario -->

@@ -15,15 +15,15 @@
         font-weight: bold;
         font-style: bold;
     }
-  :root {
-        --bg-dark: #f0f0f0; /* Invertir a claro */
-        --bg-darker: #2d2d2d; /* Invertir a oscuro */
-        --primary-color: #0769B3; /* Mantener color primario */
-        --text-light: #2d2d2d; /* Texto oscuro */
-        --text-muted: #666666; /* Texto suavizado oscuro */
-        --accent-color: #0769b3; /* Mantener color acento */
-        --sidebar-width: 250px;
-    }
+:root {
+    --bg-dark: #2d2d2d; /* Color primario de tu empresa */
+    --bg-darker: white; /* Segundo color */
+    --primary-color: #0769B3; /* Tercer color */
+    --text-light: #f5f5f5; /* Texto claro */
+    --text-muted: #b0b0b0; /* Texto suavizado */
+    --accent-color: #0769b3; /* Color acento */
+    --sidebar-width: 250px;
+}
     * {
         font-family:'sensation';
        font-weight: bold;
@@ -82,7 +82,7 @@
         align-items: center;
         color: var(--text-light);
         position: relative;
-        border-bottom: 1px solid black; /* Agregar una división blanca */
+        border-bottom: 1px solid white; /* Agregar una división blanca */
 
     }
 
@@ -319,7 +319,7 @@ font-size: 25px;
 
 #home {
     text-decoration: none;
-    color: black;
+    color: white;
 }
 h2 {
     font-weight: 600;
