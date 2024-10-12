@@ -135,9 +135,76 @@ margin-left: 40%;
 
         }
     </style>
+    <style>
+    input[type="submit"] {
+        background-color: #4CAF50; /* Color de fondo */
+        color: white; /* Color del texto */
+        padding: 12px 24px; /* Espaciado interno */
+        font-size: 16px; /* Tamaño de la fuente */
+        font-weight: bold; /* Negrita */
+        border: none; /* Sin borde */
+        border-radius: 8px; /* Bordes redondeados */
+        cursor: pointer; /* Cambia el cursor al pasar por encima */
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Sombra para dar profundidad */
+        transition: background-color 0.3s ease, transform 0.2s ease; /* Transición para animaciones */
+        margin-top: 20px; /* Espacio superior */
+        display: inline-block; /* Asegura que se comporte como un botón */
+    }
+
+    input[type="submit"]:hover {
+        background-color: #45a049; /* Color al pasar el cursor */
+        transform: scale(1.05); /* Efecto de aumento al pasar el cursor */
+    }
+
+    input[type="submit"]:active {
+        background-color: #3e8e41; /* Color al hacer clic */
+        transform: scale(0.98); /* Efecto de pulsación */
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); /* Sombra reducida al hacer clic */
+    }
+
+    input[type="submit"]:focus {
+        outline: none; /* Elimina el contorno por defecto */
+        box-shadow: 0 0 0 3px rgba(76, 175, 80, 0.4); /* Resalta el botón al enfocar */
+    }
+</style>
+<style>
+    .btn-volver {
+        background-color: #f44336; /* Color de fondo */
+        color: white; /* Color del texto */
+        padding: 12px 24px; /* Espaciado interno */
+        font-size: 16px; /* Tamaño de la fuente */
+        font-weight: bold; /* Negrita */
+        border: none; /* Sin borde */
+        border-radius: 8px; /* Bordes redondeados */
+        cursor: pointer; /* Cambia el cursor al pasar por encima */
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Sombra para dar profundidad */
+        transition: background-color 0.3s ease, transform 0.2s ease; /* Transición para animaciones */
+        margin-top: 20px; /* Espacio superior */
+        display: inline-block; /* Asegura que se comporte como un botón */
+    }
+
+    .btn-volver:hover {
+        background-color: #d32f2f; /* Color al pasar el cursor */
+        transform: scale(1.05); /* Efecto de aumento al pasar el cursor */
+    }
+
+    .btn-volver:active {
+        background-color: #c62828; /* Color al hacer clic */
+        transform: scale(0.98); /* Efecto de pulsación */
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); /* Sombra reducida al hacer clic */
+    }
+
+    .btn-volver:focus {
+        outline: none; /* Elimina el contorno por defecto */
+        box-shadow: 0 0 0 3px rgba(244, 67, 54, 0.4); /* Resalta el botón al enfocar */
+    }
+</style>
+
 </head>
 <body>
 
+<br>
+<button type="button" onclick="window.location.href='/menuAdministrativo'" class="btn-volver">Volver al Menú</button>
 
     <div class="report-container">
         <!-- Company information section -->
@@ -537,7 +604,6 @@ margin-left: 40%;
     <h3>Observaciones:</h3> <!-- Título para las observaciones -->
     <textarea name="observaciones" rows="4" style="width: 100%; font-size: 12px; border: 1px solid #000;"></textarea> <!-- Campo de texto -->
 </div>
-   <input type="submit" value="Enviar Datos">
   
 <!-- Sección de firmas debajo de "Observaciones" -->
 <div class="signature-section">
@@ -565,8 +631,11 @@ margin-left: 40%;
 <div class="contact-info" style="text-align: center; margin-top: 20px; font-size: 12px; color: #0000FF;">
     Carrera 96A No. 65-52 // ingenieriahidraulibombas@gmail.com // Tels.: 6016496010 - 3115989023
 </div>
-<br>
+
  </div>
+<br>
+    <input type="submit" value="Enviar Datos">
+<br>
 </form>
  <!-- Botón para enviar el formulario -->
 
