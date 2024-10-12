@@ -385,6 +385,11 @@ app.get('/consultar_usuarios', async (req, res) => {
 
 
 
+app.use(bodyParser.json()); // Para parsear JSON
+app.use(bodyParser.urlencoded({ extended: true })); // Para parsear datos de formularios
+
+
+
 
 
 
@@ -404,16 +409,53 @@ app.get('/realizar_informe', (req, res) => {
 
 
 
+// Ruta para ver informes
+app.get('/ver_informe', (req, res) => {
+    if (req.session.loggedin === true) {
+        const nombreUsuario = req.session.user.name;
+        const informeId = req.query.id; // Obtener el ID del informe desde el formulario
 
+        if (!informeId) {
+            res.render('administrativo/informes/consulta_informe.hbs', {
+                nombreUsuario,
+                mensajeError: 'Por favor, ingrese un ID válido para buscar el informe.'
+            });
+            return;
+        }
 
+        // Realizar la consulta en la base de datos
+        const query = 'SELECT * FROM mantenimiento_hidro WHERE id = ?';
+        db.query(query, [informeId], (err, results) => {
+            if (err) {
+                console.error('Error al realizar la consulta:', err);
+                res.status(500).send('Error en el servidor');
+            } else if (results.length > 0) {
+                const informe = results[0];
 
-app.use(bodyParser.json()); // Para parsear JSON
-app.use(bodyParser.urlencoded({ extended: true })); // Para parsear datos de formularios
+                // Convertir las firmas a Base64 si existen
+                if (informe.firma_tecnico) {
+                    informe.firma_tecnico = Buffer.from(informe.firma_tecnico).toString('base64');
+                }
+                if (informe.firma_supervisor) {
+                    informe.firma_supervisor = Buffer.from(informe.firma_supervisor).toString('base64');
+                }
 
-
-
-
-
+                // Renderizar la vista con los datos del informe encontrado
+                res.render('administrativo/informes/consulta_informe.hbs', {
+                    nombreUsuario,
+                    informe
+                });
+            } else {
+                res.render('administrativo/informes/consulta_informe.hbs', {
+                    nombreUsuario,
+                    mensajeError: 'No se encontró ningún informe con el ID proporcionado.'
+                });
+            }
+        });
+    } else {
+        res.redirect('/login');
+    }
+});
 
 
 // Iniciar el servidor

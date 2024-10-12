@@ -1,0 +1,35 @@
+<h1>Consulta de Informe de Mantenimiento Hidro</h1>
+<p>Bienvenido, {{nombreUsuario}}</p>
+
+<!-- Formulario para buscar un informe por ID -->
+<form action="/ver_informe" method="GET">
+    <label for="id">Ingrese el ID del informe:</label>
+    <input type="text" id="id" name="id" required>
+    <button type="submit">Buscar</button>
+</form>
+
+<!-- Mostrar mensaje de resultado si existe -->
+{{#if informe}}
+    <h2>Detalles del Informe</h2>
+    <ul>
+        <li><strong>Cliente:</strong> {{informe.cliente}}</li>
+        <li><strong>Equipo:</strong> {{informe.equipo}}</li>
+        <li><strong>Técnico:</strong> {{informe.tecnico}}</li>
+        <li><strong>Fecha:</strong> {{informe.fecha}}</li>
+        <!-- Agrega más campos según sea necesario -->
+    </ul>
+
+    <!-- Mostrar las firmas si existen -->
+    {{#if informe.firma_tecnico}}
+        <h3>Firma del Técnico</h3>
+        <img src="data:image/png;base64,{{informe.firma_tecnico}}" alt="Firma Técnico">
+    {{/if}}
+
+    {{#if informe.firma_supervisor}}
+        <h3>Firma del Supervisor</h3>
+        <img src="data:image/png;base64,{{informe.firma_supervisor}}" alt="Firma Supervisor">
+    {{/if}}
+
+{{else}}
+    <p>{{mensajeError}}</p>
+{{/if}}
