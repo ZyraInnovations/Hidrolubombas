@@ -457,6 +457,36 @@ app.get('/ver_informe', (req, res) => {
     }
 });
 
+app.get('/api/informes-count', (req, res) => {
+    const query = 'SELECT COUNT(*) AS count FROM mantenimiento_hidro';
+
+    db.query(query, (error, results) => {
+        if (error) {
+            console.error('Error al contar los informes:', error);
+            return res.status(500).json({ error: 'Error al contar los informes' });
+        }
+        res.json({ count: results[0].count });
+    });
+});
+
+
+
+
+app.get('/api/tecnicos-count', (req, res) => {
+    const query = 'SELECT COUNT(*) AS count FROM usuarios_hidro WHERE role = "tecnico"';
+
+    db.query(query, (error, results) => {
+        if (error) {
+            console.error('Error al contar los técnicos:', error);
+            return res.status(500).json({ error: 'Error al contar los técnicos' });
+        }
+        res.json({ count: results[0].count });
+    });
+});
+
+
+
+
 
 // Iniciar el servidor
 app.listen(3000, () => {

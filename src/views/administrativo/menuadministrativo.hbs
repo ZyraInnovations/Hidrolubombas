@@ -414,7 +414,6 @@ button:hover {
 
                      <a href="/realizar_informe"><li>Realizar informe</li></a>   
                      <a href="/ver_informe"><li>Consulta de informe</li></a>   
-                     <a href=""><li>Indicadores</li></a>   
 
 
                     </ul>
@@ -485,21 +484,23 @@ button:hover {
                     <h2>BIENVENIDO</h2>
                     <p>{{name}} </p>
                 </div>
-                <div class="grid-container">
-                    <div class="card stat">
-                        <i class="fas fa-city stat-icon"></i>
-                        <div>
-        <h3 id="edificios-count">Cargando...</h3> <!-- Marcador de posición para el conteo dinámico -->
-                            <p>EDIFICIOS</p>
-                        </div>
-                    </div>
-                    <div class="card stat">
-                        <i class="fas fa-building stat-icon"></i>
-                        <div>
-        <h3 id="apartamentos-count">Cargando...</h3> <!-- Marcador de posición para el conteo dinámico -->
-                            <p>apartamentos</p>
-                        </div>
-                    </div>
+         <div class="grid-container">
+    <div class="card stat">
+        <i class="fas fa-file-alt stat-icon"></i>
+        <div>
+            <h3 id="edificios-count">Cargando...</h3> <!-- Marcador de posición para el conteo dinámico -->
+            <p>INFORMES</p>
+        </div>
+    </div>
+
+
+      <div class="card stat">
+    <i class="fas fa-users stat-icon"></i>
+    <div>
+        <h3 id="tecnicos-count">Cargando...</h3> <!-- Marcador de posición para el conteo dinámico -->
+        <p>Técnicos</p>
+    </div>
+</div>
                     <div class="card stat">
                         <i class="fas fa-users stat-icon"></i>
                         <div>
@@ -656,16 +657,15 @@ document.getElementById('toggle-menu').addEventListener('click', function () {
     }
 });
 document.addEventListener("DOMContentLoaded", function () {
-    // Fetch the edificios count from the API
-    fetch('/api/edificios-count')
+    // Fetch the informes count from the API
+    fetch('/api/informes-count')
         .then(response => response.json())
         .then(data => {
             // Update the number in the HTML
             document.getElementById('edificios-count').innerText = data.count;
         })
-        .catch(error => console.error('Error fetching edificios count:', error));
+        .catch(error => console.error('Error fetching informes count:', error));
 });
-
 
 document.addEventListener("DOMContentLoaded", function () {
     // Fetch the edificios count from the API
@@ -681,7 +681,16 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
 
-
+   document.addEventListener("DOMContentLoaded", function () {
+        // Fetch the técnicos count from the API
+        fetch('/api/tecnicos-count')
+            .then(response => response.json())
+            .then(data => {
+                // Update the number in the HTML
+                document.getElementById('tecnicos-count').innerText = data.count;
+            })
+            .catch(error => console.error('Error fetching técnicos count:', error));
+    });
 
 
 
