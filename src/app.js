@@ -245,10 +245,24 @@ const db = mysql.createConnection({
     }
   });
   
+
+
+
+
+// Function to convert base64 string to a Buffer
+function bufferFromBase64(base64Data) {
+    const base64String = base64Data.split(';base64,').pop();
+    return Buffer.from(base64String, 'base64');
+}
+
+
+
   // Ruta para manejar la inserción de datos del formulario
-  app.post('/insertar-datos', (req, res) => {
+  app.post('/insertar-datos', upload.none(), (req, res) => {
     const datos = req.body;
-  
+      // Convert the base64 strings to buffers
+      const firmaTecnicoBlob = bufferFromBase64(datos.firma_tecnico);
+      const firmaSupervisorBlob = bufferFromBase64(datos.firma_supervisor);
     // Crear la consulta SQL
     const query = `INSERT INTO mantenimiento_hidro (
       cliente, equipo, tecnico, hora_entrada, hora_salida, fecha, numero,
@@ -283,7 +297,7 @@ const db = mysql.createConnection({
       ventilador_b4, carcasa_b1, carcasa_b2, carcasa_b3, carcasa_b4, bornes_b1,
       bornes_b2, bornes_b3, bornes_b4, casquillo_b11, casquillo_b22, casquillo_b33,
       casquillo_b44, bobinado_b1, bobinado_b2, bobinado_b3, bobinado_b4,
-      partes_para_cambio, observaciones
+      partes_para_cambio, observaciones,firma_tecnico, firma_supervisor
     ) VALUES ?`;
   
     // Extraer valores del objeto req.body
@@ -330,7 +344,7 @@ const db = mysql.createConnection({
         datos.carcasa_b4, datos.bornes_b1, datos.bornes_b2, datos.bornes_b3,
         datos.bornes_b4, datos.casquillo_b11, datos.casquillo_b22, datos.casquillo_b33,
         datos.casquillo_b44, datos.bobinado_b1, datos.bobinado_b2, datos.bobinado_b3,
-        datos.bobinado_b4, datos.partes_para_cambio, datos.observaciones
+        datos.bobinado_b4, datos.partes_para_cambio, datos.observaciones,  firmaTecnicoBlob, firmaSupervisorBlob
       ]
     ];
   
@@ -345,8 +359,6 @@ const db = mysql.createConnection({
     });
   });
   
-
-//mejoraaa
 
 
 // Ruta para consultar los usuarios

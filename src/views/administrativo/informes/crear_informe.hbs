@@ -30,7 +30,7 @@
             margin-bottom: 10px;
         }
         .logo {
-            width: 100px;
+            width: 120px;
         }
         .info-section {
             font-size: 10px;
@@ -129,6 +129,11 @@
                 width: 100%;
             }
         }
+        #logo{
+            width: 300px;
+margin-left: 40%;
+
+        }
     </style>
 </head>
 <body>
@@ -142,24 +147,23 @@
         </div>
 
         <div class="header-info">
-            <div class="logo">
-                <img src="imagenes/logo_ingenieria.jpeg-removebg-preview.png" alt="Logo" width="100"> <!-- Ajusta la ruta del logo -->
-            </div>
-<form action="/insertar-datos" method="POST">
+     <div class="logo">
+    <img id="logo" src="imagenes/logo_ingenieria.jpeg-removebg-preview.png" alt="Logo" width="200"> <!-- Ajusta la ruta del logo -->
+</div>
+
+<form id="maintenanceForm">
     <!-- Tu contenido de formulario aquí -->
 
-        <div class="info-section">
-   
-</div> <div><strong>Cliente:</strong> <input type="text" name="cliente"></div>
+<div class="info-section">
+    <div><strong>Cliente:</strong> <input type="text" name="cliente"></div>
     <div><strong>Equipo:</strong> <input type="text" name="equipo"></div>
     <div><strong>Técnico:</strong> <input type="text" name="tecnico"></div>
-
-   <div class="info-section">
     <div><strong>Hora Entrada:</strong> <input type="text" name="hora_entrada"></div>
     <div><strong>Hora Salida:</strong> <input type="text" name="hora_salida"></div>
     <div><strong>Fecha:</strong> <input type="text" name="fecha"></div>
     <div><strong>Número:</strong> <input type="text" name="numero"></div>
 </div>
+
 
         </div>
 
@@ -534,7 +538,7 @@
     <textarea name="observaciones" rows="4" style="width: 100%; font-size: 12px; border: 1px solid #000;"></textarea> <!-- Campo de texto -->
 </div>
    <input type="submit" value="Enviar Datos">
-  </form>
+  
 <!-- Sección de firmas debajo de "Observaciones" -->
 <div class="signature-section">
     <div style="display: flex; justify-content: space-between; margin-top: 20px;">
@@ -563,12 +567,13 @@
 </div>
 <br>
  </div>
-
+</form>
  <!-- Botón para enviar el formulario -->
 
 <!-- Script para habilitar la firma en los canvas -->
 <!-- Script para habilitar la firma en los canvas -->
 <script>
+    // Initialize the signature pad for a given canvas
     function initSignaturePad(canvasId) {
         const canvas = document.getElementById(canvasId);
         const ctx = canvas.getContext('2d');
@@ -604,41 +609,64 @@
         }
     }
 
+    // Clear the canvas
     function clearCanvas(canvasId) {
         const canvas = document.getElementById(canvasId);
         const ctx = canvas.getContext('2d');
         ctx.clearRect(0, 0, canvas.width, canvas.height);
     }
 
-    // Inicializar los pads de firma para cada canvas
+    // Initialize signature pads for each canvas
     window.onload = function() {
         initSignaturePad('signatureCanvas1');
         initSignaturePad('signatureCanvas2');
     };
-    function getSignatureData(canvasId) {
-    const canvas = document.getElementById(canvasId);
-    return canvas.toDataURL(); // Esto devuelve una cadena base64 de la firma
-}
 
-// Al enviar el formulario, captura las firmas
-document.querySelector('form').onsubmit = function() {
-    const firmaTecnico = getSignatureData('signatureCanvas1');
-    const firmaSupervisor = getSignatureData('signatureCanvas2');
-    
-    // Añadir las firmas al formulario antes de enviar
-    const inputFirmaTecnico = document.createElement('input');
-    inputFirmaTecnico.type = 'hidden';
-    inputFirmaTecnico.name = 'firma_tecnico';
-    inputFirmaTecnico.value = firmaTecnico;
-    
-    const inputFirmaSupervisor = document.createElement('input');
-    inputFirmaSupervisor.type = 'hidden';
-    inputFirmaSupervisor.name = 'firma_supervisor';
-    inputFirmaSupervisor.value = firmaSupervisor;
+    // Get signature data from a canvas as a Base64 string
+    function getSignatureDataUrl(canvasId) {
+        const canvas = document.getElementById(canvasId);
+        return canvas.toDataURL('image/png'); // Returns a Base64-encoded string
+    }
 
-    this.appendChild(inputFirmaTecnico);
-    this.appendChild(inputFirmaSupervisor);
-};
+    // Capture signatures as Base64-encoded images
+    function getSignatureBlobs() {
+        const firmaTecnico = getSignatureDataUrl('signatureCanvas1');
+        const firmaSupervisor = getSignatureDataUrl('signatureCanvas2');
 
+        return {
+            firma_tecnico: firmaTecnico,
+            firma_supervisor: firmaSupervisor
+        };
+    }
 
+    // Handle form submission
+    document.getElementById('maintenanceForm').addEventListener('submit', function(event) {
+        event.preventDefault(); // Prevent default form submission
+        submitForm(); // Call the function to submit data
+    });
+
+    // Function to submit form data
+    function submitForm() {
+        const formData = new FormData(document.getElementById('maintenanceForm'));
+        const signatures = getSignatureBlobs();
+
+        // Append the signatures to the form data
+        formData.append('firma_tecnico', signatures.firma_tecnico);
+        formData.append('firma_supervisor', signatures.firma_supervisor);
+
+        fetch('/insertar-datos', {
+            method: 'POST',
+            body: formData
+        })
+        .then(response => response.text())
+        .then(data => {
+            console.log('Success:', data);
+            alert('Datos insertados correctamente');
+        })
+        .catch((error) => {
+            console.error('Error:', error);
+            alert('Error al insertar los datos');
+        });
+    }
 </script>
+
