@@ -1599,7 +1599,7 @@ body {
 
 
 
-<form id="maintenanceForm">
+<form id="maintenanceForm" enctype="multipart/form-data">
     <!-- Tu contenido de formulario aquí -->
 
 
@@ -1616,6 +1616,10 @@ body {
     <div class="info-row">
         <strong>Cliente:</strong> 
         <input type="text" name="cliente" required>
+    </div>
+        <div class="info-row">
+        <strong>torre:</strong> 
+        <input type="text" name="torre" required>
     </div>
     <div class="info-row">
         <strong>Correo:</strong> 
@@ -2082,6 +2086,7 @@ body {
 
 
 
+<input id="boton" name="fotos" type="file" multiple accept="image/*">
 
 
     <input id="boton" type="submit" value="ENVIAR INFORME">
@@ -2250,10 +2255,9 @@ document.getElementById('maintenanceForm').addEventListener('submit', function(e
 
 
 function enviarInformePorCorreo(correo, pdfBlob) {
-    const formData = new FormData();
-    formData.append('correo', correo);
-    formData.append('pdf', pdfBlob, 'informe_mantenimiento.pdf');
-    
+    const formData = new FormData(document.getElementById('maintenanceForm')); // Tomamos los datos del formulario
+    formData.append('pdf', pdfBlob, 'informe_mantenimiento.pdf'); // Adjuntamos el PDF generado
+
     fetch('/enviar-correo', {
         method: 'POST',
         body: formData
@@ -2271,5 +2275,4 @@ function enviarInformePorCorreo(correo, pdfBlob) {
         alert('Hubo un error al enviar el correo');
     });
 }
-
 </script>

@@ -200,19 +200,9 @@ app.get("/menutecnicos", (req, res) => {
     }
 });
 
-
 const multer = require('multer');
-
-
-
-
-
-
-// Configuración de multer para manejar la subida de archivos
-const storage = multer.memoryStorage();
+const storage = multer.memoryStorage(); // Almacenar archivos en la memoria temporalmente
 const upload = multer({ storage: storage });
-
-
 
 // Ruta para el menú administrativo - Mostrar formulario para nuevo usuario
 app.get('/nuevousuario', (req, res) => {
@@ -272,7 +262,7 @@ function bufferFromBase64(base64Data) {
       const firmaSupervisorBlob = bufferFromBase64(datos.firma_supervisor);
     // Crear la consulta SQL
     const query = `INSERT INTO mantenimiento_hidro (
-      cliente, equipo, tecnico, hora_entrada, hora_salida, fecha, numero,
+      cliente, equipo, tecnico,torre, hora_entrada, hora_salida, fecha, numero,
       variador_b1, variador_b2, variador_b3, variador_b4, precarga,
       guarda_motor_b11, guarda_motor_b22, guarda_motor_b33, guarda_motor_b44,
       mutelillas_b1, mutelillas_b2, mutelillas_b3, mutelillas_b4, flotador_mecanico,
@@ -310,7 +300,7 @@ function bufferFromBase64(base64Data) {
     // Extraer valores del objeto req.body
     const values = [
       [
-        datos.cliente, datos.equipo, datos.tecnico, datos.hora_entrada, datos.hora_salida,
+        datos.cliente, datos.equipo, datos.tecnico,datos.torre, datos.hora_entrada, datos.hora_salida,
         datos.fecha, datos.numero, datos.variador_b1, datos.variador_b2, datos.variador_b3,
         datos.variador_b4, datos.precarga, datos.guarda_motor_b11, datos.guarda_motor_b22,
         datos.guarda_motor_b33, datos.guarda_motor_b44, datos.mutelillas_b1,
@@ -631,31 +621,45 @@ app.post('/agregar_usuario', (req, res) => {
 
 
 
-app.post('/enviar-correo', upload.single('pdf'), (req, res) => {
-    const correoDestino = req.body.correo;
-    const archivoPDF = req.file; // El archivo PDF adjunto
-    
-    const transporter = nodemailer.createTransport({
-        service: 'gmail', // O el servicio de correo que uses
-        auth: {
-            user: 'nexus.innovationss@gmail.com', // Coloca tu correo electrónico
-        pass: 'dhmtnkcehxzfwzbd' // Coloca tu contraseña de correo electrónico
+
+
+
+
+app.post('/enviar-correo', upload.fields([
+    { name: 'pdf', maxCount: 1 }, // El campo para el PDF
+    { name: 'fotos', maxCount: 10 }  // El campo para las fotos, que pueden ser opcionales
+]), (req, res) => {
+    const correoDestino = req.body.Correo;
+    const archivoPDF = req.files['pdf'][0]; // El PDF siempre estará presente
+    const imagenesAdjuntas = req.files['fotos'] || []; // Si no hay fotos, será un array vacío
+
+    // Configura los adjuntos del correo, incluyendo el PDF
+    let attachments = [
+        {
+            filename: 'informe_mantenimiento.pdf',
+            content: archivoPDF.buffer
         }
-    });
-    
+    ];
+
+    // Solo agrega las fotos si existen
+    if (imagenesAdjuntas.length > 0) {
+        imagenesAdjuntas.forEach((imagen, index) => {
+            attachments.push({
+                filename: `imagen_${index + 1}.jpg`, 
+                content: imagen.buffer
+            });
+        });
+    }
+
+    // Configuración y envío del correo
     const mailOptions = {
         from: 'nexus.innovationss@gmail.com',
         to: correoDestino,
         subject: 'Informe de Mantenimiento',
-        text: 'Adjunto se encuentra el informe de mantenimiento en formato PDF.',
-        attachments: [
-            {
-                filename: 'informe_mantenimiento.pdf',
-                content: archivoPDF.buffer
-            }
-        ]
+        text: 'Adjunto se encuentra el informe de mantenimiento en formato PDF, junto con las imágenes seleccionadas.',
+        attachments: attachments
     };
-    
+
     transporter.sendMail(mailOptions, (error, info) => {
         if (error) {
             console.log(error);
@@ -664,6 +668,7 @@ app.post('/enviar-correo', upload.single('pdf'), (req, res) => {
         res.status(200).json({ success: true, message: 'Correo enviado con éxito' });
     });
 });
+
 
 
 
