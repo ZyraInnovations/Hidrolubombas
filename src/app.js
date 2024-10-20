@@ -623,17 +623,19 @@ app.post('/agregar_usuario', (req, res) => {
 
 
 
-
-
 app.post('/enviar-correo', upload.fields([
-    { name: 'pdf', maxCount: 1 }, // El campo para el PDF
-    { name: 'fotos', maxCount: 10 }  // El campo para las fotos, que pueden ser opcionales
+    { name: 'pdf', maxCount: 1 },    // Define the field for the generated PDF
+    { name: 'fotos', maxCount: 10 }  // Define the field for the optional photos
 ]), (req, res) => {
     const correoDestino = req.body.Correo;
-    const archivoPDF = req.files['pdf'][0]; // El PDF siempre estará presente
-    const imagenesAdjuntas = req.files['fotos'] || []; // Si no hay fotos, será un array vacío
+    let archivoPDF = req.files['pdf'] ? req.files['pdf'][0] : null;
+    let imagenesAdjuntas = req.files['fotos'] || [];
 
-    // Configura los adjuntos del correo, incluyendo el PDF
+    if (!archivoPDF) {
+        return res.status(400).json({ success: false, message: 'El PDF es obligatorio.' });
+    }
+
+    // Set up email attachments
     let attachments = [
         {
             filename: 'informe_mantenimiento.pdf',
@@ -641,17 +643,16 @@ app.post('/enviar-correo', upload.fields([
         }
     ];
 
-    // Solo agrega las fotos si existen
     if (imagenesAdjuntas.length > 0) {
         imagenesAdjuntas.forEach((imagen, index) => {
             attachments.push({
-                filename: `imagen_${index + 1}.jpg`, 
+                filename: `imagen_${index + 1}.jpg`,
                 content: imagen.buffer
             });
         });
     }
 
-    // Configuración y envío del correo
+    // Mail sending logic
     const mailOptions = {
         from: 'nexus.innovationss@gmail.com',
         to: correoDestino,
@@ -668,7 +669,6 @@ app.post('/enviar-correo', upload.fields([
         res.status(200).json({ success: true, message: 'Correo enviado con éxito' });
     });
 });
-
 
 
 

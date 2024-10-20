@@ -1599,7 +1599,7 @@ body {
 
 
 
-<form id="maintenanceForm" enctype="multipart/form-data">
+<form id="maintenanceForm">
     <!-- Tu contenido de formulario aquí -->
 
 
@@ -2255,9 +2255,9 @@ document.getElementById('maintenanceForm').addEventListener('submit', function(e
 
 
 function enviarInformePorCorreo(correo, pdfBlob) {
-    const formData = new FormData(document.getElementById('maintenanceForm')); // Tomamos los datos del formulario
-    formData.append('pdf', pdfBlob, 'informe_mantenimiento.pdf'); // Adjuntamos el PDF generado
-
+    const formData = new FormData(document.getElementById('maintenanceForm')); 
+    formData.append('pdf', pdfBlob, 'informe_mantenimiento.pdf'); // Attach the generated PDF
+    
     fetch('/enviar-correo', {
         method: 'POST',
         body: formData
@@ -2275,4 +2275,6 @@ function enviarInformePorCorreo(correo, pdfBlob) {
         alert('Hubo un error al enviar el correo');
     });
 }
+
+
 </script>
