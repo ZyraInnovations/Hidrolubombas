@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>HIDRAULIBOMBAS</title>
+    <title>TECNICO</title>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 
 
@@ -67,7 +67,7 @@ body {
   height: 100%;
   width: 60px;
   overflow: hidden;
-  background: white;
+  background: #0009;
   transition: width .05s linear, background 0.3s;
   -webkit-transition: width .05s linear, background 0.3s;
   z-index: 10;
@@ -95,7 +95,7 @@ body {
   flex-direction: row;
   align-items: center;
   justify-content: center;
-  color:black;
+  color:white;
   font-size: 1rem;
   transition: all 0.1s linear;
   -webkit-transition: all 0.1s linear;
@@ -353,8 +353,8 @@ section {
 }
 
 .logo-img {
-  width: 100px;
-  height: 100px;
+  width: 50px;
+  height: 50px;
   border-radius: 50%;
   transition: transform 0.3s ease-in-out;
 }
@@ -1124,27 +1124,6 @@ body {
   background-color: #666567;
   color: black;
 }
-
-.light-theme .main-menu > ul > li > a {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: center;
-  color:white;
-  font-size: 1rem;
-  transition: all 0.1s linear;
-  -webkit-transition: all 0.1s linear;
-  padding: 10px 0;
-  font-weight: bold;
-}
-
-.light-theme .main-menu > ul > li {
-  border-bottom: 1px solid #ffffff; /* Cambia el color y el grosor según tu preferencia */
-}
-.main-menu > ul > li {
-  border-bottom: 1px solid black; /* Cambia el color y el grosor según tu preferencia */
-}
-
 /* Tema claro */
 /* Tema claro */
 .light-theme .notification-bell i.fa-bell {
@@ -1390,9 +1369,6 @@ body {
   width: 100%; /* Ancho fijo para ocupar el mismo espacio que los otros botones */
   height: 40px; /* Altura fija para igualar el tamaño de los otros botones */
 }
-/* Estilo inicial del logo */
-
-/* Estilo del logo cuando el menú está desplegado */
 
 </style>
 
@@ -1434,11 +1410,9 @@ body {
 <nav class="main-menu">
     <ul>
         <br>
-        <br>
-        <br>
       <li class="logo">
         
-          <img src="imagenes/logo_ingenieria.jpeg-removebg-preview.png" alt="Logo" class="logo-img"/>
+          <img src="https://png.pngtree.com/png-clipart/20230813/original/pngtree-tools-blue-circle-icon-design-icon-technical-blue-vector-picture-image_10584918.png" alt="Logo" class="logo-img"/>
         
       </li>
 
@@ -1448,22 +1422,28 @@ body {
     <span class="nav-text">Atras</span>
   </a>
 </li>
-
+<br>
 <li >
 
-
-
-  <li class="active">
-  <a href="/menutecnicos">
-    <i class="fa fa-tools nav-icon"></i>
-    <span class="nav-text">TECNICO</span>
+  <a href="">
+    <i class="fa fa-home nav-icon"></i>
+    <span class="nav-text">Inicio</span>
   </a>
 </li>
 
+<br>
+      <li class="active" >
+        <a href="/">
+        <i class="fa fa-truck-pickup nav-icon"></i>
+          <span class="nav-text">tecnicos</span>
+        </a>
+      </li>
+<br>
 
 
+ 
 <li> 
-  <a href="">
+  <a href="/menu_geolocalizacion">
 <i class="fa fa-map-marker-alt nav-icon"></i>
           <span class="nav-text">Geolocalizacion</span>
         </a>
@@ -1472,7 +1452,7 @@ body {
 
     <ul class="logout">
       <li>
-        <a href="#">
+        <a href="/nuevo_tikect_soporte">
           <i class="fa fa-cogs nav-icon"></i>
           <span class="nav-text">Soporte</span>
         </a>
@@ -1488,16 +1468,17 @@ body {
       </li>
     </ul>
   </nav>
-
-
-
-
 <br>
+
+
+
+
 
    <div class="search-bar">
         <input type="text" placeholder="Buscar..." />
         <button type="submit"><i class="fa fa-search"></i></button>
     </div>
+
 
 <div id="theme-toggle" class="theme-switch">
   <div class="toggle-circle"></div>
@@ -1528,15 +1509,15 @@ body {
 
  
         <div class="tarjeta">
-                    <div class="titulo">INFORMES</div>
+                    <div class="titulo">Informes</div>
 
           <div class="imagen-circulo">
             <img src="https://concepto.de/wp-content/uploads/2014/03/informe-800x380.jpg" alt="Imagen de la tarjeta">
           </div>
           <div class="cuerpo">
             <div class="boton-container">
-              <a href="/realizar_informe"><i class="fas fa-user-plus"></i>REALIZAR INFORME</a>
-              <a href="/buscar_por_fecha" class="consultar"><i class="fas fa-search"></i>CONSULTAR MIS IFORMES</a>
+              <a href="/realizar_informe"><i class="fas fa-user-plus"></i>realizar informe</a>
+              <a href="" class="consultar"><i class="fas fa-search"></i>Consultar</a>
             </div>
           </div>
           <div class="pie">
@@ -1545,9 +1526,14 @@ body {
 
 
 
-   
 
-     
+
+
+
+
+
+
+
 
 
 
@@ -1559,7 +1545,19 @@ body {
 
 
 
-  
+
+
+      </div>
+    </div>
+
+
+
+       
+
+
+
+
+ </section>
 
 </body>
 
@@ -1579,6 +1577,153 @@ listItems.forEach((listItem) => {
 });
 
 
+
+
+
+
+
+
+
+
+
+
+
+document.addEventListener("DOMContentLoaded", function () {
+    const notificationBell = document.querySelector(".notification-bell");
+    const notificationModal = document.querySelector(".notification-modal");
+    const notificationList = document.querySelector(".notification-list");
+    const closeModalButton = document.querySelector(".close-modal");
+    const notificationSound = document.getElementById("notification-sound");
+    let isSoundPlaying = false;
+
+    // Solicitar permiso para las notificaciones
+    if (Notification.permission !== "granted") {
+        Notification.requestPermission();
+    }
+
+    function mostrarNotificacionEnModal(notificaciones) {
+        notificationList.innerHTML = ""; // Limpiar lista de notificaciones
+
+        notificaciones.forEach(noti => {
+            const listItem = document.createElement("li");
+            listItem.textContent = noti.mensaje;
+
+            const marcarLeidaBtn = document.createElement("button");
+            marcarLeidaBtn.textContent = "Marcar como leída";
+            marcarLeidaBtn.classList.add("mark-as-read");
+            marcarLeidaBtn.addEventListener("click", () => {
+                marcarNotificacionComoLeida(noti.id);
+                listItem.remove(); // Eliminar notificación de la lista
+            });
+
+            listItem.appendChild(marcarLeidaBtn);
+            notificationList.appendChild(listItem);
+        });
+
+        notificationModal.style.display = "flex"; // Mostrar el modal
+    }
+
+    function detenerSonido() {
+        notificationSound.pause();
+        notificationSound.currentTime = 0;
+        isSoundPlaying = false;
+    }
+
+    async function marcarNotificacionComoLeida(id) {
+        try {
+            await fetch(`/marcarNotificacionLeida/${id}`, { method: 'POST' });
+            detenerSonido();
+        } catch (error) {
+            console.error("Error al marcar la notificación como leída:", error);
+        }
+    }
+// Función para realizar el fetch con un tiempo de espera
+async function fetchConTimeout(url, opciones, tiempoDeEspera = 5000) {
+    return Promise.race([
+        fetch(url, opciones),
+        new Promise((_, reject) =>
+            setTimeout(() => reject(new Error('Tiempo de espera alcanzado')), tiempoDeEspera)
+        )
+    ]);
+}
+
+    // Verificar periódicamente si hay nuevas notificaciones
+// Verificar periódicamente si hay nuevas notificaciones
+setInterval(async () => {
+    try {
+        const response = await fetchConTimeout(`/notificaciones/${idUsuario}`, null, 5000);
+        if (!response.ok) {
+            throw new Error(`Error en la respuesta del servidor: ${response.status}`);
+        }
+        const notificaciones = await response.json();
+
+        const nuevasNotificaciones = notificaciones.filter(noti => !noti.leida);
+        const numeroDeNotificaciones = nuevasNotificaciones.length;
+
+        // Actualizar el número en la campana de notificaciones
+        const notificationCount = document.querySelector(".notification-count");
+        if (numeroDeNotificaciones > 0) {
+            notificationCount.textContent = numeroDeNotificaciones;
+            notificationCount.style.display = "block"; // Mostrar el contador
+        } else {
+            notificationCount.style.display = "none"; // Ocultar el contador si no hay notificaciones
+        }
+
+        if (nuevasNotificaciones.length > 0) {
+            mostrarNotificacionEnModal(nuevasNotificaciones);
+
+            if (!isSoundPlaying) {
+                notificationSound.loop = true;
+                notificationSound.play().catch(error => {
+                    console.error("Error al reproducir el sonido:", error);
+                });
+                isSoundPlaying = true;
+            }
+        }
+    } catch (error) {
+        console.error("Error al obtener las notificaciones:", error);
+    }
+}, 10000); // Cada 10 segundos
+
+    // Mostrar el modal al hacer clic en la campana
+    notificationBell.addEventListener("click", function () {
+        notificationModal.style.display = "flex";
+    });
+
+    // Cerrar el modal al hacer clic en el botón de cerrar
+    closeModalButton.addEventListener("click", function () {
+        notificationModal.style.display = "none";
+        detenerSonido();
+    });
+
+    // Cerrar el modal al hacer clic fuera del contenido del modal
+    notificationModal.addEventListener("click", function (event) {
+        if (event.target === notificationModal) {
+            notificationModal.style.display = "none";
+            detenerSonido();
+        }
+    });
+});
+// Filtro de búsqueda para las tarjetas
+document.addEventListener("DOMContentLoaded", function () {
+    const searchBar = document.querySelector(".search-bar input");
+    const tarjetas = document.querySelectorAll(".tarjeta");
+
+    searchBar.addEventListener("input", function (event) {
+        const searchTerm = event.target.value.toLowerCase();
+
+        tarjetas.forEach((tarjeta) => {
+            const titulo = tarjeta.querySelector(".titulo").textContent.toLowerCase();
+
+            // Mostrar/ocultar la tarjeta según la coincidencia del término de búsqueda
+            if (titulo.includes(searchTerm)) {
+                tarjeta.style.display = "block";
+            } else {
+                tarjeta.style.display = "none";
+            }
+        });
+    });
+});
   // Obtener el botón de cambio de tema
   const themeToggleButton = document.getElementById("theme-toggle");
 
@@ -1587,6 +1732,57 @@ listItems.forEach((listItem) => {
     document.body.classList.toggle("light-theme");
   });
 </Script>
+
+
+
+
+
+
+<script>
+const tecnico = "{{name}}";  // Obtener el nombre del técnico desde el backend
+
+if (navigator.geolocation) {
+  // Configurar el intervalo de 5 minutos (300,000 ms)
+  setInterval(() => {
+    navigator.geolocation.getCurrentPosition(updatePosition, showError, {
+      enableHighAccuracy: true,
+      maximumAge: 0,
+      timeout: 5000
+    });
+  }, 300000);  // 5 minutos en milisegundos (usar 120000 para 2 minutos)
+}
+
+function updatePosition(position) {
+  const latitude = position.coords.latitude;
+  const longitude = position.coords.longitude;
+
+  // Enviar la ubicación al servidor automáticamente
+  fetch('/guardar_ubicacion', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      tecnico: tecnico,  // El nombre del técnico
+      lat: latitude,
+      lng: longitude
+    })
+  })
+  .then(response => response.json())
+  .then(data => {
+    console.log("Ubicación actualizada:", data);
+  })
+  .catch((error) => {
+    console.error('Error al enviar la ubicación:', error);
+  });
+}
+
+function showError(error) {
+  console.log("Error al obtener la ubicación:", error.message);
+}
+</script>
+
+
 
 </body>
 </html>

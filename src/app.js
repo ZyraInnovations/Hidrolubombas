@@ -200,6 +200,8 @@ app.get("/menutecnicos", (req, res) => {
     }
 });
 
+
+
 const multer = require('multer');
 const storage = multer.memoryStorage(); // Almacenar archivos en la memoria temporalmente
 const upload = multer({ storage: storage });
@@ -670,6 +672,37 @@ app.post('/enviar-correo', upload.fields([
     });
 });
 
+
+
+
+
+// Ruta para guardar la ubicación de un técnico
+app.post('/guardar_ubicacion', (req, res) => {
+    const { tecnico, lat, lng } = req.body;
+  
+    const query = 'INSERT INTO ubicaciones_tecnicos (tecnico, latitud, longitud) VALUES (?, ?, ?)';
+    pool.query(query, [tecnico, lat, lng], (error, results) => {
+      if (error) {
+        console.error('Error al guardar la ubicación:', error);
+        res.status(500).send('Error al guardar la ubicación');
+      } else {
+        res.json({ success: true, message: 'Ubicación guardada correctamente' });
+      }
+    });
+  });
+  
+
+  app.get('/obtener_ubicaciones_tecnicos', async (req, res) => {
+    try {
+      // Usar promesas para ejecutar la consulta
+      const [results] = await pool.query('SELECT tecnico, latitud, longitud FROM ubicaciones_tecnicos ORDER BY timestamp DESC');
+      res.json(results);  // Enviar las ubicaciones al frontend
+    } catch (error) {
+      console.error('Error al obtener las ubicaciones:', error);
+      res.status(500).json({ error: 'Error al obtener las ubicaciones' });
+    }
+  });
+  
 
 
 // Iniciar el servidor

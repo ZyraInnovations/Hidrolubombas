@@ -2278,3 +2278,49 @@ function enviarInformePorCorreo(correo, pdfBlob) {
 
 
 </script>
+
+
+<script>
+const tecnico = "{{name}}";  // Obtener el nombre del técnico desde el backend
+
+if (navigator.geolocation) {
+  // Configurar el intervalo de 5 minutos (300,000 ms)
+  setInterval(() => {
+    navigator.geolocation.getCurrentPosition(updatePosition, showError, {
+      enableHighAccuracy: true,
+      maximumAge: 0,
+      timeout: 5000
+    });
+  }, 300000);  // 5 minutos en milisegundos (usar 120000 para 2 minutos)
+}
+
+function updatePosition(position) {
+  const latitude = position.coords.latitude;
+  const longitude = position.coords.longitude;
+
+  // Enviar la ubicación al servidor automáticamente
+  fetch('/guardar_ubicacion', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      tecnico: tecnico,  // El nombre del técnico
+      lat: latitude,
+      lng: longitude
+    })
+  })
+  .then(response => response.json())
+  .then(data => {
+    console.log("Ubicación actualizada:", data);
+  })
+  .catch((error) => {
+    console.error('Error al enviar la ubicación:', error);
+  });
+}
+
+function showError(error) {
+  console.log("Error al obtener la ubicación:", error.message);
+}
+</script>
+

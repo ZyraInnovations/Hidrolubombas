@@ -495,57 +495,41 @@ button:hover {
     <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
 
     <!-- Script del mapa debe ir después de la inclusión de Leaflet -->
-    <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            // Inicializa el mapa centrado en Bogotá
-            var map = L.map('map').setView([4.60971, -74.08175], 13);
+   <script>
+    document.addEventListener('DOMContentLoaded', function () {
+        // Inicializa el mapa centrado en Bogotá
+        var map = L.map('map').setView([4.60971, -74.08175], 13);
+L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png', {
+    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>',
+    maxZoom: 19
+}).addTo(map);
 
-            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-                attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
-                maxZoom: 19
-            }).addTo(map);
-
-            // Definir los iconos personalizados
-            var clienteIcon = L.icon({
-                iconUrl: 'imagenes/placeholder_2110941.png',
-                iconSize: [45, 39],
-                iconAnchor: [22, 38],
-                popupAnchor: [-3, -38]
-            });
-
-            var oficinaIcon = L.icon({
-                iconUrl: 'imagenes/gps_14956287.png',
-                iconSize: [45, 39],
-                iconAnchor: [22, 38],
-                popupAnchor: [-3, -38]
-            });
-
-            var tecnicoIcon = L.icon({
-                iconUrl: 'imagenes/pin_1149859.png',
-                iconSize: [45, 39],
-                iconAnchor: [22, 38],
-                popupAnchor: [-3, -38]
-            });
-
-            // Ubicaciones de los marcadores
-            var ubicaciones = [
-                { name: "Cliente 1", coords: [4.68972, -74.05585], type: 'cliente' },
-                { name: "Cliente 2", coords: [4.65607, -74.05959], type: 'cliente' },
-                { name: "Cliente 3", coords: [4.68972, -74.04585], type: 'cliente' },
-                { name: "Oficina Central", coords: [4.60971, -74.08175], type: 'oficina' },
-                { name: "Técnico 1", coords: [4.6485, -74.0930], type: 'tecnico' },
-                { name: "Técnico 2", coords: [4.6702, -74.0365], type: 'tecnico' }
-            ];
-
-            // Añadir los marcadores
-            ubicaciones.forEach(function (location) {
-                var icon = location.type === 'cliente' ? clienteIcon :
-                           location.type === 'oficina' ? oficinaIcon : tecnicoIcon;
-                L.marker(location.coords, { icon: icon }).addTo(map).bindPopup(location.name);
-            });
+        // Definir el icono para el técnico
+        var tecnicoIcon = L.icon({
+            iconUrl: 'imagenes/support.png',
+            iconSize: [45, 49],
+            iconAnchor: [22, 38],
+            popupAnchor: [-3, -38]
         });
-    </script>
 
+        // Función para agregar marcadores al mapa
+        function agregarMarcador(nombre, lat, lng) {
+            L.marker([lat, lng], { icon: tecnicoIcon }).addTo(map).bindPopup(nombre);
+        }
+
+        // Obtener las ubicaciones de los técnicos del servidor
+        fetch('/obtener_ubicaciones_tecnicos')
+            .then(response => response.json())
+            .then(data => {
+                data.forEach(location => {
+                    agregarMarcador(location.tecnico, location.latitud, location.longitud);
+                });
+            })
+            .catch(error => {
+                console.error('Error al obtener las ubicaciones:', error);
+            });
+    });
+</script>
 
 
       <script>
@@ -597,6 +581,7 @@ menuItems.forEach(item => {
         }
     });
 });
+
         // Handle submenu item selection
         const submenuItems = document.querySelectorAll('.submenu li');
 
