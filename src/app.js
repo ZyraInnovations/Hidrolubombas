@@ -5,7 +5,7 @@ const path = require('path');
 const bodyParser = require('body-parser');
 
 const app = express();
-// Middleware para analizar el cuerpo de las solicitudes
+// Middleware para analizar el cuerpo de las 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
