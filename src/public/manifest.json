@@ -8,12 +8,12 @@
     "description": "Descripción breve de tu app",
     "icons": [
       {
-        "src": "imagenes/logo ingenieria.jpeg.jpg",
+        "src": "/imagenes/Recurso 1.png",
         "sizes": "192x192",
         "type": "image/png"
       },
       {
-        "src": "imagenes/logo ingenieria.jpeg.jpg",
+        "src": "/imagenes/Recurso 1.png",
         "sizes": "512x512",
         "type": "image/png"
       }

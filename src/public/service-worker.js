@@ -8,7 +8,7 @@ self.addEventListener('install', function(event) {
                 '/styles.css', // Archivo CSS
                 '/app.js', // Archivo JavaScript principal
                 '/manifest.json', // Manifesto de la aplicación
-                'imagenes/logo%20ingenieria.jpeg.jpg' // Asegúrate de que el espacio esté codificado correctamente
+                '/imagenes/Recurso 1.png' // Asegúrate de que el espacio esté codificado correctamente
             ]);
         }).then(() => self.skipWaiting()) // Hace que el nuevo Service Worker tome el control inmediatamente
     );
