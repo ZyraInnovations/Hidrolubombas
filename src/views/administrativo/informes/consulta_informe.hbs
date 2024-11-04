@@ -20,7 +20,6 @@
         }
         .report-container {
             width: 100%;
-            max-width: 800px; /* Ancho máximo para mantener consistencia */
             margin: 0 auto;
             border: 1px solid #000;
             padding: 10px;
@@ -30,12 +29,7 @@
             font-size: 12px;
             margin-bottom: 10px;
         }
-        .header-info {
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-start;
-            margin-bottom: 10px;
-        }
+      
         .logo {
             width: 120px;
         }
@@ -213,8 +207,6 @@ margin-left: 40%;
     }
     body{
         background-color:    #f0f0f0; /* Invertir a claro */
-;
-
     }
   .report-container {
     background-color: white;
@@ -265,7 +257,7 @@ margin-left: 40%;
         }
         .report-container {
             width: 100%;
-            max-width: 800px;
+    max-width: none; /* Quitar ancho máximo */
             margin: 0 auto;
             border: 1px solid #000;
             padding: 10px;
@@ -438,7 +430,6 @@ margin-left: 40%;
         font-family:'sensation';
         background-color: #d6cec3;
         color: var(--text-light);
-        display: flex;
     }
 
 .container {
@@ -570,125 +561,17 @@ font-size: 25px;
         color: var(--accent-color);
     }
 
-    .grid-container {
-        display: grid;
-        grid-template-columns: repeat(2, 1fr);
-        grid-gap: 20px;
-    }
-
-    .chart-container {
-        padding: 20px;
-        background-color: var(--bg-dark);
-        border-radius: 10px;
-    }
-
-    .profile-menu {
-        position: relative;
-        display: inline-block;
-    }
-
-    .dropdown-menu {
-        position: absolute;
-        top: 40px;
-        right: 0;
-        background-color: var(--bg-dark);
-        border-radius: 10px;
-        padding: 10px;
-        display: none;
-        flex-direction: column;
-        width: 150px;
-        z-index: 1;
-    }
-
-    .dropdown-menu a {
-        padding: 10px;
-        text-decoration: none;
-        color: var(--text-light);
-        display: block;
-    }
-
-    .dropdown-menu a:hover {
-        background-color: var(--primary-color);
-        border-radius: 5px;
-    }
-
+  
     .hidden {
         display: none;
     }
 
-    .show {
-        display: flex;
-    }
 
-    .submenu {
-        list-style: none;
-        padding-left: 0;
-        margin-top: 0;
-        display: none;
-        max-height: 0;
-        overflow: hidden;
-        position: absolute;
-        top: 100%;
-        left: 0;
-        width: 200px;
-        background-color: white;
-        border-radius: 5px;
-        z-index: 1000;
-        transition: max-height 0.3s ease-out;
-    }
-
-    .menu-item {
-        display: block;
-        margin-bottom: 10px;
-        position: relative;
-    }
-
-    .submenu.show {
-        display: block;
-        max-height: 500px;
-        transition: max-height 0.3s ease-in;
-    }
-
-    .submenu li {
-        background-color: white;
-        padding: 10px;
-        cursor: pointer;
-        color: black;
-            border-bottom: 1px solid black; /* División negra entre items del submenu */
-
-    }
-
-    .submenu li:hover {
-        background-color: var(--primary-color);
-        color: white;
-        border-radius: 5px;
-    }
-
-    .menu-item.active {
-        background-color: #0769B3;
-        color: white;
-        border-radius: 10px;
-    }
-
-    .submenu li.active {
-        background-color: #0769B3;
-        color: white;
-        border-radius: 5px;
-    }
     A{
         text-decoration: none;
     }
 
-.toggle-menu-btn {
-    background: none;
-    border: none;
-    color: white;
-    font-size: 24px;
-    cursor: pointer;
-    margin-right: 20px;
-    display: flex;
-    align-items: center;
-}
+
 
 .hidden-sidebar {
     transform: translateX(-100%);
@@ -824,7 +707,6 @@ button:hover {
 }
 
 .filter-container {
-    display: flex;
     gap: 15px;
     margin: 20px 0;
 }
@@ -870,7 +752,6 @@ strong {
         text-align: left;
     }
     .info-row {
-        display: flex;
         align-items: center;
         margin-bottom: 4px;
     }
@@ -906,115 +787,7 @@ strong {
 
 <body>
 
-    <div class="container">
-
-
-
-
-        <aside class="sidebar">
-       <div class="sidebar-header">
-<br>
-<br>
-<div class="fondologo"></div>
-    <img class="logo" src="imagenes/logo_ingenieria.jpeg-removebg-preview.png" alt="AdminKit Logo">
-    <br>
-    <br>
-    <p>MENU</p>
-</div>
-
-
-
-            <ul class="sidebar-menu">
-                     <li class="menu-item">
-                    <i class="fas fa-home"></i> <a id="home" href="/menuAdministrativo">INICIO</a> 
-                 
-                </li>
-                <li class="menu-item">
-                    <i class="fas fa-user"></i> USUARIOS
-                    <ul class="submenu">
-                    <a href="/agregar_usuario"><li>Agregar Usuario</li></a>    
-                      <a href="/consultar_usuarios"><li>consultar Usuarios</li></a>  
-                    </ul>
-                </li>
-
-
-                
-               
-              
-               
-          
-           
-            <li class="menu-item">
-<i class="fas fa-file-alt"></i> INFORMES 
-                    <ul class="submenu">
-
-
-                     <a href="/realizar_informe"><li>Realizar informe</li></a>   
-                     <a href="/ver_informe"><li>Consulta de informe</li></a>   
-
-
-                    </ul>
-                </li>
-                
-            <li class="menu-item">
-    <i class="fas fa-map-marker-alt"></i> GEOLOCALIZACION
-                    <ul class="submenu">
-
-
-                    <a href=""><li>Ver mapa</li></a>     
-
-
-
-
-                    </ul>
-                </li>
-                
-
-
-      <li class="menu-item">
-                    <i class="fas fa-cogs"></i> CONFIGURACION
-                    <ul class="submenu">
-
-                    <a href=""><li>Preferencias</li></a>   
-                    <a href=""> <li>Seguridad</li></a>   
-
-                    </ul>
-                </li>
-
-
-
-            </ul>
-
-
-        </aside>
-
-
-
-
-
-
-
-        <section class="main-content">
-
-<nav class="top-navbar">
-    <div class="brand">Administracion</div>
-    <div class="top-right">
-        <i class="fas fa-bell"></i> <span class="badge"></span>
-        <i class="fas fa-envelope"></i> <span class="badge"></span>
-        <div class="profile-menu">
-            <i class="fas fa-user-circle" id="profile-icon"></i>
-            <div id="dropdown-menu" class="dropdown-menu hidden">
-                <a href="#">Editar</a>
-                <a href="/logout">Cerrar Sesión</a>
-            </div>
-        </div>
-        <!-- Aquí está el botón corregido -->
-        <button id="toggle-menu" class="toggle-menu-btn">
-            <i class="fas fa-bars"></i>
-        </button>
-    </div>
-</nav>
-
+ 
 
 
 

@@ -97,7 +97,7 @@ app.post('/login', async (req, res) => {
 app.get('/geolocalizacion', (req, res) => {
     if (req.session.loggedin === true) {
         const nombreUsuario = req.session.user.name; // Use user session data
-        res.render('administrativo/mapa/ver_mapa.hbs', { nombreUsuario });
+        res.render('administrativo/mapa/ver_mapa.hbs', { nombreUsuario,layout: 'layouts/nav_admin.hbs' });
     } else {
         res.redirect('/login');
     }
@@ -170,6 +170,7 @@ app.get("/menuAdministrativo", (req, res) => {
         res.render("administrativo/menuadministrativo.hbs", {
             name: nombreUsuario, // Pass the name to the template
             jefe,
+            layout: 'layouts/nav_admin.hbs',
             empleado
         });
     } else {
@@ -368,7 +369,7 @@ app.get('/consultar_usuarios', async (req, res) => {
             // Consulta para obtener todos los usuarios
             const [results] = await pool.query('SELECT id, nombre, email, role FROM usuarios_hidro   ');
             // Renderiza la plantilla con los resultados
-            res.render('administrativo/usuarios/consulta_usuarios.hbs', { nombreUsuario, usuarios: results });
+            res.render('administrativo/usuarios/consulta_usuarios.hbs', { nombreUsuario,layout: 'layouts/nav_admin.hbs', usuarios: results });
         } catch (err) {
             console.error('Error al consultar la base de datos:', err);
             res.status(500).send('Error en el servidor');
@@ -422,6 +423,7 @@ app.get('/consulta_informe', (req, res) => {
                 const tecnicos = results.map(row => row.tecnico);
                 res.render('administrativo/informes/consulta_informe.hbs', {
                     nombreUsuario,
+                    layout: 'layouts/nav_admin.hbs',
                     tecnicos
                 });
             }
@@ -591,7 +593,7 @@ app.get('/api/clientes-count', (req, res) => {
 app.get('/agregar_usuario', (req, res) => {
     if (req.session.loggedin === true) {
         const nombreUsuario = req.session.user.name; // Usa los datos de la sesión del usuario
-        res.render('administrativo/usuarios/crear_usuarios.hbs', { nombreUsuario });
+        res.render('administrativo/usuarios/crear_usuarios.hbs', { nombreUsuario,layout: 'layouts/nav_admin.hbs', });
     } else {
         res.redirect('/login');
     }

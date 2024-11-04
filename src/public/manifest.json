@@ -1,0 +1,22 @@
+{
+    "name": "HIDRAULIBOMBAS",
+    "short_name": "HIDRAULIBOMBAS",
+    "start_url": "/",
+    "display": "standalone",
+    "background_color": "#ffffff",
+    "theme_color": "#000000",
+    "description": "Descripción breve de tu app",
+    "icons": [
+      {
+        "src": "imagenes/logo ingenieria.jpeg.jpg",
+        "sizes": "192x192",
+        "type": "image/png"
+      },
+      {
+        "src": "imagenes/logo ingenieria.jpeg.jpg",
+        "sizes": "512x512",
+        "type": "image/png"
+      }
+    ]
+  }
+  

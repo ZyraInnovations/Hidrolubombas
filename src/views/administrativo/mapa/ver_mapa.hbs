@@ -39,11 +39,9 @@
         font-family:'sensation';
         background-color: #d6cec3;
         color: var(--text-light);
-        display: flex;
     }
 
 .container {
-    display: flex;
     width: 100%;
     transition: width 0.3s ease;
 }
@@ -371,119 +369,8 @@ button:hover {
 
 <body>
 
-    <div class="container">
 
-
-
-
-        <aside class="sidebar">
-       <div class="sidebar-header">
-<br>
-<br>
-<div class="fondologo"></div>
-    <img class="logo" src="imagenes/logo_ingenieria.jpeg-removebg-preview.png" alt="AdminKit Logo">
-    <br>
-    <br>
-    <p>MENU</p>
-</div>
-
-
-
-            <ul class="sidebar-menu">
-                     <li class="menu-item">
-                    <i class="fas fa-home"></i> <a id="home" href="/menuAdministrativo">INICIO</a> 
-                 
-                </li>
-                <li class="menu-item">
-                    <i class="fas fa-user"></i> USUARIOS
-                    <ul class="submenu">
-                    <a href="/agregar_usuario"><li>Agregar Usuario</li></a>    
-                      <a href="/consultar_usuarios"><li>consultar Usuarios</li></a>  
-                    </ul>
-                </li>
-
-
-                
-               
-              
-               
-          
-           
-            <li class="menu-item">
-<i class="fas fa-file-alt"></i> INFORMES 
-                    <ul class="submenu">
-
-
-                     <a href="/realizar_informe"><li>Realizar informe</li></a>   
-                     <a href="/consulta_informe"><li>Consulta de informe</li></a>   
-
-
-                    </ul>
-                </li>
-                
-            <li class="menu-item">
-    <i class="fas fa-map-marker-alt"></i> GEOLOCALIZACION
-                    <ul class="submenu">
-
-
-                    <a href="/geolocalizacion"><li>Ver mapa</li></a>     
-
-
-
-
-                    </ul>
-                </li>
-                
-
-
-      <li class="menu-item">
-                    <i class="fas fa-cogs"></i> CONFIGURACION
-                    <ul class="submenu">
-
-                    <a href=""><li>Preferencias</li></a>   
-                    <a href=""> <li>Seguridad</li></a>   
-
-                    </ul>
-                </li>
-
-
-
-            </ul>
-
-
-        </aside>
-
-
-
-
-
-
-
-        <section class="main-content">
-
-<nav class="top-navbar">
-    <div class="brand">geolocalizacion</div>
-    <div class="top-right">
-        <i class="fas fa-bell"></i> <span class="badge"></span>
-        <i class="fas fa-envelope"></i> <span class="badge"></span>
-        <div class="profile-menu">
-            <i class="fas fa-user-circle" id="profile-icon"></i>
-            <div id="dropdown-menu" class="dropdown-menu hidden">
-                <a href="#">Editar</a>
-                <a href="/logout">Cerrar Sesión</a>
-            </div>
-        </div>
-        <!-- Aquí está el botón corregido -->
-        <button id="toggle-menu" class="toggle-menu-btn">
-            <i class="fas fa-bars"></i>
-        </button>
-    </div>
-</nav>
-
-
-         
-        <section class="main-content">
-         
+ 
 
 
                 <!-- Contenedor del mapa -->
