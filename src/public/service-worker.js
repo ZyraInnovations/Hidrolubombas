@@ -3,7 +3,7 @@ self.addEventListener('install', function(event) {
     event.waitUntil(
         caches.open('app-cache').then(function(cache) {
             return cache.addAll([
-                '/', // Página principal
+                '/login', // Página principal
                 '/login', // Ruta del login que carga la vista Handlebars
                 '/styles.css', // Archivo CSS
                 '/app.js', // Archivo JavaScript principal
