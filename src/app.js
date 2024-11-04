@@ -46,6 +46,10 @@ app.use(express.static(__dirname + '/public'));
 // Middleware para parsing
 app.use(express.urlencoded({ extended: false }));
 
+app.get('/', (req, res) => {
+    res.redirect('/login');
+});
+
 
 // Ruta para mostrar el formulario de login
 app.get('/login', (req, res) => {
