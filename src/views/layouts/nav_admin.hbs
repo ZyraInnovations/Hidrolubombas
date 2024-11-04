@@ -7,201 +7,161 @@
   <script src="https://cdn.tailwindcss.com"></script>
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet"/>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet"/>
-  <link rel="icon" href="https://cercetasolucionesempresariales.com/wp-content/uploads/2022/12/cropped-icon-cerceta_Mesa-de-trabajo-1-192x192.png" type="image/x-icon"/>
+  <link rel="icon" href="/imagenes/Recurso 1.png" type="image/x-icon"/>
 
-  <style>
-    /* Sidebar Styling */
-    .sidebar {
-      width: 16rem;
-      padding: 1rem;
-      background-color: #ffffff;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-      display: flex;
-      flex-direction: column;
-      justify-between: space-between;
-      transition: transform 0.3s ease-in-out;
-      max-height: 100vh;
-      overflow-y: auto;
-    }
+<style>
+  /* Updated Sidebar Styling */
+  .sidebar {
+    width: 16rem;
+    padding: 1rem;
+    background-color: #1f335c; /* Dark background color */
+    color: white;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    max-height: 100vh;
+    overflow-y: auto;
+    transition: transform 0.3s ease-in-out;
+  }
 
-    .sidebar ul li a {
-      font-size: 0.875rem;
-      padding: 0.75rem 1rem;
-      border-radius: 0.375rem;
-      display: flex;
-      align-items: center;
-      transition: background-color 0.3s, color 0.3s;
-      color: #4a5568;
-    }
+  /* Sidebar Links Styling */
+  .sidebar ul li a {
+    font-size: 0.875rem;
+    padding: 0.75rem 1rem;
+    border-radius: 0.375rem;
+    display: flex;
+    align-items: center;
+    transition: background-color 0.3s, color 0.3s;
+    color: #d9d9d9;
+  }
 
-    .sidebar ul li a:hover {
-      background-color: #e0f7fa;
-      color: #00796b;
-      transform: translateX(5px);
-    }
+  .sidebar ul li a:hover {
+    background-color: #047885; /* Secondary color */
+    color: white;
+    transform: translateX(5px);
+  }
 
-    .sidebar ul li a.active {
-      background-color: #00796b;
-      color: white;
-    }
+  .sidebar ul li a.active {
+    background-color: #0769B3; /* Primary color */
+    color: white;
+  }
 
-    .sidebar img {
-      width: 40px;
-      height: 40px;
-    }
+  /* Section Titles */
+  .section-title {
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: #d9d9d9; /* Light gray for section titles */
+    text-transform: uppercase;
+    margin-top: 2rem;
+    padding-left: 1rem;
+  }
 
-    /* Badge Styling */
-    .badge {
-      background-color: #ef4444;
-      color: white;
-      padding: 0.25rem 0.5rem;
-      font-size: 0.75rem;
-      border-radius: 50%;
-      margin-left: auto;
-    }
+  /* Badge Styling */
+  .badge {
+    background-color: #ef4444;
+    color: white;
+    padding: 0.25rem 0.5rem;
+    font-size: 0.75rem;
+    border-radius: 50%;
+    margin-left: auto;
+  }
 
-    /* Search Bar */
-    .search-bar {
-      margin-bottom: 1rem;
-      display: flex;
-      align-items: center;
-      background-color: #f1f5f9;
-      border-radius: 0.375rem;
-      padding: 0.5rem;
-    }
+  /* Search Bar */
+  .search-bar {
+    margin-bottom: 1rem;
+    display: flex;
+    align-items: center;
+    background-color: #2d3748; /* Slightly darker than sidebar */
+    border-radius: 0.375rem;
+    padding: 0.5rem;
+  }
 
-    .search-bar input {
-      border: none;
-      background: none;
-      outline: none;
-      width: 100%;
-      padding: 0.5rem;
-      font-size: 0.875rem;
-      color: #4a5568;
-    }
+  .search-bar input {
+    border: none;
+    background: none;
+    outline: none;
+    width: 100%;
+    padding: 0.5rem;
+    font-size: 0.875rem;
+    color: #d9d9d9;
+  }
 
-    .search-bar i {
-      color: #4a5568;
-    }
+  .search-bar i {
+    color: #d9d9d9;
+  }
 
-    /* Profile Dropdown */
-    .profile-section {
-      margin-bottom: 2rem;
-    }
-
-    .profile-section .profile-info {
-      display: flex;
-      align-items: center;
-    }
-
-    .profile-section .profile-info img {
-      border-radius: 50%;
-      margin-right: 0.5rem;
-    }
-
-    .profile-section .profile-info span {
-      font-weight: 700;
-      color: #00796b;
-    }
-
-    /* Section Titles */
-    .section-title {
-      font-size: 0.75rem;
-      font-weight: 600;
-      color: #9ca3af;
-      text-transform: uppercase;
-      margin-top: 2rem;
-      padding-left: 1rem;
-    }
-
-    /* Hamburger Menu */
-    .hamburger {
-      display: none;
-      position: fixed;
-      top: 1rem;
-      left: 1rem;
-      z-index: 50;
-      cursor: pointer;
-      padding: 0.5rem;
-      border-radius: 0.375rem;
-      background-color: #00796b;
-    }
-
-    .hamburger span {
-      display: block;
-      width: 25px;
-      height: 3px;
-      background-color: white;
-      margin-bottom: 5px;
-    }
-
-    @media (max-width: 768px) {
-      .sidebar {
-        position: fixed;
-        top: 0;
-        height: 100%;
-        transform: translateX(-100%);
-        z-index: 40;
-      }
-
-      .sidebar.open {
-        transform: translateX(0);
-      }
-
-      .hamburger {
-        display: block;
-      }
-    }
-
-    /* Dark mode styling */
-    .dark .sidebar {
-      background-color: #1a202c;
-      color: #cbd5e0;
-    }
-
-    .dark .sidebar ul li a {
-      color: #cbd5e0;
-    }
-
-    .dark .sidebar ul li a:hover {
-      background-color: #2d3748;
-      color: #81e6d9;
-    }
-
-    .dark .section-title {
-      color: #718096;
-    }
-
-    .dark .search-bar {
-      background-color: #2d3748;
-    }
-
-    .dark .search-bar input {
-      color: #cbd5e0;
-    }
-
-    .dark .hamburger {
-      background-color: #2d3748;
-    }
-    #perfil{
-width: 120px;
-height: 120px;
-
-    }   /* Popup de Notificaciones */
-#notificationPopup {
+  /* Hamburger Menu */
+  .hamburger {
+    display: none;
     position: fixed;
-    top: 80px;
-    right: 20%;
-    background-color: rgba(255, 255, 255, 0.98); /* Fondo semitransparente */
-    padding: 1.2rem 1.5rem;
-    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
-    border-radius: 0.75rem;
-    z-index: 9999;
-    border: 1px solid #00796b; /* Borde más delgado */
-    transition: transform 0.3s ease, opacity 0.3s ease;
-}
+    top: 1rem;
+    left: 1rem;
+    z-index: 50;
+    cursor: pointer;
+    padding: 0.5rem;
+    border-radius: 0.375rem;
+    background-color: #0769B3; /* Primary color */
+  }
 
-  </style>
+  .hamburger span {
+    display: block;
+    width: 25px;
+    height: 3px;
+    background-color: white;
+    margin-bottom: 5px;
+  }
+
+  @media (max-width: 768px) {
+    .sidebar {
+      position: fixed;
+      top: 0;
+      height: 100%;
+      transform: translateX(-100%);
+      z-index: 40;
+    }
+
+    .sidebar.open {
+      transform: translateX(0);
+    }
+
+    .hamburger {
+      display: block;
+    }
+  }
+
+  /* Dark Mode Styles */
+  .dark .sidebar {
+    background-color: #1f335c;
+    color: #d9d9d9;
+  }
+
+  .dark .sidebar ul li a {
+    color: #d9d9d9;
+  }
+
+  .dark .sidebar ul li a:hover {
+    background-color: #047885;
+    color: white;
+  }
+
+  .dark .section-title {
+    color: #a0aec0;
+  }
+
+  .dark .search-bar {
+    background-color: #2d3748;
+  }
+
+  .dark .search-bar input {
+    color: #d9d9d9;
+  }
+
+  .dark .hamburger {
+    background-color: #2d3748;
+  }
+</style>
+
 </head>
 <div class="overlay" id="overlay"></div>
 

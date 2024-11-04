@@ -1,83 +1,100 @@
-    
-  <style>
-        .grid-container {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-      gap: 20px;
-      padding: 20px;
-    }
+<style>
+  .grid-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 20px;
+    padding: 20px;
+  }
 
-    .card {
-      background-color: #fff;
-      border-radius: 8px;
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-      padding: 20px;
-      display: flex;
-      align-items: center;
-      transition: transform 0.2s;
-    }
+  .card {
+    background-color: #1f335c; /* Dark background color */
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    display: flex;
+    align-items: center;
+    transition: transform 0.2s;
+    color: #fff; /* White text for readability */
+  }
 
-    .card:hover {
-      transform: translateY(-10px);
-    }
+  .card:hover {
+    transform: translateY(-10px);
+  }
 
-    .stat-icon {
-      font-size: 3rem;
-      color: #90c9a7; /* Primary color */
-      margin-right: 15px;
-    }
+  .stat-icon {
+    font-size: 3rem;
+    color: #0769B3; /* Primary icon color */
+    margin-right: 15px;
+  }
 
-    .card div {
-      flex: 1;
-    }
+  .card div {
+    flex: 1;
+  }
 
-    .card h3 {
-      font-size: 2rem;
-      margin: 0;
-      color: #413d4b;
-    }
+  .card h3 {
+    font-size: 2rem;
+    margin: 0;
+    color: #90c9a7; /* Light accent color */
+  }
 
-    .card p {
-      margin: 5px 0 0;
-      font-size: 1.2rem;
-      color: #666567;
-    }
-  </style>
+  .card p {
+    margin: 5px 0 0;
+    font-size: 1.2rem;
+    color: #d9d9d9; /* Subtle text color */
+  }
 
-  </style>
-  
-  
-  <div class="grid-container">
-    <div class="card stat">
-        <i class="fas fa-file-alt stat-icon"></i>
-        <div>
-            <h3 id="edificios-count">Cargando...</h3>
-            <p>Informes</p>
-        </div>
+  /* Chart Card Styling */
+  .chart-container {
+    background-color: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    height: 400px; /* Increased height for larger charts */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  /* Make the canvas take up full space within the container */
+  .chart-container canvas {
+    width: 100% !important;
+    height: 100% !important;
+  }
+</style>
+
+<div class="grid-container">
+  <div class="card stat">
+    <i class="fas fa-file-alt stat-icon"></i>
+    <div>
+      <h3 id="edificios-count">Cargando...</h3>
+      <p>Informes</p>
     </div>
+  </div>
 
-    <div class="card stat">
-        <i class="fas fa-tools stat-icon"></i>
-        <div>
-            <h3 id="tecnicos-count">Cargando...</h3>
-            <p>Técnicos</p>
-        </div>
+  <div class="card stat">
+    <i class="fas fa-tools stat-icon"></i>
+    <div>
+      <h3 id="tecnicos-count">Cargando...</h3>
+      <p>Técnicos</p>
     </div>
+  </div>
 
-    <div class="card stat">
-        <i class="fas fa-users stat-icon"></i>
-        <div>
-            <h3 id="clientes-count">Cargando...</h3>
-            <p>Clientes</p>
-        </div>
+  <div class="card stat">
+    <i class="fas fa-users stat-icon"></i>
+    <div>
+      <h3 id="clientes-count">Cargando...</h3>
+      <p>Clientes</p>
     </div>
+  </div>
+  </div>
+  <div class="card chart-container">
+    <canvas id="barChart"></canvas>
+  </div>
+  <div class="card chart-container">
+    <canvas id="lineChart"></canvas>
+
 </div>
-    <div class="card chart-container">
-        <canvas id="barChart"></canvas>
-    </div>
-    <div class="card chart-container">
-        <canvas id="lineChart"></canvas>
-    </div>
+
 
     <!-- Include Chart.js library -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.6.0/chart.min.js"></script>

@@ -405,7 +405,8 @@ app.use(bodyParser.urlencoded({ extended: true })); // Para parsear datos de for
 app.get('/realizar_informe', (req, res) => {
     if (req.session.loggedin === true) {
         const nombreUsuario = req.session.user.name; // Usa los datos de la sesión del usuario
-        res.render('administrativo/informes/crear_informe.hbs', { nombreUsuario });
+        res.render('administrativo/informes/crear_informe.hbs', { nombreUsuario,            layout: 'layouts/nav_admin.hbs'
+        });
     } else {
         res.redirect('/login');
     }

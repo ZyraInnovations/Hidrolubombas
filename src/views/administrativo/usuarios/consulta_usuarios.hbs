@@ -1,5 +1,3 @@
-
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -8,93 +6,120 @@
     <title>HIDRAULIBOMBAS</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.6.0/chart.min.css" rel="stylesheet">
 </head>
 
-
 <body>
-
 <style>
+    /* Root colors */
+    :root {
+        --primary-color: #0769B3;
+        --secondary-color: #1f335c;
+        --accent-color: #047885;
+        --text-color: #333;
+        --background-color: #f4f4f4;
+        --hover-color: #035b94;
+    }
+
     * {
-    margin: 0;
-    padding: 0;
-    font-family: 'Inter', sans-serif;
-}
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: 'Inter', sans-serif;
+    }
 
-body {
-    background-color: #f4f4f4;
-    color: #333;
-  
-    align-items: center;
-    min-height: 100vh;
-    padding: 20px;
-}
+    body {
+        background-color: var(--background-color);
+        color: var(--text-color);
+        flex-direction: column;
+        align-items: center;
+    }
 
-.filter-container {
-    display: flex;
-    gap: 1rem;
-    padding: 1.5rem;
-    background-color: #ffffff;
-    border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    margin-bottom: 1.5rem;
-}
+    /* Filter Container */
+    .filter-container {
+        display: flex;
+        gap: 1rem;
+        padding: 1.5rem;
+        background-color: #ffffff;
+        border-radius: 8px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        margin-bottom: 1.5rem;
+        width: 95%;
+    }
 
-.filter-input {
-    padding: 0.8rem;
-    border: 1px solid #d9d9d9;
-    border-radius: 5px;
-    font-size: 1rem;
-    width: 100%;
-    max-width: 250px;
-    transition: border 0.3s ease;
-}
+    .filter-input {
+        padding: 0.8rem;
+        border: 1px solid #d9d9d9;
+        border-radius: 5px;
+        font-size: 1rem;
+        width: 95%;
+        transition: border-color 0.3s ease;
+    }
 
-.filter-input:focus {
-    outline: none;
-    border-color: #90c9a7;
-}
+    .filter-input:focus {
+        outline: none;
+        border-color: var(--primary-color);
+        box-shadow: 0 0 5px rgba(7, 105, 179, 0.3);
+    }
 
-.table-container {
-    width: 100%;
-    max-width: 800px;
-    background-color: #ffffff;
-    border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    overflow: hidden;
-}
+    /* Table Container */
+    .table-container {
+        width: 95%;
+        background-color: #ffffff;
+        border-radius: 8px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        overflow: hidden;
+    }
 
-.styled-table {
-    width: 100%;
-    border-collapse: collapse;
-}
+    /* Styled Table */
+    .styled-table {
+        width: 100%;
+        border-collapse: collapse;
+    }
 
-.styled-table th, .styled-table td {
-    padding: 12px 15px;
-    text-align: left;
-}
+    .styled-table thead {
+        background-color: var(--primary-color);
+        color: #ffffff;
+    }
 
-.styled-table thead tr {
-    background-color: #90c9a7;
-    color: #ffffff;
-    font-weight: 600;
-}
+    .styled-table th,
+    .styled-table td {
+        padding: 12px 15px;
+        text-align: left;
+    }
 
-.styled-table tbody tr:nth-child(even) {
-    background-color: #f9f9f9;
-}
+    .styled-table tbody tr {
+        transition: background-color 0.3s ease;
+    }
 
-.styled-table tbody tr:hover {
-    background-color: #e0f7ec;
-}
+    .styled-table tbody tr:nth-child(even) {
+        background-color: #f9f9f9;
+    }
 
-.styled-table td {
-    border-bottom: 1px solid #ddd;
-}
+    .styled-table tbody tr:hover {
+        background-color: #e0f7ec;
+    }
 
+    .styled-table tbody td {
+        border-bottom: 1px solid #ddd;
+    }
+
+    /* Responsive Design */
+    @media (max-width: 600px) {
+        .filter-container {
+            flex-direction: column;
+            padding: 1rem;
+        }
+
+        .filter-input {
+            max-width: 100%;
+        }
+
+        .styled-table th, .styled-table td {
+            padding: 10px;
+            font-size: 0.9rem;
+        }
+    }
 </style>
-
-
 
 <div class="filter-container">
     <input type="text" id="filter-name" placeholder="Filtrar por nombre" class="filter-input">
@@ -130,10 +155,6 @@ body {
     </table>
 </div>
 
-
-
-        </section>
-    </div>
 <script>
     document.addEventListener("DOMContentLoaded", function() {
         const filterNameInput = document.getElementById('filter-name');
@@ -171,87 +192,5 @@ body {
     });
 </script>
 
-    <!-- Include Chart.js library -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.6.0/chart.min.js"></script>
-    <script>
-
-
-        // Toggle profile dropdown menu
-        document.getElementById('profile-icon').addEventListener('click', function () {
-            var dropdown = document.getElementById('dropdown-menu');
-            dropdown.classList.toggle('show');
-        });
-
-        // Close dropdown if clicked outside
-        window.onclick = function (event) {
-            if (!event.target.matches('#profile-icon')) {
-                var dropdowns = document.getElementsByClassName("dropdown-menu");
-                for (var i = 0; i < dropdowns.length; i++) {
-                    var openDropdown = dropdowns[i];
-                    if (openDropdown.classList.contains('show')) {
-                        openDropdown.classList.remove('show');
-                    }
-                }
-            }
-        }
-        
-
-
-// Toggle submenu visibility
-const menuItems = document.querySelectorAll('.menu-item');
-
-menuItems.forEach(item => {
-    item.addEventListener('click', function () {
-        // Remove active class from all menu items and hide all submenus
-        menuItems.forEach(i => {
-            const submenu = i.querySelector('.submenu');
-            if (submenu && submenu !== this.querySelector('.submenu')) {
-                submenu.classList.remove('show');
-                submenu.style.maxHeight = null;
-            }
-            i.classList.remove('active');
-        });
-
-        // Add active class to the clicked menu item
-        this.classList.add('active');
-
-        // Show or hide the submenu of the clicked item
-        const submenu = this.querySelector('.submenu');
-        if (submenu) {
-            submenu.classList.toggle('show');
-            submenu.style.maxHeight = submenu.classList.contains('show') ? submenu.scrollHeight + "px" : null;
-        }
-    });
-});
-        // Handle submenu item selection
-        const submenuItems = document.querySelectorAll('.submenu li');
-
-        submenuItems.forEach(subitem => {
-            subitem.addEventListener('click', function (e) {
-                e.stopPropagation();  // Prevent click from closing the submenu
-
-                // Remove active class from all submenu items
-                submenuItems.forEach(i => i.classList.remove('active'));
-                this.classList.add('active');
-            });
-        });
-        // Toggle sidebar visibility
-document.getElementById('toggle-menu').addEventListener('click', function () {
-    const sidebar = document.querySelector('.sidebar');
-    const mainContent = document.querySelector('.main-content');
-
-    // Toggle visibility of the sidebar
-    sidebar.classList.toggle('hidden-sidebar');
-
-    // Adjust the main content width accordingly
-    if (sidebar.classList.contains('hidden-sidebar')) {
-        mainContent.classList.add('expanded-content');
-    } else {
-        mainContent.classList.remove('expanded-content');
-    }
-});
-
-
-    </script>
 </body>
 </html>
