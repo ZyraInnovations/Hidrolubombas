@@ -767,6 +767,11 @@
 <!-- Script para habilitar la firma en los canvas -->
 <!-- Script para habilitar la firma en los canvas -->
 <script>
+    document.addEventListener('DOMContentLoaded', function() {
+    initSignaturePad('signatureCanvas1');
+    initSignaturePad('signatureCanvas2');
+});
+
 function replaceInputsWithText() {
     const inputs = document.querySelectorAll('input, select, textarea');
     inputs.forEach(input => {
@@ -978,5 +983,30 @@ function updatePosition(position) {
 function showError(error) {
   console.log("Error al obtener la ubicación:", error.message);
 }
+function startDrawing(event) {
+    event.preventDefault(); // Previene comportamientos no deseados
+    drawing = true;
+    ctx.beginPath();
+    const rect = canvas.getBoundingClientRect();
+    const x = (event.clientX || event.touches[0].clientX) - rect.left;
+    const y = (event.clientY || event.touches[0].clientY) - rect.top;
+    ctx.moveTo(x, y);
+}
+
+function draw(event) {
+    if (!drawing) return;
+    event.preventDefault(); // Previene comportamientos no deseados
+    const rect = canvas.getBoundingClientRect();
+    const x = (event.clientX || event.touches[0].clientX) - rect.left;
+    const y = (event.clientY || event.touches[0].clientY) - rect.top;
+    ctx.lineTo(x, y);
+    ctx.stroke();
+}
+
+function stopDrawing(event) {
+    event.preventDefault(); // Previene comportamientos no deseados
+    drawing = false;
+}
+
 </script>
 

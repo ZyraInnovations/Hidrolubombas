@@ -1,0 +1,570 @@
+<!DOCTYPE html>
+<html lang="en" class="light">
+<head>
+  <meta charset="utf-8"/>
+  <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+  <title>HIDRAULOBOMBAS</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet"/>
+  <link rel="icon" href="/imagenes/Recurso 1.png" type="image/x-icon"/>
+
+<style>
+  /* Updated Sidebar Styling */
+  .sidebar {
+    width: 16rem;
+    padding: 1rem;
+    background-color: #1f335c; /* Dark background color */
+    color: white;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    max-height: 100vh;
+    overflow-y: auto;
+    transition: transform 0.3s ease-in-out;
+  }
+
+  /* Sidebar Links Styling */
+  .sidebar ul li a {
+    font-size: 0.875rem;
+    padding: 0.75rem 1rem;
+    border-radius: 0.375rem;
+    display: flex;
+    align-items: center;
+    transition: background-color 0.3s, color 0.3s;
+    color: #d9d9d9;
+  }
+
+  .sidebar ul li a:hover {
+    background-color: #047885; /* Secondary color */
+    color: white;
+    transform: translateX(5px);
+  }
+
+  .sidebar ul li a.active {
+    background-color: #0769B3; /* Primary color */
+    color: white;
+  }
+
+  /* Section Titles */
+  .section-title {
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: #d9d9d9; /* Light gray for section titles */
+    text-transform: uppercase;
+    margin-top: 2rem;
+    padding-left: 1rem;
+  }
+
+  /* Badge Styling */
+  .badge {
+    background-color: #ef4444;
+    color: white;
+    padding: 0.25rem 0.5rem;
+    font-size: 0.75rem;
+    border-radius: 50%;
+    margin-left: auto;
+  }
+
+  /* Search Bar */
+  .search-bar {
+    margin-bottom: 1rem;
+    display: flex;
+    align-items: center;
+    background-color: #2d3748; /* Slightly darker than sidebar */
+    border-radius: 0.375rem;
+    padding: 0.5rem;
+  }
+
+  .search-bar input {
+    border: none;
+    background: none;
+    outline: none;
+    width: 100%;
+    padding: 0.5rem;
+    font-size: 0.875rem;
+    color: #d9d9d9;
+  }
+
+  .search-bar i {
+    color: #d9d9d9;
+  }
+
+  /* Hamburger Menu */
+  .hamburger {
+    display: none;
+    position: fixed;
+    top: 1rem;
+    left: 1rem;
+    z-index: 50;
+    cursor: pointer;
+    padding: 0.5rem;
+    border-radius: 0.375rem;
+    background-color: #0769B3; /* Primary color */
+  }
+
+  .hamburger span {
+    display: block;
+    width: 25px;
+    height: 3px;
+    background-color: white;
+    margin-bottom: 5px;
+  }
+
+  @media (max-width: 768px) {
+    .sidebar {
+      position: fixed;
+      top: 0;
+      height: 100%;
+      transform: translateX(-100%);
+      z-index: 40;
+    }
+
+    .sidebar.open {
+      transform: translateX(0);
+    }
+
+    .hamburger {
+      display: block;
+    }
+  }
+
+  /* Dark Mode Styles */
+  .dark .sidebar {
+    background-color: #1f335c;
+    color: #d9d9d9;
+  }
+
+  .dark .sidebar ul li a {
+    color: #d9d9d9;
+  }
+
+  .dark .sidebar ul li a:hover {
+    background-color: #047885;
+    color: white;
+  }
+
+  .dark .section-title {
+    color: #a0aec0;
+  }
+
+  .dark .search-bar {
+    background-color: #2d3748;
+  }
+
+  .dark .search-bar input {
+    color: #d9d9d9;
+  }
+
+  .dark .hamburger {
+    background-color: #2d3748;
+  }
+     @media (max-width: 1024px) {
+  .sidebar {
+    position: fixed;
+    top: 0;
+    height: 100%;
+    transform: translateX(-100%);
+    z-index: 40;
+  }
+
+  .sidebar.open {
+    transform: translateX(0);
+  }
+
+  .hamburger {
+    display: block;
+  }
+}
+
+</style>
+
+</head>
+<div class="overlay" id="overlay"></div>
+
+<body class="bg-gray-100 dark:bg-gray-900 transition-colors duration-300">
+  <div class="flex h-screen">
+    <!-- Hamburger Icon -->
+    <div class="hamburger" id="hamburger-menu">
+      <span></span>
+      <span></span>
+      <span></span>
+    </div>
+
+    <!-- Sidebar -->
+    <div class="sidebar" id="sidebar">
+      <!-- Profile Section -->
+      <div class="profile-section">
+        <div class="profile-info">
+          <img  id="perfil" src="imagenes/logo_ingenieria.jpeg-removebg-preview.png" alt="Profile Picture" />
+        </div>
+      </div>
+
+
+
+
+<div class="flex items-center justify-end p-4">
+    <div class="relative">
+      <i class="fas fa-bell text-xl cursor-pointer" id="notificationBell" onclick="toggleNotificationPopup()"></i>
+          <span id="notificationCount" class="badge hidden">0</span>
+    </div>
+</div>
+
+
+
+      <!-- Search Bar -->
+      <div class="search-bar">
+        <input type="text" placeholder="Buscar...">
+        <i class="fas fa-search"></i>
+      </div>
+
+      <!-- Navigation Links -->
+      <nav>
+        <ul>
+          <!-- General Section -->
+          <div class="section-title">General</div>
+          <li class="mb-2">
+  <a class="flex items-center" href="/menutecnicos" data-link="/menuAdministrativo" title="Vista General">
+              <i class="fas fa-home mr-2"></i> Vista General
+            </a>
+          </li>
+
+
+
+
+
+<!-- Property Management Section -->
+<div class="section-title">--iNFORME--</div>
+
+
+
+<!-- Blog para Residentes Section -->
+<li class="mb-2">
+  <a class="flex items-center justify-between cursor-pointer" href="#" onclick="toggleSubmenu('submenu-Informe')">
+    <i class="fas fa-bell mr-2"></i> Informes
+    <i class="fas fa-chevron-down"></i>
+  </a>
+  <ul id="submenu-Informe" class="hidden ml-4">
+    <li class="mb-2">
+      <a class="flex items-center" href="/realizar_informe" title="Usar Plantilla">
+        <i class="fas fa-file-alt mr-2"></i> Crear Informe supervisor
+      </a>
+    </li>
+    <li class="mb-2">
+      <a class="flex items-center" href="/consulta_informe" title="Nueva Publicación">
+        <i class="fas fa-eye mr-2"></i> Consultar Informe  supervisor
+      </a>
+    </li>
+  </ul>
+</li>
+
+
+
+
+
+
+
+       
+         
+    
+<li class="mb-2">
+  <a class="flex items-center" href="/logout" title="Cerrar sesión">
+    <i class="fas fa-sign-out-alt mr-2"></i> Cerrar sesión 
+  </a>
+</li>
+
+        </ul>
+      </nav>
+<br>
+
+      <!-- Theme Toggle Button -->
+      <div class="mt-auto">
+        <button id="theme-toggle" class="w-full py-2 px-4 text-white bg-blue-500 hover:bg-blue-600 rounded-lg">
+          Cambiar Tema
+        </button>
+      </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="flex-1 p-6 bg-gray-50 dark:bg-gray-800 overflow-auto transition-colors duration-300">
+      <!-- Placeholder for dynamic body content -->
+
+   <div class="main-content">
+    
+<div id="notificationPopup" class="hidden fixed top-16 right-16 bg-white p-4 shadow-lg rounded-lg z-50 w-80">
+    <h3 class="text-lg font-bold mb-2">Notificaciones</h3>
+    <ul id="notificationList" class="text-gray-700 space-y-2"></ul>
+    <button onclick="markNotificationsAsRead({{userId}})" class="mt-3 text-blue-500 w-full text-center py-2 rounded-lg bg-blue-100 hover:bg-blue-200">
+        Marcar todas como leídas
+    </button>
+</div>
+
+
+
+    {{{body}}}
+</div>
+
+    </div>
+  </div>
+
+
+
+
+<script>
+  const nombre = "{{name}}";
+</script>
+
+<script>
+
+
+
+    
+// Function to toggle the notification popup
+function toggleNotificationPopup() {
+    const popup = document.getElementById('notificationPopup');
+    popup.classList.toggle('hidden'); // Solo mostrar o esconder el popup al hacer clic
+
+    // Si el popup está visible, agregamos un event listener para hacer clic fuera de él
+    if (!popup.classList.contains('hidden')) {
+        document.addEventListener('click', closePopupOnClickOutside);
+    } else {
+        document.removeEventListener('click', closePopupOnClickOutside);
+    }
+}
+
+// Function to close the popup when clicking outside
+function closePopupOnClickOutside(event) {
+    const popup = document.getElementById('notificationPopup');
+    const bell = document.getElementById('notificationBell');
+    
+    // Verificar si el clic ocurrió fuera del popup y de la campana de notificaciones
+    if (!popup.contains(event.target) && event.target !== bell) {
+        popup.classList.add('hidden'); // Ocultar el popup
+        document.removeEventListener('click', closePopupOnClickOutside); // Remover el listener
+    }
+}
+
+
+// Variable to control notification sound interval
+let notificationSoundInterval;
+let isUserInteracted = false;
+
+// Detect user interaction to allow sound playback
+window.addEventListener('click', () => {
+    isUserInteracted = true;
+});
+
+// Function to play the notification sound
+function playNotificationSound() {
+    const audio = new Audio('sonidos/level-up-2-199574.mp3');
+    audio.play().catch(error => console.error("Error al reproducir sonido:", error));
+}
+
+// Function to start sound at 5-second intervals
+function startNotificationSound() {
+    if (isUserInteracted) {
+        playNotificationSound();
+        notificationSoundInterval = setInterval(playNotificationSound, 5000);
+    }
+}
+
+// Function to stop sound when notifications are marked as read
+// Function to stop sound when notifications are marked as read
+function stopNotificationSound() {
+    if (notificationSoundInterval) {
+        clearInterval(notificationSoundInterval);
+        notificationSoundInterval = null; // Reiniciar el intervalo
+    }
+}
+
+async function loadNotifications() {
+    try {
+        const response = await fetch('/notificaciones');
+        const data = await response.json();
+        
+        const notificationCount = data.notificaciones.length;
+        const notificationBadge = document.getElementById('notificationCount');
+        const notificationList = document.getElementById('notificationList');
+
+        // Actualiza el conteo de notificaciones
+        if (notificationCount > 0) {
+            notificationBadge.classList.remove('hidden');
+            notificationBadge.textContent = notificationCount;
+            notificationList.innerHTML = '';
+
+            // Llena la lista de notificaciones
+            data.notificaciones.forEach(notificacion => {
+                const listItem = document.createElement('li');
+                listItem.className = notificacion.leido ? 'bg-gray-200 p-2 rounded-lg' : 'bg-blue-100 p-2 rounded-lg font-bold';
+                
+                listItem.innerHTML = `
+                    <div class="flex justify-between items-center">
+                        <span>${notificacion.actividad}</span>
+                        <span class="text-xs text-gray-500">${new Date(notificacion.fecha).toLocaleString()}</span>
+                    </div>
+                `;
+                notificationList.appendChild(listItem);
+            });
+
+        } else {
+            notificationBadge.classList.add('hidden');
+            notificationList.innerHTML = '<li class="text-center text-gray-500">No hay notificaciones nuevas</li>';
+        }
+    } catch (error) {
+        console.error("Error al cargar notificaciones:", error);
+    }
+}
+
+
+function markNotificationsAsRead(userId) {
+    const notificationBadge = document.getElementById('notificationCount');
+    const notificationList = document.getElementById('notificationList');
+    const popup = document.getElementById('notificationPopup');
+
+    // Ocultar la notificación visualmente
+    notificationBadge.classList.add('hidden');
+    notificationBadge.textContent = '0';
+    notificationList.innerHTML = '<li>No hay notificaciones nuevas</li>';
+    popup.classList.add('hidden'); // Ocultar el popup después de marcar como leídas
+
+    // Verificar si el userId está definidotoggleNotificationPopup
+    if (!userId) {
+        console.error('El user_id no está definido.');
+        return;
+    }
+
+    // Llamar a la API para marcar como leídas
+    fetch(`/marcarNotificacionesComoLeidas/${userId}`, { method: 'POST' })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                console.log("Notificaciones marcadas como leídas:", data);
+            } else {
+                console.error("No se pudo marcar como leído:", data.message);
+            }
+        })
+        .catch(error => {
+            console.error("Error al marcar notificaciones como leídas:", error);
+        });
+}
+
+
+
+// Cargar las notificaciones automáticamente al cargar la página y cada 30 segundos
+window.onload = function() {
+    loadNotifications(); // Cargar notificaciones automáticamente al cargar la página
+    setInterval(loadNotifications, 30000); // Cargar notificaciones cada 30 segundos
+};
+
+// Hamburger menu toggle
+const hamburger = document.getElementById('hamburger-menu');
+const sidebar = document.getElementById('sidebar');
+
+hamburger.addEventListener('click', () => {
+    sidebar.classList.toggle('open');
+});
+
+// Theme toggle logic
+const themeToggle = document.getElementById('theme-toggle');
+const htmlElement = document.documentElement;
+
+themeToggle.addEventListener('click', () => {
+    htmlElement.classList.toggle('dark');
+    if (htmlElement.classList.contains('dark')) {
+        localStorage.setItem('theme', 'dark');
+    } else {
+        localStorage.setItem('theme', 'light');
+    }
+});
+
+// Load theme from localStorage
+const storedTheme = localStorage.getItem('theme');
+if (storedTheme === 'dark') {
+    htmlElement.classList.add('dark');
+}
+
+// Mark the active link in the sidebar
+const currentPath = window.location.pathname;
+const menuLinks = document.querySelectorAll('.sidebar ul li a');
+
+menuLinks.forEach(link => {
+    if (link.dataset.link === currentPath) {
+        link.classList.add('active');
+    }
+});
+
+// Submenu toggle
+function toggleSubmenu(id) {
+    const submenu = document.getElementById(id);
+    submenu.classList.toggle('hidden');
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+let saveLocationInterval;
+
+async function saveLocation() {
+    if (!navigator.geolocation) {
+        console.error("La geolocalización no es compatible con este navegador.");
+        return;
+    }
+
+    const tecnico = document.querySelector("#perfil").alt || "Técnico desconocido"; // Extrae el nombre del técnico como alternativa
+
+    navigator.geolocation.getCurrentPosition(
+        async (position) => {
+            const lat = position.coords.latitude;
+            const lng = position.coords.longitude;
+
+            try {
+                const response = await fetch("/guardar_ubicacion", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify({ tecnico, lat, lng }),
+                });
+
+                const result = await response.json();
+
+                if (result.success) {
+                    console.log("Ubicación guardada correctamente:", { lat, lng });
+                } else {
+                    console.error("Error al guardar la ubicación en el servidor.");
+                }
+            } catch (error) {
+                console.error("Error de conexión al guardar la ubicación:", error);
+            }
+        },
+        (error) => {
+            console.error("Error al obtener la ubicación:", error);
+        }
+    );
+}
+
+// Inicia el guardado automático al cargar la página
+window.onload = function () {
+    saveLocation(); // Guarda la ubicación inmediatamente al cargar
+    saveLocationInterval = setInterval(saveLocation, 30000); // Cada 30 segundos
+};
+
+
+</script>
+
+<script>
+
+</script>
+
+

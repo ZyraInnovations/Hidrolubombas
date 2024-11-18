@@ -3,6 +3,7 @@ const session = require('express-session');
 const pool = require('./db'); // Importamos la configuración de la base de datos
 const path = require('path');
 const bodyParser = require('body-parser');
+const moment = require('moment-timezone');
 
 const app = express();
 // Middleware para analizar el cuerpo de las 
@@ -198,7 +199,7 @@ app.get("/menutecnicos", (req, res) => {
         res.render("tecnicos/menu_tecnicos.hbs", {
             name: nombreUsuario, // Pass the name to the template
             jefe,
-            empleado
+            layout: 'layouts/nav_tecnico.hbs'
         });
     } else {
         res.redirect("/login");
@@ -401,36 +402,70 @@ app.use(bodyParser.urlencoded({ extended: true })); // Para parsear datos de for
 
 
 
+
 // Ruta para el menú administrativo - Mostrar formulario para nuevo usuario
-app.get('/realizar_informe', (req, res) => {
+app.get('/realizar_informe', async (req, res) => {
     if (req.session.loggedin === true) {
-        const nombreUsuario = req.session.user.name; // Usa los datos de la sesión del usuario
-        res.render('administrativo/informes/crear_informe.hbs', { nombreUsuario,            layout: 'layouts/nav_admin.hbs'
-        });
+        try {
+            const userId = req.session.user.id; // Obtén el ID del usuario desde la sesión
+            const query = 'SELECT role FROM usuarios_hidro WHERE id = ?';
+            const [rows] = await pool.query(query, [userId]);
+
+            if (rows.length > 0) {
+                const nombreUsuario = req.session.user.name; // Usa los datos de la sesión del usuario
+                const layout = rows[0].role === 'admin' ? 'layouts/nav_admin.hbs' : 'layouts/nav_tecnico.hbs';
+
+                // Renderiza con el layout apropiado
+                res.render('administrativo/informes/crear_informe.hbs', {
+                    nombreUsuario,
+                    layout
+                });
+            } else {
+                // Si el usuario no existe en la base de datos, redirige al login
+                res.redirect('/login');
+            }
+        } catch (error) {
+            console.error('Error al verificar el rol del usuario:', error);
+            res.status(500).send('Error interno del servidor');
+        }
     } else {
         res.redirect('/login');
     }
 });
 
-
 app.get('/consulta_informe', (req, res) => {
     if (req.session.loggedin === true) {
+        const userId = req.session.user.id; // Obtén el ID del usuario desde la sesión
         const nombreUsuario = req.session.user.name;
 
-        // Query to get distinct technicians from the database
-        const query = 'SELECT DISTINCT tecnico FROM mantenimiento_hidro';
-        db.query(query, (err, results) => {
+        // Consulta el rol del usuario en la base de datos
+        const roleQuery = 'SELECT role FROM usuarios_hidro WHERE id = ?';
+        db.query(roleQuery, [userId], (err, roleResults) => {
             if (err) {
-                console.error('Error al obtener la lista de técnicos:', err);
+                console.error('Error al obtener el rol del usuario:', err);
                 res.status(500).send('Error en el servidor');
-            } else {
-                // Extract just the technician names from the results
-                const tecnicos = results.map(row => row.tecnico);
-                res.render('administrativo/informes/consulta_informe.hbs', {
-                    nombreUsuario,
-                    layout: 'layouts/nav_admin.hbs',
-                    tecnicos
+            } else if (roleResults.length > 0) {
+                const userRole = roleResults[0].role;
+                const layout = userRole === 'admin' ? 'layouts/nav_admin.hbs' : 'layouts/nav_tecnico.hbs';
+
+                // Consulta la lista de técnicos
+                const query = 'SELECT DISTINCT tecnico FROM mantenimiento_hidro';
+                db.query(query, (err, results) => {
+                    if (err) {
+                        console.error('Error al obtener la lista de técnicos:', err);
+                        res.status(500).send('Error en el servidor');
+                    } else {
+                        // Extrae solo los nombres de técnicos de los resultados
+                        const tecnicos = results.map(row => row.tecnico);
+                        res.render('administrativo/informes/consulta_informe.hbs', {
+                            nombreUsuario,
+                            layout,
+                            tecnicos
+                        });
+                    }
                 });
+            } else {
+                res.redirect('/login'); // Si no hay rol, redirige al login
             }
         });
     } else {
@@ -447,6 +482,8 @@ app.get('/ver_informe', (req, res) => {
 
         if (!informeId && !tecnico) {
             res.render('administrativo/informes/consulta_informe.hbs', {
+                layout: 'layouts/nav_admin.hbs',
+
                 nombreUsuario,
                 mensajeError: 'Por favor, ingrese un ID o seleccione un técnico para buscar el informe.'
             });
@@ -683,22 +720,22 @@ app.post('/enviar-correo', upload.fields([
 
 
 
-// Ruta para guardar la ubicación de un técnico
 app.post('/guardar_ubicacion', (req, res) => {
     const { tecnico, lat, lng } = req.body;
-  
-    const query = 'INSERT INTO ubicaciones_tecnicos (tecnico, latitud, longitud) VALUES (?, ?, ?)';
-    pool.query(query, [tecnico, lat, lng], (error, results) => {
-      if (error) {
-        console.error('Error al guardar la ubicación:', error);
-        res.status(500).send('Error al guardar la ubicación');
-      } else {
-        res.json({ success: true, message: 'Ubicación guardada correctamente' });
-      }
-    });
-  });
-  
 
+    // Obtener la hora local en la zona horaria adecuada
+    const horaLocal = moment().tz("America/Bogota").format("YYYY-MM-DD HH:mm:ss");
+
+    const query = 'INSERT INTO ubicaciones_tecnicos (tecnico, latitud, longitud, hora) VALUES (?, ?, ?, ?)';
+    pool.query(query, [tecnico, lat, lng, horaLocal], (error, results) => {
+        if (error) {
+            console.error('Error al guardar la ubicación:', error);
+            res.status(500).send('Error al guardar la ubicación');
+        } else {
+            res.json({ success: true, message: 'Ubicación guardada correctamente' });
+        }
+    });
+});
   app.get('/obtener_ubicaciones_tecnicos', async (req, res) => {
     try {
       // Usar promesas para ejecutar la consulta
