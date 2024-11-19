@@ -230,10 +230,10 @@ app.use(express.urlencoded({ extended: true })); // Esto es importante para mane
 
 // Configuración de la base de datos
 const db = mysql.createConnection({
-    host: "34.66.173.227",
-    user: "soporte",
+    host: '34.56.87.125',
+    user: 'Julian',
     password: "1034277764C",
-    database: "viancoapp",
+    database: 'cerceta',
     port: 3306,
     waitForConnections: true,
     connectionLimit: 100,  // Aumentado para permitir más conexiones simultáneas si es necesario
@@ -747,6 +747,46 @@ app.post('/guardar_ubicacion', (req, res) => {
     }
   });
   
+
+
+// Ruta para el menú administrativo - Mostrar formulario para nuevo usuario
+app.get('/agregar_clientes', (req, res) => {
+    if (req.session.loggedin === true) {
+        const nombreUsuario = req.session.user.name; // Usa los datos de la sesión del usuario
+        res.render('administrativo/clientes/agregar_clientes.hbs', { nombreUsuario,layout: 'layouts/nav_admin.hbs', });
+    } else {
+        res.redirect('/login');
+    }
+});
+
+
+
+                
+// Ruta para guardar cliente
+app.post('/guardar_cliente', upload.single('foto'), async (req, res) => {
+    if (req.session.loggedin === true) {
+        const { nombre, nit, correo, numero, direccion } = req.body;
+        const foto = req.file ? req.file.buffer : null;
+
+        try {
+            const query = `INSERT INTO clientes_hidrolubombas (nombre, nit, correo, numero, direccion, foto, createdAt) 
+                           VALUES (?, ?, ?, ?, ?, ?, NOW())`;
+            const values = [nombre, nit, correo, numero, direccion, foto];
+            
+            await pool.query(query, values);
+
+            res.redirect('/agregar_clientes'); // Redirige de vuelta al formulario o a otra página
+        } catch (error) {
+            console.error('Error al guardar cliente:', error);
+            res.status(500).send('Hubo un error al guardar el cliente.');
+        }
+    } else {
+        res.redirect('/login');
+    }
+});             
+
+
+
 
 
 // Iniciar el servidor
