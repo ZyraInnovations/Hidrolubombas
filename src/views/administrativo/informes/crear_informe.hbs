@@ -221,6 +221,38 @@
             height: 100px;
         }
 
+
+
+
+
+.botonn {
+    display: inline-block;
+    padding: 12px 20px;
+    font-size: 16px;
+    font-weight: bold;
+    color: #ffffff;
+    background-color: #4caf50; /* Verde profesional */
+    border: none;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.botonn:hover {
+    background-color: #45a049; /* Verde más oscuro */
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+    transform: translateY(-2px); /* Pequeña elevación */
+}
+
+.botonn:active {
+    background-color: #388e3c; /* Verde más intenso */
+    transform: translateY(0); /* Sin elevación */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
   </style>
 
 <style>
@@ -300,10 +332,23 @@
             <option value="Otro">Otro</option>
         </select>
     </div>
-    <div class="info-row">
-        <strong>Equipo:</strong> 
-        <input type="text" name="equipo" required>
-    </div>
+<div class="info-row">
+    <strong>Equipo:</strong>
+    <select name="equipo" id="equipoSelect" required>
+        <option value="" disabled selected>Seleccione un equipo</option>
+        <option value="Equipo de presión de agua potable">Equipo de presión de agua potable</option>
+        <option value="Sistema eyector">Sistema eyector</option>
+        <option value="Equipo de presión y eyector">Equipo de presión y eyector</option>
+        <option value="Equipo Hidro Flo">Equipo Hidro Flo</option>
+        <option value="Equipo Hi press">Equipo Hi press</option>
+        <option value="Lavado y desinfección de tanques de abastecimiento">Lavado y desinfección de tanques de abastecimiento</option>
+        <option value="Lavado de cajas de aguas residuales">Lavado de cajas de aguas residuales</option>
+        <option value="Tubería de aguas negras o residuales">Tubería de aguas negras o residuales</option>
+        <option value="Sistema de Detección de red contra incendios">Sistema de Detección de red contra incendios</option>
+        <option value="Sistema de Extinción de red contra incendios">Sistema de Extinción de red contra incendios</option>
+    </select>
+</div>
+
     <div class="info-row">
         <strong>Técnico:</strong> 
         <input type="text" name="tecnico" required>
@@ -713,8 +758,8 @@
 
 <input id="boton" name="fotos" type="file" multiple accept="image/*">
 
-
-    <input id="boton" type="submit" value="ENVIAR INFORME">
+<br>
+    <input id="boton" class="botonn" type="submit" value="ENVIAR INFORME">
 
 
 
