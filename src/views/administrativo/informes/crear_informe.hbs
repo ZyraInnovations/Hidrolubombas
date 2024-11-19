@@ -270,20 +270,26 @@
 
 
 
-
 <div class="info-section">
     <div class="info-row">
-        <strong>Cliente:</strong> 
-        <input type="text" name="cliente" required>
+        <strong>Cliente:</strong>
+<select name="cliente" id="clienteSelect" onchange="fetchClienteCorreo()" required>
+    <option value="" disabled selected>Seleccione un cliente</option>
+    {{#each clientes}}
+        <option value="{{this.id}}">{{this.nombre}}</option>
+    {{/each}}
+</select>
+
     </div>
         <div class="info-row">
         <strong>torre:</strong> 
         <input type="text" name="torre" required>
     </div>
-    <div class="info-row">
-        <strong>Correo:</strong> 
-        <input type="text" name="Correo" required>
-    </div>
+<div class="info-row">
+    <strong>Correo:</strong>
+    <input type="text" id="correoInput" name="Correo" readonly required>
+</div>
+
     <div class="info-row">
         <strong>Tipo de Mantenimiento:</strong> 
         <select name="tipo_de_mantenimiento" required>
@@ -767,6 +773,7 @@
 <!-- Script para habilitar la firma en los canvas -->
 <!-- Script para habilitar la firma en los canvas -->
 <script>
+    
     document.addEventListener('DOMContentLoaded', function() {
     initSignaturePad('signatureCanvas1');
     initSignaturePad('signatureCanvas2');
@@ -1006,6 +1013,28 @@ function draw(event) {
 function stopDrawing(event) {
     event.preventDefault(); // Previene comportamientos no deseados
     drawing = false;
+}
+async function fetchClienteCorreo() {
+    const clienteId = document.getElementById('clienteSelect').value;
+    console.log('Cliente seleccionado:', clienteId); // Debug 1
+
+    if (clienteId) {
+        try {
+            const response = await fetch(`/get_cliente_correo/${clienteId}`);
+            const data = await response.json();
+
+            console.log('Respuesta del servidor:', data); // Debug 2
+
+            if (data.success) {
+                document.getElementById('correoInput').value = data.correo;
+            } else {
+                alert(data.message || 'No se pudo obtener el correo del cliente.');
+            }
+        } catch (error) {
+            console.error('Error al obtener el correo del cliente:', error);
+            alert('Hubo un error al intentar obtener el correo del cliente.');
+        }
+    }
 }
 
 </script>

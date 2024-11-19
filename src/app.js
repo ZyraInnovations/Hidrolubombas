@@ -400,38 +400,63 @@ app.use(bodyParser.urlencoded({ extended: true })); // Para parsear datos de for
 
 
 
-
-
-
-// Ruta para el menú administrativo - Mostrar formulario para nuevo usuario
+// Ruta para el menú administrativo - Mostrar formulario para el informe
 app.get('/realizar_informe', async (req, res) => {
     if (req.session.loggedin === true) {
         try {
             const userId = req.session.user.id; // Obtén el ID del usuario desde la sesión
-            const query = 'SELECT role FROM usuarios_hidro WHERE id = ?';
-            const [rows] = await pool.query(query, [userId]);
+            const userQuery = 'SELECT role FROM usuarios_hidro WHERE id = ?';
+            const [userRows] = await pool.query(userQuery, [userId]);
 
-            if (rows.length > 0) {
+            if (userRows.length > 0) {
                 const nombreUsuario = req.session.user.name; // Usa los datos de la sesión del usuario
-                const layout = rows[0].role === 'admin' ? 'layouts/nav_admin.hbs' : 'layouts/nav_tecnico.hbs';
+                const layout = userRows[0].role === 'admin' ? 'layouts/nav_admin.hbs' : 'layouts/nav_tecnico.hbs';
 
-                // Renderiza con el layout apropiado
+                // Consulta para obtener la lista de clientes (sin filtrar por role)
+                const clientsQuery = 'SELECT id, nombre FROM clientes_hidrolubombas';
+                const [clientes] = await pool.query(clientsQuery);
+
+                // Renderiza la vista con los clientes y el layout apropiado
                 res.render('administrativo/informes/crear_informe.hbs', {
                     nombreUsuario,
-                    layout
+                    layout,
+                    clientes
                 });
             } else {
                 // Si el usuario no existe en la base de datos, redirige al login
                 res.redirect('/login');
             }
         } catch (error) {
-            console.error('Error al verificar el rol del usuario:', error);
+            console.error('Error al cargar la página de informe:', error);
             res.status(500).send('Error interno del servidor');
         }
     } else {
         res.redirect('/login');
     }
 });
+
+app.get('/get_cliente_correo/:id', async (req, res) => {
+    try {
+        const clientId = req.params.id; // ID del cliente
+        const query = 'SELECT correo FROM clientes_hidrolubombas WHERE id = ?';
+        const [rows] = await pool.query(query, [clientId]);
+
+        if (rows.length > 0) {
+            res.json({ success: true, correo: rows[0].correo });
+        } else {
+            res.json({ success: false, message: 'Cliente no encontrado' });
+        }
+    } catch (error) {
+        console.error('Error al obtener el correo del cliente:', error);
+        res.status(500).json({ success: false, message: 'Error interno del servidor' });
+    }
+});
+
+
+
+
+
+
 
 app.get('/consulta_informe', (req, res) => {
     if (req.session.loggedin === true) {
