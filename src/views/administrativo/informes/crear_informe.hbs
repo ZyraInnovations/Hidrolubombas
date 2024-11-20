@@ -453,6 +453,18 @@
     .remove-btn:hover {
         background-color: #ff4d4d; /* Rojo más brillante cuando se pasa el ratón */
     }
+    select {
+  -webkit-appearance: none; /* Oculta la flecha en navegadores WebKit */
+  -moz-appearance: none; /* Oculta la flecha en navegadores Firefox */
+  appearance: none; /* Oculta la flecha en navegadores modernos */
+  background: none; /* Elimina el fondo para personalizar si es necesario */
+  border: 1px solid #ccc; /* Opcional: agrega un borde personalizado */
+  padding: 5px; /* Opcional: agrega espacio interno */
+  border-radius: 4px; /* Opcional: bordes redondeados */
+    cursor: pointer; /* Cambia el cursor a pointer */
+
+}
+
 </style>
 
 </head>
@@ -599,104 +611,761 @@
         <tbody>
             <tr>
         <td>Variador</td>
-<td><input type="text" class="input-field" name="variador_b1"></td>
-<td><input type="text" class="input-field" name="variador_b2"></td>
-<td><input type="text" class="input-field" name="variador_b3"></td>
-<td><input type="text" class="input-field" name="variador_b4"></td>
+<td>
+  <select class="input-field" name="variador_b1">
+    <option value="" selected></option>
+    <option value="C">C</option>
+    <option value="F">F</option>
+    <option value="P">P</option>
+    <option value="D">D</option>
+    <option value="V">V</option>
+    <option value="OK">OK</option>
+        <option value="N/A">N/A</option>
+
+  </select>
+</td>
+
+
+<td>
+  <select class="input-field" name="variador_b2">
+    <option value="" selected></option>
+    <option value="C">C</option>
+    <option value="F">F</option>
+    <option value="P">P</option>
+    <option value="D">D</option>
+    <option value="V">V</option>
+    <option value="OK">OK</option>
+        <option value="N/A">N/A</option>
+
+  </select>
+</td>
+
+
+
+
+<td>
+  <select class="input-field" name="variador_b3">
+    <option value="" selected></option>
+    <option value="C">C</option>
+    <option value="F">F</option>
+    <option value="P">P</option>
+    <option value="D">D</option>
+    <option value="V">V</option>
+    <option value="OK">OK</option>
+        <option value="N/A">N/A</option>
+
+  </select>
+</td>
+
+<td>
+  <select class="input-field" name="variador_b4">
+    <option value="" selected></option>
+    <option value="C">C</option>
+    <option value="F">F</option>
+    <option value="P">P</option>
+    <option value="D">D</option>
+    <option value="V">V</option>
+    <option value="OK">OK</option>
+        <option value="N/A">N/A</option>
+
+  </select>
+</td>
 
               <td>Precarga</td>
 <td><input type="text" class="hidrosistema-input" name="precarga"></td>
 
 <td>Guarda motor</td>
-<td><input type="text" class="input-field" name="guarda_motor_b11"></td>
-<td><input type="text" class="input-field" name="guarda_motor_b22"></td>
-<td><input type="text" class="input-field" name="guarda_motor_b33"></td>
-<td><input type="text" class="input-field" name="guarda_motor_b44"></td>
+<td>
+  <select class="input-field" name="guarda_motor_b11">
+    <option value="" selected></option>
+    <option value="C">C</option>
+    <option value="F">F</option>
+    <option value="P">P</option>
+    <option value="D">D</option>
+    <option value="V">V</option>
+    <option value="OK">OK</option>
+        <option value="N/A">N/A</option>
+
+  </select>
+</td>
+<td>
+  <select class="input-field" name="guarda_motor_b22">
+    <option value="" selected></option>
+    <option value="C">C</option>
+    <option value="F">F</option>
+    <option value="P">P</option>
+    <option value="D">D</option>
+    <option value="V">V</option>
+    <option value="OK">OK</option>
+        <option value="N/A">N/A</option>
+
+  </select>
+</td>
+<td>
+  <select class="input-field" name="guarda_motor_b33">
+    <option value="" selected></option>
+    <option value="C">C</option>
+    <option value="F">F</option>
+    <option value="P">P</option>
+    <option value="D">D</option>
+    <option value="V">V</option>
+    <option value="OK">OK</option>
+        <option value="N/A">N/A</option>
+
+  </select>
+</td>
+<td>
+  <select class="input-field" name="guarda_motor_b44">
+    <option value="" selected></option>
+    <option value="C">C</option>
+    <option value="F">F</option>
+    <option value="P">P</option>
+    <option value="D">D</option>
+    <option value="V">V</option>
+    <option value="OK">OK</option>
+        <option value="N/A">N/A</option>
+
+  </select>
+</td>
 
             </tr>
 <tr>
     <td>Mutelillas</td>
-    <td><input type="text" class="input-field" name="mutelillas_b1"></td>
-    <td><input type="text" class="input-field" name="mutelillas_b2"></td>
-    <td><input type="text" class="input-field" name="mutelillas_b3"></td>
-    <td><input type="text" class="input-field" name="mutelillas_b4"></td>
+<td>
+  <select class="input-field" name="mutelillas_b1">
+    <option value="" selected></option>
+    <option value="C">C</option>
+    <option value="F">F</option>
+    <option value="P">P</option>
+    <option value="D">D</option>
+    <option value="V">V</option>
+    <option value="OK">OK</option>
+        <option value="N/A">N/A</option>
+
+  </select>
+</td>
+<td>
+  <select class="input-field" name="mutelillas_b2">
+    <option value="" selected></option>
+    <option value="C">C</option>
+    <option value="F">F</option>
+    <option value="P">P</option>
+    <option value="D">D</option>
+    <option value="V">V</option>
+    <option value="OK">OK</option>
+        <option value="N/A">N/A</option>
+
+  </select>
+</td>
+<td>
+  <select class="input-field" name="mutelillas_b3">
+    <option value="" selected></option>
+    <option value="C">C</option>
+    <option value="F">F</option>
+    <option value="P">P</option>
+    <option value="D">D</option>
+    <option value="V">V</option>
+    <option value="OK">OK</option>
+        <option value="N/A">N/A</option>
+
+  </select>
+</td>
+<td>
+  <select class="input-field" name="mutelillas_b4">
+    <option value="" selected></option>
+    <option value="C">C</option>
+    <option value="F">F</option>
+    <option value="P">P</option>
+    <option value="D">D</option>
+    <option value="V">V</option>
+    <option value="OK">OK</option>
+        <option value="N/A">N/A</option>
+
+  </select>
+</td>
+
     <td>Flotador Mecánico</td>
-    <td><input type="text" class="hidrosistema-input" name="flotador_mecanico"></td>
+<td>
+  <select class="hidrosistema-input" name="flotador_mecanico">
+    <option value="" selected></option>
+    <option value="C">C</option>
+    <option value="F">F</option>
+    <option value="P">P</option>
+    <option value="D">D</option>
+    <option value="V">V</option>
+    <option value="OK">OK</option>
+    <option value="N/A">N/A</option>
+  </select>
+</td>
     <td>Breaker </td>
-    <td><input type="text" class="input-field" name="breaker_b1"></td>
-    <td><input type="text" class="input-field" name="breaker_b2"></td>
-    <td><input type="text" class="input-field" name="breaker_b3"></td>
-    <td><input type="text" class="input-field" name="breaker_b4"></td>
+<td>
+  <select class="input-field" name="breaker_b1">
+    <option value="" selected></option>
+    <option value="C">C</option>
+    <option value="F">F</option>
+    <option value="P">P</option>
+    <option value="D">D</option>
+    <option value="V">V</option>
+    <option value="OK">OK</option>
+    <option value="N/A">N/A</option>
+  </select>
+</td>
+<td>
+  <select class="input-field" name="breaker_b2">
+    <option value="" selected></option>
+    <option value="C">C</option>
+    <option value="F">F</option>
+    <option value="P">P</option>
+    <option value="D">D</option>
+    <option value="V">V</option>
+    <option value="OK">OK</option>
+    <option value="N/A">N/A</option>
+  </select>
+</td>
+<td>
+  <select class="input-field" name="breaker_b3">
+    <option value="" selected></option>
+    <option value="C">C</option>
+    <option value="F">F</option>
+    <option value="P">P</option>
+    <option value="D">D</option>
+    <option value="V">V</option>
+    <option value="OK">OK</option>
+    <option value="N/A">N/A</option>
+  </select>
+</td>
+<td>
+  <select class="input-field" name="breaker_b4">
+    <option value="" selected></option>
+    <option value="C">C</option>
+    <option value="F">F</option>
+    <option value="P">P</option>
+    <option value="D">D</option>
+    <option value="V">V</option>
+    <option value="OK">OK</option>
+    <option value="N/A">N/A</option>
+  </select>
+</td>
+
 </tr>
 
 <tr>
     <td>Piloto</td>
-    <td><input type="text" class="input-field" name="piloto_b1"></td>
-    <td><input type="text" class="input-field" name="piloto_b2"></td>
-    <td><input type="text" class="input-field" name="piloto_b3"></td>
-    <td><input type="text" class="input-field" name="piloto_b4"></td>
+<td>
+  <select class="input-field" name="piloto_b1">
+    <option value="" selected></option>
+    <option value="C">C</option>
+    <option value="F">F</option>
+    <option value="P">P</option>
+    <option value="D">D</option>
+    <option value="V">V</option>
+    <option value="OK">OK</option>
+    <option value="N/A">N/A</option>
+  </select>
+</td>
+<td>
+  <select class="input-field" name="piloto_b2">
+    <option value="" selected></option>
+    <option value="C">C</option>
+    <option value="F">F</option>
+    <option value="P">P</option>
+    <option value="D">D</option>
+    <option value="V">V</option>
+    <option value="OK">OK</option>
+    <option value="N/A">N/A</option>
+  </select>
+</td>
+<td>
+  <select class="input-field" name="piloto_b3">
+    <option value="" selected></option>
+    <option value="C">C</option>
+    <option value="F">F</option>
+    <option value="P">P</option>
+    <option value="D">D</option>
+    <option value="V">V</option>
+    <option value="OK">OK</option>
+    <option value="N/A">N/A</option>
+  </select>
+</td>
+<td>
+  <select class="input-field" name="piloto_b4">
+    <option value="" selected></option>
+    <option value="C">C</option>
+    <option value="F">F</option>
+    <option value="P">P</option>
+    <option value="D">D</option>
+    <option value="V">V</option>
+    <option value="OK">OK</option>
+    <option value="N/A">N/A</option>
+  </select>
+</td>
+
     <td>Válvulas de Succión</td>
-    <td><input type="text" class="hidrosistema-input" name="valvulas_succion"></td>
+<td>
+  <select class="hidrosistema-input" name="valvulas_succion">
+    <option value="" selected></option>
+    <option value="C">C</option>
+    <option value="F">F</option>
+    <option value="P">P</option>
+    <option value="D">D</option>
+    <option value="V">V</option>
+    <option value="OK">OK</option>
+    <option value="N/A">N/A</option>
+  </select>
+</td>
     <td>Muletillas</td>
-      <td><input type="text" class="input-field" name="muletillas_b1"></td>
-    <td><input type="text" class="input-field" name="muletillas_b2"></td>
-    <td><input type="text" class="input-field" name="muletillas_b3"></td>
-    <td><input type="text" class="input-field" name="muletillas_b4"></td>
+   <td>
+  <select class="input-field" name="muletillas_b1">
+    <option value="" selected></option>
+    <option value="C">C</option>
+    <option value="F">F</option>
+    <option value="P">P</option>
+    <option value="D">D</option>
+    <option value="V">V</option>
+    <option value="OK">OK</option>
+    <option value="N/A">N/A</option>
+  </select>
+</td>
+<td>
+  <select class="input-field" name="muletillas_b2">
+    <option value="" selected></option>
+    <option value="C">C</option>
+    <option value="F">F</option>
+    <option value="P">P</option>
+    <option value="D">D</option>
+    <option value="V">V</option>
+    <option value="OK">OK</option>
+    <option value="N/A">N/A</option>
+  </select>
+</td>
+<td>
+  <select class="input-field" name="muletillas_b3">
+    <option value="" selected></option>
+    <option value="C">C</option>
+    <option value="F">F</option>
+    <option value="P">P</option>
+    <option value="D">D</option>
+    <option value="V">V</option>
+    <option value="OK">OK</option>
+    <option value="N/A">N/A</option>
+  </select>
+</td>
+<td>
+  <select class="input-field" name="muletillas_b4">
+    <option value="" selected></option>
+    <option value="C">C</option>
+    <option value="F">F</option>
+    <option value="P">P</option>
+    <option value="D">D</option>
+    <option value="V">V</option>
+    <option value="OK">OK</option>
+    <option value="N/A">N/A</option>
+  </select>
+</td>
+
 </tr>
 
    <tr>
     <td>Contactores</td>
-    <td><input type="text" class="input-field" name="contactores_b1"></td>
-    <td><input type="text" class="input-field" name="contactores_b2"></td>
-    <td><input type="text" class="input-field" name="contactores_b3"></td>
-    <td><input type="text" class="input-field" name="contactores_b4"></td>
+<td>
+  <select class="input-field" name="contactores_b1">
+    <option value="" selected></option>
+    <option value="C">C</option>
+    <option value="F">F</option>
+    <option value="P">P</option>
+    <option value="D">D</option>
+    <option value="V">V</option>
+    <option value="OK">OK</option>
+    <option value="N/A">N/A</option>
+  </select>
+</td>
+<td>
+  <select class="input-field" name="contactores_b2">
+    <option value="" selected></option>
+    <option value="C">C</option>
+    <option value="F">F</option>
+    <option value="P">P</option>
+    <option value="D">D</option>
+    <option value="V">V</option>
+    <option value="OK">OK</option>
+    <option value="N/A">N/A</option>
+  </select>
+</td>
+<td>
+  <select class="input-field" name="contactores_b3">
+    <option value="" selected></option>
+    <option value="C">C</option>
+    <option value="F">F</option>
+    <option value="P">P</option>
+    <option value="D">D</option>
+    <option value="V">V</option>
+    <option value="OK">OK</option>
+    <option value="N/A">N/A</option>
+  </select>
+</td>
+<td>
+  <select class="input-field" name="contactores_b4">
+    <option value="" selected></option>
+    <option value="C">C</option>
+    <option value="F">F</option>
+    <option value="P">P</option>
+    <option value="D">D</option>
+    <option value="V">V</option>
+    <option value="OK">OK</option>
+    <option value="N/A">N/A</option>
+  </select>
+</td>
+
     <td>Tanque Hidro</td>
-    <td><input type="text" class="hidrosistema-input" name="tanque_hidro"></td>
+<td>
+  <select class="hidrosistema-input" name="tanque_hidro">
+    <option value="" selected></option>
+    <option value="C">C</option>
+    <option value="F">F</option>
+    <option value="P">P</option>
+    <option value="D">D</option>
+    <option value="V">V</option>
+    <option value="OK">OK</option>
+    <option value="N/A">N/A</option>
+  </select>
+</td>
     <td>Contacores</td>
-    <td><input type="text" class="input-field" name="contacores_b1"></td>
-    <td><input type="text" class="input-field" name="contacores_b2"></td>
-    <td><input type="text" class="input-field" name="contacores_b3"></td>
-    <td><input type="text" class="input-field" name="contacores_b4"></td>
+<td>
+  <select class="input-field" name="contacores_b1">
+    <option value="" selected></option>
+    <option value="C">C</option>
+    <option value="F">F</option>
+    <option value="P">P</option>
+    <option value="D">D</option>
+    <option value="V">V</option>
+    <option value="OK">OK</option>
+    <option value="N/A">N/A</option>
+  </select>
+</td>
+<td>
+  <select class="input-field" name="contacores_b2">
+    <option value="" selected></option>
+    <option value="C">C</option>
+    <option value="F">F</option>
+    <option value="P">P</option>
+    <option value="D">D</option>
+    <option value="V">V</option>
+    <option value="OK">OK</option>
+    <option value="N/A">N/A</option>
+  </select>
+</td>
+<td>
+  <select class="input-field" name="contacores_b3">
+    <option value="" selected></option>
+    <option value="C">C</option>
+    <option value="F">F</option>
+    <option value="P">P</option>
+    <option value="D">D</option>
+    <option value="V">V</option>
+    <option value="OK">OK</option>
+    <option value="N/A">N/A</option>
+  </select>
+</td>
+<td>
+  <select class="input-field" name="contacores_b4">
+    <option value="" selected></option>
+    <option value="C">C</option>
+    <option value="F">F</option>
+    <option value="P">P</option>
+    <option value="D">D</option>
+    <option value="V">V</option>
+    <option value="OK">OK</option>
+    <option value="N/A">N/A</option>
+  </select>
+</td>
+
 </tr>
 
    <tr>
     <td>Presostatos</td>
-    <td><input type="text" class="input-field" name="presostatos_b1"></td>
-    <td><input type="text" class="input-field" name="presostatos_b2"></td>
-    <td><input type="text" class="input-field" name="presostatos_b3"></td>
-    <td><input type="text" class="input-field" name="presostatos_b4"></td>
+<td>
+  <select class="input-field" name="presostatos_b1">
+    <option value="" selected></option>
+    <option value="C">C</option>
+    <option value="F">F</option>
+    <option value="P">P</option>
+    <option value="D">D</option>
+    <option value="V">V</option>
+    <option value="OK">OK</option>
+    <option value="N/A">N/A</option>
+  </select>
+</td>
+<td>
+  <select class="input-field" name="presostatos_b2">
+    <option value="" selected></option>
+    <option value="C">C</option>
+    <option value="F">F</option>
+    <option value="P">P</option>
+    <option value="D">D</option>
+    <option value="V">V</option>
+    <option value="OK">OK</option>
+    <option value="N/A">N/A</option>
+  </select>
+</td>
+<td>
+  <select class="input-field" name="presostatos_b3">
+    <option value="" selected></option>
+    <option value="C">C</option>
+    <option value="F">F</option>
+    <option value="P">P</option>
+    <option value="D">D</option>
+    <option value="V">V</option>
+    <option value="OK">OK</option>
+    <option value="N/A">N/A</option>
+  </select>
+</td>
+<td>
+  <select class="input-field" name="presostatos_b4">
+    <option value="" selected></option>
+    <option value="C">C</option>
+    <option value="F">F</option>
+    <option value="P">P</option>
+    <option value="D">D</option>
+    <option value="V">V</option>
+    <option value="OK">OK</option>
+    <option value="N/A">N/A</option>
+  </select>
+</td>
+
     <td>Cheques</td>
-    <td><input type="text" class="hidrosistema-input" name="cheques"></td>
+<td>
+  <select class="hidrosistema-input" name="cheques">
+    <option value="" selected></option>
+    <option value="C">C</option>
+    <option value="F">F</option>
+    <option value="P">P</option>
+    <option value="D">D</option>
+    <option value="V">V</option>
+    <option value="OK">OK</option>
+    <option value="N/A">N/A</option>
+  </select>
+</td>
     <td>Flotador Electricos</td>
-    <td><input type="text" class="input-field" name="flotador_electricos_b1"></td>
-    <td><input type="text" class="input-field" name="flotador_electricos_b2"></td>
-    <td><input type="text" class="input-field" name="flotador_electricos_b3"></td>
-    <td><input type="text" class="input-field" name="flotador_electricos_b4"></td>
+<td>
+  <select class="input-field" name="flotador_electricos_b1">
+    <option value="" selected></option>
+    <option value="C">C</option>
+    <option value="F">F</option>
+    <option value="P">P</option>
+    <option value="D">D</option>
+    <option value="V">V</option>
+    <option value="OK">OK</option>
+    <option value="N/A">N/A</option>
+  </select>
+</td>
+<td>
+  <select class="input-field" name="flotador_electricos_b2">
+    <option value="" selected></option>
+    <option value="C">C</option>
+    <option value="F">F</option>
+    <option value="P">P</option>
+    <option value="D">D</option>
+    <option value="V">V</option>
+    <option value="OK">OK</option>
+    <option value="N/A">N/A</option>
+  </select>
+</td>
+<td>
+  <select class="input-field" name="flotador_electricos_b3">
+    <option value="" selected></option>
+    <option value="C">C</option>
+    <option value="F">F</option>
+    <option value="P">P</option>
+    <option value="D">D</option>
+    <option value="V">V</option>
+    <option value="OK">OK</option>
+    <option value="N/A">N/A</option>
+  </select>
+</td>
+<td>
+  <select class="input-field" name="flotador_electricos_b4">
+    <option value="" selected></option>
+    <option value="C">C</option>
+    <option value="F">F</option>
+    <option value="P">P</option>
+    <option value="D">D</option>
+    <option value="V">V</option>
+    <option value="OK">OK</option>
+    <option value="N/A">N/A</option>
+  </select>
+</td>
+
 </tr>
 
 <tr>
     <td>Alternador</td>
-    <td><input type="text" class="input-field" name="alternador_b1"></td>
-    <td><input type="text" class="input-field" name="alternador_b2"></td>
-    <td><input type="text" class="input-field" name="alternador_b3"></td>
-    <td><input type="text" class="input-field" name="alternador_b4"></td>
+<td>
+  <select class="input-field" name="alternador_b1">
+    <option value="" selected></option>
+    <option value="C">C</option>
+    <option value="F">F</option>
+    <option value="P">P</option>
+    <option value="D">D</option>
+    <option value="V">V</option>
+    <option value="OK">OK</option>
+    <option value="N/A">N/A</option>
+  </select>
+</td>
+<td>
+  <select class="input-field" name="alternador_b2">
+    <option value="" selected></option>
+    <option value="C">C</option>
+    <option value="F">F</option>
+    <option value="P">P</option>
+    <option value="D">D</option>
+    <option value="V">V</option>
+    <option value="OK">OK</option>
+    <option value="N/A">N/A</option>
+  </select>
+</td>
+<td>
+  <select class="input-field" name="alternador_b3">
+    <option value="" selected></option>
+    <option value="C">C</option>
+    <option value="F">F</option>
+    <option value="P">P</option>
+    <option value="D">D</option>
+    <option value="V">V</option>
+    <option value="OK">OK</option>
+    <option value="N/A">N/A</option>
+  </select>
+</td>
+<td>
+  <select class="input-field" name="alternador_b4">
+    <option value="" selected></option>
+    <option value="C">C</option>
+    <option value="F">F</option>
+    <option value="P">P</option>
+    <option value="D">D</option>
+    <option value="V">V</option>
+    <option value="OK">OK</option>
+    <option value="N/A">N/A</option>
+  </select>
+</td>
+
     <td>Presion de linea</td>
     <td><input type="text" class="hidrosistema-input" name="presion_linea"></td>
     <td>Conexiones</td>
-    <td><input type="text" class="input-field" name="conexiones_b11"></td>
-    <td><input type="text" class="input-field" name="conexiones_b22"></td>
-    <td><input type="text" class="input-field" name="conexiones_b33"></td>
-    <td><input type="text" class="input-field" name="conexiones_b44"></td>
+<td>
+  <select class="input-field" name="conexiones_b11">
+    <option value="" selected></option>
+    <option value="C">C</option>
+    <option value="F">F</option>
+    <option value="P">P</option>
+    <option value="D">D</option>
+    <option value="V">V</option>
+    <option value="OK">OK</option>
+    <option value="N/A">N/A</option>
+  </select>
+</td>
+<td>
+  <select class="input-field" name="conexiones_b22">
+    <option value="" selected></option>
+    <option value="C">C</option>
+    <option value="F">F</option>
+    <option value="P">P</option>
+    <option value="D">D</option>
+    <option value="V">V</option>
+    <option value="OK">OK</option>
+    <option value="N/A">N/A</option>
+  </select>
+</td>
+<td>
+  <select class="input-field" name="conexiones_b33">
+    <option value="" selected></option>
+    <option value="C">C</option>
+    <option value="F">F</option>
+    <option value="P">P</option>
+    <option value="D">D</option>
+    <option value="V">V</option>
+    <option value="OK">OK</option>
+    <option value="N/A">N/A</option>
+  </select>
+</td>
+<td>
+  <select class="input-field" name="conexiones_b44">
+    <option value="" selected></option>
+    <option value="C">C</option>
+    <option value="F">F</option>
+    <option value="P">P</option>
+    <option value="D">D</option>
+    <option value="V">V</option>
+    <option value="OK">OK</option>
+    <option value="N/A">N/A</option>
+  </select>
+</td>
+
 </tr>
 
 <tr>
     <td>Guarda motor</td>
-    <td><input type="text" class="input-field" name="guarda_motor_b1"></td>
-    <td><input type="text" class="input-field" name="guarda_motor_b2"></td>
-    <td><input type="text" class="input-field" name="guarda_motor_b3"></td>
-    <td><input type="text" class="input-field" name="guarda_motor_b4"></td>
+<td>
+  <select class="input-field" name="guarda_motor_b1">
+    <option value="" selected></option>
+    <option value="C">C</option>
+    <option value="F">F</option>
+    <option value="P">P</option>
+    <option value="D">D</option>
+    <option value="V">V</option>
+    <option value="OK">OK</option>
+    <option value="N/A">N/A</option>
+  </select>
+</td>
+<td>
+  <select class="input-field" name="guarda_motor_b2">
+    <option value="" selected></option>
+    <option value="C">C</option>
+    <option value="F">F</option>
+    <option value="P">P</option>
+    <option value="D">D</option>
+    <option value="V">V</option>
+    <option value="OK">OK</option>
+    <option value="N/A">N/A</option>
+  </select>
+</td>
+<td>
+  <select class="input-field" name="guarda_motor_b3">
+    <option value="" selected></option>
+    <option value="C">C</option>
+    <option value="F">F</option>
+    <option value="P">P</option>
+    <option value="D">D</option>
+    <option value="V">V</option>
+    <option value="OK">OK</option>
+    <option value="N/A">N/A</option>
+  </select>
+</td>
+<td>
+  <select class="input-field" name="guarda_motor_b4">
+    <option value="" selected></option>
+    <option value="C">C</option>
+    <option value="F">F</option>
+    <option value="P">P</option>
+    <option value="D">D</option>
+    <option value="V">V</option>
+    <option value="OK">OK</option>
+    <option value="N/A">N/A</option>
+  </select>
+</td>
+
     <td>Registros</td>
-    <td><input type="text" class="hidrosistema-input" name="registros"></td>
+<td>
+  <select class="hidrosistema-input" name="registros">
+    <option value="" selected></option>
+    <option value="C">C</option>
+    <option value="F">F</option>
+    <option value="P">P</option>
+    <option value="D">D</option>
+    <option value="V">V</option>
+    <option value="OK">OK</option>
+    <option value="N/A">N/A</option>
+  </select>
+</td>
     <td>Amperaje</td>
  <td><input type="text" class="input-field" name="amperaje_b11"></td>
     <td><input type="text" class="input-field" name="amperaje_b22"></td>
@@ -706,12 +1375,68 @@
 
 <tr>
     <td>Temporizador</td>
-    <td><input type="text" class="input-field" name="temporizador_b1"></td>
-    <td><input type="text" class="input-field" name="temporizador_b2"></td>
-    <td><input type="text" class="input-field" name="temporizador_b3"></td>
-    <td><input type="text" class="input-field" name="temporizador_b4"></td>
+<td>
+  <select class="input-field" name="temporizador_b1">
+    <option value="" selected></option>
+    <option value="C">C</option>
+    <option value="F">F</option>
+    <option value="P">P</option>
+    <option value="D">D</option>
+    <option value="V">V</option>
+    <option value="OK">OK</option>
+    <option value="N/A">N/A</option>
+  </select>
+</td>
+<td>
+  <select class="input-field" name="temporizador_b2">
+    <option value="" selected></option>
+    <option value="C">C</option>
+    <option value="F">F</option>
+    <option value="P">P</option>
+    <option value="D">D</option>
+    <option value="V">V</option>
+    <option value="OK">OK</option>
+    <option value="N/A">N/A</option>
+  </select>
+</td>
+<td>
+  <select class="input-field" name="temporizador_b3">
+    <option value="" selected></option>
+    <option value="C">C</option>
+    <option value="F">F</option>
+    <option value="P">P</option>
+    <option value="D">D</option>
+    <option value="V">V</option>
+    <option value="OK">OK</option>
+    <option value="N/A">N/A</option>
+  </select>
+</td>
+<td>
+  <select class="input-field" name="temporizador_b4">
+    <option value="" selected></option>
+    <option value="C">C</option>
+    <option value="F">F</option>
+    <option value="P">P</option>
+    <option value="D">D</option>
+    <option value="V">V</option>
+    <option value="OK">OK</option>
+    <option value="N/A">N/A</option>
+  </select>
+</td>
+
     <td>Membrana</td>
-    <td><input type="text" class="hidrosistema-input" name="membrana"></td>
+<td>
+  <select class="hidrosistema-input" name="membrana">
+    <option value="" selected></option>
+    <option value="C">C</option>
+    <option value="F">F</option>
+    <option value="P">P</option>
+    <option value="D">D</option>
+    <option value="V">V</option>
+    <option value="OK">OK</option>
+    <option value="N/A">N/A</option>
+  </select>
+</td>
     <td>Voltaje</td>
    <td><input type="text" class="input-field" name="voltaje_b11"></td>
     <td><input type="text" class="input-field" name="voltaje_b22"></td>
@@ -721,47 +1446,350 @@
 
  <tr>
     <td>Rele Termico</td>
-    <td><input type="text" class="input-field" name="rele_termico_b1"></td>
-    <td><input type="text" class="input-field" name="rele_termico_b2"></td>
-    <td><input type="text" class="input-field" name="rele_termico_b3"></td>
-    <td><input type="text" class="input-field" name="rele_termico_b4"></td>
+<td>
+  <select class="input-field" name="rele_termico_b1">
+    <option value="" selected></option>
+    <option value="C">C</option>
+    <option value="F">F</option>
+    <option value="P">P</option>
+    <option value="D">D</option>
+    <option value="V">V</option>
+    <option value="OK">OK</option>
+    <option value="N/A">N/A</option>
+  </select>
+</td>
+<td>
+  <select class="input-field" name="rele_termico_b2">
+    <option value="" selected></option>
+    <option value="C">C</option>
+    <option value="F">F</option>
+    <option value="P">P</option>
+    <option value="D">D</option>
+    <option value="V">V</option>
+    <option value="OK">OK</option>
+    <option value="N/A">N/A</option>
+  </select>
+</td>
+<td>
+  <select class="input-field" name="rele_termico_b3">
+    <option value="" selected></option>
+    <option value="C">C</option>
+    <option value="F">F</option>
+    <option value="P">P</option>
+    <option value="D">D</option>
+    <option value="V">V</option>
+    <option value="OK">OK</option>
+    <option value="N/A">N/A</option>
+  </select>
+</td>
+<td>
+  <select class="input-field" name="rele_termico_b4">
+    <option value="" selected></option>
+    <option value="C">C</option>
+    <option value="F">F</option>
+    <option value="P">P</option>
+    <option value="D">D</option>
+    <option value="V">V</option>
+    <option value="OK">OK</option>
+    <option value="N/A">N/A</option>
+  </select>
+</td>
+
     <td>Manometro</td>
-    <td><input type="text" class="hidrosistema-input" name="manometro"></td>
+<td>
+  <select class="hidrosistema-input" name="manometro">
+    <option value="" selected></option>
+    <option value="C">C</option>
+    <option value="F">F</option>
+    <option value="P">P</option>
+    <option value="D">D</option>
+    <option value="V">V</option>
+    <option value="OK">OK</option>
+    <option value="N/A">N/A</option>
+  </select>
+</td>
     <td>Sierena</td>
-    <td><input type="text" class="input-field" name="sierena_b1"></td>
-    <td><input type="text" class="input-field" name="sierena_b2"></td>
-    <td><input type="text" class="input-field" name="sierena_b3"></td>
-    <td><input type="text" class="input-field" name="sierena_b4"></td>
+  <td>
+  <select class="input-field" name="sierena_b1">
+    <option value="" selected></option>
+    <option value="C">C</option>
+    <option value="F">F</option>
+    <option value="P">P</option>
+    <option value="D">D</option>
+    <option value="V">V</option>
+    <option value="OK">OK</option>
+    <option value="N/A">N/A</option>
+  </select>
+</td>
+<td>
+  <select class="input-field" name="sierena_b2">
+    <option value="" selected></option>
+    <option value="C">C</option>
+    <option value="F">F</option>
+    <option value="P">P</option>
+    <option value="D">D</option>
+    <option value="V">V</option>
+    <option value="OK">OK</option>
+    <option value="N/A">N/A</option>
+  </select>
+</td>
+<td>
+  <select class="input-field" name="sierena_b3">
+    <option value="" selected></option>
+    <option value="C">C</option>
+    <option value="F">F</option>
+    <option value="P">P</option>
+    <option value="D">D</option>
+    <option value="V">V</option>
+    <option value="OK">OK</option>
+    <option value="N/A">N/A</option>
+  </select>
+</td>
+<td>
+  <select class="input-field" name="sierena_b4">
+    <option value="" selected></option>
+    <option value="C">C</option>
+    <option value="F">F</option>
+    <option value="P">P</option>
+    <option value="D">D</option>
+    <option value="V">V</option>
+    <option value="OK">OK</option>
+    <option value="N/A">N/A</option>
+  </select>
+</td>
+
 </tr>
 
        <tr>
     <td>Flotador Electrico</td>
-    <td><input type="text" class="input-field" name="flotador_electrico_b1"></td>
-    <td><input type="text" class="input-field" name="flotador_electrico_b2"></td>
-    <td><input type="text" class="input-field" name="flotador_electrico_b3"></td>
-    <td><input type="text" class="input-field" name="flotador_electrico_b4"></td>
+    <td>
+  <select class="input-field" name="flotador_electrico_b1">
+    <option value="" selected></option>
+    <option value="C">C</option>
+    <option value="F">F</option>
+    <option value="P">P</option>
+    <option value="D">D</option>
+    <option value="V">V</option>
+    <option value="OK">OK</option>
+    <option value="N/A">N/A</option>
+  </select>
+</td>
+<td>
+  <select class="input-field" name="flotador_electrico_b2">
+    <option value="" selected></option>
+    <option value="C">C</option>
+    <option value="F">F</option>
+    <option value="P">P</option>
+    <option value="D">D</option>
+    <option value="V">V</option>
+    <option value="OK">OK</option>
+    <option value="N/A">N/A</option>
+  </select>
+</td>
+<td>
+  <select class="input-field" name="flotador_electrico_b3">
+    <option value="" selected></option>
+    <option value="C">C</option>
+    <option value="F">F</option>
+    <option value="P">P</option>
+    <option value="D">D</option>
+    <option value="V">V</option>
+    <option value="OK">OK</option>
+    <option value="N/A">N/A</option>
+  </select>
+</td>
+<td>
+  <select class="input-field" name="flotador_electrico_b4">
+    <option value="" selected></option>
+    <option value="C">C</option>
+    <option value="F">F</option>
+    <option value="P">P</option>
+    <option value="D">D</option>
+    <option value="V">V</option>
+    <option value="OK">OK</option>
+    <option value="N/A">N/A</option>
+  </select>
+</td>
+
     <td>Cargador de Aire</td>
-    <td><input type="text" class="hidrosistema-input" name="cargador_aire"></td>
+<td>
+  <select class="hidrosistema-input" name="cargador_aire">
+    <option value="" selected></option>
+    <option value="C">C</option>
+    <option value="F">F</option>
+    <option value="P">P</option>
+    <option value="D">D</option>
+    <option value="V">V</option>
+    <option value="OK">OK</option>
+    <option value="N/A">N/A</option>
+  </select>
+</td>
     <td>Rele termico</td>
-    <td><input type="text" class="input-field" name="rele_terminco_b1"></td>
-    <td><input type="text" class="input-field" name="rele_terminco_b2"></td>
-    <td><input type="text" class="input-field" name="rele_terminco_b3"></td>
-    <td><input type="text" class="input-field" name="rele_terminco_b4"></td>
+<td>
+  <select class="input-field" name="rele_terminco_b1">
+    <option value="" selected></option>
+    <option value="C">C</option>
+    <option value="F">F</option>
+    <option value="P">P</option>
+    <option value="D">D</option>
+    <option value="V">V</option>
+    <option value="OK">OK</option>
+    <option value="N/A">N/A</option>
+  </select>
+</td>
+<td>
+  <select class="input-field" name="rele_terminco_b2">
+    <option value="" selected></option>
+    <option value="C">C</option>
+    <option value="F">F</option>
+    <option value="P">P</option>
+    <option value="D">D</option>
+    <option value="V">V</option>
+    <option value="OK">OK</option>
+    <option value="N/A">N/A</option>
+  </select>
+</td>
+<td>
+  <select class="input-field" name="rele_terminco_b3">
+    <option value="" selected></option>
+    <option value="C">C</option>
+    <option value="F">F</option>
+    <option value="P">P</option>
+    <option value="D">D</option>
+    <option value="V">V</option>
+    <option value="OK">OK</option>
+    <option value="N/A">N/A</option>
+  </select>
+</td>
+<td>
+  <select class="input-field" name="rele_terminco_b4">
+    <option value="" selected></option>
+    <option value="C">C</option>
+    <option value="F">F</option>
+    <option value="P">P</option>
+    <option value="D">D</option>
+    <option value="V">V</option>
+    <option value="OK">OK</option>
+    <option value="N/A">N/A</option>
+  </select>
+</td>
+
 </tr>
 
      <tr>
     <td>Conexiones</td>
-    <td><input type="text" class="input-field" name="conexiones_b1"></td>
-    <td><input type="text" class="input-field" name="conexiones_b2"></td>
-    <td><input type="text" class="input-field" name="conexiones_b3"></td>
-    <td><input type="text" class="input-field" name="conexiones_b4"></td>
+<td>
+  <select class="input-field" name="conexiones_b1">
+    <option value="" selected></option>
+    <option value="C">C</option>
+    <option value="F">F</option>
+    <option value="P">P</option>
+    <option value="D">D</option>
+    <option value="V">V</option>
+    <option value="OK">OK</option>
+    <option value="N/A">N/A</option>
+  </select>
+</td>
+<td>
+  <select class="input-field" name="conexiones_b2">
+    <option value="" selected></option>
+    <option value="C">C</option>
+    <option value="F">F</option>
+    <option value="P">P</option>
+    <option value="D">D</option>
+    <option value="V">V</option>
+    <option value="OK">OK</option>
+    <option value="N/A">N/A</option>
+  </select>
+</td>
+<td>
+  <select class="input-field" name="conexiones_b3">
+    <option value="" selected></option>
+    <option value="C">C</option>
+    <option value="F">F</option>
+    <option value="P">P</option>
+    <option value="D">D</option>
+    <option value="V">V</option>
+    <option value="OK">OK</option>
+    <option value="N/A">N/A</option>
+  </select>
+</td>
+<td>
+  <select class="input-field" name="conexiones_b4">
+    <option value="" selected></option>
+    <option value="C">C</option>
+    <option value="F">F</option>
+    <option value="P">P</option>
+    <option value="D">D</option>
+    <option value="V">V</option>
+    <option value="OK">OK</option>
+    <option value="N/A">N/A</option>
+  </select>
+</td>
+
     <td>Tanque Reserva</td>
-    <td><input type="text" class="hidrosistema-input" name="tanque_reserva"></td>
+<td>
+  <select class="hidrosistema-input" name="tanque_reserva">
+    <option value="" selected></option>
+    <option value="C">C</option>
+    <option value="F">F</option>
+    <option value="P">P</option>
+    <option value="D">D</option>
+    <option value="V">V</option>
+    <option value="OK">OK</option>
+    <option value="N/A">N/A</option>
+  </select>
+</td>
     <td>Residuos sólidos</td>
-    <td><input type="text" class="input-field" name="residuos_b1"></td>
-    <td><input type="text" class="input-field" name="residuos_b2"></td>
-    <td><input type="text" class="input-field" name="residuos_b3"></td>
-    <td><input type="text" class="input-field" name="residuos_b4"></td>
+ <td>
+  <select class="input-field" name="residuos_b1">
+    <option value="" selected></option>
+    <option value="C">C</option>
+    <option value="F">F</option>
+    <option value="P">P</option>
+    <option value="D">D</option>
+    <option value="V">V</option>
+    <option value="OK">OK</option>
+    <option value="N/A">N/A</option>
+  </select>
+</td>
+<td>
+  <select class="input-field" name="residuos_b2">
+    <option value="" selected></option>
+    <option value="C">C</option>
+    <option value="F">F</option>
+    <option value="P">P</option>
+    <option value="D">D</option>
+    <option value="V">V</option>
+    <option value="OK">OK</option>
+    <option value="N/A">N/A</option>
+  </select>
+</td>
+<td>
+  <select class="input-field" name="residuos_b3">
+    <option value="" selected></option>
+    <option value="C">C</option>
+    <option value="F">F</option>
+    <option value="P">P</option>
+    <option value="D">D</option>
+    <option value="V">V</option>
+    <option value="OK">OK</option>
+    <option value="N/A">N/A</option>
+  </select>
+</td>
+<td>
+  <select class="input-field" name="residuos_b4">
+    <option value="" selected></option>
+    <option value="C">C</option>
+    <option value="F">F</option>
+    <option value="P">P</option>
+    <option value="D">D</option>
+    <option value="V">V</option>
+    <option value="OK">OK</option>
+    <option value="N/A">N/A</option>
+  </select>
+</td>
+
 </tr>
 
  <tr>
@@ -771,7 +1799,18 @@
     <td><input type="text" class="input-field" name="amperaje_b3"></td>
     <td><input type="text" class="input-field" name="amperaje_b4"></td>
     <td>Flauta de descarga</td>
-    <td><input type="text" class="hidrosistema-input" name="flauta_descarga"></td>
+<td>
+  <select class="hidrosistema-input" name="flauta_descarga">
+    <option value="" selected></option>
+    <option value="C">C</option>
+    <option value="F">F</option>
+    <option value="P">P</option>
+    <option value="D">D</option>
+    <option value="V">V</option>
+    <option value="OK">OK</option>
+    <option value="N/A">N/A</option>
+  </select>
+</td>
     <td></td>
     <td></td>
     <td></td>
@@ -815,79 +1854,573 @@
             <tr>
 
     <td>Rodamientos</td>
-    <td><input type="text" class="input-field" name="rodamientos_m1"></td>
-    <td><input type="text" class="input-field" name="rodamientos_m2"></td>
-    <td><input type="text" class="input-field" name="rodamientos_m3"></td>
-    <td><input type="text" class="input-field" name="rodamientos_m4"></td>
+<td>
+  <select class="input-field" name="rodamientos_m1">
+    <option value="" selected></option>
+    <option value="C">C</option>
+    <option value="F">F</option>
+    <option value="P">P</option>
+    <option value="D">D</option>
+    <option value="V">V</option>
+    <option value="OK">OK</option>
+    <option value="N/A">N/A</option>
+  </select>
+</td>
+<td>
+  <select class="input-field" name="rodamientos_m2">
+    <option value="" selected></option>
+    <option value="C">C</option>
+    <option value="F">F</option>
+    <option value="P">P</option>
+    <option value="D">D</option>
+    <option value="V">V</option>
+    <option value="OK">OK</option>
+    <option value="N/A">N/A</option>
+  </select>
+</td>
+<td>
+  <select class="input-field" name="rodamientos_m3">
+    <option value="" selected></option>
+    <option value="C">C</option>
+    <option value="F">F</option>
+    <option value="P">P</option>
+    <option value="D">D</option>
+    <option value="V">V</option>
+    <option value="OK">OK</option>
+    <option value="N/A">N/A</option>
+  </select>
+</td>
+<td>
+  <select class="input-field" name="rodamientos_m4">
+    <option value="" selected></option>
+    <option value="C">C</option>
+    <option value="F">F</option>
+    <option value="P">P</option>
+    <option value="D">D</option>
+    <option value="V">V</option>
+    <option value="OK">OK</option>
+    <option value="N/A">N/A</option>
+  </select>
+</td>
+
 
      <td>Impulsor</td>
-    <td><input type="text" class="input-field" name="impulsor_m1"></td>
-    <td><input type="text" class="input-field" name="impulsor_m2"></td>
-    <td><input type="text" class="input-field" name="impulsor_m3"></td>
-    <td><input type="text" class="input-field" name="impulsor_m4"></td>
-              
+<td>
+  <select class="input-field" name="impulsor_m1">
+    <option value="" selected></option>
+    <option value="C">C</option>
+    <option value="F">F</option>
+    <option value="P">P</option>
+    <option value="D">D</option>
+    <option value="V">V</option>
+    <option value="OK">OK</option>
+    <option value="N/A">N/A</option>
+  </select>
+</td>
+<td>
+  <select class="input-field" name="impulsor_m2">
+    <option value="" selected></option>
+    <option value="C">C</option>
+    <option value="F">F</option>
+    <option value="P">P</option>
+    <option value="D">D</option>
+    <option value="V">V</option>
+    <option value="OK">OK</option>
+    <option value="N/A">N/A</option>
+  </select>
+</td>
+<td>
+  <select class="input-field" name="impulsor_m3">
+    <option value="" selected></option>
+    <option value="C">C</option>
+    <option value="F">F</option>
+    <option value="P">P</option>
+    <option value="D">D</option>
+    <option value="V">V</option>
+    <option value="OK">OK</option>
+    <option value="N/A">N/A</option>
+  </select>
+</td>
+<td>
+  <select class="input-field" name="impulsor_m4">
+    <option value="" selected></option>
+    <option value="C">C</option>
+    <option value="F">F</option>
+    <option value="P">P</option>
+    <option value="D">D</option>
+    <option value="V">V</option>
+    <option value="OK">OK</option>
+    <option value="N/A">N/A</option>
+  </select>
+</td>
+
               
               
               
               
 <tr>
     <td>Casquillo</td>
-    <td><input type="text" name="casquillo_b1" class="input-field"></td>
-    <td><input type="text" name="casquillo_b2" class="input-field"></td>
-    <td><input type="text" name="casquillo_b3" class="input-field"></td>
-    <td><input type="text" name="casquillo_b4" class="input-field"></td>
+<td>
+  <select name="casquillo_b1" class="input-field">
+    <option value="" selected></option>
+    <option value="C">C</option>
+    <option value="F">F</option>
+    <option value="P">P</option>
+    <option value="D">D</option>
+    <option value="V">V</option>
+    <option value="OK">OK</option>
+    <option value="N/A">N/A</option>
+  </select>
+</td>
+<td>
+  <select name="casquillo_b2" class="input-field">
+    <option value="" selected></option>
+    <option value="C">C</option>
+    <option value="F">F</option>
+    <option value="P">P</option>
+    <option value="D">D</option>
+    <option value="V">V</option>
+    <option value="OK">OK</option>
+    <option value="N/A">N/A</option>
+  </select>
+</td>
+<td>
+  <select name="casquillo_b3" class="input-field">
+    <option value="" selected></option>
+    <option value="C">C</option>
+    <option value="F">F</option>
+    <option value="P">P</option>
+    <option value="D">D</option>
+    <option value="V">V</option>
+    <option value="OK">OK</option>
+    <option value="N/A">N/A</option>
+  </select>
+</td>
+<td>
+  <select name="casquillo_b4" class="input-field">
+    <option value="" selected></option>
+    <option value="C">C</option>
+    <option value="F">F</option>
+    <option value="P">P</option>
+    <option value="D">D</option>
+    <option value="V">V</option>
+    <option value="OK">OK</option>
+    <option value="N/A">N/A</option>
+  </select>
+</td>
+
     <td>Sello Mecánico</td>
-    <td><input type="text" name="sello_mecanico_b1" class="input-field"></td>
-    <td><input type="text" name="sello_mecanico_b2" class="input-field"></td>
-    <td><input type="text" name="sello_mecanico_b3" class="input-field"></td>
-    <td><input type="text" name="sello_mecanico_b4" class="input-field"></td>
+<td>
+  <select name="sello_mecanico_b1" class="input-field">
+    <option value="" selected></option>
+    <option value="C">C</option>
+    <option value="F">F</option>
+    <option value="P">P</option>
+    <option value="D">D</option>
+    <option value="V">V</option>
+    <option value="OK">OK</option>
+    <option value="N/A">N/A</option>
+  </select>
+</td>
+<td>
+  <select name="sello_mecanico_b2" class="input-field">
+    <option value="" selected></option>
+    <option value="C">C</option>
+    <option value="F">F</option>
+    <option value="P">P</option>
+    <option value="D">D</option>
+    <option value="V">V</option>
+    <option value="OK">OK</option>
+    <option value="N/A">N/A</option>
+  </select>
+</td>
+<td>
+  <select name="sello_mecanico_b3" class="input-field">
+    <option value="" selected></option>
+    <option value="C">C</option>
+    <option value="F">F</option>
+    <option value="P">P</option>
+    <option value="D">D</option>
+    <option value="V">V</option>
+    <option value="OK">OK</option>
+    <option value="N/A">N/A</option>
+  </select>
+</td>
+<td>
+  <select name="sello_mecanico_b4" class="input-field">
+    <option value="" selected></option>
+    <option value="C">C</option>
+    <option value="F">F</option>
+    <option value="P">P</option>
+    <option value="D">D</option>
+    <option value="V">V</option>
+    <option value="OK">OK</option>
+    <option value="N/A">N/A</option>
+  </select>
+</td>
+
 </tr>
 
 <tr>
     <td>Empaque</td>
-    <td><input type="text" name="empaque_b1" class="input-field"></td>
-    <td><input type="text" name="empaque_b2" class="input-field"></td>
-    <td><input type="text" name="empaque_b3" class="input-field"></td>
-    <td><input type="text" name="empaque_b4" class="input-field"></td>
+<td>
+  <select name="empaque_b1" class="input-field">
+    <option value="" selected></option>
+    <option value="C">C</option>
+    <option value="F">F</option>
+    <option value="P">P</option>
+    <option value="D">D</option>
+    <option value="V">V</option>
+    <option value="OK">OK</option>
+    <option value="N/A">N/A</option>
+  </select>
+</td>
+<td>
+  <select name="empaque_b2" class="input-field">
+    <option value="" selected></option>
+    <option value="C">C</option>
+    <option value="F">F</option>
+    <option value="P">P</option>
+    <option value="D">D</option>
+    <option value="V">V</option>
+    <option value="OK">OK</option>
+    <option value="N/A">N/A</option>
+  </select>
+</td>
+<td>
+  <select name="empaque_b3" class="input-field">
+    <option value="" selected></option>
+    <option value="C">C</option>
+    <option value="F">F</option>
+    <option value="P">P</option>
+    <option value="D">D</option>
+    <option value="V">V</option>
+    <option value="OK">OK</option>
+    <option value="N/A">N/A</option>
+  </select>
+</td>
+<td>
+  <select name="empaque_b4" class="input-field">
+    <option value="" selected></option>
+    <option value="C">C</option>
+    <option value="F">F</option>
+    <option value="P">P</option>
+    <option value="D">D</option>
+    <option value="V">V</option>
+    <option value="OK">OK</option>
+    <option value="N/A">N/A</option>
+  </select>
+</td>
+
     <td>Empaque</td>
-    <td><input type="text" name="empaque_2_b1" class="input-field"></td>
-    <td><input type="text" name="empaque_2_b2" class="input-field"></td>
-    <td><input type="text" name="empaque_2_b3" class="input-field"></td>
-    <td><input type="text" name="empaque_2_b4" class="input-field"></td>
+   <td>
+  <select name="empaque_2_b1" class="input-field">
+    <option value="" selected></option>
+    <option value="C">C</option>
+    <option value="F">F</option>
+    <option value="P">P</option>
+    <option value="D">D</option>
+    <option value="V">V</option>
+    <option value="OK">OK</option>
+    <option value="N/A">N/A</option>
+  </select>
+</td>
+<td>
+  <select name="empaque_2_b2" class="input-field">
+    <option value="" selected></option>
+    <option value="C">C</option>
+    <option value="F">F</option>
+    <option value="P">P</option>
+    <option value="D">D</option>
+    <option value="V">V</option>
+    <option value="OK">OK</option>
+    <option value="N/A">N/A</option>
+  </select>
+</td>
+<td>
+  <select name="empaque_2_b3" class="input-field">
+    <option value="" selected></option>
+    <option value="C">C</option>
+    <option value="F">F</option>
+    <option value="P">P</option>
+    <option value="D">D</option>
+    <option value="V">V</option>
+    <option value="OK">OK</option>
+    <option value="N/A">N/A</option>
+  </select>
+</td>
+<td>
+  <select name="empaque_2_b4" class="input-field">
+    <option value="" selected></option>
+    <option value="C">C</option>
+    <option value="F">F</option>
+    <option value="P">P</option>
+    <option value="D">D</option>
+    <option value="V">V</option>
+    <option value="OK">OK</option>
+    <option value="N/A">N/A</option>
+  </select>
+</td>
+
 </tr>
 
 <tr>
     <td>Ventilador</td>
-    <td><input type="text" name="ventilador_b1" class="input-field"></td>
-    <td><input type="text" name="ventilador_b2" class="input-field"></td>
-    <td><input type="text" name="ventilador_b3" class="input-field"></td>
-    <td><input type="text" name="ventilador_b4" class="input-field"></td>
+<td>
+  <select name="ventilador_b1" class="input-field">
+    <option value="" selected></option>
+    <option value="C">C</option>
+    <option value="F">F</option>
+    <option value="P">P</option>
+    <option value="D">D</option>
+    <option value="V">V</option>
+    <option value="OK">OK</option>
+    <option value="N/A">N/A</option>
+  </select>
+</td>
+<td>
+  <select name="ventilador_b2" class="input-field">
+    <option value="" selected></option>
+    <option value="C">C</option>
+    <option value="F">F</option>
+    <option value="P">P</option>
+    <option value="D">D</option>
+    <option value="V">V</option>
+    <option value="OK">OK</option>
+    <option value="N/A">N/A</option>
+  </select>
+</td>
+<td>
+  <select name="ventilador_b3" class="input-field">
+    <option value="" selected></option>
+    <option value="C">C</option>
+    <option value="F">F</option>
+    <option value="P">P</option>
+    <option value="D">D</option>
+    <option value="V">V</option>
+    <option value="OK">OK</option>
+    <option value="N/A">N/A</option>
+  </select>
+</td>
+<td>
+  <select name="ventilador_b4" class="input-field">
+    <option value="" selected></option>
+    <option value="C">C</option>
+    <option value="F">F</option>
+    <option value="P">P</option>
+    <option value="D">D</option>
+    <option value="V">V</option>
+    <option value="OK">OK</option>
+    <option value="N/A">N/A</option>
+  </select>
+</td>
+
     <td>Carcasa</td>
-    <td><input type="text" name="carcasa_b1" class="input-field"></td>
-    <td><input type="text" name="carcasa_b2" class="input-field"></td>
-    <td><input type="text" name="carcasa_b3" class="input-field"></td>
-    <td><input type="text" name="carcasa_b4" class="input-field"></td>
+  <td>
+  <select name="carcasa_b1" class="input-field">
+    <option value="" selected></option>
+    <option value="C">C</option>
+    <option value="F">F</option>
+    <option value="P">P</option>
+    <option value="D">D</option>
+    <option value="V">V</option>
+    <option value="OK">OK</option>
+    <option value="N/A">N/A</option>
+  </select>
+</td>
+<td>
+  <select name="carcasa_b2" class="input-field">
+    <option value="" selected></option>
+    <option value="C">C</option>
+    <option value="F">F</option>
+    <option value="P">P</option>
+    <option value="D">D</option>
+    <option value="V">V</option>
+    <option value="OK">OK</option>
+    <option value="N/A">N/A</option>
+  </select>
+</td>
+<td>
+  <select name="carcasa_b3" class="input-field">
+    <option value="" selected></option>
+    <option value="C">C</option>
+    <option value="F">F</option>
+    <option value="P">P</option>
+    <option value="D">D</option>
+    <option value="V">V</option>
+    <option value="OK">OK</option>
+    <option value="N/A">N/A</option>
+  </select>
+</td>
+<td>
+  <select name="carcasa_b4" class="input-field">
+    <option value="" selected></option>
+    <option value="C">C</option>
+    <option value="F">F</option>
+    <option value="P">P</option>
+    <option value="D">D</option>
+    <option value="V">V</option>
+    <option value="OK">OK</option>
+    <option value="N/A">N/A</option>
+  </select>
+</td>
+
 </tr>
 
 <tr>
     <td>Bornes</td>
-    <td><input type="text" name="bornes_b1" class="input-field"></td>
-    <td><input type="text" name="bornes_b2" class="input-field"></td>
-    <td><input type="text" name="bornes_b3" class="input-field"></td>
-    <td><input type="text" name="bornes_b4" class="input-field"></td>
+<td>
+  <select name="bornes_b1" class="input-field">
+    <option value="" selected></option>
+    <option value="C">C</option>
+    <option value="F">F</option>
+    <option value="P">P</option>
+    <option value="D">D</option>
+    <option value="V">V</option>
+    <option value="OK">OK</option>
+    <option value="N/A">N/A</option>
+  </select>
+</td>
+<td>
+  <select name="bornes_b2" class="input-field">
+    <option value="" selected></option>
+    <option value="C">C</option>
+    <option value="F">F</option>
+    <option value="P">P</option>
+    <option value="D">D</option>
+    <option value="V">V</option>
+    <option value="OK">OK</option>
+    <option value="N/A">N/A</option>
+  </select>
+</td>
+<td>
+  <select name="bornes_b3" class="input-field">
+    <option value="" selected></option>
+    <option value="C">C</option>
+    <option value="F">F</option>
+    <option value="P">P</option>
+    <option value="D">D</option>
+    <option value="V">V</option>
+    <option value="OK">OK</option>
+    <option value="N/A">N/A</option>
+  </select>
+</td>
+<td>
+  <select name="bornes_b4" class="input-field">
+    <option value="" selected></option>
+    <option value="C">C</option>
+    <option value="F">F</option>
+    <option value="P">P</option>
+    <option value="D">D</option>
+    <option value="V">V</option>
+    <option value="OK">OK</option>
+    <option value="N/A">N/A</option>
+  </select>
+</td>
+
     <td>Casquillo</td>
-    <td><input type="text" name="casquillo_b11" class="input-field"></td>
-    <td><input type="text" name="casquillo_b22" class="input-field"></td>
-    <td><input type="text" name="casquillo_b33" class="input-field"></td>
-    <td><input type="text" name="casquillo_b44" class="input-field"></td>
+  <td>
+  <select name="casquillo_b11" class="input-field">
+    <option value="" selected></option>
+    <option value="C">C</option>
+    <option value="F">F</option>
+    <option value="P">P</option>
+    <option value="D">D</option>
+    <option value="V">V</option>
+    <option value="OK">OK</option>
+    <option value="N/A">N/A</option>
+  </select>
+</td>
+<td>
+  <select name="casquillo_b22" class="input-field">
+    <option value="" selected></option>
+    <option value="C">C</option>
+    <option value="F">F</option>
+    <option value="P">P</option>
+    <option value="D">D</option>
+    <option value="V">V</option>
+    <option value="OK">OK</option>
+    <option value="N/A">N/A</option>
+  </select>
+</td>
+<td>
+  <select name="casquillo_b33" class="input-field">
+    <option value="" selected></option>
+    <option value="C">C</option>
+    <option value="F">F</option>
+    <option value="P">P</option>
+    <option value="D">D</option>
+    <option value="V">V</option>
+    <option value="OK">OK</option>
+    <option value="N/A">N/A</option>
+  </select>
+</td>
+<td>
+  <select name="casquillo_b44" class="input-field">
+    <option value="" selected></option>
+    <option value="C">C</option>
+    <option value="F">F</option>
+    <option value="P">P</option>
+    <option value="D">D</option>
+    <option value="V">V</option>
+    <option value="OK">OK</option>
+    <option value="N/A">N/A</option>
+  </select>
+</td>
+
 </tr>
 
 <tr>
     <td>Bobinado</td>
-    <td><input type="text" name="bobinado_b1" class="input-field"></td>
-    <td><input type="text" name="bobinado_b2" class="input-field"></td>
-    <td><input type="text" name="bobinado_b3" class="input-field"></td>
-    <td><input type="text" name="bobinado_b4" class="input-field"></td>
+<td>
+  <select name="bobinado_b1" class="input-field">
+    <option value="" selected></option>
+    <option value="C">C</option>
+    <option value="F">F</option>
+    <option value="P">P</option>
+    <option value="D">D</option>
+    <option value="V">V</option>
+    <option value="OK">OK</option>
+    <option value="N/A">N/A</option>
+  </select>
+</td>
+<td>
+  <select name="bobinado_b2" class="input-field">
+    <option value="" selected></option>
+    <option value="C">C</option>
+    <option value="F">F</option>
+    <option value="P">P</option>
+    <option value="D">D</option>
+    <option value="V">V</option>
+    <option value="OK">OK</option>
+    <option value="N/A">N/A</option>
+  </select>
+</td>
+<td>
+  <select name="bobinado_b3" class="input-field">
+    <option value="" selected></option>
+    <option value="C">C</option>
+    <option value="F">F</option>
+    <option value="P">P</option>
+    <option value="D">D</option>
+    <option value="V">V</option>
+    <option value="OK">OK</option>
+    <option value="N/A">N/A</option>
+  </select>
+</td>
+<td>
+  <select name="bobinado_b4" class="input-field">
+    <option value="" selected></option>
+    <option value="C">C</option>
+    <option value="F">F</option>
+    <option value="P">P</option>
+    <option value="D">D</option>
+    <option value="V">V</option>
+    <option value="OK">OK</option>
+    <option value="N/A">N/A</option>
+  </select>
+</td>
+
     <td></td>
     <td></td>
     <td></td>

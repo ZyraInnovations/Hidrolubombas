@@ -584,6 +584,9 @@ app.get('/consulta_informe', (req, res) => {
     }
 });
 
+
+
+
 app.get('/ver_informe', (req, res) => {
     if (req.session.loggedin === true) {
         const nombreUsuario = req.session.user.name;
@@ -693,6 +696,11 @@ app.get('/ver_informe', (req, res) => {
         res.redirect('/login');
     }
 });
+
+
+
+
+
 
 // Función para obtener listas de técnicos y clientes
 function obtenerListas(callback) {
