@@ -119,6 +119,33 @@
             font-size: 0.9rem;
         }
     }
+    <style>
+    .btn-edit {
+        color: #ffffff;
+        background-color: #0769B3;
+        padding: 5px 10px;
+        text-decoration: none;
+        border-radius: 5px;
+        margin-right: 5px;
+    }
+
+    .btn-edit:hover {
+        background-color: #035b94;
+    }
+
+    .btn-delete {
+        color: #ffffff;
+        background-color: #d9534f;
+        padding: 5px 10px;
+        text-decoration: none;
+        border-radius: 5px;
+    }
+
+    .btn-delete:hover {
+        background-color: #c9302c;
+    }
+</style>
+
 </style>
 
 <div class="filter-container">
@@ -134,24 +161,33 @@
 
 <div class="table-container">
     <table class="styled-table" id="user-table">
-        <thead>
-            <tr>
-                <th>ID</th>
-                <th>Nombre</th>
-                <th>Email</th>
-                <th>Rol</th>
-            </tr>
-        </thead>
-        <tbody>
-            {{#each usuarios}}
-            <tr>
-                <td>{{this.id}}</td>
-                <td>{{this.nombre}}</td>
-                <td>{{this.email}}</td>
-                <td>{{this.role}}</td>
-            </tr>
-            {{/each}}
-        </tbody>
+<thead>
+    <tr>
+        <th>ID</th>
+        <th>Nombre</th>
+        <th>Email</th>
+        <th>Contraseña</th>
+
+        <th>Rol</th>
+        <th>Acciones</th>
+    </tr>
+</thead>
+<tbody>
+    {{#each usuarios}}
+    <tr>
+        <td>{{this.id}}</td>
+        <td>{{this.nombre}}</td>
+        <td>{{this.email}}</td>
+      <td>{{this.password}}</td>
+        <td>{{this.role}}</td>
+        <td>
+            <a href="/editar_usuario/{{this.id}}" class="btn-edit">Editar</a>
+            <a href="/eliminar_usuario/{{this.id}}" class="btn-delete" onclick="return confirm('¿Estás seguro de eliminar este cliente?');">Eliminar</a>
+        </td>
+    </tr>
+    {{/each}}
+</tbody>
+
     </table>
 </div>
 

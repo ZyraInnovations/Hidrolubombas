@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Editar Cliente</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        /* General Styles */
+        body {
+            font-family: 'Roboto', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f9;
+            color: #333;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        h1 {
+            text-align: center;
+            color: #1f335c;
+        }
+
+        /* Form Container */
+        form {
+            background: #fff;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            width: 90%;
+            max-width: 500px;
+            margin: 0 auto;
+        }
+
+        label {
+            display: block;
+            font-weight: bold;
+            color: #1f335c;
+            margin-bottom: 5px;
+        }
+
+        input {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 16px;
+            color: #333;
+            box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        input:focus {
+            outline: none;
+            border-color: #1f335c;
+            box-shadow: 0 0 5px rgba(31, 51, 92, 0.5);
+        }
+
+        button {
+            display: block;
+            width: 100%;
+            background-color: #1f335c;
+            color: white;
+            font-size: 16px;
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #162447;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            form {
+                padding: 15px;
+            }
+
+            input {
+                font-size: 14px;
+            }
+
+            button {
+                font-size: 14px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <form action="/editar_cliente/{{cliente.id}}" method="POST">
+        <h1>Editar Cliente</h1>
+
+        <label for="nombre">Nombre:</label>
+        <input type="text" id="nombre" name="nombre" value="{{cliente.nombre}}" required />
+
+        <label for="nit">NIT:</label>
+        <input type="text" id="nit" name="nit" value="{{cliente.nit}}" required />
+
+        <label for="correo">Correo:</label>
+        <input type="email" id="correo" name="correo" value="{{cliente.correo}}" required />
+
+        <label for="numero">Número:</label>
+        <input type="text" id="numero" name="numero" value="{{cliente.numero}}" required />
+
+        <label for="direccion">Dirección:</label>
+        <input type="text" id="direccion" name="direccion" value="{{cliente.direccion}}" required />
+
+        <button type="submit">Guardar Cambios</button>
+    </form>
+</body>
+</html>

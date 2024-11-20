@@ -372,7 +372,7 @@ app.get('/consultar_usuarios', async (req, res) => {
         const nombreUsuario = req.session.user.name;
         try {
             // Consulta para obtener todos los usuarios
-            const [results] = await pool.query('SELECT id, nombre, email, role FROM usuarios_hidro   ');
+            const [results] = await pool.query('SELECT id, nombre, email,password ,role FROM usuarios_hidro   ');
             // Renderiza la plantilla con los resultados
             res.render('administrativo/usuarios/consulta_usuarios.hbs', { nombreUsuario,layout: 'layouts/nav_admin.hbs', usuarios: results });
         } catch (err) {
@@ -383,6 +383,66 @@ app.get('/consultar_usuarios', async (req, res) => {
         res.redirect('/login');
     }
 });
+
+
+
+app.get('/eliminar_usuario/:id', async (req, res) => {
+    const { id } = req.params;
+    try {
+        await pool.query('DELETE FROM usuarios_hidro WHERE id = ?', [id]);
+        res.redirect('/consultar_usuarios');
+    } catch (err) {
+        console.error('Error al eliminar usuario:', err);
+        res.status(500).send('Error en el servidor');
+    }
+});
+
+app.get('/editar_usuario/:id', async (req, res) => {
+    const { id } = req.params;
+    const nombreUsuario = req.session.user?.name || 'Invitado';
+    try {
+        const [user] = await pool.query('SELECT * FROM usuarios_hidro WHERE id = ?', [id]);
+        res.render('administrativo/usuarios/editar_usuario.hbs', { nombreUsuario, layout: 'layouts/nav_admin.hbs', usuario: user[0] });
+    } catch (err) {
+        console.error('Error al consultar usuario:', err);
+        res.status(500).send('Error en el servidor');
+    }
+});
+app.post('/editar_usuario/:id', async (req, res) => {
+    const { id } = req.params;
+    const { nombre, email, password, role } = req.body;
+
+    try {
+        if (password) {
+            // Actualizar con nueva contraseña
+            await pool.query(
+                'UPDATE usuarios_hidro SET nombre = ?, email = ?, password = ?, role = ? WHERE id = ?',
+                [nombre, email, password, role, id]
+            );
+        } else {
+            // Actualizar sin cambiar la contraseña
+            await pool.query(
+                'UPDATE usuarios_hidro SET nombre = ?, email = ?, role = ? WHERE id = ?',
+                [nombre, email, role, id]
+            );
+        }
+
+        res.redirect('/consultar_usuarios');
+    } catch (err) {
+        console.error('Error al actualizar usuario:', err);
+        res.status(500).send('Error en el servidor');
+    }
+});
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -399,31 +459,33 @@ app.use(bodyParser.urlencoded({ extended: true })); // Para parsear datos de for
 
 
 
-
-// Ruta para el menú administrativo - Mostrar formulario para el informe
 app.get('/realizar_informe', async (req, res) => {
     if (req.session.loggedin === true) {
         try {
-            const userId = req.session.user.id; // Obtén el ID del usuario desde la sesión
+            const userId = req.session.user.id;
             const userQuery = 'SELECT role FROM usuarios_hidro WHERE id = ?';
             const [userRows] = await pool.query(userQuery, [userId]);
 
             if (userRows.length > 0) {
-                const nombreUsuario = req.session.user.name; // Usa los datos de la sesión del usuario
+                const nombreUsuario = req.session.user.name;
                 const layout = userRows[0].role === 'admin' ? 'layouts/nav_admin.hbs' : 'layouts/nav_tecnico.hbs';
 
-                // Consulta para obtener la lista de clientes (sin filtrar por role)
+                // Consulta para obtener la lista de clientes
                 const clientsQuery = 'SELECT id, nombre FROM clientes_hidrolubombas';
                 const [clientes] = await pool.query(clientsQuery);
 
-                // Renderiza la vista con los clientes y el layout apropiado
+                // Consulta para obtener la lista de técnicos
+                const tecnicosQuery = 'SELECT id, nombre FROM usuarios_hidro WHERE role = "tecnico"';
+                const [tecnicos] = await pool.query(tecnicosQuery);
+
+                // Renderiza la vista con los datos necesarios
                 res.render('administrativo/informes/crear_informe.hbs', {
                     nombreUsuario,
                     layout,
-                    clientes
+                    clientes,
+                    tecnicos // Enviar lista de técnicos a la vista
                 });
             } else {
-                // Si el usuario no existe en la base de datos, redirige al login
                 res.redirect('/login');
             }
         } catch (error) {
@@ -434,6 +496,7 @@ app.get('/realizar_informe', async (req, res) => {
         res.redirect('/login');
     }
 });
+
 
 app.get('/get_cliente_correo/:id', async (req, res) => {
     try {
@@ -808,7 +871,97 @@ app.post('/guardar_cliente', upload.single('foto'), async (req, res) => {
     } else {
         res.redirect('/login');
     }
-});             
+});         
+
+
+
+
+
+app.get('/consultar_clientes', async (req, res) => {
+    if (req.session.loggedin === true) {
+        try {
+            const query = `
+                SELECT id, nombre, nit, correo, numero, direccion
+                FROM clientes_hidrolubombas`;
+            const [clientes] = await pool.query(query);
+
+            const nombreUsuario = req.session.user.name; // Datos del usuario
+            res.render('administrativo/clientes/consultar_clientes.hbs', {
+                nombreUsuario,
+                clientes,
+                layout: 'layouts/nav_admin.hbs',
+            });
+        } catch (error) {
+            console.error('Error al consultar los clientes:', error);
+            res.status(500).send('Hubo un error al recuperar los clientes.');
+        }
+    } else {
+        res.redirect('/login');
+    }
+});
+
+
+app.get('/buscar_clientes', async (req, res) => {
+    try {
+        const nombreFiltro = req.query.nombre || ''; // Filtro de búsqueda
+        const query = `
+            SELECT id, nombre, nit, correo, numero, direccion
+            FROM clientes_hidrolubombas
+            WHERE nombre LIKE ?`; // Coincidencias parciales
+        const [clientes] = await pool.query(query, [`%${nombreFiltro}%`]);
+
+        res.json({ clientes }); // Devuelve los resultados en formato JSON
+    } catch (error) {
+        console.error('Error al buscar clientes:', error);
+        res.status(500).json({ error: 'Error al buscar clientes' });
+    }
+});
+
+
+
+app.get('/eliminar_cliente/:id', async (req, res) => {
+    const { id } = req.params; // ID del cliente a eliminar
+    try {
+        await pool.query('DELETE FROM clientes_hidrolubombas WHERE id = ?', [id]);
+        res.redirect('/consultar_clientes'); // Redirige a la lista de clientes
+    } catch (error) {
+        console.error('Error al eliminar cliente:', error);
+        res.status(500).send('Hubo un error al eliminar el cliente.');
+    }
+});
+
+app.get('/editar_cliente/:id', async (req, res) => {
+    const { id } = req.params; // ID del cliente a editar
+    try {
+        const [cliente] = await pool.query('SELECT * FROM clientes_hidrolubombas WHERE id = ?', [id]);
+        if (cliente.length === 0) {
+            return res.status(404).send('Cliente no encontrado.');
+        }
+        res.render('administrativo/clientes/editar_cliente.hbs', {
+            cliente: cliente[0], // Enviar los datos al template
+            layout: 'layouts/nav_admin.hbs',
+        });
+    } catch (error) {
+        console.error('Error al cargar el cliente:', error);
+        res.status(500).send('Hubo un error al cargar el cliente.');
+    }
+});
+
+
+app.post('/editar_cliente/:id', async (req, res) => {
+    const { id } = req.params; // ID del cliente a editar
+    const { nombre, nit, correo, numero, direccion } = req.body; // Nuevos datos del cliente
+    try {
+        await pool.query('UPDATE clientes_hidrolubombas SET nombre = ?, nit = ?, correo = ?, numero = ?, direccion = ? WHERE id = ?', 
+            [nombre, nit, correo, numero, direccion, id]);
+        res.redirect('/consultar_clientes'); // Redirige a la lista de clientes
+    } catch (error) {
+        console.error('Error al actualizar cliente:', error);
+        res.status(500).send('Hubo un error al actualizar el cliente.');
+    }
+});
+
+
 
 
 

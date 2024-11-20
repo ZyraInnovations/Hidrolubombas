@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Consultar Clientes</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        /* General Styles */
+        body {
+            font-family: 'Roboto', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f9;
+            color: #333;
+        }
+
+        h1 {
+            text-align: center;
+            margin: 20px 0;
+            color: #444;
+        }
+
+        p {
+            text-align: center;
+            color: #666;
+        }
+
+        /* Search Field */
+        #buscarNombre {
+            display: block;
+            margin: 20px auto;
+            padding: 10px;
+            width: 80%;
+            max-width: 500px;
+            font-size: 16px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        #buscarNombre:focus {
+            outline: none;
+            border-color: #90c9a7;
+            box-shadow: 0px 0px 5px #90c9a7;
+        }
+
+        /* Table */
+        #tablaClientes {
+            margin: 20px auto;
+            width: 90%;
+            max-width: 1200px;
+            border-collapse: collapse;
+            background-color: white;
+            box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        #tablaClientes thead {
+            background-color: #1f335c;
+            color: white;
+        }
+
+        #tablaClientes th, #tablaClientes td {
+            padding: 15px;
+            text-align: left;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        #tablaClientes tr:hover {
+            background-color: #f9f9f9;
+        }
+
+        #tablaClientes th {
+            font-weight: bold;
+        }
+
+        #tablaClientes td {
+            color: #555;
+        }
+
+        /* Action Buttons */
+        a {
+            text-decoration: none;
+            font-weight: 500;
+            color: white;
+            padding: 8px 12px;
+            border-radius: 5px;
+            margin-right: 5px;
+        }
+
+        a:hover {
+            opacity: 0.9;
+        }
+
+        .btn-view {
+            background-color: #666567;
+        }
+
+        .btn-edit {
+            background-color: #413d4b;
+        }
+
+        .btn-delete {
+            background-color: #d9534f;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            #tablaClientes th, #tablaClientes td {
+                padding: 10px;
+                font-size: 14px;
+            }
+
+            #buscarNombre {
+                width: 95%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <h1>Consultar Clientes</h1>
+    <p>Bienvenido, {{nombreUsuario}}</p>
+
+    <!-- Campo de búsqueda -->
+    <input
+        type="text"
+        id="buscarNombre"
+        placeholder="Buscar por nombre"
+    />
+
+    <!-- Tabla de clientes -->
+    <table id="tablaClientes">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Nombre</th>
+                <th>NIT</th>
+                <th>Correo</th>
+                <th>Número</th>
+                <th>Dirección</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            {{#each clientes}}
+            <tr>
+                <td>{{this.id}}</td>
+                <td>{{this.nombre}}</td>
+                <td>{{this.nit}}</td>
+                <td>{{this.correo}}</td>
+                <td>{{this.numero}}</td>
+                <td>{{this.direccion}}</td>
+                <td>
+                    <a href="/ver_cliente/{{this.id}}" class="btn-view">Ver</a>
+                    <a href="/editar_cliente/{{this.id}}" class="btn-edit">Editar</a>
+                    <a href="/eliminar_cliente/{{this.id}}" class="btn-delete" onclick="return confirm('¿Estás seguro de eliminar este cliente?');">Eliminar</a>
+                </td>
+            </tr>
+            {{/each}}
+        </tbody>
+    </table>
+
+    <!-- Script para la búsqueda -->
+    <script>
+        document.getElementById('buscarNombre').addEventListener('input', async function () {
+            const nombre = this.value; // Texto ingresado
+            const tabla = document.getElementById('tablaClientes').querySelector('tbody');
+
+            try {
+                const response = await fetch(`/buscar_clientes?nombre=${encodeURIComponent(nombre)}`);
+                const data = await response.json();
+
+                // Limpiar tabla antes de llenar
+                tabla.innerHTML = '';
+
+                if (data.clientes.length > 0) {
+                    data.clientes.forEach(cliente => {
+                        const fila = `
+                            <tr>
+                                <td>${cliente.id}</td>
+                                <td>${cliente.nombre}</td>
+                                <td>${cliente.nit}</td>
+                                <td>${cliente.correo}</td>
+                                <td>${cliente.numero}</td>
+                                <td>${cliente.direccion}</td>
+                                <td>
+                                    <a href="/ver_cliente/${cliente.id}" class="btn-view">Ver</a>
+                                    <a href="/editar_cliente/${cliente.id}" class="btn-edit">Editar</a>
+                                    <a href="/eliminar_cliente/${cliente.id}" class="btn-delete">Eliminar</a>
+                                </td>
+                            </tr>`;
+                        tabla.innerHTML += fila;
+                    });
+                } else {
+                    tabla.innerHTML = '<tr><td colspan="7">No se encontraron clientes.</td></tr>';
+                }
+            } catch (error) {
+                console.error('Error al buscar clientes:', error);
+            }
+        });
+    </script>
+</body>
+</html>

@@ -349,22 +349,30 @@
     </select>
 </div>
 
-    <div class="info-row">
-        <strong>Técnico:</strong> 
-        <input type="text" name="tecnico" required>
-    </div>
+<div class="info-row">
+    <strong>Técnico:</strong>
+    <select name="tecnico" required>
+        <option value="" disabled selected>Seleccione un técnico</option>
+        {{#each tecnicos}}
+            <option value="{{this.id}}">{{this.nombre}}</option>
+        {{/each}}
+    </select>
+</div>
+
+
     <div class="info-row">
         <strong>Hora Entrada:</strong> 
-        <input type="time" name="hora_entrada" required>
+<input type="time" name="hora_entrada" required autofocus>
     </div>
     <div class="info-row">
         <strong>Hora Salida:</strong> 
         <input type="time" name="hora_salida" required>
     </div>
-    <div class="info-row">
-        <strong>Fecha:</strong> 
-        <input type="date" name="fecha" required>
-    </div>
+ <div class="info-row">
+    <strong>Fecha:</strong>
+    <input type="date" name="fecha" id="fechaActual" required>
+</div>
+
 </div>
 
 
@@ -777,6 +785,38 @@
 
  <!-- Botón para enviar el formulario -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.2/html2pdf.bundle.min.js"></script>
+<script>
+    // Obtener la fecha actual en formato YYYY-MM-DD
+    const hoy = new Date().toISOString().split('T')[0];
+    // Establecer el valor en el campo de tipo date
+    document.getElementById('fechaActual').value = hoy;
+</script>
+
+
+
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const horaEntradaInput = document.querySelector('input[name="hora_entrada"]');
+        if (horaEntradaInput) {
+            // Obtener la hora actual en formato HH:mm
+            const ahora = new Date();
+            const hora = ahora.getHours().toString().padStart(2, '0');
+            const minutos = ahora.getMinutes().toString().padStart(2, '0');
+            const horaActual = `${hora}:${minutos}`;
+
+            // Asignar la hora actual como valor por defecto
+            horaEntradaInput.value = horaActual;
+
+            // Opcional: enfocar el campo automáticamente
+            horaEntradaInput.focus();
+        } else {
+            console.error("El campo de 'Hora Entrada' no se encontró en el DOM.");
+        }
+    });
+</script>
+
+
 
 <!-- Script para habilitar la firma en los canvas -->
 <!-- Script para habilitar la firma en los canvas -->
