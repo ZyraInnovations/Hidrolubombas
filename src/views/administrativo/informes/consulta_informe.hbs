@@ -428,7 +428,6 @@
     </select>
 </div>
 
-
         <!-- ID dropdown populated by selected technician -->
         <div class="input-group">
             <label for="idDropdown">Seleccionar ID relacionado con Técnico:</label>
@@ -437,10 +436,34 @@
             </select>
         </div>
 
+<!-- Buscar por Cliente -->
+<!-- Buscar por Cliente -->
+<div class="input-group">
+    <label for="cliente">Buscar por Cliente:</label>
+    <select id="cliente" name="cliente" class="input-field">
+        <option value="">Seleccionar Cliente</option>
+        {{#each clientes}}
+            <option value="{{this.id}}">{{this.nombre}}</option>
+        {{/each}}
+    </select>
+</div>
+
+<!-- ID de Mantenimiento relacionado con el Cliente -->
+<!-- ID para seleccionar cliente -->
+<div class="input-group">
+    <label for="idDropdownCliente">Seleccionar ID relacionado con Cliente:</label>
+    <select id="idDropdownCliente" name="id" class="input-field">
+        <option value="">Seleccionar ID</option>
+    </select>
+</div>
+
+
+
+
         <!-- Manual ID input field -->
         <div class="input-group">
             <label for="id">O ingresar ID manualmente:</label>
-            <input type="text" id="id" name="id" placeholder="Escribe el ID si lo tienes" class="input-field">
+<input type="text" id="id" name="id" placeholder="Escribe el ID si lo tienes" class="input-field" required>
         </div>
 
         <button type="submit" class="btn-search">Buscar</button>
@@ -1031,10 +1054,65 @@
     </div>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.2/html2pdf.bundle.min.js"></script>
 
+<script>
+// Copiar el ID seleccionado del dropdown de Cliente al campo de entrada manual
+document.getElementById('idDropdownCliente').addEventListener('change', function() {
+    const selectedId = this.value;
+    if (selectedId) {
+        document.getElementById('id').value = selectedId; // Copiar el valor al campo manual
+    }
+});
+
+
+// Copiar el ID seleccionado del dropdown de Técnico al campo de entrada manual
+document.getElementById('idDropdown').addEventListener('change', function() {
+    const selectedId = this.value;
+    if (selectedId) {
+        document.getElementById('id').value = selectedId;
+    }
+});
+</script>
 
 
 <script>
+document.getElementById('cliente').addEventListener('change', function() {
+    const clienteId = this.value;
 
+    // Si se selecciona un cliente, obtener los IDs de mantenimiento relacionados
+    if (clienteId) {
+        fetch(`/get_ids_mantenimiento?cliente=${encodeURIComponent(clienteId)}`)
+            .then(response => response.json())
+            .then(data => {
+                const idDropdownCliente = document.getElementById('idDropdownCliente');
+                idDropdownCliente.innerHTML = ''; // Limpiar las opciones anteriores
+
+                // Agregar una opción por defecto
+                const defaultOption = document.createElement('option');
+                defaultOption.textContent = 'Seleccionar ID';
+                defaultOption.value = '';
+                idDropdownCliente.appendChild(defaultOption);
+
+                // Llenar las opciones con los IDs de mantenimiento
+                if (data.length > 0) {
+                    data.forEach(mantenimiento => {
+                        const option = document.createElement('option');
+                        option.value = mantenimiento.id;
+                        option.textContent = mantenimiento.id;
+                        idDropdownCliente.appendChild(option);
+                    });
+                } else {
+                    const option = document.createElement('option');
+                    option.textContent = 'No se encontraron IDs';
+                    idDropdownCliente.appendChild(option);
+                }
+            })
+            .catch(error => {
+                console.error('Error al obtener los IDs de mantenimiento:', error);
+            });
+    } else {
+        document.getElementById('idDropdownCliente').innerHTML = '<option value="">Seleccionar ID</option>'; // Resetear si no hay cliente seleccionado
+    }
+});
 
 
 // Event listener for when the user selects a technician
