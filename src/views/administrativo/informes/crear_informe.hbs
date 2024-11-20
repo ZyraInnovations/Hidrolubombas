@@ -259,11 +259,201 @@
     
 </style>
 
+<style>
+    .image-preview-container {
+        margin-top: 20px;
+    }
 
+    #preview img {
+        max-width: 150px;
+        max-height: 150px;
+        border: 1px solid #ccc;
+        border-radius: 10px;
+        object-fit: cover;
+    }
 
+    #preview {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+    }
+</style>
 
+<style>
+    .image-preview-container {
+        margin-top: 20px;
+        text-align: center;
+    }
 
+    .custom-label {
+        display: inline-block;
+        padding: 10px 20px;
+        background-color: #0769B3;
+        color: #ffffff;
+        font-size: 14px;
+        font-weight: bold;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        text-transform: uppercase;
+    }
 
+    .custom-label:hover {
+        background-color: #035b94;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+    }
+
+    .custom-file-input {
+        display: none;
+    }
+
+    #preview {
+        margin-top: 10px;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        justify-content: center;
+    }
+
+    #preview img {
+        max-width: 150px;
+        max-height: 150px;
+        border-radius: 8px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        border: 1px solid #ccc;
+        object-fit: cover;
+        position: relative;
+    }
+
+    .remove-btn {
+        position: absolute;
+        top: 5px;
+        right: 5px;
+        background: red;
+        color: white;
+        border: none;
+        border-radius: 50%;
+        width: 20px;
+        height: 20px;
+        cursor: pointer;
+        font-size: 12px;
+        line-height: 20px;
+        text-align: center;
+    }
+    #preview {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+#preview img {
+    max-width: 150px;
+    max-height: 150px;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    object-fit: cover;
+}
+
+.remove-btn {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    background: red;
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 20px;
+    height: 20px;
+    cursor: pointer;
+    font-size: 12px;
+    line-height: 20px;
+    text-align: center;
+}
+.remove-btn {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    background: red;
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 20px;
+    height: 20px;
+    cursor: pointer;
+    font-size: 12px;
+    line-height: 20px;
+    text-align: center;
+}
+
+</style>
+
+<style>
+    /* Ocultar el input original de archivos */
+    .custom-file-input {
+        display: none;
+    }
+
+    /* Estilo personalizado para el botón */
+    .custom-label {
+        display: inline-block;
+        padding: 12px 20px;
+        font-size: 16px;
+        font-weight: bold;
+        color: #fff;
+        background-color: #0769B3; /* Color primario */
+        border-radius: 8px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+    }
+
+    .custom-label:hover {
+        background-color: #035b94; /* Color más oscuro al pasar el ratón */
+        transform: translateY(-2px);
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+    }
+
+    /* Estilo para el contenedor de vista previa de imágenes */
+    #preview {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        margin-top: 20px;
+        justify-content: center;
+    }
+
+    #preview img {
+        max-width: 150px;
+        max-height: 150px;
+        border: 1px solid #ccc;
+        border-radius: 10px;
+        object-fit: cover;
+        position: relative;
+    }
+
+    /* Estilo para el botón de eliminación (X) */
+    .remove-btn {
+        position: absolute;
+        top: 5px;
+        right: 5px;
+        background: red;
+        color: white;
+        border: none;
+        border-radius: 50%;
+        width: 20px;
+        height: 20px;
+        cursor: pointer;
+        font-size: 12px;
+        line-height: 20px;
+        text-align: center;
+    }
+
+    .remove-btn:hover {
+        background-color: #ff4d4d; /* Rojo más brillante cuando se pasa el ratón */
+    }
+</style>
 
 </head>
 <body>
@@ -756,15 +946,11 @@
 
 
 
-
-
-
-
-
-
-
-
-<input id="boton" name="fotos" type="file" multiple accept="image/*">
+<!-- Input de archivo personalizado -->
+<label for="boton" class="custom-label">Seleccionar Imágenes</label>
+<input id="boton" name="fotos" type="file" class="custom-file-input" multiple accept="image/*">
+<!-- Contenedor para la vista previa de las imágenes -->
+<div id="preview"></div>
 
 <br>
     <input id="boton" class="botonn" type="submit" value="ENVIAR INFORME">
@@ -772,12 +958,73 @@
 
 
 
+<script>
+    // Cuando cambia el campo de entrada de archivo (cuando se seleccionan archivos), mostramos las imágenes
+    document.getElementById('boton').addEventListener('change', function(event) {
+        const files = event.target.files;
+        const previewContainer = document.createElement('div');
+        previewContainer.id = 'preview';
+        document.body.appendChild(previewContainer);  // Añadimos el contenedor de vista previa al cuerpo
 
+        // Limpiamos las vistas previas anteriores
+        previewContainer.innerHTML = '';
 
+        // Creamos una lista de archivos para gestionar las eliminaciones
+        let fileList = Array.from(files); // Convertimos el FileList en un array
 
+        // Recorremos los archivos y creamos vistas previas de imágenes
+        fileList.forEach(function(file, index) {
+            // Solo procesamos archivos de imagen
+            if (file.type.startsWith('image/')) {
+                const reader = new FileReader();
+                
+                reader.onload = function(e) {
+                    const imgElement = document.createElement('img');
+                    imgElement.src = e.target.result; // Establece la fuente de la imagen como el archivo
 
+                    // Crear el contenedor para la imagen y el botón de eliminar
+                    const imgWrapper = document.createElement('div');
+                    imgWrapper.style.position = 'relative'; // Para posicionar la X sobre la imagen
+                    imgWrapper.appendChild(imgElement);
 
+                    // Crear el botón de eliminar (la X)
+                    const removeButton = document.createElement('button');
+                    removeButton.innerText = 'X';
+                    removeButton.style.position = 'absolute';
+                    removeButton.style.top = '5px';
+                    removeButton.style.right = '5px';
+                    removeButton.style.backgroundColor = 'red';
+                    removeButton.style.color = 'white';
+                    removeButton.style.border = 'none';
+                    removeButton.style.borderRadius = '50%';
+                    removeButton.style.width = '20px';
+                    removeButton.style.height = '20px';
+                    removeButton.style.fontSize = '12px';
+                    removeButton.style.cursor = 'pointer';
 
+                    // Cuando se haga clic en la X, eliminamos la imagen y el archivo
+                    removeButton.addEventListener('click', function() {
+                        imgWrapper.remove(); // Eliminar el contenedor de la imagen
+                        fileList.splice(index, 1); // Eliminar el archivo de la lista
+
+                        // Actualizar el input de archivo
+                        const dataTransfer = new DataTransfer();
+                        fileList.forEach(file => dataTransfer.items.add(file)); // Añadir archivos restantes
+                        document.getElementById('boton').files = dataTransfer.files; // Actualizar el input
+                    });
+
+                    // Añadimos el botón de eliminar al contenedor
+                    imgWrapper.appendChild(removeButton);
+
+                    // Añadimos la imagen con la X al contenedor de vista previa
+                    previewContainer.appendChild(imgWrapper);
+                };
+
+                reader.readAsDataURL(file); // Leemos el archivo de imagen como una URL de datos
+            }
+        });
+    });
+</script>
 
 
   
@@ -1086,4 +1333,3 @@ async function fetchClienteCorreo() {
 }
 
 </script>
-
