@@ -11,779 +11,397 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.6.0/chart.min.css" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
-  <style>
-        body {
-            font-family: Arial, sans-serif;
-            font-size: 12px;
-            margin: 0;
-            padding: 0;
-        }
-        .report-container {
-            width: 100%;
-            margin: 0 auto;
-            border: 1px solid #000;
-            padding: 10px;
-        }
-        .company-info {
-            text-align: center;
-            font-size: 12px;
-            margin-bottom: 10px;
-        }
-      
-        .logo {
-            width: 120px;
-        }
-        .info-section {
-            font-size: 10px;
-            line-height: 1.5;
-            text-align: left;
-        }
-        .info-section div {
-            display: flex;
-            align-items: center;
-            margin-bottom: 4px;
-        }
-        .info-section strong {
-            min-width: 100px; /* Ancho mínimo para las etiquetas */
-        }
-        .info-section input {
-            width: 150px;
-            font-size: 10px;
-            margin-left: 5px;
-            padding: 2px;
-            border: 1px solid #ccc;
-        }
-        .registro-container {
-            text-align: center;
-            margin-bottom: 10px;
-        }
-        .table-container {
-            overflow-x: auto;
-        }
-        .combined-table {
-            border-collapse: collapse;
-            width: 100%;
-            font-size: 10px;
-        }
-        .combined-table th, .combined-table td {
-            border: 0.5px solid #000;
-            padding: 1px;
-            text-align: center;
-        }
-        .header {
-            background-color: #6da8d6;
-            color: white;
-        }
-        .input-field {
-            width: 25px;
-            text-align: left;
-            border: none;
-            background-color: #f0f0f0;
-            font-size: 10px;
-            margin: 0;
-            padding: 0;
-        }
-        .hidrosistema-input {
-            width: 50px;
-            text-align: left;
-        }
-        h2 {
-            font-size: 14px;
-            margin: 10px 0;
-        }
-          /* Estilo para los indicadores de estado */
-        .indicator-column div {
-            display: flex;
-            align-items: center;
-            margin-bottom: 4px;
-        }
-        .status-input {
-            width: 50px;
-            margin-left: 5px;
-        }
-           /* Estilo responsive */
-        @media (max-width: 600px) {
-            .header-info, .info-section {
-                flex-direction: column;
-                align-items: flex-start;
-                width: 100%;
-            }
-            .info-section strong {
-                min-width: auto;
-            }
-            .info-section input {
-                max-width: 100%;
-            }
-            .logo {
-                width: 60px;
-            }
-            .combined-table {
-                font-size: 8px;
-            }
-            .input-field, .hidrosistema-input {
-                width: 25px;
-            }
-            .status-input {
-                width: 30px;
-            }
-            .signature-section div {
-                width: 100%;
-            }
-              #logo {
-                width: 10%;
-            }
-        }
-        #logo{
-            width: 300px;
-margin-left: 40%;
-
-        }
-    </style>
-    <style>
-    input[type="submit"] {
-        background-color: #4CAF50; /* Color de fondo */
-        color: white; /* Color del texto */
-        padding: 12px 24px; /* Espaciado interno */
-        font-size: 16px; /* Tamaño de la fuente */
-        font-weight: bold; /* Negrita */
-        border: none; /* Sin borde */
-        border-radius: 8px; /* Bordes redondeados */
-        cursor: pointer; /* Cambia el cursor al pasar por encima */
-        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Sombra para dar profundidad */
-        transition: background-color 0.3s ease, transform 0.2s ease; /* Transición para animaciones */
-        margin-top: 20px; /* Espacio superior */
-        display: inline-block; /* Asegura que se comporte como un botón */
-    }
-
-    input[type="submit"]:hover {
-        background-color: #45a049; /* Color al pasar el cursor */
-        transform: scale(1.05); /* Efecto de aumento al pasar el cursor */
-    }
-
-    input[type="submit"]:active {
-        background-color: #3e8e41; /* Color al hacer clic */
-        transform: scale(0.98); /* Efecto de pulsación */
-        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); /* Sombra reducida al hacer clic */
-    }
-
-    input[type="submit"]:focus {
-        outline: none; /* Elimina el contorno por defecto */
-        box-shadow: 0 0 0 3px rgba(76, 175, 80, 0.4); /* Resalta el botón al enfocar */
-    }
-</style>
-<style>
-    .btn-volver {
-        background-color: #f44336; /* Color de fondo */
-        color: white; /* Color del texto */
-        padding: 12px 24px; /* Espaciado interno */
-        font-size: 16px; /* Tamaño de la fuente */
-        font-weight: bold; /* Negrita */
-        border: none; /* Sin borde */
-        border-radius: 8px; /* Bordes redondeados */
-        cursor: pointer; /* Cambia el cursor al pasar por encima */
-        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Sombra para dar profundidad */
-        transition: background-color 0.3s ease, transform 0.2s ease; /* Transición para animaciones */
-        margin-top: 20px; /* Espacio superior */
-        display: inline-block; /* Asegura que se comporte como un botón */
-    }
-
-    .btn-volver:hover {
-        background-color: #d32f2f; /* Color al pasar el cursor */
-        transform: scale(1.05); /* Efecto de aumento al pasar el cursor */
-    }
-
-    .btn-volver:active {
-        background-color: #c62828; /* Color al hacer clic */
-        transform: scale(0.98); /* Efecto de pulsación */
-        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); /* Sombra reducida al hacer clic */
-    }
-
-    .btn-volver:focus {
-        outline: none; /* Elimina el contorno por defecto */
-        box-shadow: 0 0 0 3px rgba(244, 67, 54, 0.4); /* Resalta el botón al enfocar */
-    }
-    #boton{
-        margin-left: 50%;
-    }
-    body{
-        background-color:    #f0f0f0; /* Invertir a claro */
-    }
-  .report-container {
-    background-color: white;
-    border-radius: 15px; /* Bordes redondeados */
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2), 
-                0 6px 20px rgba(0, 0, 0, 0.15); /* Sombra para efecto 3D */
-    padding: 20px; /* Espaciado interno */
-    transition: transform 0.3s ease, box-shadow 0.3s ease; /* Transición suave */
-}
-
-*{
-
-  font-family: "Roboto", sans-serif;
-  font-weight: 200;
-  font-style: normal;
-}
-/* Efecto al pasar el ratón */
-
-@media print {
-    .no-pdf {
-        display: none !important;
-    }
-}
-.pdf-mode {
-    max-width: 100%;
-    margin: 0 0.5in 0 0;  /* Añade un margen extra a la derecha */
-    padding: 0;
-    box-shadow: none;
-}
-
-.pdf-mode #logo {
-    width: 150px !important; /* Ajustar el tamaño del logo para PDF */
-}
-.pdf-mode .combined-table {
-    width: 100%; /* Asegura que las tablas también ocupen todo el ancho */
-    font-size: 9px; /* Ajusta el tamaño de fuente si es necesario */
-}
-</style>
-</Style>
-
 
   <style>
-        body {
-            font-family: Arial, sans-serif;
-            font-size: 12px;
-            margin: 0;
-            padding: 0;
-        }
-        .report-container {
-            width: 100%;
-    max-width: none; /* Quitar ancho máximo */
-            margin: 0 auto;
-            border: 1px solid #000;
-            padding: 10px;
-        }
-        /* Ajustes específicos para el PDF */
-        .pdf-mode {
-            max-width: 100%;
-            margin: 0;
-            padding: 0;
-            box-shadow: none;
-        }
-        .pdf-mode .table-container {
-            width: 100%;
-        }
-        .pdf-mode .combined-table {
-            width: 100%;
-            font-size: 9px;
+    :root {
+      --primary-color: #0769B3;
+      --accent-color: #6da8d6;
+      --text-color: #333;
+      --bg-color: #f0f0f0;
+      --border-color: #ccc;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Roboto', sans-serif;
+    }
+
+    body {
+      background-color: var(--bg-color);
+      color: var(--text-color);
+      padding: 10px;
+      overflow-x: hidden;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 98vw;
+      margin: 0 auto;
+      background: #fff;
+      padding: 20px;
+      border-radius: 15px;
+      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+    }
+
+    .header-info {
+      text-align: center;
+      margin-bottom: 10px;
+    }
+
+    .info-section {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin-bottom: 10px;
+    }
+
+    .info-row input, .info-row select {
+      width: 100%;
+      padding: 8px;
+      border: 1px solid var(--border-color);
+      border-radius: 5px;
+      font-size: 14px;
+    }
+
+    .table-container {
+      overflow-x: auto;
+    }
+
+    .combined-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 12px;
+      table-layout: fixed;
+    }
+
+    .combined-table th, .combined-table td {
+      border: 1px solid var(--border-color);
+      padding: 5px;
+      text-align: center;
+      word-wrap: break-word;
+    }
+
+    .header {
+      background-color: var(--accent-color);
+      color: white;
+      font-weight: bold;
+    }
+
+    h2, h3 {
+      font-size: 16px;
+      text-align: center;
+      margin: 10px 0;
+    }
+
+    .btn {
+      background-color: #4CAF50;
+      color: white;
+      padding: 10px 20px;
+      font-size: 14px;
+      font-weight: bold;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      transition: background-color 0.3s ease;
+      display: inline-block;
+      margin-top: 20px;
+    }
+
+    .btn:hover {
+      background-color: #45a049;
+    }
+
+    .signature-section {
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+      margin-top: 20px;
+    }
+
+    .signature-section canvas {
+      border: 1px solid var(--border-color);
+      width: 100%;
+      height: 100px;
+    }
+
+    @media (max-width: 768px) {
+      .info-section {
+        grid-template-columns: 1fr;
+      }
+
+      .combined-table th, .combined-table td {
+        padding: 3px;
+      }
+
+      h2, h3 {
+        font-size: 14px;
+      }
+
+      .btn {
+        font-size: 12px;
+        padding: 8px 16px;
+      }
+    }
+
+/* Estilo de los inputs y selects en tamaño pequeño para las tablas y otros campos */
+.input-field, .status-input, textarea {
+    width: 100%;
+    padding: 3px;
+    font-size: 8px; /* Tamaño pequeño para evitar superposición */
+    border: 1px solid var(--border-color);
+    border-radius: 3px;
+    box-sizing: border-box;
+}
+
+/* Estilo para los inputs y selects en .info-section con tamaño normal */
+.info-section .info-row input, .info-section .info-row select {
+    width: 100%;
+    padding: 8px; /* Tamaño original en .info-section */
+    font-size: 12px;
+    border: 1px solid var(--border-color);
+    border-radius: 5px;
+    box-sizing: border-box;
+}
+
+/* Ajustes de tabla para que los inputs no se solapen */
+.combined-table {
+    width: 100%;
+    table-layout: fixed;
+    font-size: 8px;
+}
+
+.combined-table th, .combined-table td {
+    border: 1px solid var(--border-color);
+    padding: 2px; /* Relleno reducido para evitar solapamientos */
+    text-align: center;
+    word-wrap: break-word;
+}
+
+/* Ajustes adicionales para evitar desbordamientos en dispositivos móviles */
+@media (max-width: 768px) {
+    .info-section {
+        grid-template-columns: 1fr; /* Columnas individuales en pantallas pequeñas */
+    }
+
+    .combined-table th, .combined-table td {
+        padding: 1px; /* Relleno aún menor para móviles */
+        font-size: 7px; /* Reducir el tamaño de fuente en móviles */
+    }
+}
+/* Estilo para la sección de firma, con los campos uno al lado del otro */
+.signature-section {
+    display: flex;
+    justify-content: space-between;
+    align-items: center; /* Alineación vertical en el centro */
+    gap: 10px;
+    margin-top: 20px;
+}
+
+.signature-section > div {
+    text-align: center;
+    width: 45%; /* Espacio suficiente para que ambos campos se alineen horizontalmente */
+}
+
+.signature-section canvas {
+    border: 1px solid var(--border-color);
+    width: 100%;
+    height: 100px;
+}
+   /* Estilos necesarios para la firma */
+        .signature-section {
+            display: flex;
+            justify-content: space-between;
+            gap: 10px;
+            margin-top: 20px;
         }
 
-        /* Otros estilos */
-        .company-info, .header-info, .contact-info {
-            text-align: center;
-            margin-bottom: 10px;
-        }
-        .combined-table {
-            border-collapse: collapse;
+        .signature-section canvas {
+            border: 1px solid #000;
+            cursor: crosshair; /* Cambia el cursor al pasar por el área de firma */
             width: 100%;
-            font-size: 10px;
+            height: 100px;
         }
-        .combined-table th, .combined-table td {
-            border: 0.5px solid #000;
-            padding: 1px;
-            text-align: center;
-        }
-        /* Estilos específicos para imprimir */
-        @media print {
-            .no-pdf {
-                display: none !important;
-            }
-        }
-        .combined-table {
-    border-collapse: collapse;
-    width: calc(100% - 0.5in);  /* Reducir un poco el ancho para dar más espacio en la derecha */
-    font-size: 10px;
+
+
+
+
+
+.botonn {
+    display: inline-block;
+    padding: 12px 20px;
+    font-size: 16px;
+    font-weight: bold;
+    color: #ffffff;
+    background-color: #4caf50; /* Verde profesional */
+    border: none;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-transform: uppercase;
+    letter-spacing: 1px;
 }
-/* Contenedor para el área de búsqueda */
+
+.botonn:hover {
+    background-color: #45a049; /* Verde más oscuro */
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+    transform: translateY(-2px); /* Pequeña elevación */
+}
+
+.botonn:active {
+    background-color: #388e3c; /* Verde más intenso */
+    transform: translateY(0); /* Sin elevación */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+/* Container for the entire search section */
 .search-container {
     width: 100%;
-    max-width: 600px;
-    margin: 20px auto;
+    max-width: 900px;
+    margin: 30px auto;
     padding: 20px;
     background-color: #ffffff;
+    border-radius: 10px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    border-radius: 15px;
-    transition: all 0.3s ease;
+    text-align: center;
+    font-family: 'Roboto', sans-serif;
 }
 
-/* Formulario de búsqueda */
+/* Heading styling */
+.search-container h1 {
+    font-size: 24px;
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 20px;
+}
+
+/* Welcome message styling */
+.search-container p {
+    font-size: 16px;
+    color: #555;
+    margin-bottom: 20px;
+}
+
+/* Style for the form elements */
 .search-form {
+    width: 100%;
     display: flex;
     flex-direction: column;
     align-items: center;
 }
 
-/* Grupo de entrada de búsqueda */
+/* Group for each input element */
 .input-group {
     width: 100%;
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
+    max-width: 600px;
     margin-bottom: 15px;
+    text-align: left;
 }
 
-/* Etiqueta de entrada */
+/* Label styling */
 .input-group label {
-    font-size: 16px;
-    font-weight: bold;
+    font-size: 14px;
     color: #333;
-    margin-bottom: 8px;
+    font-weight: bold;
+    margin-bottom: 5px;
 }
 
-/* Campo de entrada */
+/* Input fields and select dropdown styling */
 .input-field {
     width: 100%;
-    padding: 10px;
-    font-size: 16px;
+    padding: 12px;
+    font-size: 14px;
     border: 1px solid #ccc;
     border-radius: 8px;
-    transition: all 0.3s ease;
+    transition: border 0.3s ease, box-shadow 0.3s ease;
 }
 
-/* Estilo para el botón de búsqueda */
+/* Focus effect on input fields */
+.input-field:focus {
+    border-color: #007bff;
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+    outline: none;
+}
+
+/* Button styling */
 .btn-search {
     background-color: #007bff;
     color: white;
-    padding: 12px 24px;
     font-size: 16px;
-    font-weight: bold;
-    border: none;
+    padding: 12px 24px;
     border-radius: 8px;
+    border: none;
     cursor: pointer;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    transition: all 0.3s ease;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    width: 100%;
+    max-width: 600px;
 }
 
+/* Hover and active states for the search button */
 .btn-search:hover {
     background-color: #0056b3;
     transform: scale(1.05);
 }
 
 .btn-search:active {
-    background-color: #004494;
+    background-color: #004085;
     transform: scale(0.98);
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 }
 
-/* Efecto al pasar el cursor sobre el campo de entrada */
-.input-field:focus {
-    outline: none;
-    box-shadow: 0 0 10px rgba(0, 118, 179, 0.3);
-    border-color: #007bff;
-}
-
-/* Diseño responsive */
-@media (max-width: 600px) {
-    .search-container {
-        padding: 15px;
-        box-shadow: none;
-    }
-
-    .btn-search {
-        width: 100%;
-        font-size: 14px;
-    }
-
-    .input-field {
-        font-size: 14px;
-    }
-}
-
-    </style>
-
-<style>
-    
-    @font-face {
-        font-family: 'sensation';
-        src:url(fuentes/Sansation/Sansation_Regular.ttf) ;
-        font-weight: bold;
-        font-style: bold;
-    }
-  :root {
-        --bg-dark: #f0f0f0; /* Invertir a claro */
-        --bg-darker: #2d2d2d; /* Invertir a oscuro */
-        --primary-color: #0769B3; /* Mantener color primario */
-        --text-light: #2d2d2d; /* Texto oscuro */
-        --text-muted: #666666; /* Texto suavizado oscuro */
-        --accent-color: #0769b3; /* Mantener color acento */
-        --sidebar-width: 250px;
-    }
-    * {
-        font-family:'sensation';
-       font-weight: bold;
-        font-style: bold;
-        margin: 0;
-        padding: 0;
-        box-sizing: border-box;
-    }
-
-    body {
-        font-family:'sensation';
-        background-color: #d6cec3;
-        color: var(--text-light);
-    }
-
-.container {
-    display: flex;
-    width: 100%;
-    transition: width 0.3s ease;
-}
-    .sidebar {
-        width: var(--sidebar-width);
-        background-color: var(--bg-dark);
-        padding: 20px;
-        height: 100vh;
-    }
-
-    .sidebar-header {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        flex-direction: column;
-        margin-bottom: 30px;
-    }
-
-    .sidebar-header img.logo {
-        width: 250px;
-        margin-bottom: 10px;
-    }
-
-    .sidebar-header p {
-        font-size: 20px;
-        color: var(--text-light);
-    }
-
-    .sidebar-menu {
-        list-style: none;
-        padding: 0;
-    }
-
-    .sidebar-menu li {
-        padding: 15px 10px;
-        cursor: pointer;
-        display: flex;
-        align-items: center;
-        color: var(--text-light);
-        position: relative;
-        border-bottom: 1px solid black; /* Agregar una división blanca */
-
-    }
-
-    .sidebar-menu li:hover {
-    background-color: var(--primary-color);
-        border-radius: 10px;
-    }
-
-    .sidebar-menu li i {
-        margin-right: 10px;
-    }
-
-.sidebar.hidden-sidebar {
-    transform: translateX(-100%);
-    transition: transform 0.3s ease;
-}
-
-.main-content {
-    width: calc(100% - var(--sidebar-width));
-    padding: 20px;
-    transition: width 0.3s ease;
-}
-
-.main-content.expanded-content {
-    width: 100% !important;
-}
-
-    .top-navbar {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        padding: 15px;
-        background-color:#0769b3;
-        border-radius: 10px;
-        margin-bottom: 20px;
-        color: white;
-            font-weight: bold; /* Añadir negrilla */
-font-size: 25px;
-    }
-
-
-    .top-right {
-        display: flex;
-        align-items: center;
-    }
-
-    .top-right i {
-        margin-left: 20px;
-        font-size: 24px;
-        position: relative;
-    }
-
-    .badge {
-        position: absolute;
-        top: -10px;
-        right: -10px;
-        background-color: var(--accent-color);
-        color: white;
-        padding: 5px 8px;
-        border-radius: 50%;
-        font-size: 12px;
-    }
-
-    .dashboard-content {
-        display: flex;
-        flex-direction: column;
-    }
-
-    .card {
-        background-color: var(--bg-dark);
-        padding: 20px;
-        border-radius: 10px;
-        margin-bottom: 20px;
-    }
-
-    .stat {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-    }
-
-    .stat-icon {
-        font-size: 40px;
-        color: var(--accent-color);
-    }
-
-  
-    .hidden {
-        display: none;
-    }
-
-
-    A{
-        text-decoration: none;
-    }
-
-
-
-.hidden-sidebar {
-    transform: translateX(-100%);
-    transition: transform 0.3s ease;
-}
-
-.sidebar {
-    transition: transform 0.3s ease;
-}
-
-.main-content {
-    width: calc(100% - var(--sidebar-width));
-    padding: 20px;
-    transition: width 0.3s ease;
-}
-
-.sidebar.hidden-sidebar ~ .main-content {
-    width: 100% !important;
-}
-
-.sidebar.hidden-sidebar {
-    transform: translateX(-100%);
-    transition: transform 0.3s ease;
-}
-
-.main-content.expanded-content {
-    width: 100% !important;
-}
-
-#home {
-    text-decoration: none;
-    color: black;
-}
-h2 {
-    font-weight: 600;
-    font-size: 2rem; /* Mejora la visibilidad del título */
-}
-
-p {
-    font-size: 1rem;
-    color: var(--text-muted); /* Texto más sutil */
-}
-.card {
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Sombra ligera */
-    transition: box-shadow 0.3s ease-in-out;
-}
-
-.card:hover {
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15); /* Sombra más intensa al pasar el ratón */
-}
-.submenu {
-    transition: max-height 0.5s ease, opacity 0.5s ease;
-    opacity: 0;
-}
-
-.submenu.show {
-    opacity: 1;
-}
-
-button, .menu-item:hover {
-    transition: background-color 0.3s ease, transform 0.3s ease;
-}
-
-button:hover {
-    transform: scale(1.05); /* Ligero zoom */
-}
-.dropdown-menu {
-    opacity: 0;
-    transform: translateY(-10px);
-    transition: opacity 0.3s ease, transform 0.3s ease;
-}
-
-.dropdown-menu.show {
-    opacity: 1;
-    transform: translateY(0);
-}
-.table-container {
-    overflow-x: auto; /* Para hacer que la tabla sea desplazable en pantallas pequeñas */
-    margin: 20px auto; /* Centrar la tabla con espacio alrededor */
-    max-width: 1000px; /* Limitar el ancho máximo para mejorar la apariencia */
-}
-
-.styled-table {
-    width: 100%;
-    border-collapse: collapse;
-    margin: 25px 0;
-    font-size: 1rem;
-    text-align: left;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    border-radius: 10px;
-    overflow: hidden; /* Para aplicar el borde redondeado a toda la tabla */
-}
-
-.styled-table thead tr {
-    background-color: var(--primary-color);
-    color: #ffffff;
-    text-align: left;
-    font-weight: bold;
-}
-
-.styled-table th,
-.styled-table td {
-    padding: 12px 15px;
-    border-bottom: 1px solid #dddddd; /* Línea para separar filas */
-}
-
-.styled-table tbody tr {
-    background-color: #ffffff;
-    transition: background-color 0.3s ease, transform 0.3s ease;
-}
-
-.styled-table tbody tr:nth-of-type(even) {
-    background-color: #f3f3f3; /* Colorear las filas pares */
-}
-
-.styled-table tbody tr:hover {
-    background-color: #f1f7ff; /* Fondo más claro al pasar el cursor */
-    transform: scale(1.01); /* Ligeramente aumentar el tamaño para resaltar */
-}
-
-.styled-table tbody tr td {
-    vertical-align: middle;
-}
-
-.styled-table tbody td:last-child {
-    text-transform: capitalize; /* Convertir el rol a capitalización (admin -> Admin) */
-}
-
-.styled-table th {
-    position: sticky;
-    top: 0; /* La cabecera se queda fija mientras se desplaza */
-    z-index: 2;
-}
-
-.filter-container {
-    gap: 15px;
-    margin: 20px 0;
-}
-
-.filter-input {
-    padding: 10px;
-    font-size: 1rem;
-    border: 1px solid #cccccc;
-    border-radius: 5px;
-    width: 200px;
-    transition: box-shadow 0.3s ease;
-}
-
-.filter-input:focus {
-    box-shadow: 0 0 8px rgba(0, 118, 179, 0.5);
-}
-#tipo{
-    position: relative;
-    right: 10%;
-}
-.correr{
-    position: relative;
-   right: 30%;
-}
-
-
-*{
-
-  font-family: "Roboto", sans-serif;
-  font-weight: 200;
-  font-style: normal;
-}
-/* Efecto al pasar el ratón */
-strong {
-    font-size: 10px;
-    font-weight: bold; /* Aplicar negrilla */
-    color: black; /* Color del texto (ajústalo según prefieras) */
-}
-    .info-section {
-        margin-right: 5%;
-        font-size: 10px;
-        line-height: 1.5;
-        text-align: left;
-    }
-    .info-row {
-        align-items: center;
-        margin-bottom: 4px;
-    }
-    .info-row strong {
-        min-width: 150px; /* Asegura que todas las etiquetas tengan el mismo ancho */
-    }
-    .info-row span {
-        flex: 1; /* Alinea el contenido en la misma línea */
-    }
-
-
-
-    #downloadPdf {
-    background-color: #e74c3c; /* Rojo */
-    color: #ffffff;
-    border: none;
-    padding: 10px 20px;
+/* Style for the download PDF button */
+#downloadPdf {
+    background-color: #e74c3c;
+    color: white;
     font-size: 16px;
-    border-radius: 5px;
+    padding: 10px 20px;
+    border-radius: 8px;
+    border: none;
     cursor: pointer;
     display: inline-flex;
     align-items: center;
+    margin-top: 20px;
 }
 
+/* Hover effect for the download PDF button */
 #downloadPdf:hover {
-    background-color: #c0392b; /* Un rojo más oscuro para el hover */
+    background-color: #c0392b;
 }
 
+/* Icon in the download PDF button */
 #downloadPdf i {
-    margin-right: 8px; /* Espacio entre el ícono y el texto */
+    margin-right: 8px;
 }
-</style>
+
+/* Responsive design for smaller screens */
+@media (max-width: 768px) {
+    .search-container {
+        padding: 15px;
+    }
+    .search-container h1 {
+        font-size: 20px;
+    }
+    .search-container p {
+        font-size: 14px;
+    }
+    .input-group label {
+        font-size: 13px;
+    }
+    .input-field {
+        font-size: 14px;
+        padding: 10px;
+    }
+    .btn-search {
+        font-size: 14px;
+    }
+    #downloadPdf {
+        font-size: 14px;
+        padding: 8px 16px;
+    }
+}
+
+  </style>
 
 <body>
 
@@ -798,18 +416,18 @@ strong {
 <div class="search-container">
     <h1>Consulta de Informe de Mantenimiento Hidro</h1>
     <p>Bienvenido, {{nombreUsuario}}</p>
-
-    <form action="/ver_informe" method="GET" class="search-form">
+  <form action="/ver_informe" method="GET" class="search-form">
         <!-- Technician selection -->
-        <div class="input-group">
-            <label for="tecnico">Buscar por Técnico:</label>
-            <select id="tecnico" name="tecnico" class="input-field">
-                <option value="">Seleccionar Técnico</option>
-                {{#each tecnicos}}
-                    <option value="{{this}}">{{this}}</option>
-                {{/each}}
-            </select>
-        </div>
+<div class="input-group">
+    <label for="tecnico">Buscar por Técnico:</label>
+    <select id="tecnico" name="tecnico" class="input-field">
+        <option value="">Seleccionar Técnico</option>
+        {{#each tecnicos}}
+            <option value="{{this.id}}">{{this.name}}</option>
+        {{/each}}
+    </select>
+</div>
+
 
         <!-- ID dropdown populated by selected technician -->
         <div class="input-group">
@@ -827,6 +445,8 @@ strong {
 
         <button type="submit" class="btn-search">Buscar</button>
     </form>
+
+
 
 <br>
 <button id="downloadPdf" class="btn btn-primary no-pdf">
@@ -848,7 +468,7 @@ strong {
   </div>
 
 
-
+  <div class="container">
 
 <br>
 
@@ -869,7 +489,7 @@ strong {
 <div class="info-section">
     <div class="info-row">
         <strong>Cliente:</strong>
-        <span>{{informe.cliente}}</span>
+<span>{{informe.cliente}}</span>
     </div>
       <div class="info-row">
         <strong>correo:</strong>
@@ -1218,7 +838,6 @@ strong {
             <tr class="header">
                 <th colspan="5">MOTOR</th>
                 <th colspan="5">BOMBAS</th>
-                <th colspan="5">Indicador</th> <!-- Cambiado de rowspan a colspan -->
             </tr>
             <tr>
                 <th>Parámetro</th>
@@ -1252,34 +871,6 @@ strong {
 <td> {{informe.impulsor_m3}}</td>
 <td> {{informe.impulsor_m4}}</td>
 
-
-<td rowspan="6" class="indicator-column">
-    <!-- Indicadores de estado con líneas separadoras -->
-    <div style="border-bottom: 1px solid #ccc; padding-bottom: 5px; margin-bottom: 5px;">
-        <span class="status-input" style="width: 50px; display: inline-block;">{{informe.cambio}}</span>
-        <span style="margin-left: 10px;">Cambio</span>
-    </div>
-    <div style="border-bottom: 1px solid #ccc; padding-bottom: 5px; margin-bottom: 5px;">
-        <span class="status-input" style="width: 50px; display: inline-block;">{{informe.falla}}</span>
-        <span style="margin-left: 10px;">Falla</span>
-    </div>
-    <div style="border-bottom: 1px solid #ccc; padding-bottom: 5px; margin-bottom: 5px;">
-        <span class="status-input" style="width: 50px; display: inline-block;">{{informe.pendiente}}</span>
-        <span style="margin-left: 10px;">Pendiente</span>
-    </div>
-    <div style="border-bottom: 1px solid #ccc; padding-bottom: 5px; margin-bottom: 5px;">
-        <span class="status-input" style="width: 50px; display: inline-block;">{{informe.diagnostico}}</span>
-        <span style="margin-left: 10px;">Diagnóstico</span>
-    </div>
-    <div style="border-bottom: 1px solid #ccc; padding-bottom: 5px; margin-bottom: 5px;">
-        <span class="status-input" style="width: 50px; display: inline-block;">{{informe.verificado}}</span>
-        <span style="margin-left: 10px;">Verificado</span>
-    </div>
-    <div>
-        <span class="status-input" style="width: 50px; display: inline-block;">{{informe.operando}}</span>
-        <span style="margin-left: 10px;">Operando</span>
-    </div>
-</td>
 
 
 
@@ -1419,7 +1010,7 @@ strong {
 
 <br>
 
-
+</div>
 
 
 
@@ -1443,6 +1034,9 @@ strong {
 
 
 <script>
+
+
+
 // Event listener for when the user selects a technician
 document.getElementById('tecnico').addEventListener('change', function() {
     const tecnico = this.value;

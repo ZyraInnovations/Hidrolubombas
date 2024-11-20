@@ -23,29 +23,35 @@ const exphbs = require('express-handlebars');
 
 
 
-
-
-
+// Crear el motor de plantillas con Handlebars y registrar el helper
 const hbs = exphbs.create({
-    defaultLayout: 'main',
-    extname: '.hbs',
+    defaultLayout: 'main',  // Asegúrate de que tu archivo main.hbs existe
+    extname: '.hbs',        // Usar la extensión .hbs para las vistas
     helpers: {
         eq: function (arg1, arg2, options) {
             return (arg1 == arg2) ? options.fn(this) : options.inverse(this);
+        },
+        // Helper ifCond para comparar dos valores
+        ifCond: function (v1, v2, options) {
+            if (v1 === v2) {
+                return options.fn(this);
+            }
+            return options.inverse(this);
         }
     }
 });
 
+// Configuración del motor de plantillas para Express
+app.set('view engine', 'hbs');  // Usamos 'hbs' para las vistas
+app.set('views', path.join(__dirname, 'views'));  // Asegúrate de que apunte a la carpeta de vistas
 
+// Servir archivos estáticos
+app.use(express.static(path.join(__dirname, 'public')));
 
-
-// Configurar el motor de plantillas
-app.set('view engine', 'hbs');
-app.set('views', path.join(__dirname, 'views'));  // Asegúrate de que apunte correctamente a tu carpeta de vistas
-app.use(express.static(__dirname + '/public'));
-
-// Middleware para parsing
 app.use(express.urlencoded({ extended: false }));
+
+
+
 
 app.get('/', (req, res) => {
     res.redirect('/login');
@@ -515,12 +521,6 @@ app.get('/get_cliente_correo/:id', async (req, res) => {
     }
 });
 
-
-
-
-
-
-
 app.get('/consulta_informe', (req, res) => {
     if (req.session.loggedin === true) {
         const userId = req.session.user.id; // Obtén el ID del usuario desde la sesión
@@ -536,15 +536,22 @@ app.get('/consulta_informe', (req, res) => {
                 const userRole = roleResults[0].role;
                 const layout = userRole === 'admin' ? 'layouts/nav_admin.hbs' : 'layouts/nav_tecnico.hbs';
 
-                // Consulta la lista de técnicos
-                const query = 'SELECT DISTINCT tecnico FROM mantenimiento_hidro';
+                // Consulta la lista de técnicos con sus nombres
+                const query = `
+                    SELECT DISTINCT m.tecnico, u.nombre AS tecnico_name 
+                    FROM mantenimiento_hidro m
+                    LEFT JOIN usuarios_hidro u ON m.tecnico = u.id
+                `;
                 db.query(query, (err, results) => {
                     if (err) {
                         console.error('Error al obtener la lista de técnicos:', err);
                         res.status(500).send('Error en el servidor');
                     } else {
-                        // Extrae solo los nombres de técnicos de los resultados
-                        const tecnicos = results.map(row => row.tecnico);
+                        // Extraer los nombres de los técnicos de los resultados
+                        const tecnicos = results.map(row => ({
+                            id: row.tecnico,
+                            name: row.tecnico_name
+                        }));
                         res.render('administrativo/informes/consulta_informe.hbs', {
                             nombreUsuario,
                             layout,
@@ -560,18 +567,15 @@ app.get('/consulta_informe', (req, res) => {
         res.redirect('/login');
     }
 });
-
-
 app.get('/ver_informe', (req, res) => {
     if (req.session.loggedin === true) {
         const nombreUsuario = req.session.user.name;
-        const informeId = req.query.id; // Obtener el ID del informe desde el formulario (manually or from dropdown)
-        const tecnico = req.query.tecnico; // Obtener el técnico seleccionado
+        const informeId = req.query.id;  // Obtener el ID del informe desde el formulario
+        const tecnico = req.query.tecnico;  // Obtener el técnico seleccionado
 
         if (!informeId && !tecnico) {
             res.render('administrativo/informes/consulta_informe.hbs', {
-                layout: 'layouts/nav_admin.hbs',
-
+                layout: 'layouts/nav_admin.hbs',  // Especificar el layout explícitamente
                 nombreUsuario,
                 mensajeError: 'Por favor, ingrese un ID o seleccione un técnico para buscar el informe.'
             });
@@ -581,7 +585,7 @@ app.get('/ver_informe', (req, res) => {
         let query;
         let queryParams;
 
-        // Prioritize searching by ID if it's provided, otherwise search by technician
+        // Priorizar la búsqueda por ID si se proporciona, de lo contrario, buscar por técnico
         if (informeId) {
             query = 'SELECT * FROM mantenimiento_hidro WHERE id = ?';
             queryParams = [informeId];
@@ -598,21 +602,57 @@ app.get('/ver_informe', (req, res) => {
             } else if (results.length > 0) {
                 const informe = results[0];
 
-                // Convertir las firmas a Base64 si existen
-                if (informe.firma_tecnico) {
-                    informe.firma_tecnico = Buffer.from(informe.firma_tecnico).toString('base64');
-                }
-                if (informe.firma_supervisor) {
-                    informe.firma_supervisor = Buffer.from(informe.firma_supervisor).toString('base64');
-                }
+                // Consulta para obtener el nombre del cliente
+                const clienteQuery = 'SELECT nombre FROM clientes_hidrolubombas WHERE id = ?';
+                db.query(clienteQuery, [informe.cliente], (err, clienteResult) => {
+                    if (err) {
+                        console.error('Error al obtener el cliente:', err);
+                        res.status(500).send('Error en el servidor');
+                    } else if (clienteResult.length > 0) {
+                        informe.cliente = clienteResult[0].nombre;  // Asignar el nombre del cliente al informe
 
-                // Renderizar la vista con los datos del informe encontrado
-                res.render('administrativo/informes/consulta_informe.hbs', {
-                    nombreUsuario,
-                    informe
+                        // Consulta para obtener el nombre del técnico
+                        const tecnicoQuery = 'SELECT nombre FROM usuarios_hidro WHERE id = ?';
+                        db.query(tecnicoQuery, [informe.tecnico], (err, tecnicoResult) => {
+                            if (err) {
+                                console.error('Error al obtener el técnico:', err);
+                                res.status(500).send('Error en el servidor');
+                            } else if (tecnicoResult.length > 0) {
+                                informe.tecnico = tecnicoResult[0].nombre;  // Asignar el nombre del técnico al informe
+
+                                // Convertir las firmas a Base64 si existen
+                                if (informe.firma_tecnico) {
+                                    informe.firma_tecnico = Buffer.from(informe.firma_tecnico).toString('base64');
+                                }
+                                if (informe.firma_supervisor) {
+                                    informe.firma_supervisor = Buffer.from(informe.firma_supervisor).toString('base64');
+                                }
+
+                                // Renderizar la vista con los datos del informe encontrado
+                                res.render('administrativo/informes/consulta_informe.hbs', {
+                                    layout: 'layouts/nav_admin.hbs',  // Pasar explícitamente el layout
+                                    nombreUsuario,
+                                    informe
+                                });
+                            } else {
+                                res.render('administrativo/informes/consulta_informe.hbs', {
+                                    layout: 'layouts/nav_admin.hbs',
+                                    nombreUsuario,
+                                    mensajeError: 'No se encontró el técnico asociado al informe.'
+                                });
+                            }
+                        });
+                    } else {
+                        res.render('administrativo/informes/consulta_informe.hbs', {
+                            layout: 'layouts/nav_admin.hbs',
+                            nombreUsuario,
+                            mensajeError: 'No se encontró el cliente asociado al informe.'
+                        });
+                    }
                 });
             } else {
                 res.render('administrativo/informes/consulta_informe.hbs', {
+                    layout: 'layouts/nav_admin.hbs',  // Pasar explícitamente el layout
                     nombreUsuario,
                     mensajeError: 'No se encontró ningún informe con los criterios proporcionados.'
                 });
@@ -649,11 +689,6 @@ app.get('/get_informe_ids', (req, res) => {
 
 
 
-
-
-
-
-
 app.get('/api/informes-count', (req, res) => {
     const query = 'SELECT COUNT(*) AS count FROM mantenimiento_hidro';
 
@@ -680,6 +715,10 @@ app.get('/api/tecnicos-count', (req, res) => {
         res.json({ count: results[0].count });
     });
 });
+
+
+
+
 
 
 app.get('/api/mantenimientos-por-mes', (req, res) => {
