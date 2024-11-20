@@ -584,24 +584,32 @@ app.get('/consulta_informe', (req, res) => {
     }
 });
 
-
 app.get('/ver_informe', (req, res) => {
     if (req.session.loggedin === true) {
         const nombreUsuario = req.session.user.name;
-        let informeId = req.query.id; // Cambiado a let para permitir reasignación
+        let informeId = req.query.id;
 
         if (Array.isArray(informeId)) {
             informeId = informeId.find(id => id !== ''); // Toma el primer valor válido
         }
 
-        console.log('ID recibido:', informeId); // <--- Verifica qué llega al backend
+        console.log('ID recibido:', informeId);
 
         // Validar que el ID sea un número válido
         if (!informeId || !/^\d+$/.test(informeId)) {
-            res.render('administrativo/informes/consulta_informe.hbs', {
-                layout: 'layouts/nav_admin.hbs',
-                nombreUsuario,
-                mensajeError: 'Por favor, ingresa un ID válido para buscar el informe.'
+            // Obtener listas de técnicos y clientes para renderizar la página correctamente
+            obtenerListas((err, tecnicos, clientes) => {
+                if (err) {
+                    res.status(500).send('Error en el servidor.');
+                } else {
+                    res.render('administrativo/informes/consulta_informe.hbs', {
+                        layout: 'layouts/nav_admin.hbs',
+                        nombreUsuario,
+                        tecnicos,
+                        clientes,
+                        mensajeError: 'Por favor, ingresa un ID válido para buscar el informe.'
+                    });
+                }
             });
             return;
         }
@@ -633,11 +641,20 @@ app.get('/ver_informe', (req, res) => {
                             } else if (tecnicoResult.length > 0) {
                                 informe.tecnico = tecnicoResult[0].nombre;
 
-                                // Renderizar la vista con el informe encontrado
-                                res.render('administrativo/informes/consulta_informe.hbs', {
-                                    layout: 'layouts/nav_admin.hbs',
-                                    nombreUsuario,
-                                    informe
+                                // Obtener listas de técnicos y clientes para renderizar correctamente
+                                obtenerListas((err, tecnicos, clientes) => {
+                                    if (err) {
+                                        res.status(500).send('Error en el servidor.');
+                                    } else {
+                                        // Renderizar la vista con el informe encontrado
+                                        res.render('administrativo/informes/consulta_informe.hbs', {
+                                            layout: 'layouts/nav_admin.hbs',
+                                            nombreUsuario,
+                                            informe,
+                                            tecnicos,
+                                            clientes
+                                        });
+                                    }
                                 });
                             } else {
                                 res.render('administrativo/informes/consulta_informe.hbs', {
@@ -656,10 +673,19 @@ app.get('/ver_informe', (req, res) => {
                     }
                 });
             } else {
-                res.render('administrativo/informes/consulta_informe.hbs', {
-                    layout: 'layouts/nav_admin.hbs',
-                    nombreUsuario,
-                    mensajeError: 'No se encontró ningún informe con el ID proporcionado.'
+                // Obtener listas de técnicos y clientes
+                obtenerListas((err, tecnicos, clientes) => {
+                    if (err) {
+                        res.status(500).send('Error en el servidor.');
+                    } else {
+                        res.render('administrativo/informes/consulta_informe.hbs', {
+                            layout: 'layouts/nav_admin.hbs',
+                            nombreUsuario,
+                            tecnicos,
+                            clientes,
+                            mensajeError: 'No se encontró ningún informe con el ID proporcionado.'
+                        });
+                    }
                 });
             }
         });
@@ -667,6 +693,35 @@ app.get('/ver_informe', (req, res) => {
         res.redirect('/login');
     }
 });
+
+// Función para obtener listas de técnicos y clientes
+function obtenerListas(callback) {
+    const clientesQuery = 'SELECT id, nombre FROM clientes_hidrolubombas';
+    db.query(clientesQuery, (err, clientes) => {
+        if (err) {
+            console.error('Error al obtener los clientes:', err);
+            return callback(err);
+        }
+
+        const tecnicosQuery = `
+            SELECT DISTINCT m.tecnico, u.nombre AS tecnico_name 
+            FROM mantenimiento_hidro m
+            LEFT JOIN usuarios_hidro u ON m.tecnico = u.id
+        `;
+        db.query(tecnicosQuery, (err, tecnicosResults) => {
+            if (err) {
+                console.error('Error al obtener los técnicos:', err);
+                return callback(err);
+            }
+
+            const tecnicos = tecnicosResults.map(row => ({
+                id: row.tecnico,
+                name: row.tecnico_name
+            }));
+            callback(null, tecnicos, clientes);
+        });
+    });
+}
 
 
 
