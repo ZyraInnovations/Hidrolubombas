@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Registro de Mantenimiento</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -125,7 +126,7 @@
 
     @media (max-width: 768px) {
       .info-section {
-        grid-template-columns: 1fr;
+    grid-template-columns: 1fr 1fr; /* Dos columnas también en pantallas pequeñas */
       }
 
       .combined-table th, .combined-table td {
@@ -519,6 +520,123 @@ select.input-field option, select.hidrosistema-input option {
 
 
 
+
+
+
+
+/* Ajustar el padding y espaciado en las celdas de la tabla SOLO en modo PDF */
+.pdf-mode .combined-table th,
+.pdf-mode .combined-table td {
+  border: 1px solid var(--border-color);
+  padding: 4px; /* Incrementar el padding */
+  text-align: center;
+  word-wrap: break-word;
+  line-height: 1.5; /* Aumentar el espacio vertical entre líneas */
+  font-weight: bold; /* Aplicar negrita */
+}
+
+/* Asegurar que las tablas ocupen todo el ancho disponible SOLO en modo PDF */
+.pdf-mode .combined-table {
+  width: 100%;
+  border-collapse: separate; /* Separar las celdas para más espacio */
+  padding: 4px; /* Incrementar el padding */
+}
+
+/* Reducir el tamaño del texto en dispositivos móviles para evitar montarse SOLO en modo PDF */
+@media (max-width: 768px) {
+  .pdf-mode .combined-table th,
+  .pdf-mode .combined-table td {
+    font-size: 10px; /* Tamaño de fuente más pequeño */
+    padding: 4px; /* Incrementar el padding */
+    font-weight: bold; /* Aplicar negrita */
+  }
+}
+
+/* Mejorar el diseño de los inputs y selects dentro de las tablas SOLO en modo PDF */
+.pdf-mode .input-field,
+.pdf-mode .hidrosistema-input,
+.pdf-mode textarea {
+  padding: 6px; /* Incrementar el padding interno */
+  font-size: 12px; /* Tamaño de fuente legible */
+  border-radius: 5px; /* Bordes redondeados */
+  box-sizing: border-box;
+  font-weight: bold; /* Aplicar negrita */
+}
+
+/* Inputs más compactos en móviles SOLO en modo PDF */
+@media (max-width: 768px) {
+  .pdf-mode .input-field,
+  .pdf-mode .hidrosistema-input {
+    padding: 4px;
+    font-size: 10px;
+    font-weight: bold; /* Aplicar negrita */
+  }
+}
+
+
+.pdf-mode input {
+    display: none;
+}
+
+.pdf-mode span {
+    display: inline-block;
+    font-size: 14px;
+    color: #333;
+}
+
+
+.pdf-mode select, .pdf-mode input {
+    display: none;
+}
+
+.pdf-mode span {
+    display: inline-block;
+    font-size: 14px;
+    color: #333;
+    border: 1px solid #ddd;
+    padding: 4px;
+}
+.pdf-mode select,
+.pdf-mode input {
+    display: none; /* Ocultar los select y input en el modo de captura */
+}
+
+.pdf-mode span {
+    display: inline-block;
+    border: none; /* Sin bordes */
+    background: none; /* Fondo transparente */
+    padding: 0; /* Sin relleno */
+    font-size: 14px; /* Tamaño de texto adecuado */
+    color: #333; /* Color del texto */
+}
+.pdf-mode {
+    width: 1280px !important; /* Ancho de PC */
+    font-size: 16px !important; /* Tamaño de fuente estándar */
+    margin: 0 auto !important; /* Centrado */
+    border: none !important;
+    box-shadow: none !important;
+}
+.info-row.full-width {
+  grid-column: span 2; /* Este campo ocupará ambas columnas */
+}
+.info-section {
+  display: grid;
+  grid-template-columns: 1fr 1fr; /* Dos columnas por defecto */
+  gap: 10px; /* Espaciado entre filas y columnas */
+  margin-bottom: 10px;
+}
+
+@media (max-width: 480px) {
+  .info-section {
+    grid-template-columns: 1fr 1fr; /* Mantener dos columnas también en celulares */
+    gap: 5px; /* Reducir el espaciado en celulares */
+  }
+}
+
+.info-row.full-width {
+  grid-column: span 2; /* Este campo ocupará ambas columnas si es necesario */
+}
+
 </style>
 
 </head>
@@ -549,15 +667,9 @@ select.input-field option, select.hidrosistema-input option {
 
 
 <form id="maintenanceForm">
+
     <!-- Tu contenido de formulario aquí -->
-
-
-
-
-
-
-
-
+<div class="info-row full-width">
 
 
 <div class="info-section">
@@ -632,7 +744,7 @@ select.input-field option, select.hidrosistema-input option {
 </div>
 
 </div>
-
+</div>
 
         </div>
 
@@ -2618,6 +2730,7 @@ select.input-field option, select.hidrosistema-input option {
 
   
 </form>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 
  <!-- Botón para enviar el formulario -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.2/html2pdf.bundle.min.js"></script>
@@ -2775,40 +2888,75 @@ function replaceInputsWithText() {
 
 <script>
 
-
 document.getElementById('maintenanceForm').addEventListener('submit', function(event) {
     event.preventDefault(); // Evita el envío tradicional del formulario
-    
+
     var element = document.querySelector('.report-container'); // Selecciona el contenedor principal
-    
-    // Aplica la clase 'pdf-mode' antes de generar el PDF
-    element.classList.add('pdf-mode');
-    
-    const email = document.querySelector('input[name="Correo"]').value;
 
-    // Configuración del PDF ajustada
-    var opt = {
-        margin: [0.1, 0.1, 0.1, 0.3],  // Márgenes ajustados para PDF
-        filename: 'informe_mantenimiento.pdf',
-        image: { type: 'jpeg', quality: 0.98 },
-        html2canvas: { scale: 6 },  // Escala aumentada para mejorar la resolución sin sacrificar espacio
-        jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' }
-    };
+    // Aplicar estilos temporales para simular un entorno de PC
+    const originalStyle = element.getAttribute('style'); // Guardar el estilo original
+    element.style.width = '1280px'; // Ancho de PC
+    element.style.height = 'auto'; // Altura dinámica
+    element.style.fontSize = '16px'; // Fuente estándar de PC
+    element.style.margin = '0 auto'; // Centrar
+    element.style.boxShadow = 'none'; // Eliminar sombras
+    element.style.border = 'none'; // Sin bordes
 
-    // Genera el PDF
-    html2pdf().from(element).set(opt).outputPdf('blob').then(function (pdfBlob) {
-        // Remueve la clase 'pdf-mode' después de generar el PDF
-        element.classList.remove('pdf-mode');
-        
-        // Enviar el informe por correo
-        enviarInformePorCorreo(email, pdfBlob);
+    // Almacenar elementos originales para restaurarlos después
+    const originalElements = [];
+
+    // Reemplazar los <select> por sus valores visibles
+    const selects = element.querySelectorAll('select');
+    selects.forEach(select => {
+        const span = document.createElement('span');
+        const selectedText = select.options[select.selectedIndex]?.text || ''; // Captura el texto seleccionado o deja vacío
+        span.textContent = selectedText.trim() ? selectedText : ''; // Solo agrega texto si no está vacío
+        span.style.display = 'inline-block';
+        span.style.border = 'none'; // Eliminar cualquier borde visible
+        span.style.backgroundColor = 'transparent'; // Fondo transparente
+        span.style.padding = '0'; // Eliminar relleno adicional
+        originalElements.push({ original: select, replacement: span }); // Guardar el reemplazo
+        select.parentNode.replaceChild(span, select);
+    });
+
+    // Reemplazar los <input> por sus valores visibles
+    const inputs = element.querySelectorAll('input[type="text"], input[type="time"], input[type="date"]');
+    inputs.forEach(input => {
+        const span = document.createElement('span');
+        const inputValue = input.value || ''; // Captura el valor escrito o deja vacío
+        span.textContent = inputValue.trim() ? inputValue : ''; // Solo agrega texto si no está vacío
+        span.style.display = 'inline-block';
+        span.style.border = 'none'; // Eliminar cualquier borde visible
+        span.style.backgroundColor = 'transparent'; // Fondo transparente
+        span.style.padding = '0'; // Eliminar relleno adicional
+        originalElements.push({ original: input, replacement: span }); // Guardar el reemplazo
+        input.parentNode.replaceChild(span, input);
+    });
+
+    // Generar la imagen usando html2canvas
+    html2canvas(element, { scale: 2 }).then(canvas => {
+        // Restaurar los estilos originales
+        element.setAttribute('style', originalStyle || '');
+
+        // Restaurar los elementos originales
+        originalElements.forEach(({ original, replacement }) => {
+            replacement.parentNode.replaceChild(original, replacement);
+        });
+
+        // Enviar la imagen por correo
+        canvas.toBlob(blob => {
+            const email = document.querySelector('input[name="Correo"]').value;
+            enviarInformePorCorreo(email, blob);
+        }, 'image/jpeg', 0.95); // Exportar como imagen JPEG con calidad 95%
     });
 });
 
 
-function enviarInformePorCorreo(correo, pdfBlob) {
+
+
+function enviarInformePorCorreo(correo, imageBlob) {
     const formData = new FormData(document.getElementById('maintenanceForm')); 
-    formData.append('pdf', pdfBlob, 'informe_mantenimiento.pdf'); // Attach the generated PDF
+    formData.append('imagen', imageBlob, 'informe_mantenimiento.jpg'); // Adjuntar la imagen generada
     
     fetch('/enviar-correo', {
         method: 'POST',

@@ -884,24 +884,23 @@ app.post('/agregar_usuario', (req, res) => {
 
 
 
-
 app.post('/enviar-correo', upload.fields([
-    { name: 'pdf', maxCount: 1 },    // Define the field for the generated PDF
-    { name: 'fotos', maxCount: 10 }  // Define the field for the optional photos
+    { name: 'imagen', maxCount: 1 },    // Define el campo para la imagen generada
+    { name: 'fotos', maxCount: 10 }    // Campo opcional para imágenes adicionales
 ]), (req, res) => {
     const correoDestino = req.body.Correo;
-    let archivoPDF = req.files['pdf'] ? req.files['pdf'][0] : null;
+    let imagenHTML = req.files['imagen'] ? req.files['imagen'][0] : null;
     let imagenesAdjuntas = req.files['fotos'] || [];
 
-    if (!archivoPDF) {
-        return res.status(400).json({ success: false, message: 'El PDF es obligatorio.' });
+    if (!imagenHTML) {
+        return res.status(400).json({ success: false, message: 'La imagen generada es obligatoria.' });
     }
 
-    // Set up email attachments
+    // Configurar los adjuntos para el correo
     let attachments = [
         {
-            filename: 'informe_mantenimiento.pdf',
-            content: archivoPDF.buffer
+            filename: 'informe_mantenimiento.jpg',
+            content: imagenHTML.buffer
         }
     ];
 
@@ -914,12 +913,12 @@ app.post('/enviar-correo', upload.fields([
         });
     }
 
-    // Mail sending logic
+    // Configuración del correo
     const mailOptions = {
         from: 'nexus.innovationss@gmail.com',
         to: correoDestino,
         subject: 'Informe de Mantenimiento',
-        text: 'Adjunto se encuentra el informe de mantenimiento en formato PDF, junto con las imágenes seleccionadas.',
+        text: 'Adjunto se encuentra el informe de mantenimiento en formato imagen, junto con las imágenes seleccionadas.',
         attachments: attachments
     };
 
@@ -931,8 +930,6 @@ app.post('/enviar-correo', upload.fields([
         res.status(200).json({ success: true, message: 'Correo enviado con éxito' });
     });
 });
-
-
 
 
 
