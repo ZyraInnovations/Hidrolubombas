@@ -453,17 +453,71 @@
     .remove-btn:hover {
         background-color: #ff4d4d; /* Rojo más brillante cuando se pasa el ratón */
     }
-    select {
+
+
+select {
   -webkit-appearance: none; /* Oculta la flecha en navegadores WebKit */
   -moz-appearance: none; /* Oculta la flecha en navegadores Firefox */
   appearance: none; /* Oculta la flecha en navegadores modernos */
   background: none; /* Elimina el fondo para personalizar si es necesario */
   border: 1px solid #ccc; /* Opcional: agrega un borde personalizado */
-  padding: 5px; /* Opcional: agrega espacio interno */
-  border-radius: 4px; /* Opcional: bordes redondeados */
-    cursor: pointer; /* Cambia el cursor a pointer */
-
+  padding: 10px; /* Espacio interno */
+  border-radius: 4px; /* Bordes redondeados */
+  cursor: pointer; /* Cambia el cursor a pointer */
+  text-align: center; /* Centra el texto horizontalmente */
+  color: black; /* Cambia el color del texto a negro */
+  font-size: 16px; /* Tamaño de fuente */
+  font-weight: bold; /* Aplica negrilla al texto */
+  line-height: 1.5; /* Altura de línea para centrar mejor el texto verticalmente */
 }
+
+/* Opcional: Asegurar que las opciones también tengan negrilla */
+select option {
+  font-weight: bold; /* Aplica negrilla a las opciones */
+  text-align: center; /* Centra las opciones del menú desplegable */
+}
+
+
+
+ .marcar {
+    position: relative;
+    z-index: 1; /* Asegúrate de que el contenido esté por encima del pseudo-elemento */
+}
+
+.marcar::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: url('imagenes/logo_ingenieria.jpeg-removebg-preview.png') no-repeat center center;
+    background-size: contain;
+    opacity: 0.1; /* Ajusta la opacidad solo de la marca de agua */
+    pointer-events: none; /* Evita que el pseudo-elemento interfiera con el contenido */
+    z-index: -1; /* Envía el pseudo-elemento detrás del contenido */
+}
+
+
+
+
+
+/* Reducir el tamaño de los elementos select */
+select.input-field, select.hidrosistema-input {
+  font-size: 10px; /* Reducir el tamaño de la fuente */
+  padding: 1px; /* Reducir el relleno interno */
+  height: 16px; /* Disminuir la altura */
+  border-radius: 3px; /* Bordes ligeramente redondeados */
+  line-height: 1; /* Compactar la altura de línea */
+}
+
+
+/* Reducir el tamaño de las opciones en los select */
+select.input-field option, select.hidrosistema-input option {
+  font-size: 12px; /* Tamaño de fuente de las opciones */
+}
+
+
 
 </style>
 
@@ -479,6 +533,8 @@
 <br>
 <br>
     <div class="report-container">
+          <div class="marcar">
+
         <!-- Company information section -->
         <div class="company-info">
             <strong>INGENIERÍA HIDRAULIBOMBAS S.A.S</strong><br>
@@ -2484,7 +2540,7 @@
 <input id="boton" name="fotos" type="file" class="custom-file-input" multiple accept="image/*">
 <!-- Contenedor para la vista previa de las imágenes -->
 <div id="preview"></div>
-
+</div>
 <br>
     <input id="boton" class="botonn" type="submit" value="ENVIAR INFORME">
 
