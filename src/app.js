@@ -4,6 +4,8 @@ const pool = require('./db'); // Importamos la configuración de la base de dato
 const path = require('path');
 const bodyParser = require('body-parser');
 const moment = require('moment-timezone');
+const exphbs = require('express-handlebars');
+const hbs = require('hbs');
 
 const app = express();
 // Middleware para analizar el cuerpo de las 
@@ -19,27 +21,19 @@ app.use(session({
 }));
 
 
-const exphbs = require('express-handlebars');
-
 
 
 // Crear el motor de plantillas con Handlebars y registrar el helper
-const hbs = exphbs.create({
-    defaultLayout: 'main',  // Asegúrate de que tu archivo main.hbs existe
-    extname: '.hbs',        // Usar la extensión .hbs para las vistas
-    helpers: {
-        eq: function (arg1, arg2, options) {
-            return (arg1 == arg2) ? options.fn(this) : options.inverse(this);
-        },
-        // Helper ifCond para comparar dos valores
-        ifCond: function (v1, v2, options) {
-            if (v1 === v2) {
-                return options.fn(this);
-            }
-            return options.inverse(this);
-        }
-    }
+
+// Registrar helpers globales
+hbs.registerHelper('eq', (arg1, arg2) => {
+    return arg1 == arg2; // Comparación flexible
 });
+
+hbs.registerHelper('selectedRole', (currentRole, optionValue) => {
+    return currentRole === optionValue ? 'selected' : ''; // Retorna 'selected' si coincide
+});
+
 
 // Configuración del motor de plantillas para Express
 app.set('view engine', 'hbs');  // Usamos 'hbs' para las vistas
@@ -65,6 +59,15 @@ app.get('/login', (req, res) => {
 
 // Asegúrate de que Express pueda manejar datos en formato JSON
 app.use(express.json());
+
+
+
+
+
+
+
+
+
 
 
 // Ruta para manejar el login
@@ -377,10 +380,21 @@ app.get('/consultar_usuarios', async (req, res) => {
     if (req.session.loggedin === true) {
         const nombreUsuario = req.session.user.name;
         try {
-            // Consulta para obtener todos los usuarios
-            const [results] = await pool.query('SELECT id, nombre, email,password ,role FROM usuarios_hidro   ');
+            // Consulta para obtener todos los usuarios, incluyendo la foto
+            const [results] = await pool.query('SELECT id, nombre, email, password, role, foto FROM usuarios_hidro');
+
+            // Convierte las fotos a base64 para enviarlas a la plantilla
+            const usuarios = results.map(user => ({
+                ...user,
+                foto: user.foto ? `data:image/jpeg;base64,${user.foto.toString('base64')}` : null
+            }));
+
             // Renderiza la plantilla con los resultados
-            res.render('administrativo/usuarios/consulta_usuarios.hbs', { nombreUsuario,layout: 'layouts/nav_admin.hbs', usuarios: results });
+            res.render('administrativo/usuarios/consulta_usuarios.hbs', { 
+                nombreUsuario, 
+                layout: 'layouts/nav_admin.hbs', 
+                usuarios 
+            });
         } catch (err) {
             console.error('Error al consultar la base de datos:', err);
             res.status(500).send('Error en el servidor');
@@ -389,6 +403,7 @@ app.get('/consultar_usuarios', async (req, res) => {
         res.redirect('/login');
     }
 });
+
 
 
 
@@ -403,30 +418,60 @@ app.get('/eliminar_usuario/:id', async (req, res) => {
     }
 });
 
+
+
+
 app.get('/editar_usuario/:id', async (req, res) => {
     const { id } = req.params;
-    const nombreUsuario = req.session.user?.name || 'Invitado';
     try {
         const [user] = await pool.query('SELECT * FROM usuarios_hidro WHERE id = ?', [id]);
-        res.render('administrativo/usuarios/editar_usuario.hbs', { nombreUsuario, layout: 'layouts/nav_admin.hbs', usuario: user[0] });
+        if (user.length === 0) {
+            return res.status(404).send('Usuario no encontrado.');
+        }
+        res.render('administrativo/usuarios/editar_usuario.hbs', {
+            layout: 'layouts/nav_admin.hbs', 
+
+            usuario: user[0] // Pasar el usuario al template
+            
+        });
     } catch (err) {
-        console.error('Error al consultar usuario:', err);
-        res.status(500).send('Error en el servidor');
+        console.error('Error al cargar usuario:', err);
+        res.status(500).send('Error del servidor.');
     }
 });
-app.post('/editar_usuario/:id', async (req, res) => {
+
+
+
+
+
+
+
+app.post('/editar_usuario/:id', upload.single('foto'), async (req, res) => {
     const { id } = req.params;
     const { nombre, email, password, role } = req.body;
+    const foto = req.file;
 
     try {
-        if (password) {
-            // Actualizar con nueva contraseña
+        if (foto && password) {
+            // Actualizar con nueva foto y contraseña
+            await pool.query(
+                'UPDATE usuarios_hidro SET nombre = ?, email = ?, password = ?, role = ?, foto = ? WHERE id = ?',
+                [nombre, email, password, role, foto.buffer, id]
+            );
+        } else if (foto) {
+            // Actualizar con nueva foto, sin cambiar la contraseña
+            await pool.query(
+                'UPDATE usuarios_hidro SET nombre = ?, email = ?, role = ?, foto = ? WHERE id = ?',
+                [nombre, email, role, foto.buffer, id]
+            );
+        } else if (password) {
+            // Actualizar sin cambiar la foto, pero con nueva contraseña
             await pool.query(
                 'UPDATE usuarios_hidro SET nombre = ?, email = ?, password = ?, role = ? WHERE id = ?',
                 [nombre, email, password, role, id]
             );
         } else {
-            // Actualizar sin cambiar la contraseña
+            // Actualizar sin cambiar la contraseña ni la foto
             await pool.query(
                 'UPDATE usuarios_hidro SET nombre = ?, email = ?, role = ? WHERE id = ?',
                 [nombre, email, role, id]
@@ -439,13 +484,6 @@ app.post('/editar_usuario/:id', async (req, res) => {
         res.status(500).send('Error en el servidor');
     }
 });
-
-
-
-
-
-
-
 
 
 
@@ -861,17 +899,18 @@ app.get('/agregar_usuario', (req, res) => {
 
 
 // Ruta para manejar la inserción de un nuevo usuario
-app.post('/agregar_usuario', (req, res) => {
+app.post('/agregar_usuario', upload.single('foto'), (req, res) => {
     const { nombre, email, password, role } = req.body;
+    const foto = req.file;
 
-    // Validar que todos los datos están presentes
-    if (!nombre || !email || !password || !role) {
+    // Validar campos obligatorios
+    if (!nombre || !email || !password || !role || !foto) {
         return res.status(400).send('Todos los campos son obligatorios.');
     }
 
-    // Insertar el usuario en la base de datos
-    const query = `INSERT INTO usuarios_hidro (nombre, email, password, role) VALUES (?, ?, ?, ?)`;
-    db.query(query, [nombre, email, password, role], (error, results) => {
+    // Insertar datos en la base de datos, incluyendo la foto
+    const query = `INSERT INTO usuarios_hidro (nombre, email, password, role, foto) VALUES (?, ?, ?, ?, ?)`;
+    db.query(query, [nombre, email, password, role, foto.buffer], (error, results) => {
         if (error) {
             console.error('Error al insertar el usuario:', error);
             return res.status(500).send('Error al insertar el usuario.');
@@ -880,7 +919,6 @@ app.post('/agregar_usuario', (req, res) => {
         res.redirect('/menuAdministrativo'); // Redirigir al menú administrativo tras agregar un usuario
     });
 });
-
 
 
 
@@ -1060,6 +1098,14 @@ app.get('/eliminar_cliente/:id', async (req, res) => {
     }
 });
 
+
+
+
+
+
+
+
+
 app.get('/editar_cliente/:id', async (req, res) => {
     const { id } = req.params; // ID del cliente a editar
     try {
@@ -1092,7 +1138,24 @@ app.post('/editar_cliente/:id', async (req, res) => {
 });
 
 
+app.get('/api/clientes/:id', (req, res) => {
+    const { id } = req.params;
 
+    db.query('SELECT correo, foto FROM clientes_hidrolubombas WHERE id = ?', [id], (error, results) => {
+        if (error) {
+            console.error('Error al obtener los datos del cliente:', error);
+            return res.status(500).json({ success: false, message: 'Error del servidor' });
+        }
+
+        if (results.length > 0) {
+            const { correo, foto } = results[0];
+            const fotoBase64 = foto ? `data:image/jpeg;base64,${foto.toString('base64')}` : null;
+            res.json({ success: true, correo, foto: fotoBase64 });
+        } else {
+            res.status(404).json({ success: false, message: 'Cliente no encontrado' });
+        }
+    });
+});
 
 
 

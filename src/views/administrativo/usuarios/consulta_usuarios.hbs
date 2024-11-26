@@ -144,6 +144,13 @@
     .btn-delete:hover {
         background-color: #c9302c;
     }
+    table img {
+    border-radius: 50%;
+    object-fit: cover;
+    width: 50px;
+    height: 50px;
+}
+
 </style>
 
 </style>
@@ -167,8 +174,8 @@
         <th>Nombre</th>
         <th>Email</th>
         <th>Contraseña</th>
-
         <th>Rol</th>
+        <th>Foto</th>
         <th>Acciones</th>
     </tr>
 </thead>
@@ -178,8 +185,15 @@
         <td>{{this.id}}</td>
         <td>{{this.nombre}}</td>
         <td>{{this.email}}</td>
-      <td>{{this.password}}</td>
+        <td>{{this.password}}</td>
         <td>{{this.role}}</td>
+        <td>
+            {{#if this.foto}}
+            <img src="{{this.foto}}" alt="Foto de {{this.nombre}}" style="width: 50px; height: 50px; border-radius: 50%;">
+            {{else}}
+            Sin Foto
+            {{/if}}
+        </td>
         <td>
             <a href="/editar_usuario/{{this.id}}" class="btn-edit">Editar</a>
             <a href="/eliminar_usuario/{{this.id}}" class="btn-delete" onclick="return confirm('¿Estás seguro de eliminar este cliente?');">Eliminar</a>
@@ -187,6 +201,7 @@
     </tr>
     {{/each}}
 </tbody>
+
 
     </table>
 </div>

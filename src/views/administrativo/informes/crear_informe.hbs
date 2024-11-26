@@ -636,20 +636,106 @@ select.input-field option, select.hidrosistema-input option {
 .info-row.full-width {
   grid-column: span 2; /* Este campo ocupará ambas columnas si es necesario */
 }
+    .company-info {
+        text-align: center;
+        margin-bottom: 10px;
+        font-size: 16px;
+        font-weight: bold;
+        color: var(--primary-color);
+    }
+
+    /* Estilo para el logo */
+    .header-info {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 15px;
+        margin-bottom: 20px;
+    }
+
+    .header-info .logo img {
+        max-width: 150px;
+        max-height: 150px;
+        border-radius: 10px;
+        border: 2px solid var(--primary-color);
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    /* Estilo para el contenedor general */
+    .report-container {
+        margin: 20px 0;
+        padding: 10px;
+        background-color: #f9f9f9;
+        border: 1px solid var(--border-color);
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .marcar {
+        position: relative;
+        z-index: 1;
+        padding: 10px;
+        background: linear-gradient(135deg, #ffffff, #f0f4f9);
+        border-radius: 15px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+    .logo-container {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    width: 100px; /* Ajusta el tamaño del contenedor */
+    height: auto;
+    z-index: 10;
+}
+
+#logo {
+    width: 100%; /* Asegura que el logo se ajuste al tamaño del contenedor */
+    height: auto;
+    object-fit: contain; /* Mantén la proporción del logo */
+    border-radius: 5px; /* Opcional: bordes redondeados */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); /* Opcional: sombra para hacerlo destacar */
+}
+
+
+
+
+
+
+.photo-section {
+    display: flex;
+    justify-content: space-around;
+    margin-top: 20px;
+    gap: 20px;
+}
+
+.photo-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+}
+
+.photo-container img {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid var(--primary-color);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.photo-label {
+    margin-top: 10px;
+    font-size: 14px;
+    font-weight: bold;
+    color: var(--primary-color);
+}
 
 </style>
 
 </head>
 <body>
-  <div class="container">
 
-
-
-<br>
-
-<br>
-<br>
-<br>
     <div class="report-container">
           <div class="marcar">
 
@@ -660,29 +746,42 @@ select.input-field option, select.hidrosistema-input option {
         </div>
 
         <div class="header-info">
-     <div class="logo">
-    <img id="logo" src="imagenes/logo_ingenieria.jpeg-removebg-preview.png" alt="Logo" width="200"> <!-- Ajusta la ruta del logo -->
+  <div class="logo-container">
+    <img id="logo" src="imagenes/logo_ingenieria.jpeg-removebg-preview.png" alt="Logo" />
 </div>
+
 
 
 
 <form id="maintenanceForm">
 
-    <!-- Tu contenido de formulario aquí -->
 <div class="info-row full-width">
 
 
 <div class="info-section">
+
+
+
+
+
+
+
     <div class="info-row">
         <strong>Cliente:</strong>
-<select name="cliente" id="clienteSelect" onchange="fetchClienteCorreo()" required>
+    <select name="cliente" id="clienteSelect" onchange="fetchClienteInfo()" required>
     <option value="" disabled selected>Seleccione un cliente</option>
     {{#each clientes}}
         <option value="{{this.id}}">{{this.nombre}}</option>
     {{/each}}
-</select>
+    </select>
 
     </div>
+
+
+
+
+
+
         <div class="info-row">
         <strong>torre:</strong> 
         <input type="text" name="torre" required>
@@ -745,9 +844,25 @@ select.input-field option, select.hidrosistema-input option {
 
 </div>
 </div>
+<div class="photo-section">
+
+
+
+
+    <div class="photo-container">
+        <div class="photo-label">Foto del Cliente</div>
+    <img id="clientPhoto" src="" alt="Foto del Cliente">
+</div>
+
+
+
+
+    <div class="photo-container">
+        <div class="photo-label">Foto del Técnico</div>
+        <img id="technicianPhoto" src="default-technician.jpg" alt="Foto del Técnico">
+    </div>
 
         </div>
-
 
         <div class="registro-container">
             <h2>Registro de Mantenimiento</h2>
@@ -2638,7 +2753,6 @@ select.input-field option, select.hidrosistema-input option {
 <br>
 <br>
   </div>
-  </div>
 
 
 
@@ -2660,6 +2774,9 @@ select.input-field option, select.hidrosistema-input option {
 
 
 <script>
+
+
+
     // Cuando cambia el campo de entrada de archivo (cuando se seleccionan archivos), mostramos las imágenes
     document.getElementById('boton').addEventListener('change', function(event) {
         const files = event.target.files;
@@ -2891,7 +3008,7 @@ function replaceInputsWithText() {
 document.getElementById('maintenanceForm').addEventListener('submit', function(event) {
     event.preventDefault(); // Evita el envío tradicional del formulario
 
-    var element = document.querySelector('.report-container'); // Selecciona el contenedor principal
+    var element = document.querySelector('maintenanceForm'); // Selecciona el contenedor principal
 
     // Aplicar estilos temporales para simular un entorno de PC
     const originalStyle = element.getAttribute('style'); // Guardar el estilo original
@@ -3046,27 +3163,35 @@ function stopDrawing(event) {
     event.preventDefault(); // Previene comportamientos no deseados
     drawing = false;
 }
-async function fetchClienteCorreo() {
+
+
+async function fetchClienteInfo() {
     const clienteId = document.getElementById('clienteSelect').value;
     console.log('Cliente seleccionado:', clienteId); // Debug 1
 
     if (clienteId) {
         try {
-            const response = await fetch(`/get_cliente_correo/${clienteId}`);
+            const response = await fetch(`/api/clientes/${clienteId}`);
             const data = await response.json();
 
             console.log('Respuesta del servidor:', data); // Debug 2
 
-            if (data.success) {
-                document.getElementById('correoInput').value = data.correo;
+            if (data.success || data.correo) {
+                // Actualizar el correo
+                document.getElementById('correoInput').value = data.correo || 'No disponible';
+
+                // Actualizar la imagen
+                const clientPhoto = document.getElementById("clientPhoto");
+                clientPhoto.src = data.foto || "default-client.jpg"; // Usa una imagen predeterminada si no hay foto
             } else {
-                alert(data.message || 'No se pudo obtener el correo del cliente.');
+                alert(data.message || 'No se pudo obtener la información del cliente.');
             }
         } catch (error) {
-            console.error('Error al obtener el correo del cliente:', error);
-            alert('Hubo un error al intentar obtener el correo del cliente.');
+            console.error('Error al obtener la información del cliente:', error);
+            alert('Hubo un error al intentar obtener la información del cliente.');
         }
     }
 }
+
 
 </script>

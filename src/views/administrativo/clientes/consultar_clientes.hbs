@@ -5,120 +5,151 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Consultar Clientes</title>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
-    <style>
-        /* General Styles */
-        body {
-            font-family: 'Roboto', sans-serif;
-            margin: 0;
-            padding: 0;
-            background-color: #f4f4f9;
-            color: #333;
-        }
 
-        h1 {
-            text-align: center;
-            margin: 20px 0;
-            color: #444;
-        }
-
-        p {
-            text-align: center;
-            color: #666;
-        }
-
-        /* Search Field */
-        #buscarNombre {
-            display: block;
-            margin: 20px auto;
-            padding: 10px;
-            width: 80%;
-            max-width: 500px;
-            font-size: 16px;
-            border: 1px solid #ccc;
-            border-radius: 8px;
-            box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
-        }
-
-        #buscarNombre:focus {
-            outline: none;
-            border-color: #90c9a7;
-            box-shadow: 0px 0px 5px #90c9a7;
-        }
-
-        /* Table */
-        #tablaClientes {
-            margin: 20px auto;
-            width: 90%;
-            max-width: 1200px;
-            border-collapse: collapse;
-            background-color: white;
-            box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
-            border-radius: 10px;
-            overflow: hidden;
-        }
-
-        #tablaClientes thead {
-            background-color: #1f335c;
-            color: white;
-        }
-
-        #tablaClientes th, #tablaClientes td {
-            padding: 15px;
-            text-align: left;
-            border-bottom: 1px solid #f0f0f0;
-        }
-
-        #tablaClientes tr:hover {
-            background-color: #f9f9f9;
-        }
-
-        #tablaClientes th {
-            font-weight: bold;
-        }
-
-        #tablaClientes td {
-            color: #555;
-        }
-
-        /* Action Buttons */
-        a {
-            text-decoration: none;
-            font-weight: 500;
-            color: white;
-            padding: 8px 12px;
-            border-radius: 5px;
-            margin-right: 5px;
-        }
-
-        a:hover {
-            opacity: 0.9;
-        }
-
-        .btn-view {
-            background-color: #666567;
-        }
-
-        .btn-edit {
-            background-color: #413d4b;
-        }
-
-        .btn-delete {
-            background-color: #d9534f;
-        }
-
-        /* Responsive Design */
-        @media (max-width: 768px) {
-            #tablaClientes th, #tablaClientes td {
-                padding: 10px;
-                font-size: 14px;
-            }
-
-            #buscarNombre {
-                width: 95%;
-            }
-        }
-    </style>
 </head>
+<style>
+    /* Configuración general */
+    body {
+        font-family: 'Roboto', sans-serif;
+        margin: 0;
+        padding: 0;
+        background-color: #f9f9f9;
+        color: #333;
+    }
+
+    h1 {
+        text-align: center;
+        margin-top: 20px;
+        color: #413d4b;
+    }
+
+    p {
+        text-align: center;
+        margin: 10px 0 20px;
+        color: #666567;
+    }
+
+    /* Estilo del campo de búsqueda */
+    #buscarNombre {
+        display: block;
+        margin: 0 auto 20px auto;
+        width: 80%;
+        max-width: 400px;
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
+        font-size: 16px;
+    }
+
+    #buscarNombre:focus {
+        border-color: #0769B3;
+        outline: none;
+        box-shadow: 0 0 5px rgba(144, 201, 167, 0.5);
+    }
+
+    /* Estilo de la tabla */
+    #tablaClientes {
+        width: 90%;
+        margin: 0 auto;
+        border-collapse: collapse;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        background-color: #fff;
+        border-radius: 5px;
+        overflow: hidden;
+    }
+
+    #tablaClientes th,
+    #tablaClientes td {
+        padding: 10px;
+        text-align: left;
+        border: 1px solid #ddd;
+    }
+
+    #tablaClientes thead {
+        background-color: #0769B3;
+        color: white;
+    }
+
+    #tablaClientes tbody tr:nth-child(even) {
+        background-color: #f2f2f2;
+    }
+
+    #tablaClientes tbody tr:hover {
+        background-color: #e8f5e9;
+    }
+
+    /* Estilo de los botones */
+    .btn-edit,
+    .btn-delete,
+    .btn-view {
+        text-decoration: none;
+        padding: 5px 10px;
+        border-radius: 3px;
+        font-size: 14px;
+        font-weight: 500;
+    }
+
+    .btn-edit {
+        background-color: #0769B3;
+        color: white;
+        border: none;
+    }
+
+    .btn-edit:hover {
+        background-color: #047885;
+    }
+
+    .btn-delete {
+        background-color: #ff6b6b;
+        color: white;
+        border: none;
+    }
+
+    .btn-delete:hover {
+        background-color: #e65555;
+    }
+
+    .btn-view {
+        background-color: #666567;
+        color: white;
+        border: none;
+    }
+
+    .btn-view:hover {
+        background-color: #4d4d4d;
+    }
+
+    /* Flexbox para botones */
+    td .action-buttons {
+        display: flex;
+        gap: 10px; /* Espaciado entre botones */
+        justify-content: center;
+    }
+
+    /* Responsividad */
+    @media (max-width: 768px) {
+        h1 {
+            font-size: 24px;
+        }
+
+        #buscarNombre {
+            width: 90%;
+        }
+
+        #tablaClientes {
+            font-size: 14px;
+        }
+
+        .btn-edit,
+        .btn-delete,
+        .btn-view {
+            font-size: 12px;
+        }
+    }
+</style>
+
+
 <body>
     <h1>Consultar Clientes</h1>
     <p>Bienvenido, {{nombreUsuario}}</p>
@@ -140,6 +171,7 @@
                 <th>Correo</th>
                 <th>Número</th>
                 <th>Dirección</th>
+                  <th>Foto </th>
                 <th>Acciones</th>
             </tr>
         </thead>
@@ -152,11 +184,14 @@
                 <td>{{this.correo}}</td>
                 <td>{{this.numero}}</td>
                 <td>{{this.direccion}}</td>
-                <td>
-                    <a href="/ver_cliente/{{this.id}}" class="btn-view">Ver</a>
-                    <a href="/editar_cliente/{{this.id}}" class="btn-edit">Editar</a>
-                    <a href="/eliminar_cliente/{{this.id}}" class="btn-delete" onclick="return confirm('¿Estás seguro de eliminar este cliente?');">Eliminar</a>
-                </td>
+                <td>{{this.Foto}}</td>
+              <td>
+    <div class="action-buttons">
+        <a href="/editar_cliente/{{this.id}}" class="btn-edit">Editar</a>
+        <a href="/eliminar_cliente/{{this.id}}" class="btn-delete" onclick="return confirm('¿Estás seguro de eliminar este cliente?');">Eliminar</a>
+    </div>
+</td>
+
             </tr>
             {{/each}}
         </tbody>
