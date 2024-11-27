@@ -844,14 +844,19 @@ body {
 }
 
 /* Label Styles */
+/* Label Styles */
 .radio-label {
     display: flex;
     align-items: center;
     font-size: 16px;
-    color: black;
+    color: #000; /* Letra negra */
     cursor: pointer;
     position: relative;
-    padding-left: 35px;
+    padding: 10px 35px; /* Espaciado interno */
+    background-color: #fff; /* Fondo blanco */
+    border: 1px solid #ddd; /* Borde sutil */
+    border-radius: 5px; /* Bordes redondeados */
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
 }
 
 /* Custom Radio Button */
