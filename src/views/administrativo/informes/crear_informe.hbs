@@ -730,6 +730,99 @@ select.input-field option, select.hidrosistema-input option {
     font-weight: bold;
     color: var(--primary-color);
 }
+.signature-section {
+    display: flex;
+    justify-content: space-around;
+    gap: 20px;
+    margin-top: 20px;
+}
+
+.signature-container {
+    position: relative;
+    width: 300px;
+    height: 120px;
+    border: 1px solid rgba(0, 0, 0, 0.2);
+    border-radius: 10px;
+    background: rgba(255, 255, 255, 0.8);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+}
+
+.signature-container canvas {
+    width: 100%;
+    height: 100%;
+    cursor: crosshair;
+    background: transparent;
+    border-radius: 10px;
+}
+
+.signature-container .signature-label {
+    position: absolute;
+    bottom: 10px;
+    left: 10px;
+    font-size: 12px;
+    color: rgba(0, 0, 0, 0.5);
+    font-style: italic;
+    pointer-events: none;
+}
+
+.clear-btn {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    background: rgba(255, 0, 0, 0.8);
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 25px;
+    height: 25px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 12px;
+    cursor: pointer;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    transition: background 0.3s;
+}
+
+.clear-btn:hover {
+    background: rgba(255, 0, 0, 1);
+}
+
+.clear-btn:active {
+    background: rgba(200, 0, 0, 1);
+}
+.loading-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+}
+
+.spinner {
+    width: 50px;
+    height: 50px;
+    border: 5px solid rgba(255, 255, 255, 0.3);
+    border-top: 5px solid #fff;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
+}
 
 </style>
 
@@ -2741,21 +2834,18 @@ select.input-field option, select.hidrosistema-input option {
   
 <!-- Sección de firma -->
 <div class="signature-section">
-    <div>
-        <canvas id="signatureCanvas1" width="300" height="100"></canvas>
-        <br>
-        <button type="button" onclick="clearCanvas('signatureCanvas1')">Borrar</button>
-        <br>
-        <span>TÉCNICO</span>
+    <div class="signature-container">
+        <canvas id="signatureCanvas1"></canvas>
+        <button type="button" class="clear-btn" onclick="clearCanvas('signatureCanvas1')">Borrar</button>
+        <span class="signature-label">TÉCNICO</span>
     </div>
-    <div>
-        <canvas id="signatureCanvas2" width="300" height="100"></canvas>
-        <br>
-        <button type="button" onclick="clearCanvas('signatureCanvas2')">Borrar</button>
-        <br>
-        <span>SUPERVISOR</span>
+    <div class="signature-container">
+        <canvas id="signatureCanvas2"></canvas>
+        <button type="button" class="clear-btn" onclick="clearCanvas('signatureCanvas2')">Borrar</button>
+        <span class="signature-label">SUPERVISOR</span>
     </div>
 </div>
+
 </div>
   
 <!-- Información de contacto debajo de las firmas -->
@@ -2786,7 +2876,10 @@ select.input-field option, select.hidrosistema-input option {
 <br>
     <input id="boton" class="botonn" type="submit" value="ENVIAR INFORME">
 
-
+<div id="loadingOverlay" class="loading-overlay" style="display: none;">
+    <div class="spinner"></div>
+    <p>Procesando, por favor espere...</p>
+</div>
 
 
 <script>
@@ -2820,6 +2913,15 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 });
+
+
+
+
+
+
+
+
+
 
     // Cuando cambia el campo de entrada de archivo (cuando se seleccionan archivos), mostramos las imágenes
     document.getElementById('boton').addEventListener('change', function(event) {
@@ -2972,76 +3074,64 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
 
-
 document.getElementById('maintenanceForm').addEventListener('submit', function (event) {
     event.preventDefault();
 
-    const reportElement = document.querySelector('.report-container'); // Selecciona el contenedor que deseas capturar
+    // Mostrar el overlay de carga
+    const loadingOverlay = document.getElementById('loadingOverlay');
+    loadingOverlay.style.display = 'flex';
+
+    const reportElement = document.querySelector('.report-container');
     const signatures = getSignatureBlobs();
 
-    // Función para preparar la captura
     function prepareForCapture() {
-        // Procesar los <select>
         document.querySelectorAll('select').forEach((select) => {
             const selectedText = select.options[select.selectedIndex].text;
-
-            // Crear un elemento <span> para reemplazar el <select>
             const span = document.createElement('span');
             span.className = 'select-text';
             span.textContent = selectedText;
-
-            // Insertar el <span> después del <select>
-            select.style.display = 'none'; // Ocultar el select
+            select.style.display = 'none';
             select.parentNode.insertBefore(span, select.nextSibling);
         });
 
-        // Procesar los <input>
         document.querySelectorAll('input').forEach((input) => {
             const span = document.createElement('span');
             span.className = 'input-text';
             span.textContent = input.value;
-
-            // Insertar el <span> después del <input>
-            input.style.display = 'none'; // Ocultar el input
+            input.style.display = 'none';
             input.parentNode.insertBefore(span, input.nextSibling);
         });
     }
 
-    // Función para restaurar el estado original
     function restoreAfterCapture() {
-        // Restaurar los <select>
         document.querySelectorAll('.select-text').forEach((span) => {
             const select = span.previousElementSibling;
             if (select) {
-                select.style.display = ''; // Mostrar el select
+                select.style.display = '';
             }
-            span.remove(); // Eliminar el texto
+            span.remove();
         });
 
-        // Restaurar los <input>
         document.querySelectorAll('.input-text').forEach((span) => {
             const input = span.previousElementSibling;
             if (input) {
-                input.style.display = ''; // Mostrar el input
+                input.style.display = '';
             }
-            span.remove(); // Eliminar el texto
+            span.remove();
         });
     }
 
-    // Preparar antes de la captura
     prepareForCapture();
 
     html2canvas(reportElement, {
-        scale: 2, // Aumenta la calidad del canvas
-        scrollY: 0, // Incluye contenido fuera de la vista
-        windowHeight: reportElement.scrollHeight, // Asegura capturar todo el contenido
+        scale: 2,
+        scrollY: 0,
+        windowHeight: reportElement.scrollHeight,
     }).then((canvas) => {
-        // Restaurar después de la captura
         restoreAfterCapture();
 
         canvas.toBlob((blob) => {
-            const formData = new FormData(document.getElementById('maintenanceForm')); // Mantén el formulario para firmar datos
-
+            const formData = new FormData(document.getElementById('maintenanceForm'));
             formData.append('firma_tecnico', signatures.firma_tecnico);
             formData.append('firma_supervisor', signatures.firma_supervisor);
             formData.append('imagen', blob, 'informe_mantenimiento.jpg');
@@ -3052,20 +3142,22 @@ document.getElementById('maintenanceForm').addEventListener('submit', function (
             })
                 .then((response) => response.json())
                 .then((data) => {
+                    loadingOverlay.style.display = 'none'; // Ocultar el overlay
                     if (data.success) {
                         alert('Datos insertados y correo enviado con éxito.');
+                        location.reload(); // Recargar la página
                     } else {
                         alert('Hubo un error: ' + data.message);
                     }
                 })
                 .catch((error) => {
+                    loadingOverlay.style.display = 'none'; // Ocultar el overlay
                     console.error('Error:', error);
                     alert('Error al procesar los datos.');
                 });
         }, 'image/jpeg', 0.95);
     });
 });
-
 
 
 </script>
