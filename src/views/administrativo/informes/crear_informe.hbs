@@ -3168,6 +3168,26 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
 
+function applyDesktopStyles() {
+    const reportElement = document.querySelector('.report-container');
+    reportElement.style.width = '1200px'; // Ancho fijo como en PC
+    reportElement.style.height = 'auto'; // Altura ajustada automáticamente
+    reportElement.style.transform = 'scale(1)'; // Sin escala
+    reportElement.style.transformOrigin = 'top left'; // Origen de escala
+    reportElement.style.position = 'relative'; // Asegurar posición estática
+    reportElement.style.margin = '0 auto'; // Centrar en la vista
+}
+
+function removeDesktopStyles() {
+    const reportElement = document.querySelector('.report-container');
+    reportElement.style.width = ''; // Restaurar a estilos originales
+    reportElement.style.height = '';
+    reportElement.style.transform = '';
+    reportElement.style.transformOrigin = '';
+    reportElement.style.position = '';
+    reportElement.style.margin = '';
+}
+
 
 document.getElementById('maintenanceForm').addEventListener('submit', function (event) {
     event.preventDefault();
@@ -3216,13 +3236,17 @@ document.getElementById('maintenanceForm').addEventListener('submit', function (
         });
     }
 
+    // Aplicar estilos para captura como en PC
+    applyDesktopStyles();
     prepareForCapture();
 
     html2canvas(reportElement, {
-        scale: 2,
+        scale: 2, // Mayor resolución
         scrollY: 0,
         windowHeight: reportElement.scrollHeight,
     }).then((canvas) => {
+        // Restaurar estilos y contenido
+        removeDesktopStyles();
         restoreAfterCapture();
 
         canvas.toBlob((blob) => {
