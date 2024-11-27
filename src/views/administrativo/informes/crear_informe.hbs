@@ -823,6 +823,80 @@ select.input-field option, select.hidrosistema-input option {
         transform: rotate(360deg);
     }
 }
+/* General Styles */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f9f9f9;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+/* Radio Group Container */
+.radio-group {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+/* Label Styles */
+.radio-label {
+    display: flex;
+    align-items: center;
+    font-size: 16px;
+    color: #333;
+    cursor: pointer;
+    position: relative;
+    padding-left: 35px;
+}
+
+/* Custom Radio Button */
+.custom-radio {
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 20px;
+    height: 20px;
+    border: 2px solid #90c9a7;
+    border-radius: 50%;
+    background-color: #fff;
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* Selected State */
+.radio-label input[type="radio"]:checked + .custom-radio {
+    background-color: #90c9a7;
+    box-shadow: 0 0 0 4px rgba(144, 201, 167, 0.2);
+}
+
+/* Hide Native Radio */
+.radio-label input[type="radio"] {
+    position: absolute;
+    opacity: 0;
+    cursor: pointer;
+}
+
+/* Button Styles */
+.btn-submit {
+    background-color: #413d4b;
+    color: #fff;
+    padding: 10px 20px;
+    font-size: 16px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.btn-submit:hover {
+    background-color: #90c9a7;
+    color: #413d4b;
+}
 
 </style>
 
@@ -2874,7 +2948,23 @@ select.input-field option, select.hidrosistema-input option {
 <div id="preview"></div>
 </div>
 <br>
-    <input id="boton" class="botonn" type="submit" value="ENVIAR INFORME">
+
+<div class="radio-group">
+    <label class="radio-label">
+        <input type="radio" name="accion" value="guardar" checked>
+        <span class="custom-radio"></span>
+        Guardar
+    </label>
+    <label class="radio-label">
+        <input type="radio" name="accion" value="guardar_y_enviar">
+        <span class="custom-radio"></span>
+        Guardar y Enviar Correo
+    </label>
+</div>
+
+<button type="submit" class="btn-submit">Procesar</button>
+
+
 
 <div id="loadingOverlay" class="loading-overlay" style="display: none;">
     <div class="spinner"></div>
