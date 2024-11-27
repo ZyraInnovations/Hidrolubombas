@@ -7,6 +7,8 @@
     <title>HIDRAULIBOMBAS</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+
     <link href="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.6.0/chart.min.css" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
@@ -1401,6 +1403,13 @@ body {
     background-color: #90c9a7;
     color: #413d4b;
 }
+.pdf-mode {
+    width: 1280px !important; /* Ancho de PC */
+    font-size: 16px !important; /* Tamaño de fuente estándar */
+    margin: 0 auto !important; /* Centrado */
+    border: none !important;
+    box-shadow: none !important;
+}
 
 </style>
 <body>
@@ -1473,7 +1482,7 @@ body {
 
 <br>
 <button id="downloadPdf" class="btn btn-primary no-pdf">
-    <i class="fas fa-file-pdf"></i> Descargar PDF
+    <i class="fas fa-image"></i> Descargar PNG
 </button>
 <br>
 <!-- Mostrar mensaje de resultado si existe -->
@@ -2220,23 +2229,31 @@ document.getElementById('idDropdown').addEventListener('change', function() {
 });
 </script>
 <script>
-    document.getElementById('downloadPdf').addEventListener('click', function () {
-        var element = document.querySelector('.report-container');
-        element.classList.add('pdf-mode');
-
-var opt = {
-    margin: [0.2, 0.2, 0.2, 0.5],  // [top, left, bottom, right] ajusta el margen derecho
-    filename: 'informe_mantenimiento.pdf',
-    image: { type: 'jpeg', quality: 0.98 },
-    html2canvas: { scale: 6 }, // Aumenta la escala para mejorar la resolución
-    jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' }
-};
 
 
-        html2pdf().from(element).set(opt).save().then(() => {
-            element.classList.remove('pdf-mode');
-        });
+
+
+document.getElementById('downloadPdf').addEventListener('click', function () {
+    const element = document.querySelector('.report-container');
+
+    // Agregar la clase de "modo PC" antes de capturar
+    element.classList.add('pdf-mode');
+
+    // Usa html2canvas para capturar la imagen del elemento
+    html2canvas(element, { scale: 2 }).then(canvas => {
+        // Eliminar la clase de "modo PC" después de capturar
+        element.classList.remove('pdf-mode');
+
+        // Convertir el canvas a una imagen en formato PNG
+        const link = document.createElement('a');
+        link.href = canvas.toDataURL('image/png'); // Generar la URL de la imagen PNG
+        link.download = 'informe_mantenimiento.png'; // Nombre del archivo descargado
+        link.click(); // Simular el clic para descargar la imagen
+    }).catch(error => {
+        console.error('Error generando PNG:', error);
+        element.classList.remove('pdf-mode'); // Asegurarse de remover la clase en caso de error
     });
+});
   </script>
 <script>
     document.addEventListener("DOMContentLoaded", function() {
