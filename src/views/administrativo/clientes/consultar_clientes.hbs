@@ -184,7 +184,11 @@
                 <td>{{this.correo}}</td>
                 <td>{{this.numero}}</td>
                 <td>{{this.direccion}}</td>
-                <td>{{this.Foto}}</td>
+ <td>
+    <img src="{{this.fotoBase64}}" alt="Foto del cliente" style="width: 50px; height: 50px; object-fit: cover; border-radius: 5px;">
+</td>
+
+
               <td>
     <div class="action-buttons">
         <a href="/editar_cliente/{{this.id}}" class="btn-edit">Editar</a>
@@ -212,21 +216,25 @@
 
                 if (data.clientes.length > 0) {
                     data.clientes.forEach(cliente => {
-                        const fila = `
-                            <tr>
-                                <td>${cliente.id}</td>
-                                <td>${cliente.nombre}</td>
-                                <td>${cliente.nit}</td>
-                                <td>${cliente.correo}</td>
-                                <td>${cliente.numero}</td>
-                                <td>${cliente.direccion}</td>
-                                <td>
-                                    <a href="/ver_cliente/${cliente.id}" class="btn-view">Ver</a>
-                                    <a href="/editar_cliente/${cliente.id}" class="btn-edit">Editar</a>
-                                    <a href="/eliminar_cliente/${cliente.id}" class="btn-delete">Eliminar</a>
-                                </td>
-                            </tr>`;
-                        tabla.innerHTML += fila;
+                   const fila = `
+    <tr>
+        <td>${cliente.id}</td>
+        <td>${cliente.nombre}</td>
+        <td>${cliente.nit}</td>
+        <td>${cliente.correo}</td>
+        <td>${cliente.numero}</td>
+        <td>${cliente.direccion}</td>
+        <td>
+            <img src="/cliente_foto/${cliente.id}" alt="Foto del cliente" style="width: 50px; height: 50px; object-fit: cover; border-radius: 5px;">
+        </td>
+        <td>
+            <a href="/ver_cliente/${cliente.id}" class="btn-view">Ver</a>
+            <a href="/editar_cliente/${cliente.id}" class="btn-edit">Editar</a>
+            <a href="/eliminar_cliente/${cliente.id}" class="btn-delete">Eliminar</a>
+        </td>
+    </tr>`;
+tabla.innerHTML += fila;
+
                     });
                 } else {
                     tabla.innerHTML = '<tr><td colspan="7">No se encontraron clientes.</td></tr>';

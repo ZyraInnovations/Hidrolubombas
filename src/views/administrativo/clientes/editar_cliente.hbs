@@ -92,7 +92,7 @@
     </style>
 </head>
 <body>
-    <form action="/editar_cliente/{{cliente.id}}" method="POST">
+<form action="/editar_cliente/{{cliente.id}}" method="POST" enctype="multipart/form-data">
         <h1>Editar Cliente</h1>
 
         <label for="nombre">Nombre:</label>
@@ -109,6 +109,10 @@
 
         <label for="direccion">Dirección:</label>
         <input type="text" id="direccion" name="direccion" value="{{cliente.direccion}}" required />
+
+
+    <label for="foto">Foto:</label>
+    <input type="file" id="foto" name="foto" accept="image/*" />
 
         <button type="submit">Guardar Cambios</button>
     </form>

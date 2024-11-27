@@ -1090,14 +1090,23 @@ app.post('/guardar_cliente', upload.single('foto'), async (req, res) => {
 
 
 
-
 app.get('/consultar_clientes', async (req, res) => {
     if (req.session.loggedin === true) {
         try {
             const query = `
-                SELECT id, nombre, nit, correo, numero, direccion
+                SELECT id, nombre, nit, correo, numero, direccion, foto
                 FROM clientes_hidrolubombas`;
-            const [clientes] = await pool.query(query);
+            const [clientesRaw] = await pool.query(query);
+
+            // Convertir las fotos de LONGBLOB a Base64
+            const clientes = clientesRaw.map(cliente => {
+                if (cliente.foto) {
+                    cliente.fotoBase64 = `data:image/jpeg;base64,${cliente.foto.toString('base64')}`;
+                } else {
+                    cliente.fotoBase64 = '/path/to/placeholder.jpg'; // Imagen por defecto si no tiene foto
+                }
+                return cliente;
+            });
 
             const nombreUsuario = req.session.user.name; // Datos del usuario
             res.render('administrativo/clientes/consultar_clientes.hbs', {
@@ -1113,6 +1122,7 @@ app.get('/consultar_clientes', async (req, res) => {
         res.redirect('/login');
     }
 });
+
 
 
 app.get('/buscar_clientes', async (req, res) => {
@@ -1170,13 +1180,30 @@ app.get('/editar_cliente/:id', async (req, res) => {
 });
 
 
-app.post('/editar_cliente/:id', async (req, res) => {
-    const { id } = req.params; // ID del cliente a editar
-    const { nombre, nit, correo, numero, direccion } = req.body; // Nuevos datos del cliente
+app.post('/editar_cliente/:id', upload.single('foto'), async (req, res) => {
+    const { id } = req.params;
+    const { nombre, nit, correo, numero, direccion } = req.body;
+
+    console.log('Archivo recibido:', req.file); // Verifica si el archivo llega
+
     try {
-        await pool.query('UPDATE clientes_hidrolubombas SET nombre = ?, nit = ?, correo = ?, numero = ?, direccion = ? WHERE id = ?', 
-            [nombre, nit, correo, numero, direccion, id]);
-        res.redirect('/consultar_clientes'); // Redirige a la lista de clientes
+        let query = `
+            UPDATE clientes_hidrolubombas
+            SET nombre = ?, nit = ?, correo = ?, numero = ?, direccion = ?
+        `;
+        const params = [nombre, nit, correo, numero, direccion];
+
+        if (req.file) {
+            console.log('Foto recibida, procesando...');
+            query += `, foto = ?`;
+            params.push(req.file.buffer); // Buffer de la foto
+        }
+
+        query += ` WHERE id = ?`;
+        params.push(id);
+
+        await pool.query(query, params);
+        res.redirect('/consultar_clientes'); // Redirigir a la lista de clientes
     } catch (error) {
         console.error('Error al actualizar cliente:', error);
         res.status(500).send('Hubo un error al actualizar el cliente.');
