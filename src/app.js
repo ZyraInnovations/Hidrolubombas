@@ -729,7 +729,6 @@ app.get('/ver_informe', (req, res) => {
 
         // Validar que el ID sea un número válido
         if (!informeId || !/^\d+$/.test(informeId)) {
-            // Obtener listas de técnicos y clientes para renderizar la página correctamente
             obtenerListas((err, tecnicos, clientes) => {
                 if (err) {
                     res.status(500).send('Error en el servidor.');
@@ -746,8 +745,14 @@ app.get('/ver_informe', (req, res) => {
             return;
         }
 
-        // Consulta para obtener el informe basado en el ID
-        const query = 'SELECT * FROM mantenimiento_hidro WHERE id = ?';
+        // Consulta para obtener el informe con firmas convertidas a Base64
+        const query = `
+            SELECT *, 
+                TO_BASE64(firma_tecnico) AS firma_tecnico_base64, 
+                TO_BASE64(firma_supervisor) AS firma_supervisor_base64 
+            FROM mantenimiento_hidro 
+            WHERE id = ?
+        `;
         db.query(query, [informeId], (err, results) => {
             if (err) {
                 console.error('Error al realizar la consulta:', err);
@@ -755,30 +760,43 @@ app.get('/ver_informe', (req, res) => {
             } else if (results.length > 0) {
                 const informe = results[0];
 
-                // Obtener el cliente relacionado
-                const clienteQuery = 'SELECT nombre FROM clientes_hidrolubombas WHERE id = ?';
+                // Asignar las firmas en formato Base64 al objeto `informe`
+                informe.firma_tecnico = informe.firma_tecnico_base64;
+                informe.firma_supervisor = informe.firma_supervisor_base64;
+
+                // Obtener el cliente relacionado con la foto
+                const clienteQuery = `
+                    SELECT nombre, TO_BASE64(foto) AS foto_base64 
+                    FROM clientes_hidrolubombas 
+                    WHERE id = ?
+                `;
                 db.query(clienteQuery, [informe.cliente], (err, clienteResult) => {
                     if (err) {
                         console.error('Error al obtener el cliente:', err);
                         res.status(500).send('Error en el servidor.');
                     } else if (clienteResult.length > 0) {
                         informe.cliente = clienteResult[0].nombre;
+                        informe.clienteFoto = clienteResult[0].foto_base64; // Añadir la foto Base64
 
-                        // Obtener el técnico relacionado
-                        const tecnicoQuery = 'SELECT nombre FROM usuarios_hidro WHERE id = ?';
+                        // Obtener el técnico relacionado con la foto
+                        const tecnicoQuery = `
+                            SELECT nombre, TO_BASE64(foto) AS foto_base64 
+                            FROM usuarios_hidro 
+                            WHERE id = ?
+                        `;
                         db.query(tecnicoQuery, [informe.tecnico], (err, tecnicoResult) => {
                             if (err) {
                                 console.error('Error al obtener el técnico:', err);
                                 res.status(500).send('Error en el servidor.');
                             } else if (tecnicoResult.length > 0) {
                                 informe.tecnico = tecnicoResult[0].nombre;
+                                informe.tecnicoFoto = tecnicoResult[0].foto_base64; // Añadir la foto Base64 del técnico
 
-                                // Obtener listas de técnicos y clientes para renderizar correctamente
                                 obtenerListas((err, tecnicos, clientes) => {
                                     if (err) {
                                         res.status(500).send('Error en el servidor.');
                                     } else {
-                                        // Renderizar la vista con el informe encontrado
+                                        // Renderizar la vista con el informe y las listas
                                         res.render('administrativo/informes/consulta_informe.hbs', {
                                             layout: 'layouts/nav_admin.hbs',
                                             nombreUsuario,
@@ -805,7 +823,6 @@ app.get('/ver_informe', (req, res) => {
                     }
                 });
             } else {
-                // Obtener listas de técnicos y clientes
                 obtenerListas((err, tecnicos, clientes) => {
                     if (err) {
                         res.status(500).send('Error en el servidor.');
@@ -825,11 +842,6 @@ app.get('/ver_informe', (req, res) => {
         res.redirect('/login');
     }
 });
-
-
-
-
-
 
 // Función para obtener listas de técnicos y clientes
 function obtenerListas(callback) {

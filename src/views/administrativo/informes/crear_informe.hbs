@@ -935,12 +935,7 @@ body {
 
     <div class="info-row">
     <strong>Cliente:</strong>
-    <select name="cliente" id="clienteSelect" onchange="fetchClienteInfo()" required>
-    <option value="" disabled selected>Seleccione un cliente</option>
-    {{#each clientes}}
-        <option value="{{this.id}}">{{this.nombre}}</option>
-    {{/each}}
-    </select>
+   <span>{{informe.cliente}}</span>
 
     </div>
 

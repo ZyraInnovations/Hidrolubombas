@@ -1,5 +1,4 @@
 
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -401,8 +400,1009 @@
     }
 }
 
+
+
+
+
+
+ .company-info {
+        text-align: center;
+        margin-bottom: 10px;
+        font-size: 16px;
+        font-weight: bold;
+        color: var(--primary-color);
+    }
+
+    /* Estilo para el logo */
+    .header-info {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 15px;
+        margin-bottom: 20px;
+    }
+
+    .header-info .logo img {
+        max-width: 150px;
+        max-height: 150px;
+        border-radius: 10px;
+        border: 2px solid var(--primary-color);
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    /* Estilo para el contenedor general */
+    .report-container {
+        margin: 20px 0;
+        padding: 10px;
+        background-color: #f9f9f9;
+        border: 1px solid var(--border-color);
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .marcar {
+        position: relative;
+        z-index: 1;
+        padding: 10px;
+        background: linear-gradient(135deg, #ffffff, #f0f4f9);
+        border-radius: 15px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+    .logo-container {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    width: 100px; /* Ajusta el tamaño del contenedor */
+    height: auto;
+    z-index: 10;
+}
+
+#logo {
+    width: 100%; /* Asegura que el logo se ajuste al tamaño del contenedor */
+    height: auto;
+    object-fit: contain; /* Mantén la proporción del logo */
+    border-radius: 5px; /* Opcional: bordes redondeados */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); /* Opcional: sombra para hacerlo destacar */
+}
+
+
+
+
+
+
+.photo-section {
+    display: flex;
+    justify-content: space-around;
+    margin-top: 20px;
+    gap: 20px;
+}
+
+.photo-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+}
+
+.photo-container img {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid var(--primary-color);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.photo-label {
+    margin-top: 10px;
+    font-size: 14px;
+    font-weight: bold;
+    color: var(--primary-color);
+}
+
+
+
+
+
+
+
+
+  </style>
+  <style>
+    :root {
+      --primary-color: #0769B3;
+      --accent-color: #6da8d6;
+      --text-color: #333;
+      --bg-color: #f0f0f0;
+      --border-color: #ccc;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Roboto', sans-serif;
+    }
+
+    body {
+      background-color: white;
+      color: var(--text-color);
+      padding: 10px;
+      overflow-x: hidden;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 98vw;
+      margin: 0 auto;
+      background: #fff;
+      padding: 20px;
+      border-radius: 15px;
+      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+    }
+
+    .header-info {
+      text-align: center;
+      margin-bottom: 10px;
+    }
+
+    .info-section {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin-bottom: 10px;
+    }
+
+    .info-row input, .info-row select {
+      width: 100%;
+      padding: 8px;
+      border: 1px solid var(--border-color);
+      border-radius: 5px;
+      font-size: 14px;
+    }
+
+    .table-container {
+      overflow-x: auto;
+    }
+
+    .combined-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 12px;
+      table-layout: fixed;
+    }
+
+    .combined-table th, .combined-table td {
+      border: 1px solid var(--border-color);
+      padding: 5px;
+      text-align: center;
+      word-wrap: break-word;
+    }
+
+    .header {
+      background-color: var(--accent-color);
+      color: white;
+      font-weight: bold;
+    }
+
+    h2, h3 {
+      font-size: 16px;
+      text-align: center;
+      margin: 10px 0;
+    }
+
+    .btn {
+      background-color: #4CAF50;
+      color: white;
+      padding: 10px 20px;
+      font-size: 14px;
+      font-weight: bold;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      transition: background-color 0.3s ease;
+      display: inline-block;
+      margin-top: 20px;
+    }
+
+    .btn:hover {
+      background-color: #45a049;
+    }
+
+    .signature-section {
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+      margin-top: 20px;
+    }
+
+    .signature-section canvas {
+      border: 1px solid var(--border-color);
+      width: 100%;
+      height: 100px;
+    }
+
+    @media (max-width: 768px) {
+      .info-section {
+    grid-template-columns: 1fr 1fr; /* Dos columnas también en pantallas pequeñas */
+      }
+
+      .combined-table th, .combined-table td {
+        padding: 3px;
+      }
+
+      h2, h3 {
+        font-size: 14px;
+      }
+
+      .btn {
+        font-size: 12px;
+        padding: 8px 16px;
+      }
+    }
+
+/* Estilo de los inputs y selects en tamaño pequeño para las tablas y otros campos */
+.input-field, .status-input, textarea {
+    width: 100%;
+    padding: 3px;
+    font-size: 8px; /* Tamaño pequeño para evitar superposición */
+    border: 1px solid var(--border-color);
+    border-radius: 3px;
+    box-sizing: border-box;
+}
+
+/* Estilo para los inputs y selects en .info-section con tamaño normal */
+.info-section .info-row input, .info-section .info-row select {
+    width: 100%;
+    padding: 8px; /* Tamaño original en .info-section */
+    font-size: 12px;
+    border: 1px solid var(--border-color);
+    border-radius: 5px;
+    box-sizing: border-box;
+}
+
+/* Ajustes de tabla para que los inputs no se solapen */
+.combined-table {
+    width: 100%;
+    table-layout: fixed;
+    font-size: 8px;
+}
+
+.combined-table th, .combined-table td {
+    border: 1px solid var(--border-color);
+    padding: 2px; /* Relleno reducido para evitar solapamientos */
+    text-align: center;
+    word-wrap: break-word;
+}
+
+/* Ajustes adicionales para evitar desbordamientos en dispositivos móviles */
+@media (max-width: 768px) {
+    .info-section {
+        grid-template-columns: 1fr; /* Columnas individuales en pantallas pequeñas */
+    }
+
+    .combined-table th, .combined-table td {
+        padding: 1px; /* Relleno aún menor para móviles */
+        font-size: 7px; /* Reducir el tamaño de fuente en móviles */
+    }
+}
+/* Estilo para la sección de firma, con los campos uno al lado del otro */
+.signature-section {
+    display: flex;
+    justify-content: space-between;
+    align-items: center; /* Alineación vertical en el centro */
+    gap: 10px;
+    margin-top: 20px;
+}
+
+.signature-section > div {
+    text-align: center;
+    width: 45%; /* Espacio suficiente para que ambos campos se alineen horizontalmente */
+}
+
+.signature-section canvas {
+    border: 1px solid var(--border-color);
+    width: 100%;
+    height: 100px;
+}
+   /* Estilos necesarios para la firma */
+        .signature-section {
+            display: flex;
+            justify-content: space-between;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        .signature-section canvas {
+            border: 1px solid #000;
+            cursor: crosshair; /* Cambia el cursor al pasar por el área de firma */
+            width: 100%;
+            height: 100px;
+        }
+
+
+
+
+
+.botonn {
+    display: inline-block;
+    padding: 12px 20px;
+    font-size: 16px;
+    font-weight: bold;
+    color: #ffffff;
+    background-color: #4caf50; /* Verde profesional */
+    border: none;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.botonn:hover {
+    background-color: #45a049; /* Verde más oscuro */
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+    transform: translateY(-2px); /* Pequeña elevación */
+}
+
+.botonn:active {
+    background-color: #388e3c; /* Verde más intenso */
+    transform: translateY(0); /* Sin elevación */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
   </style>
 
+<style>
+    
+</style>
+
+<style>
+    .image-preview-container {
+        margin-top: 20px;
+    }
+
+    #preview img {
+        max-width: 150px;
+        max-height: 150px;
+        border: 1px solid #ccc;
+        border-radius: 10px;
+        object-fit: cover;
+    }
+
+    #preview {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+    }
+</style>
+
+<style>
+    .image-preview-container {
+        margin-top: 20px;
+        text-align: center;
+    }
+
+    .custom-label {
+        display: inline-block;
+        padding: 10px 20px;
+        background-color: #0769B3;
+        color: #ffffff;
+        font-size: 14px;
+        font-weight: bold;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        text-transform: uppercase;
+    }
+
+    .custom-label:hover {
+        background-color: #035b94;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+    }
+
+    .custom-file-input {
+        display: none;
+    }
+
+    #preview {
+        margin-top: 10px;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        justify-content: center;
+    }
+
+    #preview img {
+        max-width: 150px;
+        max-height: 150px;
+        border-radius: 8px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        border: 1px solid #ccc;
+        object-fit: cover;
+        position: relative;
+    }
+
+    .remove-btn {
+        position: absolute;
+        top: 5px;
+        right: 5px;
+        background: red;
+        color: white;
+        border: none;
+        border-radius: 50%;
+        width: 20px;
+        height: 20px;
+        cursor: pointer;
+        font-size: 12px;
+        line-height: 20px;
+        text-align: center;
+    }
+    #preview {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+#preview img {
+    max-width: 150px;
+    max-height: 150px;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    object-fit: cover;
+}
+
+.remove-btn {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    background: red;
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 20px;
+    height: 20px;
+    cursor: pointer;
+    font-size: 12px;
+    line-height: 20px;
+    text-align: center;
+}
+.remove-btn {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    background: red;
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 20px;
+    height: 20px;
+    cursor: pointer;
+    font-size: 12px;
+    line-height: 20px;
+    text-align: center;
+}
+
+</style>
+
+<style>
+    /* Ocultar el input original de archivos */
+    .custom-file-input {
+        display: none;
+    }
+
+    /* Estilo personalizado para el botón */
+    .custom-label {
+        display: inline-block;
+        padding: 12px 20px;
+        font-size: 16px;
+        font-weight: bold;
+        color: #fff;
+        background-color: #0769B3; /* Color primario */
+        border-radius: 8px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+    }
+
+    .custom-label:hover {
+        background-color: #035b94; /* Color más oscuro al pasar el ratón */
+        transform: translateY(-2px);
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+    }
+
+    /* Estilo para el contenedor de vista previa de imágenes */
+    #preview {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        margin-top: 20px;
+        justify-content: center;
+    }
+
+    #preview img {
+        max-width: 150px;
+        max-height: 150px;
+        border: 1px solid #ccc;
+        border-radius: 10px;
+        object-fit: cover;
+        position: relative;
+    }
+
+    /* Estilo para el botón de eliminación (X) */
+    .remove-btn {
+        position: absolute;
+        top: 5px;
+        right: 5px;
+        background: red;
+        color: white;
+        border: none;
+        border-radius: 50%;
+        width: 20px;
+        height: 20px;
+        cursor: pointer;
+        font-size: 12px;
+        line-height: 20px;
+        text-align: center;
+    }
+
+    .remove-btn:hover {
+        background-color: #ff4d4d; /* Rojo más brillante cuando se pasa el ratón */
+    }
+
+
+select {
+  -webkit-appearance: none; /* Oculta la flecha en navegadores WebKit */
+  -moz-appearance: none; /* Oculta la flecha en navegadores Firefox */
+  appearance: none; /* Oculta la flecha en navegadores modernos */
+  background: none; /* Elimina el fondo para personalizar si es necesario */
+  border: 1px solid #ccc; /* Opcional: agrega un borde personalizado */
+  padding: 10px; /* Espacio interno */
+  border-radius: 4px; /* Bordes redondeados */
+  cursor: pointer; /* Cambia el cursor a pointer */
+  text-align: center; /* Centra el texto horizontalmente */
+  color: black; /* Cambia el color del texto a negro */
+  font-size: 16px; /* Tamaño de fuente */
+  font-weight: bold; /* Aplica negrilla al texto */
+  line-height: 1.5; /* Altura de línea para centrar mejor el texto verticalmente */
+}
+
+/* Opcional: Asegurar que las opciones también tengan negrilla */
+select option {
+  font-weight: bold; /* Aplica negrilla a las opciones */
+  text-align: center; /* Centra las opciones del menú desplegable */
+}
+
+
+
+ .marcar {
+    position: relative;
+    z-index: 1; /* Asegúrate de que el contenido esté por encima del pseudo-elemento */
+}
+
+.marcar::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: url('imagenes/logo_ingenieria.jpeg-removebg-preview.png') no-repeat center center;
+    background-size: contain;
+    opacity: 0.1; /* Ajusta la opacidad solo de la marca de agua */
+    pointer-events: none; /* Evita que el pseudo-elemento interfiera con el contenido */
+    z-index: -1; /* Envía el pseudo-elemento detrás del contenido */
+}
+
+
+
+
+
+/* Reducir el tamaño de los elementos select */
+select.input-field, select.hidrosistema-input {
+  font-size: 10px; /* Reducir el tamaño de la fuente */
+  padding: 1px; /* Reducir el relleno interno */
+  height: 16px; /* Disminuir la altura */
+  border-radius: 3px; /* Bordes ligeramente redondeados */
+  line-height: 1; /* Compactar la altura de línea */
+}
+
+
+/* Reducir el tamaño de las opciones en los select */
+select.input-field option, select.hidrosistema-input option {
+  font-size: 12px; /* Tamaño de fuente de las opciones */
+}
+
+
+
+
+
+
+
+/* Ajustar el padding y espaciado en las celdas de la tabla SOLO en modo PDF */
+.pdf-mode .combined-table th,
+.pdf-mode .combined-table td {
+  border: 1px solid var(--border-color);
+  padding: 4px; /* Incrementar el padding */
+  text-align: center;
+  word-wrap: break-word;
+  line-height: 1.5; /* Aumentar el espacio vertical entre líneas */
+  font-weight: bold; /* Aplicar negrita */
+}
+
+/* Asegurar que las tablas ocupen todo el ancho disponible SOLO en modo PDF */
+.pdf-mode .combined-table {
+  width: 100%;
+  border-collapse: separate; /* Separar las celdas para más espacio */
+  padding: 4px; /* Incrementar el padding */
+}
+
+/* Reducir el tamaño del texto en dispositivos móviles para evitar montarse SOLO en modo PDF */
+@media (max-width: 768px) {
+  .pdf-mode .combined-table th,
+  .pdf-mode .combined-table td {
+    font-size: 10px; /* Tamaño de fuente más pequeño */
+    padding: 4px; /* Incrementar el padding */
+    font-weight: bold; /* Aplicar negrita */
+  }
+}
+
+/* Mejorar el diseño de los inputs y selects dentro de las tablas SOLO en modo PDF */
+.pdf-mode .input-field,
+.pdf-mode .hidrosistema-input,
+.pdf-mode textarea {
+  padding: 6px; /* Incrementar el padding interno */
+  font-size: 12px; /* Tamaño de fuente legible */
+  border-radius: 5px; /* Bordes redondeados */
+  box-sizing: border-box;
+  font-weight: bold; /* Aplicar negrita */
+}
+
+/* Inputs más compactos en móviles SOLO en modo PDF */
+@media (max-width: 768px) {
+  .pdf-mode .input-field,
+  .pdf-mode .hidrosistema-input {
+    padding: 4px;
+    font-size: 10px;
+    font-weight: bold; /* Aplicar negrita */
+  }
+}
+
+
+.pdf-mode input {
+    display: none;
+}
+
+.pdf-mode span {
+    display: inline-block;
+    font-size: 14px;
+    color: #333;
+}
+
+
+.pdf-mode select, .pdf-mode input {
+    display: none;
+}
+
+.pdf-mode span {
+    display: inline-block;
+    font-size: 14px;
+    color: #333;
+    border: 1px solid #ddd;
+    padding: 4px;
+}
+.pdf-mode select,
+.pdf-mode input {
+    display: none; /* Ocultar los select y input en el modo de captura */
+}
+
+.pdf-mode span {
+    display: inline-block;
+    border: none; /* Sin bordes */
+    background: none; /* Fondo transparente */
+    padding: 0; /* Sin relleno */
+    font-size: 14px; /* Tamaño de texto adecuado */
+    color: #333; /* Color del texto */
+}
+.pdf-mode {
+    width: 1280px !important; /* Ancho de PC */
+    font-size: 16px !important; /* Tamaño de fuente estándar */
+    margin: 0 auto !important; /* Centrado */
+    border: none !important;
+    box-shadow: none !important;
+}
+.info-row.full-width {
+  grid-column: span 2; /* Este campo ocupará ambas columnas */
+}
+.info-section {
+  display: grid;
+  grid-template-columns: 1fr 1fr; /* Dos columnas por defecto */
+  gap: 10px; /* Espaciado entre filas y columnas */
+  margin-bottom: 10px;
+}
+
+@media (max-width: 480px) {
+  .info-section {
+    grid-template-columns: 1fr 1fr; /* Mantener dos columnas también en celulares */
+    gap: 5px; /* Reducir el espaciado en celulares */
+  }
+}
+
+.info-row.full-width {
+  grid-column: span 2; /* Este campo ocupará ambas columnas si es necesario */
+}
+    .company-info {
+        text-align: center;
+        margin-bottom: 10px;
+        font-size: 16px;
+        font-weight: bold;
+        color: var(--primary-color);
+    }
+
+    /* Estilo para el logo */
+    .header-info {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 15px;
+        margin-bottom: 20px;
+    }
+
+    .header-info .logo img {
+        max-width: 150px;
+        max-height: 150px;
+        border-radius: 10px;
+        border: 2px solid var(--primary-color);
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    /* Estilo para el contenedor general */
+    .report-container {
+        margin: 20px 0;
+        padding: 10px;
+        background-color: #f9f9f9;
+        border: 1px solid var(--border-color);
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .marcar {
+        position: relative;
+        z-index: 1;
+        padding: 10px;
+        background: linear-gradient(135deg, #ffffff, #f0f4f9);
+        border-radius: 15px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+    .logo-container {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    width: 100px; /* Ajusta el tamaño del contenedor */
+    height: auto;
+    z-index: 10;
+}
+
+#logo {
+    width: 100%; /* Asegura que el logo se ajuste al tamaño del contenedor */
+    height: auto;
+    object-fit: contain; /* Mantén la proporción del logo */
+    border-radius: 5px; /* Opcional: bordes redondeados */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); /* Opcional: sombra para hacerlo destacar */
+}
+
+
+
+
+
+
+.photo-section {
+    display: flex;
+    justify-content: space-around;
+    margin-top: 20px;
+    gap: 20px;
+}
+
+.photo-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+}
+
+.photo-container img {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid var(--primary-color);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.photo-label {
+    margin-top: 10px;
+    font-size: 14px;
+    font-weight: bold;
+    color: var(--primary-color);
+}
+.signature-section {
+    display: flex;
+    justify-content: space-around;
+    gap: 20px;
+    margin-top: 20px;
+}
+
+.signature-container {
+    position: relative;
+    width: 300px;
+    height: 120px;
+    border: 1px solid rgba(0, 0, 0, 0.2);
+    border-radius: 10px;
+    background: rgba(255, 255, 255, 0.8);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+}
+
+.signature-container canvas {
+    width: 100%;
+    height: 100%;
+    cursor: crosshair;
+    background: transparent;
+    border-radius: 10px;
+}
+
+.signature-container .signature-label {
+    position: absolute;
+    bottom: 10px;
+    left: 10px;
+    font-size: 12px;
+    color: rgba(0, 0, 0, 0.5);
+    font-style: italic;
+    pointer-events: none;
+}
+
+.clear-btn {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    background: rgba(255, 0, 0, 0.8);
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 25px;
+    height: 25px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 12px;
+    cursor: pointer;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    transition: background 0.3s;
+}
+
+.clear-btn:hover {
+    background: rgba(255, 0, 0, 1);
+}
+
+.clear-btn:active {
+    background: rgba(200, 0, 0, 1);
+}
+.loading-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+}
+
+.spinner {
+    width: 50px;
+    height: 50px;
+    border: 5px solid rgba(255, 255, 255, 0.3);
+    border-top: 5px solid #fff;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
+}
+/* General Styles */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f9f9f9;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+/* Radio Group Container */
+.radio-group {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+/* Label Styles */
+/* Label Styles */
+.radio-label {
+    display: flex;
+    align-items: center;
+    font-size: 16px;
+    color: #000; /* Letra negra */
+    cursor: pointer;
+    position: relative;
+    padding: 10px 35px; /* Espaciado interno */
+    background-color: #fff; /* Fondo blanco */
+    border: 1px solid #ddd; /* Borde sutil */
+    border-radius: 5px; /* Bordes redondeados */
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* Custom Radio Button */
+.custom-radio {
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 20px;
+    height: 20px;
+    border: 2px solid #90c9a7;
+    border-radius: 50%;
+    background-color: #fff;
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* Selected State */
+.radio-label input[type="radio"]:checked + .custom-radio {
+    background-color: #90c9a7;
+    box-shadow: 0 0 0 4px rgba(144, 201, 167, 0.2);
+}
+
+/* Hide Native Radio */
+.radio-label input[type="radio"] {
+    position: absolute;
+    opacity: 0;
+    cursor: pointer;
+}
+
+/* Button Styles */
+.btn-submit {
+    background-color: #413d4b;
+    color: #fff;
+    padding: 10px 20px;
+    font-size: 16px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.btn-submit:hover {
+    background-color: #90c9a7;
+    color: #413d4b;
+}
+
+</style>
 <body>
 
  
@@ -493,17 +1493,6 @@
 
   <div class="container">
 
-<br>
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -521,13 +1510,6 @@
 
 
 
-    
-
-
-
-
-
-
 
 <form id="maintenanceForm">
 
@@ -536,48 +1518,73 @@
 <div class="info-section">
 
 
-
-
-
-<div class="info-section">
     <div class="info-row">
-        <strong>Cliente:</strong>
+    <strong>Cliente:</strong>
 <span>{{informe.cliente}}</span>
+
+
     </div>
-      <div class="info-row">
-        <strong>correo:</strong>
+
+
+
+
+
+
+    <div class="info-row">
+        <strong>torre:</strong> 
+              <span>{{informe.torre}}</span>
+    </div>
+<div class="info-row">
+    <strong>Correo:</strong>
         <span>{{informe.Correo}}</span>
-    </div>
+</div>
+
+
+
     <div class="info-row">
-        <strong>Equipo:</strong>
-        <span>{{informe.equipo}}</span>
+        <strong>Tipo de Mantenimiento:</strong> 
+   
+           <span>{{informe.tipo_de_mantenimiento}}</span>
+
     </div>
+
+
+
+<div class="info-row">
+    <strong>Equipo:</strong>
+          <span>{{informe.equipo}}</span>
+
+</div>
+
+<div class="info-row">
+    <strong>Técnico:</strong>
+         <span>{{informe.tecnico}}</span>
+
+</div>
+
+
+
     <div class="info-row">
-        <strong>Técnico:</strong>
-        <span>{{informe.tecnico}}</span>
-    </div>
-    <div class="info-row">
-        <strong>Hora Entrada:</strong>
+        <strong>Hora Entrada:</strong> 
         <span>{{informe.hora_entrada}}</span>
+
     </div>
     <div class="info-row">
-        <strong>Hora Salida:</strong>
-        <span>{{informe.hora_salida}}</span>
+        <strong>Hora Salida:</strong> 
+                <span>{{informe.hora_salida}}</span>
+
     </div>
-    <div class="info-row">
-        <strong>Fecha:</strong>
+ <div class="info-row">
+    <strong>Fecha:</strong>
         <span>{{informe.fecha}}</span>
-    </div>
-    <div class="info-row">
+
+</div>
+  <div class="info-row">
         <strong>Número:</strong>
         <span>{{informe.id}}</span>
     </div>
-    <div class="info-row">
-        <strong>Tipo de mantenimiento:</strong>
-        <span>{{informe.tipo_de_mantenimiento}}</span>
-    </div>
 </div>
-
+</div>
 
 
 
@@ -589,20 +1596,31 @@
 
 
 
-    <div class="photo-container">
-        <div class="photo-label">Foto del Cliente</div>
-    <img id="clientPhoto" src="" alt="Foto del Cliente">
+<div class="photo-container">
+    <div class="photo-label">Foto del Cliente</div>
+    {{#if informe.clienteFoto}}
+        <img id="clientPhoto" src="data:image/png;base64,{{informe.clienteFoto}}" alt="Foto del Cliente">
+    {{else}}
+        <p>No se encontró una foto del cliente.</p>
+    {{/if}}
 </div>
 
 
 
-    <div class="photo-container">
-        <div class="photo-label">Foto del Técnico</div>
-        <img id="technicianPhoto" src="default-technician.jpg" alt="Foto del Técnico">
-    </div>
+
+<div class="photo-container">
+    <div class="photo-label">Foto del Técnico</div>
+    {{#if informe.tecnicoFoto}}
+        <img id="technicianPhoto" src="data:image/png;base64,{{informe.tecnicoFoto}}" alt="Foto del Técnico">
+    {{else}}
+        <p>No se encontró una foto del técnico.</p>
+    {{/if}}
+</div>
+
+
+
 
         </div>
-
 
         <div class="registro-container">
             <h2>Registro de Mantenimiento</h2>
@@ -1054,27 +2072,22 @@
     <div style="display: flex; justify-content: space-between; margin-top: 20px;">
         <!-- Campo de firma del técnico -->
         <div style="text-align: center; width: 45%;">
-    {{#if informe.firma_tecnico}}
-            <h3>Firma del Supervisor</h3>
-
-        <img src="data:image/png;base64,{{informe.firma_tecnico}}" alt="Firma Técnico">
-               {{/if}}
- 
-            <br>
-            <br>
+            {{#if informe.firma_tecnico}}
+                <h3>Firma del Técnico</h3>
+                <img src="data:image/png;base64,{{informe.firma_tecnico}}" alt="Firma Técnico">
+            {{/if}}
         </div>
+
         <!-- Campo de firma del supervisor -->
         <div style="text-align: center; width: 45%;">
-          {{#if informe.firma_supervisor}}
-        <h3>Firma del Supervisor</h3>
-        <img src="data:image/png;base64,{{informe.firma_supervisor}}" alt="Firma Supervisor">
-    {{/if}}
-            
-            <br>
-            <br>
+            {{#if informe.firma_supervisor}}
+                <h3>Firma del Supervisor</h3>
+                <img src="data:image/png;base64,{{informe.firma_supervisor}}" alt="Firma Supervisor">
+            {{/if}}
         </div>
     </div>
 </div>
+
   
 <!-- Información de contacto debajo de las  -->
 <div class="contact-info" style="text-align: center; margin-top: 20px; font-size: 12px; color: #0000FF;">
