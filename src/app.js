@@ -193,6 +193,17 @@ app.get("/menuAdministrativo", (req, res) => {
 });
 
 
+
+
+
+
+
+
+
+
+
+
+
 app.get("/menutecnicos", (req, res) => {
     if (req.session.loggedin === true) {
         const nombreUsuario = req.session.name || req.session.user.name;  // Use the session name or fallback
@@ -214,6 +225,12 @@ app.get("/menutecnicos", (req, res) => {
         res.redirect("/login");
     }
 });
+
+
+
+
+
+
 
 
 
@@ -1160,6 +1177,28 @@ app.get('/api/clientes/:id', (req, res) => {
 
 
 
+app.get('/api/tecnicos/:id', async (req, res) => {
+    const tecnicoId = req.params.id;
+
+    try {
+        // Consulta la foto del técnico en la base de datos
+        const [rows] = await pool.query(
+            'SELECT foto FROM usuarios_hidro WHERE id = ?',
+            [tecnicoId]
+        );
+
+        if (rows.length > 0 && rows[0].foto) {
+            const fotoBuffer = rows[0].foto;
+            res.setHeader('Content-Type', 'image/jpeg'); // Cambiar según el tipo de imagen
+            res.send(fotoBuffer);
+        } else {
+            res.status(404).send('Foto no encontrada');
+        }
+    } catch (error) {
+        console.error('Error al obtener la foto:', error);
+        res.status(500).send('Error del servidor');
+    }
+});
 // Iniciar el servidor
 app.listen(3000, () => {
     console.log('Servidor corriendo en el puerto 3000');

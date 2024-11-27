@@ -736,19 +736,20 @@ select.input-field option, select.hidrosistema-input option {
 </head>
 <body>
 
+
+
+
     <div class="report-container">
           <div class="marcar">
-
         <!-- Company information section -->
         <div class="company-info">
             <strong>INGENIERÍA HIDRAULIBOMBAS S.A.S</strong><br>
             NIT: 901.454.224-1
         </div>
-
         <div class="header-info">
-  <div class="logo-container">
-    <img id="logo" src="imagenes/logo_ingenieria.jpeg-removebg-preview.png" alt="Logo" />
-</div>
+        <div class="logo-container">
+        <img id="logo" src="imagenes/logo_ingenieria.jpeg-removebg-preview.png" alt="Logo" />
+        </div>
 
 
 
@@ -757,17 +758,11 @@ select.input-field option, select.hidrosistema-input option {
 
 <div class="info-row full-width">
 
-
 <div class="info-section">
 
 
-
-
-
-
-
     <div class="info-row">
-        <strong>Cliente:</strong>
+    <strong>Cliente:</strong>
     <select name="cliente" id="clienteSelect" onchange="fetchClienteInfo()" required>
     <option value="" disabled selected>Seleccione un cliente</option>
     {{#each clientes}}
@@ -782,7 +777,7 @@ select.input-field option, select.hidrosistema-input option {
 
 
 
-        <div class="info-row">
+    <div class="info-row">
         <strong>torre:</strong> 
         <input type="text" name="torre" required>
     </div>
@@ -790,6 +785,8 @@ select.input-field option, select.hidrosistema-input option {
     <strong>Correo:</strong>
     <input type="text" id="correoInput" name="Correo" readonly required>
 </div>
+
+
 
     <div class="info-row">
         <strong>Tipo de Mantenimiento:</strong> 
@@ -801,6 +798,9 @@ select.input-field option, select.hidrosistema-input option {
             <option value="Otro">Otro</option>
         </select>
     </div>
+
+
+
 <div class="info-row">
     <strong>Equipo:</strong>
     <select name="equipo" id="equipoSelect" required>
@@ -829,6 +829,7 @@ select.input-field option, select.hidrosistema-input option {
 </div>
 
 
+
     <div class="info-row">
         <strong>Hora Entrada:</strong> 
 <input type="time" name="hora_entrada" required autofocus>
@@ -840,11 +841,17 @@ select.input-field option, select.hidrosistema-input option {
  <div class="info-row">
     <strong>Fecha:</strong>
     <input type="date" name="fecha" id="fechaActual" required>
-</div>
 
 </div>
 </div>
+</div>
+
+
+
+
 <div class="photo-section">
+
+
 
 
 
@@ -857,10 +864,17 @@ select.input-field option, select.hidrosistema-input option {
 
 
 
+
+
+
+
+
     <div class="photo-container">
         <div class="photo-label">Foto del Técnico</div>
         <img id="technicianPhoto" src="default-technician.jpg" alt="Foto del Técnico">
     </div>
+
+
 
         </div>
 
@@ -2776,6 +2790,34 @@ select.input-field option, select.hidrosistema-input option {
 <script>
 
 
+document.addEventListener('DOMContentLoaded', () => {
+    const tecnicoSelect = document.querySelector('select[name="tecnico"]');
+    const technicianPhoto = document.getElementById('technicianPhoto');
+
+    // Agrega un listener al cambio del selector
+    tecnicoSelect.addEventListener('change', async (event) => {
+        const tecnicoId = event.target.value;
+
+        if (tecnicoId) {
+            try {
+                // Realiza la solicitud a la API para obtener la foto del técnico
+                const response = await fetch(`/api/tecnicos/${tecnicoId}`);
+                if (response.ok) {
+                    const blob = await response.blob();
+                    // Crea una URL de objeto a partir del blob y establece el src de la imagen
+                    technicianPhoto.src = URL.createObjectURL(blob);
+                } else {
+                    technicianPhoto.src = 'default-technician.jpg'; // Imagen por defecto en caso de error
+                    console.error('Error al cargar la foto del técnico:', response.statusText);
+                }
+            } catch (error) {
+                console.error('Error en la solicitud:', error);
+            }
+        } else {
+            technicianPhoto.src = 'default-technician.jpg'; // Imagen por defecto cuando no hay técnico seleccionado
+        }
+    });
+});
 
     // Cuando cambia el campo de entrada de archivo (cuando se seleccionan archivos), mostramos las imágenes
     document.getElementById('boton').addEventListener('change', function(event) {
