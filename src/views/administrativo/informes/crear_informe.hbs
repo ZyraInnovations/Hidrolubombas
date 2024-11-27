@@ -2769,6 +2769,8 @@ select.input-field option, select.hidrosistema-input option {
   </div>
 
 
+ </div>
+
 
 
 
@@ -2968,39 +2970,104 @@ document.addEventListener('DOMContentLoaded', () => {
         return { firma_tecnico: firmaTecnico, firma_supervisor: firmaSupervisor };
     }
 
-    document.getElementById('maintenanceForm').addEventListener('submit', function (event) {
-        event.preventDefault();
 
-        const formElement = document.getElementById('maintenanceForm');
-        const signatures = getSignatureBlobs();
 
-        html2canvas(formElement, { scale: 2 }).then((canvas) => {
-            canvas.toBlob((blob) => {
-                const formData = new FormData(formElement);
 
-                formData.append('firma_tecnico', signatures.firma_tecnico);
-                formData.append('firma_supervisor', signatures.firma_supervisor);
-                formData.append('imagen', blob, 'informe_mantenimiento.jpg');
+document.getElementById('maintenanceForm').addEventListener('submit', function (event) {
+    event.preventDefault();
 
-                fetch('/procesar-datos', {
-                    method: 'POST',
-                    body: formData,
-                })
-                    .then((response) => response.json())
-                    .then((data) => {
-                        if (data.success) {
-                            alert('Datos insertados y correo enviado con éxito.');
-                        } else {
-                            alert('Hubo un error: ' + data.message);
-                        }
-                    })
-                    .catch((error) => {
-                        console.error('Error:', error);
-                        alert('Error al procesar los datos.');
-                    });
-            }, 'image/jpeg', 0.95);
+    const reportElement = document.querySelector('.report-container'); // Selecciona el contenedor que deseas capturar
+    const signatures = getSignatureBlobs();
+
+    // Función para preparar la captura
+    function prepareForCapture() {
+        // Procesar los <select>
+        document.querySelectorAll('select').forEach((select) => {
+            const selectedText = select.options[select.selectedIndex].text;
+
+            // Crear un elemento <span> para reemplazar el <select>
+            const span = document.createElement('span');
+            span.className = 'select-text';
+            span.textContent = selectedText;
+
+            // Insertar el <span> después del <select>
+            select.style.display = 'none'; // Ocultar el select
+            select.parentNode.insertBefore(span, select.nextSibling);
         });
+
+        // Procesar los <input>
+        document.querySelectorAll('input').forEach((input) => {
+            const span = document.createElement('span');
+            span.className = 'input-text';
+            span.textContent = input.value;
+
+            // Insertar el <span> después del <input>
+            input.style.display = 'none'; // Ocultar el input
+            input.parentNode.insertBefore(span, input.nextSibling);
+        });
+    }
+
+    // Función para restaurar el estado original
+    function restoreAfterCapture() {
+        // Restaurar los <select>
+        document.querySelectorAll('.select-text').forEach((span) => {
+            const select = span.previousElementSibling;
+            if (select) {
+                select.style.display = ''; // Mostrar el select
+            }
+            span.remove(); // Eliminar el texto
+        });
+
+        // Restaurar los <input>
+        document.querySelectorAll('.input-text').forEach((span) => {
+            const input = span.previousElementSibling;
+            if (input) {
+                input.style.display = ''; // Mostrar el input
+            }
+            span.remove(); // Eliminar el texto
+        });
+    }
+
+    // Preparar antes de la captura
+    prepareForCapture();
+
+    html2canvas(reportElement, {
+        scale: 2, // Aumenta la calidad del canvas
+        scrollY: 0, // Incluye contenido fuera de la vista
+        windowHeight: reportElement.scrollHeight, // Asegura capturar todo el contenido
+    }).then((canvas) => {
+        // Restaurar después de la captura
+        restoreAfterCapture();
+
+        canvas.toBlob((blob) => {
+            const formData = new FormData(document.getElementById('maintenanceForm')); // Mantén el formulario para firmar datos
+
+            formData.append('firma_tecnico', signatures.firma_tecnico);
+            formData.append('firma_supervisor', signatures.firma_supervisor);
+            formData.append('imagen', blob, 'informe_mantenimiento.jpg');
+
+            fetch('/procesar-datos', {
+                method: 'POST',
+                body: formData,
+            })
+                .then((response) => response.json())
+                .then((data) => {
+                    if (data.success) {
+                        alert('Datos insertados y correo enviado con éxito.');
+                    } else {
+                        alert('Hubo un error: ' + data.message);
+                    }
+                })
+                .catch((error) => {
+                    console.error('Error:', error);
+                    alert('Error al procesar los datos.');
+                });
+        }, 'image/jpeg', 0.95);
     });
+});
+
+
+
 </script>
 
 <script>
