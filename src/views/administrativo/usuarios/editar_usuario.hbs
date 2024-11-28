@@ -41,6 +41,14 @@
         height: 120px;
         object-fit: cover;
     }
+    canvas {
+    display: block;
+    margin: 10px 0;
+    background: #fff;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+}
+
 </style>
 
 
@@ -71,12 +79,76 @@
 </select>
 
     </div>
-    <div>
-        <label for="foto">Foto:</label>
-        <input type="file" id="foto" name="foto" accept="image/*">
-        {{#if usuario.foto}}
-        <img src="data:image/jpeg;base64,{{usuario.foto}}" alt="Foto actual" style="width: 100px; height: 100px; border-radius: 50%;">
-        {{/if}}
-    </div>
+<div>
+    <label for="foto">Foto:</label>
+    <input type="file" id="foto" name="foto" accept="image/*">
+    {{#if usuario.foto}}
+        <img src="{{usuario.foto}}" alt="Foto actual" style="width: 100px; height: 100px; border-radius: 50%;">
+    {{/if}}
+</div>
+
+
+<div>
+    <label for="firma">Firma:</label>
+    <canvas id="signatureCanvas" width="300" height="100" style="border: 1px solid #ddd;"></canvas>
+    <button type="button" id="clearCanvas">Borrar Firma</button>
+    <input type="hidden" id="firma" name="firma" value="{{usuario.firma}}">
+    {{#if usuario.firma}}
+    <img src="{{usuario.firma}}" alt="Firma actual" style="width: 100px; height: auto;">
+    {{/if}}
+</div>
+
+
+
     <button type="submit">Guardar Cambios</button>
 </form>
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    const canvas = document.getElementById('signatureCanvas');
+    const ctx = canvas.getContext('2d');
+    const clearButton = document.getElementById('clearCanvas');
+    const firmaInput = document.getElementById('firma');
+
+    let drawing = false;
+    let prevX = 0;
+    let prevY = 0;
+
+    canvas.addEventListener('mousedown', (event) => {
+        drawing = true;
+        const rect = canvas.getBoundingClientRect();
+        prevX = event.clientX - rect.left;
+        prevY = event.clientY - rect.top;
+    });
+
+    canvas.addEventListener('mouseup', () => {
+        drawing = false;
+        const dataURL = canvas.toDataURL('image/png');
+        firmaInput.value = dataURL;
+    });
+
+    canvas.addEventListener('mousemove', (event) => {
+        if (!drawing) return;
+
+        const rect = canvas.getBoundingClientRect();
+        const currX = event.clientX - rect.left;
+        const currY = event.clientY - rect.top;
+
+        ctx.lineWidth = 2;
+        ctx.lineCap = 'round';
+        ctx.strokeStyle = '#000';
+
+        ctx.beginPath();
+        ctx.moveTo(prevX, prevY);
+        ctx.lineTo(currX, currY);
+        ctx.stroke();
+
+        prevX = currX;
+        prevY = currY;
+    });
+
+    clearButton.addEventListener('click', () => {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        firmaInput.value = '';
+    });
+});
+</script>

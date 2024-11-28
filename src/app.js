@@ -524,6 +524,11 @@ app.get('/editar_usuario/:id', async (req, res) => {
         if (user.length === 0) {
             return res.status(404).send('Usuario no encontrado.');
         }
+          // Convertir la foto BLOB a base64 si existe
+          if (user[0].foto) {
+            user[0].foto = `data:image/jpeg;base64,${user[0].foto.toString('base64')}`;
+        }
+
         res.render('administrativo/usuarios/editar_usuario.hbs', {
             layout: 'layouts/nav_admin.hbs', 
 
@@ -542,37 +547,50 @@ app.get('/editar_usuario/:id', async (req, res) => {
 
 
 
+
+
+
+
+
 app.post('/editar_usuario/:id', upload.single('foto'), async (req, res) => {
     const { id } = req.params;
-    const { nombre, email, password, role } = req.body;
+    const { nombre, email, password, role, firma } = req.body;
     const foto = req.file;
 
     try {
-        if (foto && password) {
-            // Actualizar con nueva foto y contraseña
-            await pool.query(
-                'UPDATE usuarios_hidro SET nombre = ?, email = ?, password = ?, role = ?, foto = ? WHERE id = ?',
-                [nombre, email, password, role, foto.buffer, id]
-            );
-        } else if (foto) {
-            // Actualizar con nueva foto, sin cambiar la contraseña
-            await pool.query(
-                'UPDATE usuarios_hidro SET nombre = ?, email = ?, role = ?, foto = ? WHERE id = ?',
-                [nombre, email, role, foto.buffer, id]
-            );
-        } else if (password) {
-            // Actualizar sin cambiar la foto, pero con nueva contraseña
-            await pool.query(
-                'UPDATE usuarios_hidro SET nombre = ?, email = ?, password = ?, role = ? WHERE id = ?',
-                [nombre, email, password, role, id]
-            );
-        } else {
-            // Actualizar sin cambiar la contraseña ni la foto
-            await pool.query(
-                'UPDATE usuarios_hidro SET nombre = ?, email = ?, role = ? WHERE id = ?',
-                [nombre, email, role, id]
-            );
+        const updates = [];
+        const values = [];
+
+        if (nombre) {
+            updates.push('nombre = ?');
+            values.push(nombre);
         }
+        if (email) {
+            updates.push('email = ?');
+            values.push(email);
+        }
+        if (password) {
+            const hashedPassword = await bcrypt.hash(password, 10);
+            updates.push('password = ?');
+            values.push(hashedPassword);
+        }
+        if (role) {
+            updates.push('role = ?');
+            values.push(role);
+        }
+        if (foto) {
+            updates.push('foto = ?');
+            values.push(foto.buffer);
+        }
+        if (firma) {
+            updates.push('firma = ?');
+            values.push(firma);
+        }
+
+        values.push(id);
+
+        const query = `UPDATE usuarios_hidro SET ${updates.join(', ')} WHERE id = ?`;
+        await pool.query(query, values);
 
         res.redirect('/consultar_usuarios');
     } catch (err) {
@@ -580,8 +598,6 @@ app.post('/editar_usuario/:id', upload.single('foto'), async (req, res) => {
         res.status(500).send('Error en el servidor');
     }
 });
-
-
 
 
 
@@ -1004,27 +1020,27 @@ app.get('/agregar_usuario', (req, res) => {
     }
 });
 
-
-app.post('/agregar_usuario', upload.single('foto'), (req, res) => {
+app.post('/agregar_usuario', upload.single('foto'), async (req, res) => {
     const { nombre, email, password, role, firma } = req.body;
     const foto = req.file ? req.file : null;
 
     // Validar campos obligatorios
-    if (!nombre || !email || !password || !role || !foto || !firma) {
+    if (!nombre || !email || !password || !role || !firma || !foto) {
         return res.status(400).send('Todos los campos son obligatorios.');
     }
 
-    // Insertar datos en la base de datos
-    const query = `INSERT INTO usuarios_hidro (nombre, email, password, role, foto, firma) VALUES (?, ?, ?, ?, ?, ?)`;
-    db.query(query, [nombre, email, password, role, foto.buffer, firma], (error, results) => {
-        if (error) {
-            console.error('Error al insertar el usuario:', error);
-            return res.status(500).send('Error al insertar el usuario.');
-        }
+    try {
+        // Insertar usuario con foto (binario) y firma (cadena Base64)
+        const query = `INSERT INTO usuarios_hidro (nombre, email, password, role, foto, firma) VALUES (?, ?, ?, ?, ?, ?)`;
+        await pool.query(query, [nombre, email, password, role, foto.buffer, firma]);
 
-        res.redirect('/menuAdministrativo'); // Redirigir al menú administrativo tras agregar un usuario
-    });
+        res.redirect('/menuAdministrativo');
+    } catch (error) {
+        console.error('Error al insertar el usuario:', error);
+        res.status(500).send('Error al insertar el usuario.');
+    }
 });
+
 
 
 
