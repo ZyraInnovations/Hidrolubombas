@@ -613,6 +613,9 @@ app.use(bodyParser.urlencoded({ extended: true })); // Para parsear datos de for
 
 
 
+
+
+
 app.get('/realizar_informe', async (req, res) => {
     if (req.session.loggedin === true) {
         try {
@@ -653,6 +656,23 @@ app.get('/realizar_informe', async (req, res) => {
         res.redirect('/login');
     }
 });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 app.get('/get_cliente_correo/:id', async (req, res) => {
@@ -1284,7 +1304,43 @@ app.get('/api/tecnicos/:id', async (req, res) => {
         console.error('Error al obtener la foto:', error);
         res.status(500).send('Error del servidor');
     }
+
 });
+
+
+
+
+
+app.get('/api/tecnico/firma/:id', async (req, res) => {
+    const tecnicoId = req.params.id;
+    try {
+        const query = 'SELECT firma FROM usuarios_hidro WHERE id = ?';
+        const [rows] = await pool.query(query, [tecnicoId]);
+
+        if (rows.length === 0) {
+            return res.status(404).json({ error: 'Técnico no encontrado' });
+        }
+
+        // Verificar si firma es un Buffer y convertirla a string
+        const firma = rows[0].firma instanceof Buffer ? rows[0].firma.toString('utf8') : rows[0].firma;
+
+        // Agregar prefijo base64 si no está presente
+        const firmaBase64 = firma.startsWith('data:image/png;base64,')
+            ? firma
+            : `data:image/png;base64,${firma}`;
+
+        res.json({ firma: firmaBase64 });
+    } catch (error) {
+        console.error('Error al obtener la firma:', error);
+        res.status(500).json({ error: 'Error del servidor' });
+    }
+});
+
+
+
+
+
+
 // Iniciar el servidor
 app.listen(3000, () => {
     console.log('Servidor corriendo en el puerto 3000');

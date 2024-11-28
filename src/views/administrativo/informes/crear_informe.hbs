@@ -968,6 +968,9 @@ textarea {
         <strong>torre:</strong> 
         <input type="text" name="torre" required>
     </div>
+
+
+    
 <div class="info-row">
     <strong>Correo:</strong>
     <input type="text" id="correoInput" name="Correo" readonly required>
@@ -1007,7 +1010,7 @@ textarea {
 
 <div class="info-row">
     <strong>Técnico:</strong>
-    <select name="tecnico" required>
+    <select id="tecnico-select" name="tecnico" required>
         <option value="" disabled selected>Seleccione un técnico</option>
         {{#each tecnicos}}
             <option value="{{this.id}}">{{this.nombre}}</option>
@@ -2926,13 +2929,22 @@ textarea {
     <textarea name="observaciones" rows="4" style="width: 100%; font-size: 12px; border: 1px solid #000;"></textarea> <!-- Campo de texto -->
 </div>
   
+
+<div id="firma-container" style="margin-top: 10px;">
+    <img id="firma-tecnico" src="" alt="Firma del Técnico" style="display:none; width: 200px; height: auto;">
+</div>
+
 <!-- Sección de firma -->
 <div class="signature-section">
-    <div class="signature-container">
-        <canvas id="signatureCanvas1"></canvas>
-        <button type="button" class="clear-btn" onclick="clearCanvas('signatureCanvas1')">Borrar</button>
-        <span class="signature-label">TÉCNICO</span>
-    </div>
+
+
+  
+<div class="signature-container">
+    <canvas id="signatureCanvas1"></canvas>
+    <button type="button" class="clear-btn" onclick="clearCanvas('signatureCanvas1')">Borrar</button>
+    <span class="signature-label">TÉCNICO</span>
+</div>
+
     <div class="signature-container">
         <canvas id="signatureCanvas2"></canvas>
         <button type="button" class="clear-btn" onclick="clearCanvas('signatureCanvas2')">Borrar</button>
@@ -2985,6 +2997,33 @@ textarea {
 
 
 <script>
+
+document.querySelector('select[name="tecnico"]').addEventListener('change', async function () {
+    const tecnicoId = this.value;
+    if (tecnicoId) {
+        try {
+            const response = await fetch(`/api/tecnico/firma/${tecnicoId}`);
+            if (!response.ok) {
+                throw new Error('Error al obtener la firma del técnico');
+            }
+            const data = await response.json();
+
+            console.log(data.firma); // Asegúrate de que el formato sea correcto aquí
+
+            const firmaImg = document.getElementById('firma-tecnico');
+            firmaImg.src = data.firma;
+            firmaImg.style.display = 'block';
+        } catch (error) {
+            console.error('Error:', error.message);
+            alert('No se pudo obtener la firma del técnico seleccionado.');
+        }
+    } else {
+        const firmaImg = document.getElementById('firma-tecnico');
+        firmaImg.style.display = 'none';
+    }
+});
+
+
 const textarea = document.querySelector("textarea[name='observaciones']");
 textarea.style.height = `${textarea.scrollHeight}px`; // Ajusta automáticamente según el contenido
 
