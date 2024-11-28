@@ -394,6 +394,7 @@ app.post('/procesar-datos', upload.fields([
 
         console.log('Datos insertados correctamente:', result);
 
+        const insertedId = result.insertId;
 
 
 
@@ -424,7 +425,7 @@ app.post('/procesar-datos', upload.fields([
             const mailOptions = {
                 from: 'zyrainnovations@gmail.com',
                 to: correoDestino,
-                subject: 'Informe de Mantenimiento',
+                subject: `Informe de Mantenimiento N° ${insertedId}`, // Agrega el número de informe al asunto
                 text: 'Adjunto se encuentra el informe de mantenimiento en formato imagen, junto con las imágenes seleccionadas.',
                 attachments: attachments
             };
@@ -439,7 +440,10 @@ app.post('/procesar-datos', upload.fields([
                 res.status(200).json({ success: true, message: 'Datos insertados y correo enviado con éxito' });
             });
         } else {
-            res.status(200).json({ success: true, message: 'Datos insertados correctamente' });
+            res.status(200).json({
+                success: true,
+                message: `Su informe se guardó correctamente con el número: ${insertedId}.`
+            });
         }
     });
 });

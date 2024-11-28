@@ -927,10 +927,10 @@ body {
 
 
 <form id="maintenanceForm">
-
 <div class="info-row full-width">
-
 <div class="info-section">
+
+
 
   <div class="info-row">
     <strong>Cliente:</strong>
@@ -940,8 +940,7 @@ body {
         <option value="{{this.id}}">{{this.nombre}}</option>
     {{/each}}
     </select>
-
-    </div>
+   </div>
 
 
 
@@ -3260,15 +3259,15 @@ document.getElementById('maintenanceForm').addEventListener('submit', function (
                 body: formData,
             })
                 .then((response) => response.json())
-                .then((data) => {
-                    loadingOverlay.style.display = 'none'; // Ocultar el overlay
-                    if (data.success) {
-                        alert('Datos insertados y correo enviado con éxito.');
-                        location.reload(); // Recargar la página
-                    } else {
-                        alert('Hubo un error: ' + data.message);
-                    }
-                })
+             .then((data) => {
+    loadingOverlay.style.display = 'none'; // Ocultar el overlay
+    if (data.success) {
+        alert(data.message); // Mostrar el mensaje del servidor
+        location.reload(); // Recargar la página
+    } else {
+        alert('Hubo un error: ' + data.message);
+    }
+})
                 .catch((error) => {
                     loadingOverlay.style.display = 'none'; // Ocultar el overlay
                     console.error('Error:', error);
