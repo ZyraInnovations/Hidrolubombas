@@ -932,12 +932,17 @@ body {
 
 <div class="info-section">
 
-
-    <div class="info-row">
+  <div class="info-row">
     <strong>Cliente:</strong>
-   <span>{{informe.cliente}}</span>
+    <select name="cliente" id="clienteSelect" onchange="fetchClienteInfo()" required>
+    <option value="" disabled selected>Seleccione un cliente</option>
+    {{#each clientes}}
+        <option value="{{this.id}}">{{this.nombre}}</option>
+    {{/each}}
+    </select>
 
     </div>
+
 
 
 
