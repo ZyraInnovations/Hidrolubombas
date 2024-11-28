@@ -435,9 +435,12 @@ app.post('/procesar-datos', upload.fields([
                     console.error('Error al enviar el correo:', error);
                     return res.status(500).json({ success: false, message: 'Error al enviar el correo' });
                 }
-
+            
                 console.log('Correo enviado:', info);
-                res.status(200).json({ success: true, message: 'Datos insertados y correo enviado con éxito' });
+                res.status(200).json({
+                    success: true,
+                    message: `Datos insertados y correo enviado con éxito. Su informe se guardó correctamente con el número: ${insertedId}.`
+                });
             });
         } else {
             res.status(200).json({
