@@ -472,22 +472,20 @@ app.post('/procesar-datos', upload.fields([
 
 
 
-
-// Ruta para consultar los usuarios
 app.get('/consultar_usuarios', async (req, res) => {
     if (req.session.loggedin === true) {
         const nombreUsuario = req.session.user.name;
         try {
-            // Consulta para obtener todos los usuarios, incluyendo la foto
-            const [results] = await pool.query('SELECT id, nombre, email, password, role, foto FROM usuarios_hidro');
+            // Consulta de usuarios con foto y firma
+            const [results] = await pool.query('SELECT id, nombre, email, password, role, foto, firma FROM usuarios_hidro');
 
-            // Convierte las fotos a base64 para enviarlas a la plantilla
+            // Convierte las fotos y las firmas a Base64 para mostrar en el frontend
             const usuarios = results.map(user => ({
                 ...user,
-                foto: user.foto ? `data:image/jpeg;base64,${user.foto.toString('base64')}` : null
+                foto: user.foto ? `data:image/jpeg;base64,${user.foto.toString('base64')}` : null,
+                firma: user.firma // La firma ya está en Base64, así que no necesita conversión
             }));
 
-            // Renderiza la plantilla con los resultados
             res.render('administrativo/usuarios/consulta_usuarios.hbs', { 
                 nombreUsuario, 
                 layout: 'layouts/nav_admin.hbs', 
@@ -495,7 +493,7 @@ app.get('/consultar_usuarios', async (req, res) => {
             });
         } catch (err) {
             console.error('Error al consultar la base de datos:', err);
-            res.status(500).send('Error en el servidor');
+            res.status(500).send('Error en el servidor.');
         }
     } else {
         res.redirect('/login');
@@ -594,8 +592,6 @@ app.post('/editar_usuario/:id', upload.single('foto'), async (req, res) => {
 
 app.use(bodyParser.json()); // Para parsear JSON
 app.use(bodyParser.urlencoded({ extended: true })); // Para parsear datos de formularios
-
-
 
 
 
@@ -1009,21 +1005,18 @@ app.get('/agregar_usuario', (req, res) => {
 });
 
 
-
-
-// Ruta para manejar la inserción de un nuevo usuario
 app.post('/agregar_usuario', upload.single('foto'), (req, res) => {
-    const { nombre, email, password, role } = req.body;
-    const foto = req.file;
+    const { nombre, email, password, role, firma } = req.body;
+    const foto = req.file ? req.file : null;
 
     // Validar campos obligatorios
-    if (!nombre || !email || !password || !role || !foto) {
+    if (!nombre || !email || !password || !role || !foto || !firma) {
         return res.status(400).send('Todos los campos son obligatorios.');
     }
 
-    // Insertar datos en la base de datos, incluyendo la foto
-    const query = `INSERT INTO usuarios_hidro (nombre, email, password, role, foto) VALUES (?, ?, ?, ?, ?)`;
-    db.query(query, [nombre, email, password, role, foto.buffer], (error, results) => {
+    // Insertar datos en la base de datos
+    const query = `INSERT INTO usuarios_hidro (nombre, email, password, role, foto, firma) VALUES (?, ?, ?, ?, ?, ?)`;
+    db.query(query, [nombre, email, password, role, foto.buffer, firma], (error, results) => {
         if (error) {
             console.error('Error al insertar el usuario:', error);
             return res.status(500).send('Error al insertar el usuario.');
@@ -1032,7 +1025,6 @@ app.post('/agregar_usuario', upload.single('foto'), (req, res) => {
         res.redirect('/menuAdministrativo'); // Redirigir al menú administrativo tras agregar un usuario
     });
 });
-
 
 
 

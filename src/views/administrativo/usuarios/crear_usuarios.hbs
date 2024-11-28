@@ -125,6 +125,15 @@ body {
             <option value="tecnico">TECNICO</option>
         </select>
     </div>
+
+<div class="form-group">
+    <label for="firma">Firma:</label>
+    <canvas id="firmaCanvas" width="300" height="150" style="border:1px solid var(--primary-color);"></canvas>
+    <button type="button" id="limpiarFirma" class="form-button" style="margin-top: 10px;">Limpiar Firma</button>
+    <input type="hidden" id="firma" name="firma">
+</div>
+
+
     <div class="form-group">
         <label for="foto">Foto:</label>
         <input type="file" id="foto" name="foto" class="form-input" accept="image/*" required>
@@ -134,3 +143,49 @@ body {
 
 </body>
 </html>
+<script>
+    const canvas = document.getElementById('firmaCanvas');
+    const ctx = canvas.getContext('2d');
+    const limpiarBtn = document.getElementById('limpiarFirma');
+    const firmaInput = document.getElementById('firma');
+
+    let isDrawing = false;
+
+    // Ajustar eventos para iniciar y detener el dibujo
+    canvas.addEventListener('mousedown', (event) => {
+        isDrawing = true;
+        ctx.beginPath(); // Inicia un nuevo camino
+        ctx.moveTo(event.offsetX, event.offsetY); // Mover el "pincel" al punto inicial
+    });
+
+    canvas.addEventListener('mouseup', () => {
+        isDrawing = false;
+        ctx.closePath(); // Cierra el camino actual
+    });
+
+    canvas.addEventListener('mouseout', () => {
+        isDrawing = false; // Detener el dibujo si el mouse sale del canvas
+    });
+
+    canvas.addEventListener('mousemove', (event) => {
+        if (!isDrawing) return; // No hacer nada si no se está dibujando
+        ctx.lineWidth = 2;
+        ctx.lineCap = 'round';
+        ctx.strokeStyle = '#000';
+
+        ctx.lineTo(event.offsetX, event.offsetY);
+        ctx.stroke();
+    });
+
+    // Botón para limpiar el canvas
+    limpiarBtn.addEventListener('click', () => {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+    });
+
+    // Convertir la firma a base64 al enviar el formulario
+    document.querySelector('form').addEventListener('submit', () => {
+        const firmaDataURL = canvas.toDataURL('image/png'); // Convierte el dibujo a una imagen PNG
+        firmaInput.value = firmaDataURL; // Almacena la imagen como cadena base64 en el campo oculto
+    });
+</script>
+

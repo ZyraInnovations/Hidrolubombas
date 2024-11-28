@@ -154,6 +154,18 @@
 </style>
 
 </style>
+<style>
+    table img {
+        border-radius: 5px;
+        object-fit: contain;
+    }
+
+    /* Ajuste específico para las firmas */
+    td img[alt^="Firma"] {
+        width: 100px;
+        height: 50px;
+    }
+</style>
 
 <div class="filter-container">
     <input type="text" id="filter-name" placeholder="Filtrar por nombre" class="filter-input">
@@ -176,6 +188,7 @@
         <th>Contraseña</th>
         <th>Rol</th>
         <th>Foto</th>
+        <th>Firma</th>
         <th>Acciones</th>
     </tr>
 </thead>
@@ -194,6 +207,18 @@
             Sin Foto
             {{/if}}
         </td>
+
+      <td>
+                {{#if firma}}
+                    <img src="{{firma}}" alt="Firma de {{nombre}}" style="width: 200px; height: auto;">
+                {{else}}
+                    No disponible
+                {{/if}}
+            </td>
+
+
+
+
         <td>
             <a href="/editar_usuario/{{this.id}}" class="btn-edit">Editar</a>
             <a href="/eliminar_usuario/{{this.id}}" class="btn-delete" onclick="return confirm('¿Estás seguro de eliminar este cliente?');">Eliminar</a>
