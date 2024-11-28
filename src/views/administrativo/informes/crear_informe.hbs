@@ -902,6 +902,22 @@ body {
     background-color: #90c9a7;
     color: #413d4b;
 }
+textarea {
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    resize: none; /* Opcional: Para evitar que el usuario redimensione el área */
+}
+.additional-field textarea {
+    width: 100%;
+    height: auto;
+    max-height: 200px; /* Limita la altura máxima */
+    overflow-y: auto; /* Habilita el scroll si el contenido excede el tamaño */
+}
+textarea {
+    font-family: Arial, sans-serif;
+    font-size: 12px;
+    line-height: 1.5;
+}
 
 </style>
 
@@ -2977,6 +2993,8 @@ body {
 
 
 <script>
+const textarea = document.querySelector("textarea[name='observaciones']");
+textarea.style.height = `${textarea.scrollHeight}px`; // Ajusta automáticamente según el contenido
 
 
 document.addEventListener('DOMContentLoaded', () => {

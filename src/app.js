@@ -617,9 +617,12 @@ app.get('/realizar_informe', async (req, res) => {
                 const [clientes] = await pool.query(clientsQuery);
 
                 // Consulta para obtener la lista de técnicos
-                const tecnicosQuery = 'SELECT id, nombre FROM usuarios_hidro WHERE role = "tecnico"';
-                const [tecnicos] = await pool.query(tecnicosQuery);
-
+                const tecnicosQuery = `
+                SELECT id, nombre FROM usuarios_hidro WHERE role = "tecnico"
+                UNION
+                SELECT id, nombre FROM usuarios_hidro WHERE id = 6
+            `;
+            const [tecnicos] = await pool.query(tecnicosQuery)
                 // Renderiza la vista con los datos necesarios
                 res.render('administrativo/informes/crear_informe.hbs', {
                     nombreUsuario,
