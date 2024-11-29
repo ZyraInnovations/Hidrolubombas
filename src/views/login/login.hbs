@@ -177,10 +177,11 @@
           <label   for="email">CORREO ELECTRONICO:</label>
           <input name="email" type="email" id="email" placeholder="Enter your email" class="input-field">
         </div>
-        <div class="form-group">
-          <label for="password">CONTRASEÑA:</label>
-          <input  name="password" type="password" id="password" placeholder="Enter your password" class="input-field">
-        </div>
+     <div class="form-group relative">
+  <label for="password">CONTRASEÑA:</label>
+  <input name="password" type="password" id="password" placeholder="Enter your password" class="input-field pr-10">
+  <i id="togglePassword" class="fas fa-eye absolute right-3 top-3 cursor-pointer text-gray-500"></i>
+</div>
         <button type="submit" class="login-button">LOGIN</button>
         <div class="signup-link mt-4">
           <p>Don't have an account? <a href="#">Sign up now</a></p>
@@ -222,3 +223,17 @@
 
 </Script>
 
+<script>
+  const togglePassword = document.querySelector('#togglePassword');
+  const passwordField = document.querySelector('#password');
+
+  togglePassword.addEventListener('click', function () {
+    // Cambiar el tipo de input
+    const type = passwordField.type === 'password' ? 'text' : 'password';
+    passwordField.type = type;
+
+    // Cambiar el ícono
+    this.classList.toggle('fa-eye');
+    this.classList.toggle('fa-eye-slash');
+  });
+</script>

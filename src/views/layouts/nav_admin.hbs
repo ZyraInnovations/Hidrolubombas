@@ -177,6 +177,14 @@
     display: block;
   }
 }
+#user-name {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #white; /* O usa el color adecuado */
+}
+.dark #user-name {
+  color: #e2e8f0; /* Ajuste para modo oscuro */
+}
 
 </style>
 
@@ -204,13 +212,15 @@
 
 
 
-<div class="flex items-center justify-end p-4">
-    <div class="relative">
-      <i class="fas fa-bell text-xl cursor-pointer" id="notificationBell" onclick="toggleNotificationPopup()"></i>
-          <span id="notificationCount" class="badge hidden">0</span>
-    </div>
+<div class="flex items-center justify-end space-x-4 p-4">
+  <div id="user-name" class="text-gray-700 dark:text-gray-300 font-semibold">
+    {{name}}
+  </div>
+  <div class="relative">
+    <i class="fas fa-bell text-xl cursor-pointer" id="notificationBell" onclick="toggleNotificationPopup()"></i>
+    <span id="notificationCount" class="badge hidden">0</span>
+  </div>
 </div>
-
 
 
       <!-- Search Bar -->
@@ -221,6 +231,8 @@
 
       <!-- Navigation Links -->
       <nav>
+
+        
         <ul>
           <!-- General Section -->
           <div class="section-title">General</div>
