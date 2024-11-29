@@ -113,25 +113,32 @@ document.addEventListener('DOMContentLoaded', () => {
     let prevX = 0;
     let prevY = 0;
 
-    canvas.addEventListener('mousedown', (event) => {
-        drawing = true;
+    const getPosition = (event) => {
         const rect = canvas.getBoundingClientRect();
-        prevX = event.clientX - rect.left;
-        prevY = event.clientY - rect.top;
-    });
+        if (event.touches) {
+            return {
+                x: event.touches[0].clientX - rect.left,
+                y: event.touches[0].clientY - rect.top,
+            };
+        } else {
+            return {
+                x: event.clientX - rect.left,
+                y: event.clientY - rect.top,
+            };
+        }
+    };
 
-    canvas.addEventListener('mouseup', () => {
-        drawing = false;
-        const dataURL = canvas.toDataURL('image/png');
-        firmaInput.value = dataURL;
-    });
+    const startDrawing = (event) => {
+        drawing = true;
+        const { x, y } = getPosition(event);
+        prevX = x;
+        prevY = y;
+    };
 
-    canvas.addEventListener('mousemove', (event) => {
+    const draw = (event) => {
         if (!drawing) return;
 
-        const rect = canvas.getBoundingClientRect();
-        const currX = event.clientX - rect.left;
-        const currY = event.clientY - rect.top;
+        const { x, y } = getPosition(event);
 
         ctx.lineWidth = 2;
         ctx.lineCap = 'round';
@@ -139,16 +146,38 @@ document.addEventListener('DOMContentLoaded', () => {
 
         ctx.beginPath();
         ctx.moveTo(prevX, prevY);
-        ctx.lineTo(currX, currY);
+        ctx.lineTo(x, y);
         ctx.stroke();
 
-        prevX = currX;
-        prevY = currY;
+        prevX = x;
+        prevY = y;
+    };
+
+    const stopDrawing = () => {
+        drawing = false;
+        const dataURL = canvas.toDataURL('image/png');
+        firmaInput.value = dataURL;
+    };
+
+    canvas.addEventListener('mousedown', startDrawing);
+    canvas.addEventListener('mousemove', draw);
+    canvas.addEventListener('mouseup', stopDrawing);
+    canvas.addEventListener('mouseleave', stopDrawing);
+
+    canvas.addEventListener('touchstart', (event) => {
+        event.preventDefault(); // Evita el scroll mientras dibujas
+        startDrawing(event);
     });
+    canvas.addEventListener('touchmove', (event) => {
+        event.preventDefault();
+        draw(event);
+    });
+    canvas.addEventListener('touchend', stopDrawing);
 
     clearButton.addEventListener('click', () => {
         ctx.clearRect(0, 0, canvas.width, canvas.height);
         firmaInput.value = '';
     });
 });
+
 </script>
