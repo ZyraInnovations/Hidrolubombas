@@ -1,0 +1,233 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+
+</head>
+<body>
+    
+
+
+<style>
+  /* Estilo general */
+  body {
+      font-family: 'Roboto', Arial, sans-serif;
+      background-color: #f4f4f4;
+      margin: 0;
+      padding: 20px;
+  }
+
+  table {
+      width: 100%;
+      border-collapse: collapse;
+      background-color: #fff;
+      border-radius: 8px;
+      overflow: hidden;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+
+  thead th {
+      background-color: #413d4b;
+      color: #fff;
+      text-align: left;
+      padding: 12px 15px;
+      font-weight: bold;
+  }
+
+  thead input {
+      width: calc(100% - 20px);
+      padding: 8px 10px;
+      margin-top: 5px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      font-size: 13px;
+  }
+
+  tbody tr:nth-child(even) {
+      background-color: #f9f9f9;
+  }
+
+  tbody tr:hover {
+      background-color: #90c9a7;
+      color: white;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+  }
+
+  td, th {
+      padding: 12px 15px;
+      border: 1px solid #ddd;
+  }
+
+  .action-buttons {
+      display: flex;
+      gap: 10px;
+  }
+
+  .action-buttons button {
+      border: none;
+      background: #666567;
+      color: white;
+      padding: 8px 12px;
+      cursor: pointer;
+      border-radius: 5px;
+      font-size: 14px;
+      transition: background-color 0.3s ease;
+  }
+
+  .action-buttons button:hover {
+      background: #413d4b;
+  }
+
+  /* Contenedor principal */
+  #dataTable {
+      margin-top: 20px;
+  }
+  input{
+color: black;
+
+  }
+</style>
+<table id="dataTable">
+    <thead>
+        <tr>
+            <th>
+                N° 
+                <input type="text" id="filterId" placeholder="Buscar...">
+            </th>
+            <th>
+                Fecha 
+                <input type="date" id="filterFecha">
+            </th>
+            <th>
+                Cliente 
+                <input type="text" id="filterCliente" placeholder="Buscar...">
+            </th>
+            <th>
+                Técnico 
+                <input type="text" id="filterTecnico" placeholder="Buscar...">
+            </th>
+            <th>
+                Equipo 
+                <input type="text" id="filterEquipo" placeholder="Buscar...">
+            </th>
+            <th>Acciones</th>
+        </tr>
+    </thead>
+    <tbody>
+        {{#each datos}}
+        <tr>
+            <td>{{id}}</td>
+            <td>{{fecha}}</td>
+            <td>{{cliente}}</td>
+            <td>{{tecnico}}</td>
+            <td>{{equipo}}</td>
+            <td>
+                <div class="action-buttons">
+        <button onclick="window.location.href='/mostrarInforme/{{id}}'">🖨️</button>
+                    <button title="Editar">✏️</button>
+                    <button title="Eliminar">❌</button>
+                </div>
+            </td>
+        </tr>
+        {{/each}}
+    </tbody>
+</table>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+
+
+
+<script>
+  // Escuchar eventos en cada filtro
+  document.addEventListener('DOMContentLoaded', function () {
+      const table = document.getElementById('dataTable');
+      const filters = {
+          id: document.getElementById('filterId'),
+          fecha: document.getElementById('filterFecha'),
+          cliente: document.getElementById('filterCliente'),
+          tecnico: document.getElementById('filterTecnico'),
+          equipo: document.getElementById('filterEquipo')
+      };
+
+      Object.values(filters).forEach(filter => {
+          filter.addEventListener('input', filterTable);
+      });
+
+      function filterTable() {
+          const rows = table.querySelectorAll('tbody tr');
+
+          rows.forEach(row => {
+              const id = row.cells[0].textContent.trim().toLowerCase();
+              const fecha = row.cells[1].textContent.trim().toLowerCase();
+              const cliente = row.cells[2].textContent.trim().toLowerCase();
+              const tecnico = row.cells[3].textContent.trim().toLowerCase();
+              const equipo = row.cells[4].textContent.trim().toLowerCase();
+
+              const filterId = filters.id.value.trim().toLowerCase();
+              const filterFecha = filters.fecha.value.trim();
+              const filterCliente = filters.cliente.value.trim().toLowerCase();
+              const filterTecnico = filters.tecnico.value.trim().toLowerCase();
+              const filterEquipo = filters.equipo.value.trim().toLowerCase();
+
+              // Comparar filtros con los valores de las celdas
+              const matchesId = id.includes(filterId);
+              const matchesFecha = !filterFecha || fecha.includes(filterFecha);
+              const matchesCliente = cliente.includes(filterCliente);
+              const matchesTecnico = tecnico.includes(filterTecnico);
+              const matchesEquipo = equipo.includes(filterEquipo);
+
+              // Mostrar/ocultar la fila según los filtros
+              if (matchesId && matchesFecha && matchesCliente && matchesTecnico && matchesEquipo) {
+                  row.style.display = '';
+              } else {
+                  row.style.display = 'none';
+              }
+          });
+      }
+  });
+</script>
+<script>
+document.getElementById('downloadButton').addEventListener('click', async function () {
+    const id = 1; // Reemplazar con el ID dinámico correspondiente
+
+    // Llamar al backend para obtener el HTML
+    try {
+        const response = await fetch(`/descargarInforme/${id}`);
+        const html = await response.text();
+
+        // Insertar el HTML en un contenedor invisible
+        const templateContainer = document.getElementById('templateContainer');
+        templateContainer.innerHTML = html;
+
+        // Configuración de html2canvas
+        const canvas = await html2canvas(templateContainer, {
+            scale: 2, // Aumenta la resolución de la imagen
+            useCORS: true, // Para permitir recursos de diferentes dominios si es necesario
+            allowTaint: true,
+        });
+
+        // Convertir el canvas a formato JPEG
+        const image = canvas.toDataURL('image/jpeg', 1.0);
+
+        // Crear un enlace para la descarga
+        const link = document.createElement('a');
+        link.href = image;
+        link.download = `informe_${id}.jpg`;
+
+        // Simular clic para iniciar la descarga
+        link.click();
+
+        // Limpiar el contenedor temporal después de generar la imagen
+        templateContainer.innerHTML = '';
+    } catch (error) {
+        console.error('Error al generar o descargar la imagen:', error);
+    }
+});
+
+</script>
+

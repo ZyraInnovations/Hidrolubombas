@@ -1335,9 +1335,116 @@ app.get('/api/tecnico/firma/:id', async (req, res) => {
     }
 });
 
+app.get('/Consulta_informes_realizados', async (req, res) => {
+    if (req.session.loggedin === true) {
+        const nombreUsuario = req.session.user.name; // Usa los datos de la sesión del usuario
+
+        try {
+            // Consulta para obtener los datos con el nombre del cliente y el técnico
+            const [results] = await pool.query(`
+                SELECT 
+                    mh.id, 
+                    mh.fecha, 
+                    ch.nombre AS cliente, 
+                    uh.nombre AS tecnico, -- Obtiene el nombre del técnico
+                    mh.equipo 
+                FROM 
+                    mantenimiento_hidro mh
+                JOIN 
+                    clientes_hidrolubombas ch 
+                ON 
+                    mh.cliente = ch.id
+                JOIN 
+                    usuarios_hidro uh 
+                ON 
+                    mh.tecnico = uh.id -- Relaciona la tabla con el ID del técnico
+            `);
+
+            // Renderiza la vista con los datos obtenidos
+            res.render('administrativo/informes/consulta_mejorada.hbs', {
+                nombreUsuario,
+                layout: 'layouts/nav_admin.hbs',
+                datos: results, // Pasa los datos obtenidos a la vista
+            });
+        } catch (error) {
+            console.error('Error al ejecutar la consulta:', error);
+            return res.status(500).send('Error al cargar los informes.');
+        }
+    } else {
+        res.redirect('/login');
+    }
+});
 
 
 
+
+app.get('/mostrarInforme/:id', async (req, res) => {
+    const id = req.params.id;
+
+    try {
+        // Consultar los datos del informe en la tabla mantenimiento_hidro
+        const [result] = await pool.query('SELECT * FROM mantenimiento_hidro WHERE id = ?', [id]);
+
+        if (result.length === 0) {
+            return res.status(404).send('No se encontraron datos para el ID especificado.');
+        }
+
+        const informe = result[0]; // Obtener el informe
+
+        // Convertir la firma del supervisor a Base64 si existe
+        if (informe.firma_supervisor) {
+            informe.firma_supervisor = Buffer.from(informe.firma_supervisor).toString('base64');
+        } else {
+            informe.firma_supervisor = null; // Si no hay firma, asignar null
+        }
+
+        // Consultar la foto, nombre y firma del técnico en la tabla usuarios_hidro
+        const [tecnicoResult] = await pool.query(
+            'SELECT nombre, foto, firma FROM usuarios_hidro WHERE id = ?', [informe.tecnico]
+        );
+        if (tecnicoResult.length > 0) {
+            const tecnicoData = tecnicoResult[0];
+            informe.tecnicoNombre = tecnicoData.nombre; // Asignar el nombre del técnico
+            if (tecnicoData.foto) {
+                informe.tecnicoFoto = Buffer.from(tecnicoData.foto).toString('base64'); // Convertir foto a Base64
+            } else {
+                informe.tecnicoFoto = null; // Si no hay foto, asignar null
+            }
+            if (tecnicoData.firma) {
+                informe.firma_tecnico = tecnicoData.firma; // La firma ya está en formato Base64
+            } else {
+                informe.firma_tecnico = null; // Si no hay firma, asignar null
+            }
+        } else {
+            informe.tecnicoNombre = 'Técnico no encontrado'; // Si no se encuentra, asignar un mensaje predeterminado
+            informe.tecnicoFoto = null;
+            informe.firma_tecnico = null;
+        }
+
+        // Consultar la foto y el nombre del cliente en la tabla clientes_hidrolubombas
+        const [clienteResult] = await pool.query(
+            'SELECT nombre, foto FROM clientes_hidrolubombas WHERE id = ?', [informe.cliente]
+        );
+        if (clienteResult.length > 0) {
+            const clienteData = clienteResult[0];
+            informe.clienteNombre = clienteData.nombre; // Asignar el nombre del cliente
+            if (clienteData.foto) {
+                informe.clienteFoto = Buffer.from(clienteData.foto).toString('base64'); // Convertir foto a Base64
+            } else {
+                informe.clienteFoto = null; // Si no hay foto, asignar null
+            }
+        } else {
+            informe.clienteNombre = 'Cliente no encontrado'; // Si no se encuentra, asignar un mensaje predeterminado
+            informe.clienteFoto = null;
+        }
+
+        // Renderizar la plantilla con los datos
+        res.render('administrativo/informes/plantilla.hbs', { informe });
+    } catch (error) {
+        console.error('Error al generar el informe:', error);
+        res.status(500).send('Error interno del servidor.');
+    }
+});
 
 
 // Iniciar el servidor
