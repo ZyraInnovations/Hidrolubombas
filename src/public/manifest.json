@@ -1,21 +1,35 @@
 {
-  "name": "HIDRAULIBOMBAS",
-  "short_name": "HIDRAULIBOMBAS",
-  "start_url": "/login",
-  "display": "standalone",
-  "background_color": "#ffffff",
-  "theme_color": "#000000",
-  "description": "Descripción breve de tu app",
-  "icons": [
-      {
-          "src": "/imagenes/logoapp192.png",  // Asegúrate de que sea de 192x192px
-          "sizes": "192x192",
-          "type": "image/png"
-      },
-      {
-          "src": "/imagenes/logo512.png",  // Asegúrate de que sea de 512x512px
-          "sizes": "512x512",
-          "type": "image/png"
-      }
-  ]
+    "name": "HIDRAULIBOMBAS",
+    "short_name": "HIDRAULIBOMBAS",
+    "start_url": "/login",
+    "display": "standalone",
+    "background_color": "#ffffff",
+    "theme_color": "#000000",
+    "description": "Gestión de bombas hidráulicas",
+    "icons": [
+        {
+            "src": "/imagenes/logo192.png",
+            "sizes": "192x192",
+            "type": "image/png"
+        },
+        {
+            "src": "/imagenes/logo512app.png",
+            "sizes": "512x512",
+            "type": "image/png"
+        }
+    ],
+    "screenshots": [
+        {
+            "src": "/imagenes/1920.png",
+            "sizes": "1920x1080",
+            "type": "image/png",
+            "form_factor": "wide"
+        },
+        {
+            "src": "/imagenes/1080.png",
+            "sizes": "1080x1920",
+            "type": "image/png",
+            "form_factor": "narrow"
+        }
+    ]
 }

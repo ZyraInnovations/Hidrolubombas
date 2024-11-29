@@ -65,6 +65,10 @@ app.use(express.json());
 
 
 
+app.use('/manifest.json', (req, res) => {
+    res.setHeader('Content-Type', 'application/json');
+    res.sendFile(__dirname + '/manifest.json');
+});
 
 
 
