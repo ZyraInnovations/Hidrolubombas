@@ -1,22 +1,21 @@
 {
-    "name": "HIDRAULIBOMBAS",
-    "short_name": "HIDRAULIBOMBAS",
-    "start_url": "/",
-    "display": "standalone",
-    "background_color": "#ffffff",
-    "theme_color": "#000000",
-    "description": "Descripción breve de tu app",
-    "icons": [
+  "name": "HIDRAULIBOMBAS",
+  "short_name": "HIDRAULIBOMBAS",
+  "start_url": "/login",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#000000",
+  "description": "Descripción breve de tu app",
+  "icons": [
       {
-        "src": "/imagenes/Recurso 1.png",
-        "sizes": "192x192",
-        "type": "image/png"
+          "src": "/imagenes/logoapp192.png",  // Asegúrate de que sea de 192x192px
+          "sizes": "192x192",
+          "type": "image/png"
       },
       {
-        "src": "/imagenes/Recurso 1.png",
-        "sizes": "512x512",
-        "type": "image/png"
+          "src": "/imagenes/logo512.png",  // Asegúrate de que sea de 512x512px
+          "sizes": "512x512",
+          "type": "image/png"
       }
-    ]
-  }
-  
+  ]
+}
