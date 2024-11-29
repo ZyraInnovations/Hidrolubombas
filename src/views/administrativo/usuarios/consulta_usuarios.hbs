@@ -68,6 +68,7 @@
         border-radius: 8px;
         box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
         overflow: hidden;
+        
     }
 
     /* Styled Table */
@@ -149,6 +150,105 @@
     object-fit: cover;
     width: 50px;
     height: 50px;
+}
+/* Estilos responsivos */
+@media (max-width: 900px) {
+    .filter-container {
+        flex-direction: column;
+        gap: 1rem;
+    }
+
+    .filter-input {
+        width: 100%;
+    }
+
+    .styled-table th, .styled-table td {
+        font-size: 0.9rem;
+        padding: 10px;
+    }
+}
+
+@media (max-width: 600px) {
+    .filter-container {
+        padding: 1rem;
+    }
+
+    .filter-input {
+        font-size: 0.9rem;
+    }
+
+    .table-container {
+        overflow-x: auto;
+    }
+
+    .styled-table {
+        font-size: 0.8rem;
+        min-width: 600px; /* Permite scroll horizontal si es necesario */
+    }
+
+    .styled-table th, .styled-table td {
+        padding: 8px;
+    }
+}
+@media (min-width: 600px) and (max-width: 900px) {
+    .filter-container {
+        flex-direction: row;
+        justify-content: space-between;
+    }
+
+    .filter-input {
+        width: calc(33% - 1rem);
+    }
+}
+.table-container {
+    width: 95%;
+    background-color: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    overflow-x: auto; /* Habilita el desplazamiento horizontal */
+    overflow-y: hidden; /* Evita el desplazamiento vertical no deseado */
+}
+
+.styled-table {
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 800px; /* Asegura que la tabla mantenga un ancho mínimo */
+}
+
+@media (max-width: 600px) {
+    .styled-table {
+        font-size: 0.8rem;
+        min-width: 800px; /* Esto asegura que se cree una barra horizontal */
+    }
+}
+.table-container {
+    width: 100%;
+    max-width: 100%;
+    background-color: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    overflow-x: auto; /* Habilita el desplazamiento horizontal */
+    overflow-y: hidden; /* Evita el desplazamiento vertical */
+    white-space: nowrap; /* Asegura que las celdas no se dividan */
+}
+
+.styled-table {
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 900px; /* Fuerza un ancho mínimo para la tabla */
+}
+/* Estilo para navegadores modernos */
+.table-container::-webkit-scrollbar {
+    height: 8px; /* Grosor de la barra horizontal */
+}
+
+.table-container::-webkit-scrollbar-thumb {
+    background-color: var(--primary-color); /* Color de la barra */
+    border-radius: 4px; /* Bordes redondeados */
+}
+
+.table-container::-webkit-scrollbar-track {
+    background-color: #f0f0f0; /* Color del fondo de la barra */
 }
 
 </style>
