@@ -296,7 +296,8 @@ app.post('/procesar-datos', upload.fields([
 ]), (req, res) => {
     const datos = req.body;
     const accion = datos.accion; // Asegúrate de definir "accion" al inicio
-
+ 
+  
     // Convertir las firmas a buffers
     const firmaSupervisorBlob = bufferFromBase64(datos.firma_supervisor);
 
@@ -380,7 +381,7 @@ app.post('/procesar-datos', upload.fields([
           datos.carcasa_b4, datos.bornes_b1, datos.bornes_b2, datos.bornes_b3,
           datos.bornes_b4, datos.casquillo_b11, datos.casquillo_b22, datos.casquillo_b33,
           datos.casquillo_b44, datos.bobinado_b1, datos.bobinado_b2, datos.bobinado_b3,
-          datos.bobinado_b4, datos.partes_para_cambio, datos.observaciones, firmaSupervisorBlob,datos.tipo_de_manteninimiento,datos.Correo
+          datos.bobinado_b4, datos.partes_para_cambio, datos.observaciones, firmaSupervisorBlob,datos.tipo_de_mantenimiento,datos.Correo
         ]
       ];
 
