@@ -1,233 +1,337 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <style>
+        /* Estilo general */
+        body {
+            font-family: 'Roboto', Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 20px;
+        }
 
-</head>
-<body>
-    
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background-color: #fff;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
 
+        thead th {
+            background-color: #413d4b;
+            color: #fff;
+            text-align: left;
+            padding: 12px 15px;
+            font-weight: bold;
+            position: relative;
+        }
 
-<style>
-  /* Estilo general */
-  body {
-      font-family: 'Roboto', Arial, sans-serif;
-      background-color: #f4f4f4;
-      margin: 0;
-      padding: 20px;
-  }
+        thead input {
+            width: calc(100% - 20px);
+            padding: 8px 10px;
+            margin-top: 5px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 13px;
+        }
 
-  table {
-      width: 100%;
-      border-collapse: collapse;
-      background-color: #fff;
-      border-radius: 8px;
-      overflow: hidden;
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  }
+        tbody tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
 
-  thead th {
-      background-color: #413d4b;
-      color: #fff;
-      text-align: left;
-      padding: 12px 15px;
-      font-weight: bold;
-  }
+        tbody tr:hover {
+            background-color: #90c9a7;
+            color: white;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
 
-  thead input {
-      width: calc(100% - 20px);
-      padding: 8px 10px;
-      margin-top: 5px;
-      border: 1px solid #ccc;
-      border-radius: 5px;
-      font-size: 13px;
-  }
+        td, th {
+            padding: 12px 15px;
+            border: 1px solid #ddd;
+        }
 
-  tbody tr:nth-child(even) {
-      background-color: #f9f9f9;
-  }
+        .action-buttons {
+            display: flex;
+            gap: 10px;
+        }
 
-  tbody tr:hover {
-      background-color: #90c9a7;
-      color: white;
-      cursor: pointer;
-      transition: background-color 0.3s ease;
-  }
+        .action-buttons button {
+            border: none;
+            background: #666567;
+            color: white;
+            padding: 8px 12px;
+            cursor: pointer;
+            border-radius: 5px;
+            font-size: 14px;
+            transition: background-color 0.3s ease;
+        }
 
-  td, th {
-      padding: 12px 15px;
-      border: 1px solid #ddd;
-  }
+        .action-buttons button:hover {
+            background: #413d4b;
+        }
 
-  .action-buttons {
-      display: flex;
-      gap: 10px;
-  }
+        /* Contenedor principal */
+        .table-container {
+            overflow-x: auto;
+        }
 
-  .action-buttons button {
-      border: none;
-      background: #666567;
-      color: white;
-      padding: 8px 12px;
-      cursor: pointer;
-      border-radius: 5px;
-      font-size: 14px;
-      transition: background-color 0.3s ease;
-  }
+        /* Filtros para móviles */
+        .filters-mobile {
+            display: none; /* Ocultar por defecto */
+        }
 
-  .action-buttons button:hover {
-      background: #413d4b;
-  }
+        /* Diseño móvil */
+        @media (max-width: 768px) {
+            thead {
+                display: none;
+            }
 
-  /* Contenedor principal */
-  #dataTable {
-      margin-top: 20px;
-  }
-  input{
+            tbody tr {
+                display: block;
+                margin-bottom: 10px;
+                border: 1px solid #ddd;
+                border-radius: 8px;
+                box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+                background-color: #fff;
+                padding: 10px;
+            }
+
+            tbody td {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                padding: 10px;
+                border: none;
+                text-align: left;
+            }
+
+            tbody td::before {
+                content: attr(data-label);
+                font-weight: bold;
+                width: 50%;
+                display: inline-block;
+                color: #666;
+            }
+
+            .filters-mobile {
+                display: flex;
+                flex-wrap: wrap;
+                gap: 10px;
+                margin-bottom: 20px;
+            }
+
+            .filters-mobile .filter-group {
+                flex: 1 1 calc(50% - 10px); /* Ancho adaptable */
+                display: flex;
+                flex-direction: column;
+            }
+
+            .filters-mobile .filter-group label {
+                font-size: 12px;
+                color: #666;
+                margin-bottom: 5px;
+            }
+
+            .filters-mobile .filter-group input {
+                padding: 8px;
+                border: 1px solid #ccc;
+                border-radius: 5px;
+                font-size: 14px;
+                width: 100%;
+            }
+
+            /* Ocultar filtros de tabla en móviles */
+            thead input {
+                display: none;
+            }
+        }
+        input{
 color: black;
 
-  }
-</style>
-<table id="dataTable">
-    <thead>
-        <tr>
-            <th>
-                N° 
-                <input type="text" id="filterId" placeholder="Buscar...">
-            </th>
-            <th>
-                Fecha 
-                <input type="date" id="filterFecha">
-            </th>
-            <th>
-                Cliente 
-                <input type="text" id="filterCliente" placeholder="Buscar...">
-            </th>
-            <th>
-                Técnico 
-                <input type="text" id="filterTecnico" placeholder="Buscar...">
-            </th>
-            <th>
-                Equipo 
-                <input type="text" id="filterEquipo" placeholder="Buscar...">
-            </th>
-            <th>Acciones</th>
-        </tr>
-    </thead>
-    <tbody>
-        {{#each datos}}
-        <tr>
-            <td>{{id}}</td>
-            <td>{{fecha}}</td>
-            <td>{{cliente}}</td>
-            <td>{{tecnico}}</td>
-            <td>{{equipo}}</td>
-            <td>
-                <div class="action-buttons">
-        <button onclick="window.location.href='/mostrarInforme/{{id}}'">🖨️</button>
-                    <button title="Editar">✏️</button>
-                    <button title="Eliminar">❌</button>
-                </div>
-            </td>
-        </tr>
-        {{/each}}
-    </tbody>
-</table>
+        }
+    </style>
+</head>
+<body>
+    <!-- Filtros móviles -->
+    <div class="filters-mobile">
+        <div class="filter-group">
+            <label for="filterIdMobile">N°</label>
+            <input type="text" id="filterIdMobile" placeholder="Buscar...">
+        </div>
+        <div class="filter-group">
+            <label for="filterFechaMobile">Fecha</label>
+            <input type="date" id="filterFechaMobile">
+        </div>
+        <div class="filter-group">
+            <label for="filterClienteMobile">Cliente</label>
+            <input type="text" id="filterClienteMobile" placeholder="Buscar...">
+        </div>
+        <div class="filter-group">
+            <label for="filterTecnicoMobile">Técnico</label>
+            <input type="text" id="filterTecnicoMobile" placeholder="Buscar...">
+        </div>
+        <div class="filter-group">
+            <label for="filterEquipoMobile">Equipo</label>
+            <input type="text" id="filterEquipoMobile" placeholder="Buscar...">
+        </div>
+        <div class="filter-group">
+            <label for="filterTipoMantenimientoMobile">Tipo de Mantenimiento</label>
+            <input type="text" id="filterTipoMantenimientoMobile" placeholder="Buscar...">
+        </div>
+    </div>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <!-- Tabla -->
+    <div class="table-container">
+        <table id="dataTable">
+            <thead>
+                <tr>
+                    <th>N° <input type="text" id="filterId" placeholder="Buscar..."></th>
+                    <th>Fecha <input type="date" id="filterFecha"></th>
+                    <th>Cliente <input type="text" id="filterCliente" placeholder="Buscar..."></th>
+                    <th>Técnico <input type="text" id="filterTecnico" placeholder="Buscar..."></th>
+                    <th>Equipo <input type="text" id="filterEquipo" placeholder="Buscar..."></th>
+                    <th>Tipo de Mantenimiento <input type="text" id="filterTipoMantenimiento" placeholder="Buscar..."></th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                {{#each datos}}
+                <tr>
+                    <td data-label="N°">{{id}}</td>
+                    <td data-label="Fecha">{{fecha}}</td>
+                    <td data-label="Cliente">{{cliente}}</td>
+                    <td data-label="Técnico">{{tecnico}}</td>
+                    <td data-label="Equipo">{{equipo}}</td>
+                    <td data-label="Tipo de Mantenimiento">{{tipo_de_mantenimiento}}</td>
+                    <td data-label="Acciones">
+                        <div class="action-buttons">
+                            <button onclick="window.location.href='/mostrarInforme/{{id}}'">🖨️</button>
+                            <button title="Editar">✏️</button>
+                            <button title="Eliminar">❌</button>
+                        </div>
+                    </td>
+                </tr>
+                {{/each}}
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>
 
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const table = document.getElementById('dataTable');
+            const rows = table.querySelectorAll('tbody tr');
 
+            const filters = {
+                id: document.getElementById('filterId'),
+                fecha: document.getElementById('filterFecha'),
+                cliente: document.getElementById('filterCliente'),
+                tecnico: document.getElementById('filterTecnico'),
+                equipo: document.getElementById('filterEquipo'),
+                tipoMantenimiento: document.getElementById('filterTipoMantenimiento')
+            };
 
-<script>
-  // Escuchar eventos en cada filtro
-  document.addEventListener('DOMContentLoaded', function () {
-      const table = document.getElementById('dataTable');
-      const filters = {
-          id: document.getElementById('filterId'),
-          fecha: document.getElementById('filterFecha'),
-          cliente: document.getElementById('filterCliente'),
-          tecnico: document.getElementById('filterTecnico'),
-          equipo: document.getElementById('filterEquipo')
-      };
+            Object.values(filters).forEach(filter => {
+                filter.addEventListener('input', filterTable);
+            });
 
-      Object.values(filters).forEach(filter => {
-          filter.addEventListener('input', filterTable);
-      });
+            function filterTable() {
+                rows.forEach(row => {
+                    const cells = row.querySelectorAll('td');
+                    const data = {
+                        id: cells[0]?.textContent.trim().toLowerCase() || '',
+                        fecha: cells[1]?.textContent.trim().toLowerCase() || '',
+                        cliente: cells[2]?.textContent.trim().toLowerCase() || '',
+                        tecnico: cells[3]?.textContent.trim().toLowerCase() || '',
+                        equipo: cells[4]?.textContent.trim().toLowerCase() || '',
+                        tipoMantenimiento: cells[5]?.textContent.trim().toLowerCase() || ''
+                    };
 
-      function filterTable() {
-          const rows = table.querySelectorAll('tbody tr');
+                    const matches = Object.keys(filters).every(key => {
+                        const filterValue = filters[key].value.trim().toLowerCase();
+                        return !filterValue || data[key].includes(filterValue);
+                    });
 
-          rows.forEach(row => {
-              const id = row.cells[0].textContent.trim().toLowerCase();
-              const fecha = row.cells[1].textContent.trim().toLowerCase();
-              const cliente = row.cells[2].textContent.trim().toLowerCase();
-              const tecnico = row.cells[3].textContent.trim().toLowerCase();
-              const equipo = row.cells[4].textContent.trim().toLowerCase();
+                    row.style.display = matches ? '' : 'none';
+                });
+            }
+        });
+    </script>
+    <script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const table = document.getElementById('dataTable');
+        const rows = table.querySelectorAll('tbody tr');
 
-              const filterId = filters.id.value.trim().toLowerCase();
-              const filterFecha = filters.fecha.value.trim();
-              const filterCliente = filters.cliente.value.trim().toLowerCase();
-              const filterTecnico = filters.tecnico.value.trim().toLowerCase();
-              const filterEquipo = filters.equipo.value.trim().toLowerCase();
+        // Filtros de PC
+        const pcFilters = {
+            id: document.getElementById('filterId'),
+            fecha: document.getElementById('filterFecha'),
+            cliente: document.getElementById('filterCliente'),
+            tecnico: document.getElementById('filterTecnico'),
+            equipo: document.getElementById('filterEquipo'),
+            tipoMantenimiento: document.getElementById('filterTipoMantenimiento')
+        };
 
-              // Comparar filtros con los valores de las celdas
-              const matchesId = id.includes(filterId);
-              const matchesFecha = !filterFecha || fecha.includes(filterFecha);
-              const matchesCliente = cliente.includes(filterCliente);
-              const matchesTecnico = tecnico.includes(filterTecnico);
-              const matchesEquipo = equipo.includes(filterEquipo);
+        // Filtros móviles
+        const mobileFilters = {
+            id: document.getElementById('filterIdMobile'),
+            fecha: document.getElementById('filterFechaMobile'),
+            cliente: document.getElementById('filterClienteMobile'),
+            tecnico: document.getElementById('filterTecnicoMobile'),
+            equipo: document.getElementById('filterEquipoMobile'),
+            tipoMantenimiento: document.getElementById('filterTipoMantenimientoMobile')
+        };
 
-              // Mostrar/ocultar la fila según los filtros
-              if (matchesId && matchesFecha && matchesCliente && matchesTecnico && matchesEquipo) {
-                  row.style.display = '';
-              } else {
-                  row.style.display = 'none';
-              }
-          });
-      }
-  });
-</script>
-<script>
-document.getElementById('downloadButton').addEventListener('click', async function () {
-    const id = 1; // Reemplazar con el ID dinámico correspondiente
+        // Detectar si estamos en móvil o en PC
+        const isMobile = () => window.innerWidth <= 768;
 
-    // Llamar al backend para obtener el HTML
-    try {
-        const response = await fetch(`/descargarInforme/${id}`);
-        const html = await response.text();
-
-        // Insertar el HTML en un contenedor invisible
-        const templateContainer = document.getElementById('templateContainer');
-        templateContainer.innerHTML = html;
-
-        // Configuración de html2canvas
-        const canvas = await html2canvas(templateContainer, {
-            scale: 2, // Aumenta la resolución de la imagen
-            useCORS: true, // Para permitir recursos de diferentes dominios si es necesario
-            allowTaint: true,
+        // Agregar eventos a los filtros
+        Object.values(pcFilters).forEach(filter => {
+            filter.addEventListener('input', filterTable);
         });
 
-        // Convertir el canvas a formato JPEG
-        const image = canvas.toDataURL('image/jpeg', 1.0);
+        Object.values(mobileFilters).forEach(filter => {
+            filter.addEventListener('input', filterTable);
+        });
 
-        // Crear un enlace para la descarga
-        const link = document.createElement('a');
-        link.href = image;
-        link.download = `informe_${id}.jpg`;
+        // Función para filtrar la tabla
+        function filterTable() {
+            rows.forEach(row => {
+                const cells = row.querySelectorAll('td');
+                const data = {
+                    id: cells[0]?.textContent.trim().toLowerCase() || '',
+                    fecha: cells[1]?.textContent.trim().toLowerCase() || '',
+                    cliente: cells[2]?.textContent.trim().toLowerCase() || '',
+                    tecnico: cells[3]?.textContent.trim().toLowerCase() || '',
+                    equipo: cells[4]?.textContent.trim().toLowerCase() || '',
+                    tipoMantenimiento: cells[5]?.textContent.trim().toLowerCase() || ''
+                };
 
-        // Simular clic para iniciar la descarga
-        link.click();
+                // Determinar cuál conjunto de filtros usar
+                const filters = isMobile() ? mobileFilters : pcFilters;
 
-        // Limpiar el contenedor temporal después de generar la imagen
-        templateContainer.innerHTML = '';
-    } catch (error) {
-        console.error('Error al generar o descargar la imagen:', error);
-    }
-});
+                // Verificar si la fila coincide con los filtros
+                const matches = Object.keys(filters).every(key => {
+                    const filterValue = filters[key].value.trim().toLowerCase();
+                    return !filterValue || data[key].includes(filterValue);
+                });
 
+                row.style.display = matches ? '' : 'none';
+            });
+        }
+
+        // Detectar cambios en el tamaño de la ventana para ajustar filtros
+        window.addEventListener('resize', filterTable);
+        filterTable();
+    });
 </script>
 
+</body>
+</html>

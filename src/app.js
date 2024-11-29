@@ -1336,19 +1336,22 @@ app.get('/api/tecnico/firma/:id', async (req, res) => {
     }
 });
 
+
+
 app.get('/Consulta_informes_realizados', async (req, res) => {
     if (req.session.loggedin === true) {
         const nombreUsuario = req.session.user.name; // Usa los datos de la sesión del usuario
 
         try {
-            // Consulta para obtener los datos con el nombre del cliente y el técnico
+            // Consulta para obtener los datos con el tipo de mantenimiento incluido
             const [results] = await pool.query(`
                 SELECT 
                     mh.id, 
                     mh.fecha, 
                     ch.nombre AS cliente, 
-                    uh.nombre AS tecnico, -- Obtiene el nombre del técnico
-                    mh.equipo 
+                    uh.nombre AS tecnico,  -- Obtiene el nombre del técnico
+                    mh.equipo, 
+                    mh.tipo_de_mantenimiento -- Asegúrate de que este campo existe en la tabla mantenimiento_hidro
                 FROM 
                     mantenimiento_hidro mh
                 JOIN 
@@ -1375,6 +1378,7 @@ app.get('/Consulta_informes_realizados', async (req, res) => {
         res.redirect('/login');
     }
 });
+
 
 
 
