@@ -298,7 +298,6 @@ app.post('/procesar-datos', upload.fields([
     const accion = datos.accion; // Asegúrate de definir "accion" al inicio
 
     // Convertir las firmas a buffers
-    const firmaTecnicoBlob = bufferFromBase64(datos.firma_tecnico);
     const firmaSupervisorBlob = bufferFromBase64(datos.firma_supervisor);
 
     // Consulta SQL para insertar datos
@@ -335,7 +334,7 @@ app.post('/procesar-datos', upload.fields([
         ventilador_b4, carcasa_b1, carcasa_b2, carcasa_b3, carcasa_b4, bornes_b1,
         bornes_b2, bornes_b3, bornes_b4, casquillo_b11, casquillo_b22, casquillo_b33,
         casquillo_b44, bobinado_b1, bobinado_b2, bobinado_b3, bobinado_b4,
-        partes_para_cambio, observaciones,firma_tecnico, firma_supervisor,tipo_de_mantenimiento,Correo
+        partes_para_cambio, observaciones, firma_supervisor,tipo_de_mantenimiento,Correo
       ) VALUES ?`;
 
       const values = [
@@ -381,7 +380,7 @@ app.post('/procesar-datos', upload.fields([
           datos.carcasa_b4, datos.bornes_b1, datos.bornes_b2, datos.bornes_b3,
           datos.bornes_b4, datos.casquillo_b11, datos.casquillo_b22, datos.casquillo_b33,
           datos.casquillo_b44, datos.bobinado_b1, datos.bobinado_b2, datos.bobinado_b3,
-          datos.bobinado_b4, datos.partes_para_cambio, datos.observaciones,  firmaTecnicoBlob, firmaSupervisorBlob,datos.tipo_de_manteninimiento,datos.Correo
+          datos.bobinado_b4, datos.partes_para_cambio, datos.observaciones, firmaSupervisorBlob,datos.tipo_de_manteninimiento,datos.Correo
         ]
       ];
 

@@ -2930,9 +2930,6 @@ textarea {
 </div>
   
 
-<div id="firma-container" style="margin-top: 10px;">
-    <img id="firma-tecnico" src="" alt="Firma del Técnico" style="display:none; width: 200px; height: auto;">
-</div>
 
 <!-- Sección de firma -->
 <div class="signature-section">
@@ -2940,9 +2937,16 @@ textarea {
 
   
 <div class="signature-container">
-    <canvas id="signatureCanvas1"></canvas>
-    <button type="button" class="clear-btn" onclick="clearCanvas('signatureCanvas1')">Borrar</button>
-    <span class="signature-label">TÉCNICO</span>
+    
+
+
+
+<div id="firma-container" style="margin-top: 10px; text-align: center;">
+    <img id="firma-tecnico" src="" alt="Firma del Técnico" style="display:none; width: 200px; height: auto; margin: 0 auto;">
+    <p id="firma-nombre" style="margin-top: 5px; font-weight: bold;">Firma Técnico</p>
+</div>
+
+
 </div>
 
     <div class="signature-container">
@@ -3164,7 +3168,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
 <script>
     document.addEventListener('DOMContentLoaded', function () {
-        initSignaturePad('signatureCanvas1');
         initSignaturePad('signatureCanvas2');
     });
 
@@ -3210,9 +3213,8 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function getSignatureBlobs() {
-        const firmaTecnico = document.getElementById('signatureCanvas1').toDataURL('image/png');
         const firmaSupervisor = document.getElementById('signatureCanvas2').toDataURL('image/png');
-        return { firma_tecnico: firmaTecnico, firma_supervisor: firmaSupervisor };
+        return {  firma_supervisor: firmaSupervisor };
     }
 
 
@@ -3299,7 +3301,6 @@ document.getElementById('maintenanceForm').addEventListener('submit', function (
 
         canvas.toBlob((blob) => {
             const formData = new FormData(document.getElementById('maintenanceForm'));
-            formData.append('firma_tecnico', signatures.firma_tecnico);
             formData.append('firma_supervisor', signatures.firma_supervisor);
             formData.append('imagen', blob, 'informe_mantenimiento.jpg');
 
