@@ -1408,7 +1408,14 @@ body {
     border: none !important;
     box-shadow: none !important;
 }
+ table {
+    border-collapse: collapse; /* Asegura que los bordes no se dupliquen */
+}
 
+.celda-vacia {
+    border: none !important; /* Fuerza la eliminación de los bordes */
+    background: transparent; /* Fondo transparente */
+}
 </style>
 <body>
 
@@ -1876,6 +1883,8 @@ body {
             <tr class="header">
                 <th colspan="5">MOTOR</th>
                 <th colspan="5">BOMBAS</th>
+                                 <th colspan="2">SIGLAS</th>
+
             </tr>
             <tr>
                 <th>Parámetro</th>
@@ -1888,6 +1897,8 @@ body {
                 <th>B2</th>
                 <th>B3</th>
                 <th>B4</th>
+                      <th>LETRA</th>
+                <th>SIGNIFICADO</th>z
             </tr>
         </thead>
         <tbody>
@@ -1910,6 +1921,8 @@ body {
 <td> {{informe.impulsor_m4}}</td>
 
 
+    <td>A</td>
+    <td>AJUSTADAS</td>
 
 
 
@@ -1929,6 +1942,10 @@ body {
 <td> {{informe.sello_mecanico_b3}}</td>
 <td> {{informe.sello_mecanico_b4}}</td>
 
+  <td>C</td>
+    <td>CAMBIO</td>
+
+
 </tr>
 
 <tr>
@@ -1946,7 +1963,8 @@ body {
 <td> {{informe.empaque_2_b2}}</td>
 <td> {{informe.empaque_2_b3}}</td>
 <td> {{informe.empaque_2_b4}}</td>
-
+<td>F</td>
+ <td>FALLA</td>
 
 </tr>
 
@@ -1963,7 +1981,8 @@ body {
 <td> {{informe.carcasa_b2}}</td>
 <td> {{informe.carcasa_b3}}</td>
 <td> {{informe.carcasa_b4}}</td>
-
+<td>P</td>
+<td>PENDIENTE</td>
 
 </tr>
 
@@ -1979,7 +1998,8 @@ body {
 <td> {{informe.casquillo_b22}}</td>
 <td> {{informe.casquillo_b33}}</td>
 <td> {{informe.casquillo_b44}}</td>
-
+ <td>D</td>
+<td>DIAGNOSTICO</td>
 </tr>
 
 <tr>
@@ -1990,12 +2010,53 @@ body {
 <td> {{informe.bobinado_b3}}</td>
 <td> {{informe.bobinado_b4}}</td>
   
-    <td></td>
-    <td></td>
-    <td></td>
-    <td></td>
-    <td></td>
+   <td class="celda-vacia"></td>
+    <td class="celda-vacia"></td>
+    <td class="celda-vacia"></td>
+    <td class="celda-vacia"></td>
+    <td class="celda-vacia"></td>
+    <td>V</td>
+    <td>VERIFICADO</td>
 </tr>
+<tr>
+    <td class="celda-vacia"></td>
+    <td class="celda-vacia"></td>
+    <td class="celda-vacia"></td>
+    <td class="celda-vacia"></td>
+    <td class="celda-vacia"></td>
+    <td class="celda-vacia"></td>
+    <td class="celda-vacia"></td>
+    <td class="celda-vacia"></td>
+    <td class="celda-vacia"></td>
+    <td class="celda-vacia"></td>
+    <td>OK</td>
+    <td>OPERADO</td>
+</tr>
+<tr>
+    <td class="celda-vacia"></td>
+    <td class="celda-vacia"></td>
+    <td class="celda-vacia"></td>
+    <td class="celda-vacia"></td>
+    <td class="celda-vacia"></td>
+    <td class="celda-vacia"></td>
+    <td class="celda-vacia"></td>
+    <td class="celda-vacia"></td>
+    <td class="celda-vacia"></td>
+    <td class="celda-vacia"></td>
+    <td>N/A</td>
+    <td>NO APLICA</td>
+</tr>
+
+
+
+
+
+
+
+
+
+
+
 
         </tbody>
     </table>

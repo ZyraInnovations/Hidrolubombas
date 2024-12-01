@@ -1411,6 +1411,15 @@ body {
     box-shadow: none !important;
 }
 
+
+ table {
+    border-collapse: collapse; /* Asegura que los bordes no se dupliquen */
+}
+
+.celda-vacia {
+    border: none !important; /* Fuerza la eliminación de los bordes */
+    background: transparent; /* Fondo transparente */
+}
 </style>
 <body>
 
@@ -1642,6 +1651,8 @@ body {
                         <th colspan="5">TABLERO DE CONTROL</th>
                         <th colspan="2">HIDROSISTEMA</th>
                         <th colspan="5">SISTEMAEYECTOR</th>
+                                         <th colspan="2">SIGLAS</th>
+
                     </tr>
             <tr>
                 <th>Parámetro</th>
@@ -1656,6 +1667,8 @@ body {
                 <th>B2</th>
                 <th>B3</th>
                 <th>B4</th>
+                    <th>LETRA</th>
+                <th>SIGNIFICADO</th>
             </tr>
         </thead>
         <tbody>
@@ -1977,6 +1990,15 @@ body {
 
 
             </tr>
+
+
+    <td>A</td>
+    <td>AJUSTADAS</td>
+
+
+
+
+
 <tr>
     <td>Casquillo</td>
 
