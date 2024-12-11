@@ -332,6 +332,17 @@ color: black;
         filterTable();
     });
 </script>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const tableBody = document.querySelector('#dataTable tbody');
+        if (tableBody) {
+            const rows = Array.from(tableBody.rows);
+            // Reversa el orden de las filas
+            rows.reverse().forEach(row => tableBody.appendChild(row));
+        }
+    });
+</script>
+
 
 </body>
 </html>
