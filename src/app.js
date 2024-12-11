@@ -161,8 +161,8 @@ const { v4: uuidv4 } = require('uuid'); // Utiliza UUID para generar IDs únicos
 const transporter = nodemailer.createTransport({
     service: 'gmail',
     auth: {
-        user: 'zyrainnovations@gmail.com', // Coloca tu correo electrónico
-        pass: 'kmnbyijwafbiycza' // Coloca tu contraseña de correo electrónico
+        user: 'ingeoperativos@gmail.com', // Coloca tu correo electrónico
+        pass: 'gwkdpbzedomryivi' // Coloca tu contraseña de correo electrónico
     },
     messageId: uuidv4(), // Genera un Message-ID único para cada correo enviado
 });
@@ -427,7 +427,7 @@ app.post('/procesar-datos', upload.fields([
             });
 
             const mailOptions = {
-                from: 'zyrainnovations@gmail.com',
+                from: 'ingeoperativos@gmail.com',
                 to: correoDestino,
                 subject: `Informe de Mantenimiento N° ${insertedId}`, // Agrega el número de informe al asunto
                 text: 'Adjunto se encuentra el informe de mantenimiento en formato imagen, junto con las imágenes seleccionadas.',
@@ -1342,6 +1342,9 @@ app.get('/api/tecnico/firma/:id', async (req, res) => {
 
 
 
+
+
+
 app.get('/Consulta_informes_realizados', async (req, res) => {
     if (req.session.loggedin === true) {
         const nombreUsuario = req.session.user.name; // Usa los datos de la sesión del usuario
@@ -1382,6 +1385,9 @@ app.get('/Consulta_informes_realizados', async (req, res) => {
         res.redirect('/login');
     }
 });
+
+
+
 
 
 
