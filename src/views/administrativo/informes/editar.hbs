@@ -950,7 +950,7 @@ textarea {
 
 
 
-<form id="mantenimientoForm">
+<form method="POST" action="/actualizar-informe">
 <div class="info-row full-width">
 <div class="info-section">
 
@@ -979,6 +979,7 @@ textarea {
     <input type="text" id="correoInput" name="Correo" value="{{informe.Correo}}" readonly required>
 </div>
 
+    <input type="hidden" name="id" value="{{informe.id}}">
 
 
 <div class="info-row">
@@ -3412,12 +3413,31 @@ textarea {
   </div>
  </div>
 
-    <button type="submit" id="guardarBtn">Guardar</button>
+  <button type="submit">Actualizar Informe</button>
+  
+</form>
+
+
+
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+ <!-- Botón para enviar el formulario -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.2/html2pdf.bundle.min.js"></script>
+
+
+
+
+
+
 
 <script>
+  
+</script>
 
 
 
+<script>
 document.addEventListener('DOMContentLoaded', async function () {
     // Obtener el valor del técnico seleccionado al cargar la página
     const tecnicoSelect = document.querySelector('select[name="tecnico"]');
@@ -3510,216 +3530,6 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 
-
-
-
-
-
-
-
-
-
-    // Cuando cambia el campo de entrada de archivo (cuando se seleccionan archivos), mostramos las imágenes
-    document.getElementById('boton').addEventListener('change', function(event) {
-        const files = event.target.files;
-        const previewContainer = document.createElement('div');
-        previewContainer.id = 'preview';
-        document.body.appendChild(previewContainer);  // Añadimos el contenedor de vista previa al cuerpo
-
-        // Limpiamos las vistas previas anteriores
-        previewContainer.innerHTML = '';
-
-        // Creamos una lista de archivos para gestionar las eliminaciones
-        let fileList = Array.from(files); // Convertimos el FileList en un array
-
-        // Recorremos los archivos y creamos vistas previas de imágenes
-        fileList.forEach(function(file, index) {
-            // Solo procesamos archivos de imagen
-            if (file.type.startsWith('image/')) {
-                const reader = new FileReader();
-                
-                reader.onload = function(e) {
-                    const imgElement = document.createElement('img');
-                    imgElement.src = e.target.result; // Establece la fuente de la imagen como el archivo
-
-                    // Crear el contenedor para la imagen y el botón de eliminar
-                    const imgWrapper = document.createElement('div');
-                    imgWrapper.style.position = 'relative'; // Para posicionar la X sobre la imagen
-                    imgWrapper.appendChild(imgElement);
-
-                    // Crear el botón de eliminar (la X)
-                    const removeButton = document.createElement('button');
-                    removeButton.innerText = 'X';
-                    removeButton.style.position = 'absolute';
-                    removeButton.style.top = '5px';
-                    removeButton.style.right = '5px';
-                    removeButton.style.backgroundColor = 'red';
-                    removeButton.style.color = 'white';
-                    removeButton.style.border = 'none';
-                    removeButton.style.borderRadius = '50%';
-                    removeButton.style.width = '20px';
-                    removeButton.style.height = '20px';
-                    removeButton.style.fontSize = '12px';
-                    removeButton.style.cursor = 'pointer';
-
-                    // Cuando se haga clic en la X, eliminamos la imagen y el archivo
-                    removeButton.addEventListener('click', function() {
-                        imgWrapper.remove(); // Eliminar el contenedor de la imagen
-                        fileList.splice(index, 1); // Eliminar el archivo de la lista
-
-                        // Actualizar el input de archivo
-                        const dataTransfer = new DataTransfer();
-                        fileList.forEach(file => dataTransfer.items.add(file)); // Añadir archivos restantes
-                        document.getElementById('boton').files = dataTransfer.files; // Actualizar el input
-                    });
-
-                    // Añadimos el botón de eliminar al contenedor
-                    imgWrapper.appendChild(removeButton);
-
-                    // Añadimos la imagen con la X al contenedor de vista previa
-                    previewContainer.appendChild(imgWrapper);
-                };
-
-                reader.readAsDataURL(file); // Leemos el archivo de imagen como una URL de datos
-            }
-        });
-    });
-</script>
-
-
-  
-</form>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
-
- <!-- Botón para enviar el formulario -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.2/html2pdf.bundle.min.js"></script>
-<script>
-    // Obtener la fecha actual en formato YYYY-MM-DD
-    const hoy = new Date().toISOString().split('T')[0];
-    document.getElementById('fechaActual').value = hoy;
-</script>
-
-<script>
-    document.addEventListener('DOMContentLoaded', function () {
-        const horaEntradaInput = document.querySelector('input[name="hora_entrada"]');
-        if (horaEntradaInput) {
-            const ahora = new Date();
-            const hora = ahora.getHours().toString().padStart(2, '0');
-            const minutos = ahora.getMinutes().toString().padStart(2, '0');
-            const horaActual = `${hora}:${minutos}`;
-            horaEntradaInput.value = horaActual;
-            horaEntradaInput.focus();
-        } else {
-            console.error("El campo de 'Hora Entrada' no se encontró en el DOM.");
-        }
-    });
-</script>
-
-<script>
-    document.addEventListener('DOMContentLoaded', function () {
-        initSignaturePad('signatureCanvas2');
-    });
-
-    function initSignaturePad(canvasId) {
-        const canvas = document.getElementById(canvasId);
-        const ctx = canvas.getContext('2d');
-        let drawing = false;
-
-        canvas.addEventListener('mousedown', startDrawing);
-        canvas.addEventListener('mouseup', stopDrawing);
-        canvas.addEventListener('mousemove', draw);
-        canvas.addEventListener('touchstart', startDrawing);
-        canvas.addEventListener('touchend', stopDrawing);
-        canvas.addEventListener('touchmove', draw);
-
-        function startDrawing(event) {
-            drawing = true;
-            ctx.beginPath();
-            const rect = canvas.getBoundingClientRect();
-            const x = (event.clientX || event.touches[0].clientX) - rect.left;
-            const y = (event.clientY || event.touches[0].clientY) - rect.top;
-            ctx.moveTo(x, y);
-        }
-
-        function stopDrawing() {
-            drawing = false;
-        }
-
-        function draw(event) {
-            if (!drawing) return;
-            const rect = canvas.getBoundingClientRect();
-            const x = (event.clientX || event.touches[0].clientX) - rect.left;
-            const y = (event.clientY || event.touches[0].clientY) - rect.top;
-            ctx.lineTo(x, y);
-            ctx.stroke();
-        }
-    }
-
-    function clearCanvas(canvasId) {
-        const canvas = document.getElementById(canvasId);
-        const ctx = canvas.getContext('2d');
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-    }
-
-    function getSignatureBlobs() {
-        const firmaSupervisor = document.getElementById('signatureCanvas2').toDataURL('image/png');
-        return {  firma_supervisor: firmaSupervisor };
-    }
-
-
-function applyDesktopStyles() {
-    const reportElement = document.querySelector('.report-container');
-    reportElement.style.width = '1200px'; // Ancho fijo como en PC
-    reportElement.style.height = 'auto'; // Altura ajustada automáticamente
-    reportElement.style.transform = 'scale(1)'; // Sin escala
-    reportElement.style.transformOrigin = 'top left'; // Origen de escala
-    reportElement.style.position = 'relative'; // Asegurar posición estática
-    reportElement.style.margin = '0 auto'; // Centrar en la vista
-}
-
-function removeDesktopStyles() {
-    const reportElement = document.querySelector('.report-container');
-    reportElement.style.width = ''; // Restaurar a estilos originales
-    reportElement.style.height = '';
-    reportElement.style.transform = '';
-    reportElement.style.transformOrigin = '';
-    reportElement.style.position = '';
-    reportElement.style.margin = '';
-}
-
-
-</script>
-
-<script>
-    const tecnico = "{{name}}";
-
-    if (navigator.geolocation) {
-        setInterval(() => {
-            navigator.geolocation.getCurrentPosition(updatePosition, showError, {
-                enableHighAccuracy: true,
-                maximumAge: 0,
-                timeout: 5000,
-            });
-        }, 300000);
-    }
-
-    function updatePosition(position) {
-        const latitude = position.coords.latitude;
-        const longitude = position.coords.longitude;
-
-        fetch('/guardar_ubicacion', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ tecnico: tecnico, lat: latitude, lng: longitude }),
-        })
-            .then((response) => response.json())
-            .then((data) => console.log('Ubicación actualizada:', data))
-            .catch((error) => console.error('Error al enviar la ubicación:', error));
-    }
-
-    function showError(error) {
-        console.log('Error al obtener la ubicación:', error.message);
-    }
 </script>
 
 <script>
