@@ -1410,7 +1410,7 @@ app.get('/mostrarInforme/:id', async (req, res) => {
         if (informe.firma_supervisor) {
             informe.firma_supervisor = Buffer.from(informe.firma_supervisor).toString('base64');
         } else {
-            informe.firma_supervisor = null; // Si no hay firma, asignar null
+            informe.firma_supervisor = null; // Si no hay firma, asignar 
         }
 
         // Consultar la foto, nombre y firma del técnico en la tabla usuarios_hidro
@@ -1584,6 +1584,23 @@ app.post('/actualizar-informe', async (req, res) => {
             bobinado_b1, bobinado_b2, bobinado_b3, bobinado_b4, partes_para_cambio, observaciones,
             firma_supervisor, tipo_de_mantenimiento, Correo
         } = req.body;
+
+        console.log("Firma Supervisor:", firma_supervisor); // Esto te permitirá ver si la firma se está recibiendo correctamente
+
+     // Si hay una firma en base64, convertirla a binario
+     let firmaPath = null;
+     // Verificar si se ha recibido una nueva firma
+     if (firma_supervisor) {
+         const buffer = Buffer.from(firma_supervisor, 'base64');
+         const firmaFileName = `firma_${id}.png`;
+         firmaPath = path.join(__dirname, 'uploads', firmaFileName);
+
+         // Guardar la firma en un archivo PNG
+         fs.writeFileSync(firmaPath, buffer);
+     } else {
+         // Si no se recibe una nueva firma, conservar la firma actual
+         firmaPath = null;
+     }
 
         if (!id || isNaN(parseInt(id))) {
             return res.status(400).json({ error: "El ID es requerido y debe ser un número válido." });

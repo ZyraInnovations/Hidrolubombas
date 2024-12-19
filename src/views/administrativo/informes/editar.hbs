@@ -3390,14 +3390,24 @@ textarea {
 
 </div>
 
-  <div style="text-align: center; width: 45%;">
+ <div style="text-align: center; width: 45%;">
         {{#if informe.firma_supervisor}}
             <h3>Firma del Supervisor</h3>
-            <img src="data:image/png;base64,{{informe.firma_supervisor}}" alt="Firma Supervisor" style="max-width: 100%; height: auto;">
+            <img id="firma-supervisor" src="data:image/png;base64,{{informe.firma_supervisor}}" alt="Firma Supervisor" style="max-width: 100%; height: auto;">
+            <button type="button" id="editar-firma">Editar Firma</button>
         {{else}}
             <p>No se encontró una firma del supervisor.</p>
+            <button type="button" id="editar-firma">Agregar Firma</button>
         {{/if}}
     </div>
+    
+    <!-- Otros campos del formulario -->
+    
+    <!-- Campo oculto para almacenar la firma en base64 -->
+    <input type="hidden" id="firma-hidden" name="firma_supervisor" />
+    
+
+
 </div>
 
 </div>
@@ -3413,13 +3423,24 @@ textarea {
   </div>
  </div>
 
+<!-- Modal para la firma -->
+
+
+
+
+
   <button type="submit">Actualizar Informe</button>
   
 </form>
+<!-- Modal para la firma -->
 
-
-
-
+<div id="modal-firma" style="display:none;">
+    <h3>Firma del Supervisor</h3>
+    <canvas id="firma-canvas" width="400" height="200" style="border:1px solid #000;"></canvas>
+    <br>
+    <button id="cancelar-firma">Cancelar</button>
+    <button id="limpiar-firma">Limpiar</button>
+</div>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
  <!-- Botón para enviar el formulario -->
@@ -3432,12 +3453,152 @@ textarea {
 
 
 <script>
-  
+    // Variables para gestionar el estado de la firma
+let isDrawing = false;
+let lastX = 0;
+let lastY = 0;
+
+// Función para comenzar a firmar
+function startDrawing(e) {
+    isDrawing = true;
+    lastX = e.offsetX || e.touches[0].clientX - e.target.offsetLeft;  // Ajuste para dispositivos táctiles
+    lastY = e.offsetY || e.touches[0].clientY - e.target.offsetTop;  // Ajuste para dispositivos táctiles
+}
+
+// Función para dibujar en el canvas
+function draw(e) {
+    if (!isDrawing) return;
+
+    const canvas = document.getElementById('firma-canvas');
+    const ctx = canvas.getContext('2d');
+
+    const currentX = e.offsetX || e.touches[0].clientX - e.target.offsetLeft;  // Ajuste para dispositivos táctiles
+    const currentY = e.offsetY || e.touches[0].clientY - e.target.offsetTop;  // Ajuste para dispositivos táctiles
+
+    ctx.beginPath();
+    ctx.moveTo(lastX, lastY);
+    ctx.lineTo(currentX, currentY);
+    ctx.stroke();
+
+    lastX = currentX;
+    lastY = currentY;
+}
+
+// Función para dejar de dibujar
+function stopDrawing() {
+    isDrawing = false;
+}
+
+// Limpiar el canvas
+document.getElementById('limpiar-firma').addEventListener('click', function() {
+    const canvas = document.getElementById('firma-canvas');
+    const ctx = canvas.getContext('2d');
+    ctx.clearRect(0, 0, canvas.width, canvas.height); // Limpiar el canvas
+
+    // Limpiar el campo oculto para asegurarse de que no se envíe la firma anterior
+    document.getElementById('firma-hidden').value = '';
+});
+
+// Cuando el modal de firma se abra, se limpiará el canvas y se habilitará la firma
+document.getElementById('editar-firma').addEventListener('click', function() {
+    // Mostrar el modal de firma
+    document.getElementById('modal-firma').style.display = 'block';
+
+    // Limpiar el canvas
+    const canvas = document.getElementById('firma-canvas');
+    const ctx = canvas.getContext('2d');
+    ctx.clearRect(0, 0, canvas.width, canvas.height); // Limpiar el canvas
+
+    // Limpiar el campo oculto para asegurarse de que no se envíe la firma anterior
+    document.getElementById('firma-hidden').value = '';
+
+    // Habilitar los eventos de firma
+    canvas.addEventListener('mousedown', startDrawing);
+    canvas.addEventListener('mousemove', draw);
+    canvas.addEventListener('mouseup', stopDrawing);
+    canvas.addEventListener('mouseout', stopDrawing);
+
+    // Para dispositivos táctiles
+    canvas.addEventListener('touchstart', startDrawing);
+    canvas.addEventListener('touchmove', draw);
+    canvas.addEventListener('touchend', stopDrawing);
+    canvas.addEventListener('touchcancel', stopDrawing);
+});
+
+// Cuando el formulario se envíe, actualizar el campo oculto con la firma en base64
+document.getElementById('miFormulario').addEventListener('submit', function(event) {
+    event.preventDefault(); // Evitar que el formulario se envíe antes de procesar la firma
+
+    const canvas = document.getElementById('firma-canvas');
+ const firmaBase64 = canvas.toDataURL('image/png').split(',')[1];
+console.log(firmaBase64); // Verifica que la firma se está generando
+
+    // Si hay una firma válida, actualizar el campo oculto
+    if (firmaBase64 && firmaBase64 !== 'data:image/png;base64,') {
+        document.getElementById('firma-hidden').value = firmaBase64;
+
+        // Enviar el formulario después de asignar la firma en base64
+        document.getElementById('miFormulario').submit();
+    } else {
+        alert("Por favor, firme antes de enviar.");
+    }
+});
+
+// Función para cancelar la edición de la firma
+document.getElementById('cancelar-firma').addEventListener('click', function() {
+    document.getElementById('modal-firma').style.display = 'none';
+});
+
+// Función para cargar la firma en el canvas si existe
+function cargarFirmaCanvas(firmaBase64) {
+    const canvas = document.getElementById('firma-canvas');
+    const ctx = canvas.getContext('2d');
+    const img = new Image();
+    img.onload = function() {
+        ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+    };
+    img.src = 'data:image/png;base64,' + firmaBase64;
+}
+
+// Función para cargar la firma previa en el canvas si existe
+function cargarFirmaPrevia() {
+    const firmaBase64 = document.getElementById('firma-hidden').value;
+    if (firmaBase64) {
+        cargarFirmaCanvas(firmaBase64);
+    }
+}
+
+// Cuando el modal de firma se abra, cargar la firma previa si existe
+document.getElementById('editar-firma').addEventListener('click', function() {
+    // Mostrar el modal de firma
+    document.getElementById('modal-firma').style.display = 'block';
+
+    // Cargar la firma previa en el canvas
+    cargarFirmaPrevia();
+
+    // Limpiar el campo oculto para asegurarse de que no se envíe la firma anterior
+    document.getElementById('firma-hidden').value = '';
+
+    // Habilitar los eventos de firma
+    const canvas = document.getElementById('firma-canvas');
+    canvas.addEventListener('mousedown', startDrawing);
+    canvas.addEventListener('mousemove', draw);
+    canvas.addEventListener('mouseup', stopDrawing);
+    canvas.addEventListener('mouseout', stopDrawing);
+
+    // Para dispositivos táctiles
+    canvas.addEventListener('touchstart', startDrawing);
+    canvas.addEventListener('touchmove', draw);
+    canvas.addEventListener('touchend', stopDrawing);
+    canvas.addEventListener('touchcancel', stopDrawing);
+});
+
 </script>
 
 
 
 <script>
+    
 document.addEventListener('DOMContentLoaded', async function () {
     // Obtener el valor del técnico seleccionado al cargar la página
     const tecnicoSelect = document.querySelector('select[name="tecnico"]');
