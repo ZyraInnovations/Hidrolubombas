@@ -1619,13 +1619,24 @@ app.post('/actualizar-informe', async (req, res) => {
         if (result.affectedRows === 0) {
             return res.status(404).json({ error: "No se encontró ningún informe con ese ID." });
         }
+        res.redirect(`/mostrarInforme/${id}`);
 
-        res.json({ message: "Informe actualizado con éxito." });
     } catch (err) {
         console.error("Error en la actualización:", err);
         res.status(500).json({ error: "Hubo un error al actualizar el informe." });
     }
 });
+
+
+
+
+
+
+
+
+
+
+
 
 // Iniciar el servidor
 app.listen(3000, () => {
