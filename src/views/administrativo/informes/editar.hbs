@@ -1,0 +1,3863 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registro de Mantenimiento</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary-color: #0769B3;
+      --accent-color: #6da8d6;
+      --text-color: #333;
+      --bg-color: #f0f0f0;
+      --border-color: #ccc;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Roboto', sans-serif;
+    }
+
+    body {
+      background-color: white;
+      color: var(--text-color);
+      padding: 10px;
+      overflow-x: hidden;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 98vw;
+      margin: 0 auto;
+      background: #fff;
+      padding: 20px;
+      border-radius: 15px;
+      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+    }
+
+    .header-info {
+      text-align: center;
+      margin-bottom: 10px;
+    }
+
+    .info-section {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin-bottom: 10px;
+    }
+
+    .info-row input, .info-row select {
+      width: 100%;
+      padding: 8px;
+      border: 1px solid var(--border-color);
+      border-radius: 5px;
+      font-size: 14px;
+    }
+
+    .table-container {
+      overflow-x: auto;
+    }
+
+    .combined-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 12px;
+      table-layout: fixed;
+    }
+
+    .combined-table th, .combined-table td {
+      border: 1px solid var(--border-color);
+      padding: 5px;
+      text-align: center;
+      word-wrap: break-word;
+    }
+
+    .header {
+      background-color: var(--accent-color);
+      color: white;
+      font-weight: bold;
+    }
+
+    h2, h3 {
+      font-size: 16px;
+      text-align: center;
+      margin: 10px 0;
+    }
+
+    .btn {
+      background-color: #4CAF50;
+      color: white;
+      padding: 10px 20px;
+      font-size: 14px;
+      font-weight: bold;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      transition: background-color 0.3s ease;
+      display: inline-block;
+      margin-top: 20px;
+    }
+
+    .btn:hover {
+      background-color: #45a049;
+    }
+
+    .signature-section {
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+      margin-top: 20px;
+    }
+
+    .signature-section canvas {
+      border: 1px solid var(--border-color);
+      width: 100%;
+      height: 100px;
+    }
+
+    @media (max-width: 768px) {
+      .info-section {
+    grid-template-columns: 1fr 1fr; /* Dos columnas también en pantallas pequeñas */
+      }
+
+      .combined-table th, .combined-table td {
+        padding: 3px;
+      }
+
+      h2, h3 {
+        font-size: 14px;
+      }
+
+      .btn {
+        font-size: 12px;
+        padding: 8px 16px;
+      }
+    }
+
+/* Estilo de los inputs y selects en tamaño pequeño para las tablas y otros campos */
+.input-field, .status-input, textarea {
+    width: 100%;
+    padding: 3px;
+    font-size: 8px; /* Tamaño pequeño para evitar superposición */
+    border: 1px solid var(--border-color);
+    border-radius: 3px;
+    box-sizing: border-box;
+}
+
+/* Estilo para los inputs y selects en .info-section con tamaño normal */
+.info-section .info-row input, .info-section .info-row select {
+    width: 100%;
+    padding: 8px; /* Tamaño original en .info-section */
+    font-size: 12px;
+    border: 1px solid var(--border-color);
+    border-radius: 5px;
+    box-sizing: border-box;
+}
+
+/* Ajustes de tabla para que los inputs no se solapen */
+.combined-table {
+    width: 100%;
+    table-layout: fixed;
+    font-size: 8px;
+}
+
+.combined-table th, .combined-table td {
+    border: 1px solid var(--border-color);
+    padding: 2px; /* Relleno reducido para evitar solapamientos */
+    text-align: center;
+    word-wrap: break-word;
+}
+
+/* Ajustes adicionales para evitar desbordamientos en dispositivos móviles */
+@media (max-width: 768px) {
+    .info-section {
+        grid-template-columns: 1fr; /* Columnas individuales en pantallas pequeñas */
+    }
+
+    .combined-table th, .combined-table td {
+        padding: 1px; /* Relleno aún menor para móviles */
+        font-size: 7px; /* Reducir el tamaño de fuente en móviles */
+    }
+}
+/* Estilo para la sección de firma, con los campos uno al lado del otro */
+.signature-section {
+    display: flex;
+    justify-content: space-between;
+    align-items: center; /* Alineación vertical en el centro */
+    gap: 10px;
+    margin-top: 20px;
+}
+
+.signature-section > div {
+    text-align: center;
+    width: 45%; /* Espacio suficiente para que ambos campos se alineen horizontalmente */
+}
+
+.signature-section canvas {
+    border: 1px solid var(--border-color);
+    width: 100%;
+    height: 100px;
+}
+   /* Estilos necesarios para la firma */
+        .signature-section {
+            display: flex;
+            justify-content: space-between;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        .signature-section canvas {
+            border: 1px solid #000;
+            cursor: crosshair; /* Cambia el cursor al pasar por el área de firma */
+            width: 100%;
+            height: 100px;
+        }
+
+
+
+
+
+.botonn {
+    display: inline-block;
+    padding: 12px 20px;
+    font-size: 16px;
+    font-weight: bold;
+    color: #ffffff;
+    background-color: #4caf50; /* Verde profesional */
+    border: none;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.botonn:hover {
+    background-color: #45a049; /* Verde más oscuro */
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+    transform: translateY(-2px); /* Pequeña elevación */
+}
+
+.botonn:active {
+    background-color: #388e3c; /* Verde más intenso */
+    transform: translateY(0); /* Sin elevación */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+  </style>
+
+<style>
+    
+</style>
+
+<style>
+    .image-preview-container {
+        margin-top: 20px;
+    }
+
+    #preview img {
+        max-width: 150px;
+        max-height: 150px;
+        border: 1px solid #ccc;
+        border-radius: 10px;
+        object-fit: cover;
+    }
+
+    #preview {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+    }
+</style>
+
+<style>
+    .image-preview-container {
+        margin-top: 20px;
+        text-align: center;
+    }
+
+    .custom-label {
+        display: inline-block;
+        padding: 10px 20px;
+        background-color: #0769B3;
+        color: #ffffff;
+        font-size: 14px;
+        font-weight: bold;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        text-transform: uppercase;
+    }
+
+    .custom-label:hover {
+        background-color: #035b94;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+    }
+
+    .custom-file-input {
+        display: none;
+    }
+
+    #preview {
+        margin-top: 10px;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        justify-content: center;
+    }
+
+    #preview img {
+        max-width: 150px;
+        max-height: 150px;
+        border-radius: 8px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        border: 1px solid #ccc;
+        object-fit: cover;
+        position: relative;
+    }
+
+    .remove-btn {
+        position: absolute;
+        top: 5px;
+        right: 5px;
+        background: red;
+        color: white;
+        border: none;
+        border-radius: 50%;
+        width: 20px;
+        height: 20px;
+        cursor: pointer;
+        font-size: 12px;
+        line-height: 20px;
+        text-align: center;
+    }
+    #preview {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+#preview img {
+    max-width: 150px;
+    max-height: 150px;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    object-fit: cover;
+}
+
+.remove-btn {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    background: red;
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 20px;
+    height: 20px;
+    cursor: pointer;
+    font-size: 12px;
+    line-height: 20px;
+    text-align: center;
+}
+.remove-btn {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    background: red;
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 20px;
+    height: 20px;
+    cursor: pointer;
+    font-size: 12px;
+    line-height: 20px;
+    text-align: center;
+}
+
+</style>
+
+<style>
+    /* Ocultar el input original de archivos */
+    .custom-file-input {
+        display: none;
+    }
+
+    /* Estilo personalizado para el botón */
+    .custom-label {
+        display: inline-block;
+        padding: 12px 20px;
+        font-size: 16px;
+        font-weight: bold;
+        color: #fff;
+        background-color: #0769B3; /* Color primario */
+        border-radius: 8px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+    }
+
+    .custom-label:hover {
+        background-color: #035b94; /* Color más oscuro al pasar el ratón */
+        transform: translateY(-2px);
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+    }
+
+    /* Estilo para el contenedor de vista previa de imágenes */
+    #preview {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        margin-top: 20px;
+        justify-content: center;
+    }
+
+    #preview img {
+        max-width: 150px;
+        max-height: 150px;
+        border: 1px solid #ccc;
+        border-radius: 10px;
+        object-fit: cover;
+        position: relative;
+    }
+
+    /* Estilo para el botón de eliminación (X) */
+    .remove-btn {
+        position: absolute;
+        top: 5px;
+        right: 5px;
+        background: red;
+        color: white;
+        border: none;
+        border-radius: 50%;
+        width: 20px;
+        height: 20px;
+        cursor: pointer;
+        font-size: 12px;
+        line-height: 20px;
+        text-align: center;
+    }
+
+    .remove-btn:hover {
+        background-color: #ff4d4d; /* Rojo más brillante cuando se pasa el ratón */
+    }
+
+
+select {
+  -webkit-appearance: none; /* Oculta la flecha en navegadores WebKit */
+  -moz-appearance: none; /* Oculta la flecha en navegadores Firefox */
+  appearance: none; /* Oculta la flecha en navegadores modernos */
+  background: none; /* Elimina el fondo para personalizar si es necesario */
+  border: 1px solid #ccc; /* Opcional: agrega un borde personalizado */
+  padding: 10px; /* Espacio interno */
+  border-radius: 4px; /* Bordes redondeados */
+  cursor: pointer; /* Cambia el cursor a pointer */
+  text-align: center; /* Centra el texto horizontalmente */
+  color: black; /* Cambia el color del texto a negro */
+  font-size: 16px; /* Tamaño de fuente */
+  font-weight: bold; /* Aplica negrilla al texto */
+  line-height: 1.5; /* Altura de línea para centrar mejor el texto verticalmente */
+}
+
+/* Opcional: Asegurar que las opciones también tengan negrilla */
+select option {
+  font-weight: bold; /* Aplica negrilla a las opciones */
+  text-align: center; /* Centra las opciones del menú desplegable */
+}
+
+
+
+ .marcar {
+    position: relative;
+    z-index: 1; /* Asegúrate de que el contenido esté por encima del pseudo-elemento */
+}
+
+.marcar::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: url('imagenes/logo_ingenieria.jpeg-removebg-preview.png') no-repeat center center;
+    background-size: contain;
+    opacity: 0.1; /* Ajusta la opacidad solo de la marca de agua */
+    pointer-events: none; /* Evita que el pseudo-elemento interfiera con el contenido */
+    z-index: -1; /* Envía el pseudo-elemento detrás del contenido */
+}
+
+
+
+
+
+/* Reducir el tamaño de los elementos select */
+select.input-field, select.hidrosistema-input {
+  font-size: 10px; /* Reducir el tamaño de la fuente */
+  padding: 1px; /* Reducir el relleno interno */
+  height: 16px; /* Disminuir la altura */
+  border-radius: 3px; /* Bordes ligeramente redondeados */
+  line-height: 1; /* Compactar la altura de línea */
+}
+
+
+/* Reducir el tamaño de las opciones en los select */
+select.input-field option, select.hidrosistema-input option {
+  font-size: 12px; /* Tamaño de fuente de las opciones */
+}
+
+
+
+
+
+
+
+/* Ajustar el padding y espaciado en las celdas de la tabla SOLO en modo PDF */
+.pdf-mode .combined-table th,
+.pdf-mode .combined-table td {
+  border: 1px solid var(--border-color);
+  padding: 4px; /* Incrementar el padding */
+  text-align: center;
+  word-wrap: break-word;
+  line-height: 1.5; /* Aumentar el espacio vertical entre líneas */
+  font-weight: bold; /* Aplicar negrita */
+}
+
+/* Asegurar que las tablas ocupen todo el ancho disponible SOLO en modo PDF */
+.pdf-mode .combined-table {
+  width: 100%;
+  border-collapse: separate; /* Separar las celdas para más espacio */
+  padding: 4px; /* Incrementar el padding */
+}
+
+/* Reducir el tamaño del texto en dispositivos móviles para evitar montarse SOLO en modo PDF */
+@media (max-width: 768px) {
+  .pdf-mode .combined-table th,
+  .pdf-mode .combined-table td {
+    font-size: 10px; /* Tamaño de fuente más pequeño */
+    padding: 4px; /* Incrementar el padding */
+    font-weight: bold; /* Aplicar negrita */
+  }
+}
+
+/* Mejorar el diseño de los inputs y selects dentro de las tablas SOLO en modo PDF */
+.pdf-mode .input-field,
+.pdf-mode .hidrosistema-input,
+.pdf-mode textarea {
+  padding: 6px; /* Incrementar el padding interno */
+  font-size: 12px; /* Tamaño de fuente legible */
+  border-radius: 5px; /* Bordes redondeados */
+  box-sizing: border-box;
+  font-weight: bold; /* Aplicar negrita */
+}
+
+/* Inputs más compactos en móviles SOLO en modo PDF */
+@media (max-width: 768px) {
+  .pdf-mode .input-field,
+  .pdf-mode .hidrosistema-input {
+    padding: 4px;
+    font-size: 10px;
+    font-weight: bold; /* Aplicar negrita */
+  }
+}
+
+
+.pdf-mode input {
+    display: none;
+}
+
+.pdf-mode span {
+    display: inline-block;
+    font-size: 14px;
+    color: #333;
+}
+
+
+.pdf-mode select, .pdf-mode input {
+    display: none;
+}
+
+.pdf-mode span {
+    display: inline-block;
+    font-size: 14px;
+    color: #333;
+    border: 1px solid #ddd;
+    padding: 4px;
+}
+.pdf-mode select,
+.pdf-mode input {
+    display: none; /* Ocultar los select y input en el modo de captura */
+}
+
+.pdf-mode span {
+    display: inline-block;
+    border: none; /* Sin bordes */
+    background: none; /* Fondo transparente */
+    padding: 0; /* Sin relleno */
+    font-size: 14px; /* Tamaño de texto adecuado */
+    color: #333; /* Color del texto */
+}
+.pdf-mode {
+    width: 1280px !important; /* Ancho de PC */
+    font-size: 16px !important; /* Tamaño de fuente estándar */
+    margin: 0 auto !important; /* Centrado */
+    border: none !important;
+    box-shadow: none !important;
+}
+.info-row.full-width {
+  grid-column: span 2; /* Este campo ocupará ambas columnas */
+}
+.info-section {
+  display: grid;
+  grid-template-columns: 1fr 1fr; /* Dos columnas por defecto */
+  gap: 10px; /* Espaciado entre filas y columnas */
+  margin-bottom: 10px;
+}
+
+@media (max-width: 480px) {
+  .info-section {
+    grid-template-columns: 1fr 1fr; /* Mantener dos columnas también en celulares */
+    gap: 5px; /* Reducir el espaciado en celulares */
+  }
+}
+
+.info-row.full-width {
+  grid-column: span 2; /* Este campo ocupará ambas columnas si es necesario */
+}
+    .company-info {
+        text-align: center;
+        margin-bottom: 10px;
+        font-size: 16px;
+        font-weight: bold;
+        color: var(--primary-color);
+    }
+
+    /* Estilo para el logo */
+    .header-info {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 15px;
+        margin-bottom: 20px;
+    }
+
+    .header-info .logo img {
+        max-width: 150px;
+        max-height: 150px;
+        border-radius: 10px;
+        border: 2px solid var(--primary-color);
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    /* Estilo para el contenedor general */
+    .report-container {
+        margin: 20px 0;
+        padding: 10px;
+        background-color: #f9f9f9;
+        border: 1px solid var(--border-color);
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .marcar {
+        position: relative;
+        z-index: 1;
+        padding: 10px;
+        background: linear-gradient(135deg, #ffffff, #f0f4f9);
+        border-radius: 15px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+    .logo-container {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    width: 100px; /* Ajusta el tamaño del contenedor */
+    height: auto;
+    z-index: 10;
+}
+
+#logo {
+    width: 100%; /* Asegura que el logo se ajuste al tamaño del contenedor */
+    height: auto;
+    object-fit: contain; /* Mantén la proporción del logo */
+    border-radius: 5px; /* Opcional: bordes redondeados */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); /* Opcional: sombra para hacerlo destacar */
+}
+
+
+
+
+
+
+.photo-section {
+    display: flex;
+    justify-content: space-around;
+    margin-top: 20px;
+    gap: 20px;
+}
+
+.photo-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+}
+
+.photo-container img {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid var(--primary-color);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.photo-label {
+    margin-top: 10px;
+    font-size: 14px;
+    font-weight: bold;
+    color: var(--primary-color);
+}
+.signature-section {
+    display: flex;
+    justify-content: space-around;
+    gap: 20px;
+    margin-top: 20px;
+}
+
+.signature-container {
+    position: relative;
+    width: 300px;
+    height: 120px;
+    border: 1px solid rgba(0, 0, 0, 0.2);
+    border-radius: 10px;
+    background: rgba(255, 255, 255, 0.8);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+}
+
+.signature-container canvas {
+    width: 100%;
+    height: 100%;
+    cursor: crosshair;
+    background: transparent;
+    border-radius: 10px;
+}
+
+.signature-container .signature-label {
+    position: absolute;
+    bottom: 10px;
+    left: 10px;
+    font-size: 12px;
+    color: rgba(0, 0, 0, 0.5);
+    font-style: italic;
+    pointer-events: none;
+}
+
+.clear-btn {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    background: rgba(255, 0, 0, 0.8);
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 25px;
+    height: 25px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 12px;
+    cursor: pointer;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    transition: background 0.3s;
+}
+
+.clear-btn:hover {
+    background: rgba(255, 0, 0, 1);
+}
+
+.clear-btn:active {
+    background: rgba(200, 0, 0, 1);
+}
+.loading-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+}
+
+.spinner {
+    width: 50px;
+    height: 50px;
+    border: 5px solid rgba(255, 255, 255, 0.3);
+    border-top: 5px solid #fff;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
+}
+/* General Styles */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f9f9f9;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+/* Radio Group Container */
+.radio-group {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+/* Label Styles */
+/* Label Styles */
+.radio-label {
+    display: flex;
+    align-items: center;
+    font-size: 16px;
+    color: #000; /* Letra negra */
+    cursor: pointer;
+    position: relative;
+    padding: 10px 35px; /* Espaciado interno */
+    background-color: #fff; /* Fondo blanco */
+    border: 1px solid #ddd; /* Borde sutil */
+    border-radius: 5px; /* Bordes redondeados */
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* Custom Radio Button */
+.custom-radio {
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 20px;
+    height: 20px;
+    border: 2px solid #90c9a7;
+    border-radius: 50%;
+    background-color: #fff;
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* Selected State */
+.radio-label input[type="radio"]:checked + .custom-radio {
+    background-color: #90c9a7;
+    box-shadow: 0 0 0 4px rgba(144, 201, 167, 0.2);
+}
+
+/* Hide Native Radio */
+.radio-label input[type="radio"] {
+    position: absolute;
+    opacity: 0;
+    cursor: pointer;
+}
+
+/* Button Styles */
+.btn-submit {
+    background-color: #413d4b;
+    color: #fff;
+    padding: 10px 20px;
+    font-size: 16px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.btn-submit:hover {
+    background-color: #90c9a7;
+    color: #413d4b;
+}
+textarea {
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    resize: none; /* Opcional: Para evitar que el usuario redimensione el área */
+}
+.additional-field textarea {
+    width: 100%;
+    height: auto;
+    max-height: 200px; /* Limita la altura máxima */
+    overflow-y: auto; /* Habilita el scroll si el contenido excede el tamaño */
+}
+textarea {
+    font-family: Arial, sans-serif;
+    font-size: 12px;
+    line-height: 1.5;
+}
+ table {
+    border-collapse: collapse; /* Asegura que los bordes no se dupliquen */
+}
+
+.celda-vacia {
+    border: none !important; /* Fuerza la eliminación de los bordes */
+    background: transparent; /* Fondo transparente */
+}
+
+</style>
+
+</head>
+<body>
+
+
+
+
+    <div class="report-container">
+          <div class="marcar">
+        <!-- Company information section -->
+        <div class="company-info">
+            <strong>INGENIERÍA HIDRAULIBOMBAS S.A.S</strong><br>
+            NIT: 901.454.224-1
+        </div>
+        <div class="header-info">
+        <div class="logo-container">
+        <img id="logo" src="imagenes/logo_ingenieria.jpeg-removebg-preview.png" alt="Logo" />
+        </div>
+
+
+
+
+<form id="maintenanceForm">
+<div class="info-row full-width">
+<div class="info-section">
+
+
+
+  <div class="info-row">
+    <strong>Cliente:</strong>
+    <select name="cliente" id="clienteSelect" onchange="fetchClienteInfo()" required>
+        <option value="" disabled selected>Seleccione un cliente</option>
+        {{#each clientes}}
+            <option value="{{this.id}}" {{#if (eq this.id informe.cliente)}}selected{{/if}}>{{this.nombre}}</option>
+        {{/each}}
+    </select>
+</div>
+
+
+
+
+
+<div class="info-row">
+    <strong>Torre:</strong> 
+    <input type="text" name="torre" value="{{informe.torre}}" required>
+</div>
+
+
+
+    
+<div class="info-row">
+    <strong>Correo:</strong>
+    <input type="text" id="correoInput" name="Correo" value="{{informe.Correo}}" readonly required>
+</div>
+
+
+
+<div class="info-row">
+    <strong>Tipo de Mantenimiento:</strong>
+    <select name="tipo_de_mantenimiento" value="{{informe.tipo_de_mantenimiento}}" required>
+        <option value="">Seleccione un tipo</option>
+        <option value="Preventivo" {{#if (eq informe.tipo_de_mantenimiento "Preventivo")}}selected{{/if}}>Preventivo</option>
+        <option value="Correctivo" {{#if (eq informe.tipo_de_mantenimiento "Correctivo")}}selected{{/if}}>Correctivo</option>
+        <option value="Emergencia" {{#if (eq informe.tipo_de_mantenimiento "Emergencia")}}selected{{/if}}>Emergencia</option>
+        <option value="Otro" {{#if (eq informe.tipo_de_mantenimiento "Otro")}}selected{{/if}}>Otro</option>
+    </select>
+</div>
+
+
+
+
+<div class="info-row">
+    <strong>Equipo:</strong>
+    <select name="equipo" id="equipoSelect" required>
+        <option value="" disabled {{#if (not informe.equipo)}}selected{{/if}}>Seleccione un equipo</option>
+        <option value="Equipo de presión de agua potable" {{#if (eq informe.equipo "Equipo de presión de agua potable")}}selected{{/if}}>Equipo de presión de agua potable</option>
+        <option value="Sistema eyector" {{#if (eq informe.equipo "Sistema eyector")}}selected{{/if}}>Sistema eyector</option>
+        <option value="Equipo de presión y eyector" {{#if (eq informe.equipo "Equipo de presión y eyector")}}selected{{/if}}>Equipo de presión y eyector</option>
+        <option value="Equipo Hidro Flo" {{#if (eq informe.equipo "Equipo Hidro Flo")}}selected{{/if}}>Equipo Hidro Flo</option>
+        <option value="Equipo Hi press" {{#if (eq informe.equipo "Equipo Hi press")}}selected{{/if}}>Equipo Hi press</option>
+        <option value="Lavado y desinfección de tanques de abastecimiento" {{#if (eq informe.equipo "Lavado y desinfección de tanques de abastecimiento")}}selected{{/if}}>Lavado y desinfección de tanques de abastecimiento</option>
+        <option value="Lavado de cajas de aguas residuales" {{#if (eq informe.equipo "Lavado de cajas de aguas residuales")}}selected{{/if}}>Lavado de cajas de aguas residuales</option>
+        <option value="Tubería de aguas negras o residuales" {{#if (eq informe.equipo "Tubería de aguas negras o residuales")}}selected{{/if}}>Tubería de aguas negras o residuales</option>
+        <option value="Sistema de Detección de red contra incendios" {{#if (eq informe.equipo "Sistema de Detección de red contra incendios")}}selected{{/if}}>Sistema de Detección de red contra incendios</option>
+        <option value="Sistema de Extinción de red contra incendios" {{#if (eq informe.equipo "Sistema de Extinción de red contra incendios")}}selected{{/if}}>Sistema de Extinción de red contra incendios</option>
+    </select>
+</div>
+
+<div class="info-row">
+    <strong>Técnico:</strong>
+    <select id="tecnico-select" name="tecnico" required>
+        <option value="" disabled {{#if selectedTecnicoId}} selected {{/if}}>Seleccione un técnico</option>
+        {{#each tecnicos}}
+            <option value="{{this.id}}" {{#if (eq this.id ../selectedTecnicoId)}}selected{{/if}}>{{this.nombre}}</option>
+        {{/each}}
+    </select>
+</div>
+
+
+
+
+
+<div class="info-row">
+    <strong>Hora Entrada:</strong> 
+    <input type="time" name="hora_entrada" value="{{informe.hora_entrada}}" required autofocus>
+</div>
+
+ <div class="info-row">
+    <strong>Hora Salida:</strong> 
+    <input type="time" name="hora_salida" value="{{informe.hora_salida}}" required>
+</div>
+
+<div class="info-row">
+    <strong>Fecha:</strong>
+    <input type="date" name="fecha" id="fechaActual" value="{{informe.fecha}}" required>
+</div>
+
+</div>
+</div>
+
+
+
+
+<div class="photo-section">
+
+
+
+
+
+
+    <div class="photo-container">
+        <div class="photo-label">Foto del Cliente</div>
+    <img id="clientPhoto" src="" alt="Foto del Cliente">
+</div>
+
+
+
+
+
+
+
+
+
+    <div class="photo-container"> 
+        <div class="photo-label">Foto del Técnico</div>
+        <img id="technicianPhoto" src="default-technician.jpg" alt="Foto del Técnico">
+    </div>
+
+
+
+        </div>
+
+        <div class="registro-container">
+            <h2>Registro de Mantenimiento</h2>
+        </div>
+
+        <div class="table-container">
+            <table class="combined-table">
+                <thead>
+                    <tr class="header">
+                       <strong><th  colspan="5">TABLERO DE CONTROL</th></strong>
+                        <th colspan="2">HIDROSISTEMA</th>
+                        <th colspan="5">SISTEMAEYECTOR</th>
+                    </tr>
+            <tr>
+                <th>Parámetro</th>
+                <th>B1</th>
+                <th>B2</th>
+                <th>B3</th>
+                <th>B4</th>
+                <th>Descripción</th>
+                <th>Estado</th>
+                <th>Parámetro</th>
+                <th>B1</th>
+                <th>B2</th>
+                <th>B3</th>
+                <th>B4</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+        <td>Variador</td>
+<td>
+  <select class="input-field" name="variador_b1">
+    <option value="" selected>{{#if informe.variador_b1}} {{informe.variador_b1}} {{else}} {{/if}}</option>
+    <option value="A" {{#if (eq informe.variador_b1 "A")}}selected{{/if}}>A</option>
+    <option value="C" {{#if (eq informe.variador_b1 "C")}}selected{{/if}}>C</option>
+    <option value="F" {{#if (eq informe.variador_b1 "F")}}selected{{/if}}>F</option>
+    <option value="P" {{#if (eq informe.variador_b1 "P")}}selected{{/if}}>P</option>
+    <option value="D" {{#if (eq informe.variador_b1 "D")}}selected{{/if}}>D</option>
+    <option value="V" {{#if (eq informe.variador_b1 "V")}}selected{{/if}}>V</option>
+    <option value="OK" {{#if (eq informe.variador_b1 "OK")}}selected{{/if}}>OK</option>
+    <option value="N/A" {{#if (eq informe.variador_b1 "N/A")}}selected{{/if}}>N/A</option>
+  </select>
+</td>
+
+
+
+<td>
+  <select class="input-field" name="variador_b2">
+    <option value="" {{#if informe.variador_b2}}>{{informe.variador_b2}}{{else}} selected{{/if}}</option>
+    <option value="A" {{#if (eq informe.variador_b2 "A")}}selected{{/if}}>A</option>
+    <option value="C" {{#if (eq informe.variador_b2 "C")}}selected{{/if}}>C</option>
+    <option value="F" {{#if (eq informe.variador_b2 "F")}}selected{{/if}}>F</option>
+    <option value="P" {{#if (eq informe.variador_b2 "P")}}selected{{/if}}>P</option>
+    <option value="D" {{#if (eq informe.variador_b2 "D")}}selected{{/if}}>D</option>
+    <option value="V" {{#if (eq informe.variador_b2 "V")}}selected{{/if}}>V</option>
+    <option value="OK" {{#if (eq informe.variador_b2 "OK")}}selected{{/if}}>OK</option>
+    <option value="N/A" {{#if (eq informe.variador_b2 "N/A")}}selected{{/if}}>N/A</option>
+  </select>
+</td>
+
+
+
+
+
+<td>
+  <select class="input-field" name="variador_b3">
+    <option value="" {{#if informe.variador_b3}}>{{informe.variador_b3}}{{else}} selected{{/if}}></option>
+    <option value="A" {{#if (eq informe.variador_b3 "A")}}selected{{/if}}>A</option>
+    <option value="C" {{#if (eq informe.variador_b3 "C")}}selected{{/if}}>C</option>
+    <option value="F" {{#if (eq informe.variador_b3 "F")}}selected{{/if}}>F</option>
+    <option value="P" {{#if (eq informe.variador_b3 "P")}}selected{{/if}}>P</option>
+    <option value="D" {{#if (eq informe.variador_b3 "D")}}selected{{/if}}>D</option>
+    <option value="V" {{#if (eq informe.variador_b3 "V")}}selected{{/if}}>V</option>
+    <option value="OK" {{#if (eq informe.variador_b3 "OK")}}selected{{/if}}>OK</option>
+    <option value="N/A" {{#if (eq informe.variador_b3 "N/A")}}selected{{/if}}>N/A</option>
+  </select>
+</td>
+
+
+<td>
+  <select class="input-field" name="variador_b4">
+    <option value="" {{#if informe.variador_b4}}>{{informe.variador_b4}}{{else}} selected{{/if}}></option>
+    <option value="A" {{#if (eq informe.variador_b4 "A")}}selected{{/if}}>A</option>
+    <option value="C" {{#if (eq informe.variador_b4 "C")}}selected{{/if}}>C</option>
+    <option value="F" {{#if (eq informe.variador_b4 "F")}}selected{{/if}}>F</option>
+    <option value="P" {{#if (eq informe.variador_b4 "P")}}selected{{/if}}>P</option>
+    <option value="D" {{#if (eq informe.variador_b4 "D")}}selected{{/if}}>D</option>
+    <option value="V" {{#if (eq informe.variador_b4 "V")}}selected{{/if}}>V</option>
+    <option value="OK" {{#if (eq informe.variador_b4 "OK")}}selected{{/if}}>OK</option>
+    <option value="N/A" {{#if (eq informe.variador_b4 "N/A")}}selected{{/if}}>N/A</option>
+  </select>
+</td>
+
+
+              <td>Precarga</td>
+<td><input type="text" class="hidrosistema-input" name="precarga" value="{{informe.precarga}}" {{#if (eq informe.precarga "")}} placeholder="Introduce precarga"{{/if}}></td>
+</td>
+
+<td>Guarda motor</td>
+<td>
+  <select class="input-field" name="guarda_motor_b11">
+    <option value="" {{#if informe.guarda_motor_b11}}>{{informe.guarda_motor_b11}}{{else}} selected{{/if}}></option>
+    <option value="A" {{#if (eq informe.guarda_motor_b11 "A")}}selected{{/if}}>A</option>
+    <option value="C" {{#if (eq informe.guarda_motor_b11 "C")}}selected{{/if}}>C</option>
+    <option value="F" {{#if (eq informe.guarda_motor_b11 "F")}}selected{{/if}}>F</option>
+    <option value="P" {{#if (eq informe.guarda_motor_b11 "P")}}selected{{/if}}>P</option>
+    <option value="D" {{#if (eq informe.guarda_motor_b11 "D")}}selected{{/if}}>D</option>
+    <option value="V" {{#if (eq informe.guarda_motor_b11 "V")}}selected{{/if}}>V</option>
+    <option value="OK" {{#if (eq informe.guarda_motor_b11 "OK")}}selected{{/if}}>OK</option>
+    <option value="N/A" {{#if (eq informe.guarda_motor_b11 "N/A")}}selected{{/if}}>N/A</option>
+  </select>
+</td>
+
+<td>
+  <select class="input-field" name="guarda_motor_b22">
+    <option value="" {{#if informe.guarda_motor_b22}}>{{informe.guarda_motor_b22}}{{else}} selected{{/if}}></option>
+    <option value="C" {{#if (eq informe.guarda_motor_b22 "C")}}selected{{/if}}>C</option>
+    <option value="F" {{#if (eq informe.guarda_motor_b22 "F")}}selected{{/if}}>F</option>
+    <option value="P" {{#if (eq informe.guarda_motor_b22 "P")}}selected{{/if}}>P</option>
+    <option value="D" {{#if (eq informe.guarda_motor_b22 "D")}}selected{{/if}}>D</option>
+    <option value="V" {{#if (eq informe.guarda_motor_b22 "V")}}selected{{/if}}>V</option>
+    <option value="OK" {{#if (eq informe.guarda_motor_b22 "OK")}}selected{{/if}}>OK</option>
+    <option value="N/A" {{#if (eq informe.guarda_motor_b22 "N/A")}}selected{{/if}}>N/A</option>
+  </select>
+</td>
+
+<td>
+  <select class="input-field" name="guarda_motor_b33">
+    <option value="" {{#if informe.guarda_motor_b33}}>{{informe.guarda_motor_b33}}{{else}} selected{{/if}}></option>
+    <option value="A" {{#if (eq informe.guarda_motor_b33 "A")}}selected{{/if}}>A</option>
+    <option value="C" {{#if (eq informe.guarda_motor_b33 "C")}}selected{{/if}}>C</option>
+    <option value="F" {{#if (eq informe.guarda_motor_b33 "F")}}selected{{/if}}>F</option>
+    <option value="P" {{#if (eq informe.guarda_motor_b33 "P")}}selected{{/if}}>P</option>
+    <option value="D" {{#if (eq informe.guarda_motor_b33 "D")}}selected{{/if}}>D</option>
+    <option value="V" {{#if (eq informe.guarda_motor_b33 "V")}}selected{{/if}}>V</option>
+    <option value="OK" {{#if (eq informe.guarda_motor_b33 "OK")}}selected{{/if}}>OK</option>
+    <option value="N/A" {{#if (eq informe.guarda_motor_b33 "N/A")}}selected{{/if}}>N/A</option>
+  </select>
+</td>
+
+<td>
+  <select class="input-field" name="guarda_motor_b44">
+    <option value="" {{#if informe.guarda_motor_b44}}>{{informe.guarda_motor_b44}}{{else}} selected{{/if}}></option>
+    <option value="A" {{#if (eq informe.guarda_motor_b44 "A")}}selected{{/if}}>A</option>
+    <option value="C" {{#if (eq informe.guarda_motor_b44 "C")}}selected{{/if}}>C</option>
+    <option value="F" {{#if (eq informe.guarda_motor_b44 "F")}}selected{{/if}}>F</option>
+    <option value="P" {{#if (eq informe.guarda_motor_b44 "P")}}selected{{/if}}>P</option>
+    <option value="D" {{#if (eq informe.guarda_motor_b44 "D")}}selected{{/if}}>D</option>
+    <option value="V" {{#if (eq informe.guarda_motor_b44 "V")}}selected{{/if}}>V</option>
+    <option value="OK" {{#if (eq informe.guarda_motor_b44 "OK")}}selected{{/if}}>OK</option>
+    <option value="N/A" {{#if (eq informe.guarda_motor_b44 "N/A")}}selected{{/if}}>N/A</option>
+  </select>
+</td>
+
+
+            </tr>
+<tr>
+    <td>Mutelillas</td>
+<td>
+  <select class="input-field" name="mutelillas_b1">
+    <option value="" {{#if informe.mutelillas_b1}}>{{informe.mutelillas_b1}}{{else}} selected{{/if}}></option>
+    <option value="A" {{#if (eq informe.mutelillas_b1 "A")}}selected{{/if}}>A</option>
+    <option value="C" {{#if (eq informe.mutelillas_b1 "C")}}selected{{/if}}>C</option>
+    <option value="F" {{#if (eq informe.mutelillas_b1 "F")}}selected{{/if}}>F</option>
+    <option value="P" {{#if (eq informe.mutelillas_b1 "P")}}selected{{/if}}>P</option>
+    <option value="D" {{#if (eq informe.mutelillas_b1 "D")}}selected{{/if}}>D</option>
+    <option value="V" {{#if (eq informe.mutelillas_b1 "V")}}selected{{/if}}>V</option>
+    <option value="OK" {{#if (eq informe.mutelillas_b1 "OK")}}selected{{/if}}>OK</option>
+    <option value="N/A" {{#if (eq informe.mutelillas_b1 "N/A")}}selected{{/if}}>N/A</option>
+  </select>
+</td>
+
+<td>
+  <select class="input-field" name="mutelillas_b2">
+    <option value="" {{#if informe.mutelillas_b2}}>{{informe.mutelillas_b2}}{{else}} selected{{/if}}></option>
+    <option value="A" {{#if (eq informe.mutelillas_b2 "A")}}selected{{/if}}>A</option>
+    <option value="C" {{#if (eq informe.mutelillas_b2 "C")}}selected{{/if}}>C</option>
+    <option value="F" {{#if (eq informe.mutelillas_b2 "F")}}selected{{/if}}>F</option>
+    <option value="P" {{#if (eq informe.mutelillas_b2 "P")}}selected{{/if}}>P</option>
+    <option value="D" {{#if (eq informe.mutelillas_b2 "D")}}selected{{/if}}>D</option>
+    <option value="V" {{#if (eq informe.mutelillas_b2 "V")}}selected{{/if}}>V</option>
+    <option value="OK" {{#if (eq informe.mutelillas_b2 "OK")}}selected{{/if}}>OK</option>
+    <option value="N/A" {{#if (eq informe.mutelillas_b2 "N/A")}}selected{{/if}}>N/A</option>
+  </select>
+</td>
+
+<td>
+  <select class="input-field" name="mutelillas_b3">
+    <option value="" {{#if informe.mutelillas_b3}}>{{informe.mutelillas_b3}}{{else}} selected{{/if}}></option>
+    <option value="A" {{#if (eq informe.mutelillas_b3 "A")}}selected{{/if}}>A</option>
+    <option value="C" {{#if (eq informe.mutelillas_b3 "C")}}selected{{/if}}>C</option>
+    <option value="F" {{#if (eq informe.mutelillas_b3 "F")}}selected{{/if}}>F</option>
+    <option value="P" {{#if (eq informe.mutelillas_b3 "P")}}selected{{/if}}>P</option>
+    <option value="D" {{#if (eq informe.mutelillas_b3 "D")}}selected{{/if}}>D</option>
+    <option value="V" {{#if (eq informe.mutelillas_b3 "V")}}selected{{/if}}>V</option>
+    <option value="OK" {{#if (eq informe.mutelillas_b3 "OK")}}selected{{/if}}>OK</option>
+    <option value="N/A" {{#if (eq informe.mutelillas_b3 "N/A")}}selected{{/if}}>N/A</option>
+  </select>
+</td>
+
+<td>
+  <select class="input-field" name="mutelillas_b4">
+    <option value="" {{#if informe.mutelillas_b4}}>{{informe.mutelillas_b4}}{{else}} selected{{/if}}></option>
+    <option value="A" {{#if (eq informe.mutelillas_b4 "A")}}selected{{/if}}>A</option>
+    <option value="C" {{#if (eq informe.mutelillas_b4 "C")}}selected{{/if}}>C</option>
+    <option value="F" {{#if (eq informe.mutelillas_b4 "F")}}selected{{/if}}>F</option>
+    <option value="P" {{#if (eq informe.mutelillas_b4 "P")}}selected{{/if}}>P</option>
+    <option value="D" {{#if (eq informe.mutelillas_b4 "D")}}selected{{/if}}>D</option>
+    <option value="V" {{#if (eq informe.mutelillas_b4 "V")}}selected{{/if}}>V</option>
+    <option value="OK" {{#if (eq informe.mutelillas_b4 "OK")}}selected{{/if}}>OK</option>
+    <option value="N/A" {{#if (eq informe.mutelillas_b4 "N/A")}}selected{{/if}}>N/A</option>
+  </select>
+</td>
+
+
+    <td>Flotador Mecánico</td>
+<td>
+  <select class="hidrosistema-input" name="flotador_mecanico">
+    <option value="" {{#if informe.flotador_mecanico}}>{{informe.flotador_mecanico}}{{else}} selected{{/if}}></option>
+    <option value="A" {{#if (eq informe.flotador_mecanico "A")}}selected{{/if}}>A</option>
+    <option value="C" {{#if (eq informe.flotador_mecanico "C")}}selected{{/if}}>C</option>
+    <option value="F" {{#if (eq informe.flotador_mecanico "F")}}selected{{/if}}>F</option>
+    <option value="P" {{#if (eq informe.flotador_mecanico "P")}}selected{{/if}}>P</option>
+    <option value="D" {{#if (eq informe.flotador_mecanico "D")}}selected{{/if}}>D</option>
+    <option value="V" {{#if (eq informe.flotador_mecanico "V")}}selected{{/if}}>V</option>
+    <option value="OK" {{#if (eq informe.flotador_mecanico "OK")}}selected{{/if}}>OK</option>
+    <option value="N/A" {{#if (eq informe.flotador_mecanico "N/A")}}selected{{/if}}>N/A</option>
+  </select>
+</td>
+
+    <td>Breaker </td>
+<td>
+  <select class="input-field" name="breaker_b1">
+    <option value="" {{#if (eq informe.breaker_b1 "")}}selected{{/if}}></option>
+    <option value="A" {{#if (eq informe.breaker_b1 "A")}}selected{{/if}}>A</option>
+    <option value="C" {{#if (eq informe.breaker_b1 "C")}}selected{{/if}}>C</option>
+    <option value="F" {{#if (eq informe.breaker_b1 "F")}}selected{{/if}}>F</option>
+    <option value="P" {{#if (eq informe.breaker_b1 "P")}}selected{{/if}}>P</option>
+    <option value="D" {{#if (eq informe.breaker_b1 "D")}}selected{{/if}}>D</option>
+    <option value="V" {{#if (eq informe.breaker_b1 "V")}}selected{{/if}}>V</option>
+    <option value="OK" {{#if (eq informe.breaker_b1 "OK")}}selected{{/if}}>OK</option>
+    <option value="N/A" {{#if (eq informe.breaker_b1 "N/A")}}selected{{/if}}>N/A</option>
+  </select>
+</td>
+<td>
+  <select class="input-field" name="breaker_b2">
+    <option value="" {{#if (eq informe.breaker_b2 "")}}selected{{/if}}></option>
+    <option value="A" {{#if (eq informe.breaker_b2 "A")}}selected{{/if}}>A</option>
+    <option value="C" {{#if (eq informe.breaker_b2 "C")}}selected{{/if}}>C</option>
+    <option value="F" {{#if (eq informe.breaker_b2 "F")}}selected{{/if}}>F</option>
+    <option value="P" {{#if (eq informe.breaker_b2 "P")}}selected{{/if}}>P</option>
+    <option value="D" {{#if (eq informe.breaker_b2 "D")}}selected{{/if}}>D</option>
+    <option value="V" {{#if (eq informe.breaker_b2 "V")}}selected{{/if}}>V</option>
+    <option value="OK" {{#if (eq informe.breaker_b2 "OK")}}selected{{/if}}>OK</option>
+    <option value="N/A" {{#if (eq informe.breaker_b2 "N/A")}}selected{{/if}}>N/A</option>
+  </select>
+</td>
+
+<td>
+  <select class="input-field" name="breaker_b3">
+    <option value="" {{#if (eq informe.breaker_b3 "")}}selected{{/if}}></option>
+    <option value="A" {{#if (eq informe.breaker_b3 "A")}}selected{{/if}}>A</option>
+    <option value="C" {{#if (eq informe.breaker_b3 "C")}}selected{{/if}}>C</option>
+    <option value="F" {{#if (eq informe.breaker_b3 "F")}}selected{{/if}}>F</option>
+    <option value="P" {{#if (eq informe.breaker_b3 "P")}}selected{{/if}}>P</option>
+    <option value="D" {{#if (eq informe.breaker_b3 "D")}}selected{{/if}}>D</option>
+    <option value="V" {{#if (eq informe.breaker_b3 "V")}}selected{{/if}}>V</option>
+    <option value="OK" {{#if (eq informe.breaker_b3 "OK")}}selected{{/if}}>OK</option>
+    <option value="N/A" {{#if (eq informe.breaker_b3 "N/A")}}selected{{/if}}>N/A</option>
+  </select>
+</td>
+
+<td>
+  <select class="input-field" name="breaker_b4">
+    <option value="" {{#if (eq informe.breaker_b4 "")}}selected{{/if}}></option>
+    <option value="A" {{#if (eq informe.breaker_b4 "A")}}selected{{/if}}>A</option>
+    <option value="C" {{#if (eq informe.breaker_b4 "C")}}selected{{/if}}>C</option>
+    <option value="F" {{#if (eq informe.breaker_b4 "F")}}selected{{/if}}>F</option>
+    <option value="P" {{#if (eq informe.breaker_b4 "P")}}selected{{/if}}>P</option>
+    <option value="D" {{#if (eq informe.breaker_b4 "D")}}selected{{/if}}>D</option>
+    <option value="V" {{#if (eq informe.breaker_b4 "V")}}selected{{/if}}>V</option>
+    <option value="OK" {{#if (eq informe.breaker_b4 "OK")}}selected{{/if}}>OK</option>
+    <option value="N/A" {{#if (eq informe.breaker_b4 "N/A")}}selected{{/if}}>N/A</option>
+  </select>
+</td>
+
+
+</tr>
+
+<tr>
+    <td>Piloto</td>
+<td>
+  <select class="input-field" name="piloto_b1">
+    <option value="" {{#if (eq informe.piloto_b1 "")}}selected{{/if}}></option>
+    <option value="A" {{#if (eq informe.piloto_b1 "A")}}selected{{/if}}>A</option>
+    <option value="C" {{#if (eq informe.piloto_b1 "C")}}selected{{/if}}>C</option>
+    <option value="F" {{#if (eq informe.piloto_b1 "F")}}selected{{/if}}>F</option>
+    <option value="P" {{#if (eq informe.piloto_b1 "P")}}selected{{/if}}>P</option>
+    <option value="D" {{#if (eq informe.piloto_b1 "D")}}selected{{/if}}>D</option>
+    <option value="V" {{#if (eq informe.piloto_b1 "V")}}selected{{/if}}>V</option>
+    <option value="OK" {{#if (eq informe.piloto_b1 "OK")}}selected{{/if}}>OK</option>
+    <option value="N/A" {{#if (eq informe.piloto_b1 "N/A")}}selected{{/if}}>N/A</option>
+  </select>
+</td>
+
+<td>
+  <select class="input-field" name="piloto_b2">
+    <option value="" {{#if (eq informe.piloto_b2 "")}}selected{{/if}}></option>
+    <option value="A" {{#if (eq informe.piloto_b2 "A")}}selected{{/if}}>A</option>
+    <option value="C" {{#if (eq informe.piloto_b2 "C")}}selected{{/if}}>C</option>
+    <option value="F" {{#if (eq informe.piloto_b2 "F")}}selected{{/if}}>F</option>
+    <option value="P" {{#if (eq informe.piloto_b2 "P")}}selected{{/if}}>P</option>
+    <option value="D" {{#if (eq informe.piloto_b2 "D")}}selected{{/if}}>D</option>
+    <option value="V" {{#if (eq informe.piloto_b2 "V")}}selected{{/if}}>V</option>
+    <option value="OK" {{#if (eq informe.piloto_b2 "OK")}}selected{{/if}}>OK</option>
+    <option value="N/A" {{#if (eq informe.piloto_b2 "N/A")}}selected{{/if}}>N/A</option>
+  </select>
+</td>
+
+<td>
+  <select class="input-field" name="piloto_b3">
+    <option value="" {{#if (eq informe.piloto_b3 "")}}selected{{/if}}></option>
+    <option value="A" {{#if (eq informe.piloto_b3 "A")}}selected{{/if}}>A</option>
+    <option value="C" {{#if (eq informe.piloto_b3 "C")}}selected{{/if}}>C</option>
+    <option value="F" {{#if (eq informe.piloto_b3 "F")}}selected{{/if}}>F</option>
+    <option value="P" {{#if (eq informe.piloto_b3 "P")}}selected{{/if}}>P</option>
+    <option value="D" {{#if (eq informe.piloto_b3 "D")}}selected{{/if}}>D</option>
+    <option value="V" {{#if (eq informe.piloto_b3 "V")}}selected{{/if}}>V</option>
+    <option value="OK" {{#if (eq informe.piloto_b3 "OK")}}selected{{/if}}>OK</option>
+    <option value="N/A" {{#if (eq informe.piloto_b3 "N/A")}}selected{{/if}}>N/A</option>
+  </select>
+</td>
+
+<td>
+  <select class="input-field" name="piloto_b4">
+    <option value="" {{#if (eq informe.piloto_b4 "")}}selected{{/if}}></option>
+    <option value="A" {{#if (eq informe.piloto_b4 "A")}}selected{{/if}}>A</option>
+    <option value="C" {{#if (eq informe.piloto_b4 "C")}}selected{{/if}}>C</option>
+    <option value="F" {{#if (eq informe.piloto_b4 "F")}}selected{{/if}}>F</option>
+    <option value="P" {{#if (eq informe.piloto_b4 "P")}}selected{{/if}}>P</option>
+    <option value="D" {{#if (eq informe.piloto_b4 "D")}}selected{{/if}}>D</option>
+    <option value="V" {{#if (eq informe.piloto_b4 "V")}}selected{{/if}}>V</option>
+    <option value="OK" {{#if (eq informe.piloto_b4 "OK")}}selected{{/if}}>OK</option>
+    <option value="N/A" {{#if (eq informe.piloto_b4 "N/A")}}selected{{/if}}>N/A</option>
+  </select>
+</td>
+
+
+    <td>Válvulas de Succión</td>
+<td>
+  <select class="hidrosistema-input" name="valvulas_succion">
+    <option value="" {{#if (eq informe.valvulas_succion "")}}selected{{/if}}></option>
+    <option value="A" {{#if (eq informe.valvulas_succion "A")}}selected{{/if}}>A</option>
+    <option value="C" {{#if (eq informe.valvulas_succion "C")}}selected{{/if}}>C</option>
+    <option value="F" {{#if (eq informe.valvulas_succion "F")}}selected{{/if}}>F</option>
+    <option value="P" {{#if (eq informe.valvulas_succion "P")}}selected{{/if}}>P</option>
+    <option value="D" {{#if (eq informe.valvulas_succion "D")}}selected{{/if}}>D</option>
+    <option value="V" {{#if (eq informe.valvulas_succion "V")}}selected{{/if}}>V</option>
+    <option value="OK" {{#if (eq informe.valvulas_succion "OK")}}selected{{/if}}>OK</option>
+    <option value="N/A" {{#if (eq informe.valvulas_succion "N/A")}}selected{{/if}}>N/A</option>
+  </select>
+</td>
+
+    <td>Muletillas</td>
+<td>
+  <select class="input-field" name="muletillas_b1">
+    <option value="" {{#if (eq informe.muletillas_b1 "")}}selected{{/if}}></option>
+    <option value="A" {{#if (eq informe.muletillas_b1 "A")}}selected{{/if}}>A</option>
+    <option value="C" {{#if (eq informe.muletillas_b1 "C")}}selected{{/if}}>C</option>
+    <option value="F" {{#if (eq informe.muletillas_b1 "F")}}selected{{/if}}>F</option>
+    <option value="P" {{#if (eq informe.muletillas_b1 "P")}}selected{{/if}}>P</option>
+    <option value="D" {{#if (eq informe.muletillas_b1 "D")}}selected{{/if}}>D</option>
+    <option value="V" {{#if (eq informe.muletillas_b1 "V")}}selected{{/if}}>V</option>
+    <option value="OK" {{#if (eq informe.muletillas_b1 "OK")}}selected{{/if}}>OK</option>
+    <option value="N/A" {{#if (eq informe.muletillas_b1 "N/A")}}selected{{/if}}>N/A</option>
+  </select>
+</td>
+
+<td>
+  <select class="input-field" name="muletillas_b2">
+    <option value="" {{#if (eq informe.muletillas_b2 "")}}selected{{/if}}></option>
+    <option value="A" {{#if (eq informe.muletillas_b2 "A")}}selected{{/if}}>A</option>
+    <option value="C" {{#if (eq informe.muletillas_b2 "C")}}selected{{/if}}>C</option>
+    <option value="F" {{#if (eq informe.muletillas_b2 "F")}}selected{{/if}}>F</option>
+    <option value="P" {{#if (eq informe.muletillas_b2 "P")}}selected{{/if}}>P</option>
+    <option value="D" {{#if (eq informe.muletillas_b2 "D")}}selected{{/if}}>D</option>
+    <option value="V" {{#if (eq informe.muletillas_b2 "V")}}selected{{/if}}>V</option>
+    <option value="OK" {{#if (eq informe.muletillas_b2 "OK")}}selected{{/if}}>OK</option>
+    <option value="N/A" {{#if (eq informe.muletillas_b2 "N/A")}}selected{{/if}}>N/A</option>
+  </select>
+</td>
+
+<td>
+  <select class="input-field" name="muletillas_b3">
+    <option value="" {{#if (eq informe.muletillas_b3 "")}}selected{{/if}}></option>
+    <option value="A" {{#if (eq informe.muletillas_b3 "A")}}selected{{/if}}>A</option>
+    <option value="C" {{#if (eq informe.muletillas_b3 "C")}}selected{{/if}}>C</option>
+    <option value="F" {{#if (eq informe.muletillas_b3 "F")}}selected{{/if}}>F</option>
+    <option value="P" {{#if (eq informe.muletillas_b3 "P")}}selected{{/if}}>P</option>
+    <option value="D" {{#if (eq informe.muletillas_b3 "D")}}selected{{/if}}>D</option>
+    <option value="V" {{#if (eq informe.muletillas_b3 "V")}}selected{{/if}}>V</option>
+    <option value="OK" {{#if (eq informe.muletillas_b3 "OK")}}selected{{/if}}>OK</option>
+    <option value="N/A" {{#if (eq informe.muletillas_b3 "N/A")}}selected{{/if}}>N/A</option>
+  </select>
+</td>
+
+<td>
+  <select class="input-field" name="muletillas_b4">
+    <option value="" {{#if (eq informe.muletillas_b4 "")}}selected{{/if}}></option>
+    <option value="A" {{#if (eq informe.muletillas_b4 "A")}}selected{{/if}}>A</option>
+    <option value="C" {{#if (eq informe.muletillas_b4 "C")}}selected{{/if}}>C</option>
+    <option value="F" {{#if (eq informe.muletillas_b4 "F")}}selected{{/if}}>F</option>
+    <option value="P" {{#if (eq informe.muletillas_b4 "P")}}selected{{/if}}>P</option>
+    <option value="D" {{#if (eq informe.muletillas_b4 "D")}}selected{{/if}}>D</option>
+    <option value="V" {{#if (eq informe.muletillas_b4 "V")}}selected{{/if}}>V</option>
+    <option value="OK" {{#if (eq informe.muletillas_b4 "OK")}}selected{{/if}}>OK</option>
+    <option value="N/A" {{#if (eq informe.muletillas_b4 "N/A")}}selected{{/if}}>N/A</option>
+  </select>
+</td>
+
+
+</tr>
+
+   <tr>
+    <td>Contactores</td>
+<td>
+  <select class="input-field" name="contactores_b1">
+    <option value="" {{#if (eq informe.contactores_b1 "")}}selected{{/if}}></option>
+    <option value="A" {{#if (eq informe.contactores_b1 "A")}}selected{{/if}}>A</option>
+    <option value="C" {{#if (eq informe.contactores_b1 "C")}}selected{{/if}}>C</option>
+    <option value="F" {{#if (eq informe.contactores_b1 "F")}}selected{{/if}}>F</option>
+    <option value="P" {{#if (eq informe.contactores_b1 "P")}}selected{{/if}}>P</option>
+    <option value="D" {{#if (eq informe.contactores_b1 "D")}}selected{{/if}}>D</option>
+    <option value="V" {{#if (eq informe.contactores_b1 "V")}}selected{{/if}}>V</option>
+    <option value="OK" {{#if (eq informe.contactores_b1 "OK")}}selected{{/if}}>OK</option>
+    <option value="N/A" {{#if (eq informe.contactores_b1 "N/A")}}selected{{/if}}>N/A</option>
+  </select>
+</td>
+
+<td>
+  <select class="input-field" name="contactores_b2">
+    <option value="" {{#if (eq informe.contactores_b2 "")}}selected{{/if}}></option>
+    <option value="A" {{#if (eq informe.contactores_b2 "A")}}selected{{/if}}>A</option>
+    <option value="C" {{#if (eq informe.contactores_b2 "C")}}selected{{/if}}>C</option>
+    <option value="F" {{#if (eq informe.contactores_b2 "F")}}selected{{/if}}>F</option>
+    <option value="P" {{#if (eq informe.contactores_b2 "P")}}selected{{/if}}>P</option>
+    <option value="D" {{#if (eq informe.contactores_b2 "D")}}selected{{/if}}>D</option>
+    <option value="V" {{#if (eq informe.contactores_b2 "V")}}selected{{/if}}>V</option>
+    <option value="OK" {{#if (eq informe.contactores_b2 "OK")}}selected{{/if}}>OK</option>
+    <option value="N/A" {{#if (eq informe.contactores_b2 "N/A")}}selected{{/if}}>N/A</option>
+  </select>
+</td>
+
+<td>
+  <select class="input-field" name="contactores_b3">
+    <option value="" {{#if (eq informe.contactores_b3 "")}}selected{{/if}}></option>
+    <option value="A" {{#if (eq informe.contactores_b3 "A")}}selected{{/if}}>A</option>
+    <option value="C" {{#if (eq informe.contactores_b3 "C")}}selected{{/if}}>C</option>
+    <option value="F" {{#if (eq informe.contactores_b3 "F")}}selected{{/if}}>F</option>
+    <option value="P" {{#if (eq informe.contactores_b3 "P")}}selected{{/if}}>P</option>
+    <option value="D" {{#if (eq informe.contactores_b3 "D")}}selected{{/if}}>D</option>
+    <option value="V" {{#if (eq informe.contactores_b3 "V")}}selected{{/if}}>V</option>
+    <option value="OK" {{#if (eq informe.contactores_b3 "OK")}}selected{{/if}}>OK</option>
+    <option value="N/A" {{#if (eq informe.contactores_b3 "N/A")}}selected{{/if}}>N/A</option>
+  </select>
+</td>
+
+
+<td>
+  <select class="input-field" name="contactores_b4">
+    <option value="" {{#if (eq informe.contactores_b4 "")}}selected{{/if}}></option>
+    <option value="A" {{#if (eq informe.contactores_b4 "A")}}selected{{/if}}>A</option>
+    <option value="C" {{#if (eq informe.contactores_b4 "C")}}selected{{/if}}>C</option>
+    <option value="F" {{#if (eq informe.contactores_b4 "F")}}selected{{/if}}>F</option>
+    <option value="P" {{#if (eq informe.contactores_b4 "P")}}selected{{/if}}>P</option>
+    <option value="D" {{#if (eq informe.contactores_b4 "D")}}selected{{/if}}>D</option>
+    <option value="V" {{#if (eq informe.contactores_b4 "V")}}selected{{/if}}>V</option>
+    <option value="OK" {{#if (eq informe.contactores_b4 "OK")}}selected{{/if}}>OK</option>
+    <option value="N/A" {{#if (eq informe.contactores_b4 "N/A")}}selected{{/if}}>N/A</option>
+  </select>
+</td>
+
+
+    <td>Tanque Hidro</td>
+<td>
+  <select class="hidrosistema-input" name="tanque_hidro">
+    <option value="" {{#if (eq informe.tanque_hidro "")}}selected{{/if}}></option>
+    <option value="A" {{#if (eq informe.tanque_hidro "A")}}selected{{/if}}>A</option>
+    <option value="C" {{#if (eq informe.tanque_hidro "C")}}selected{{/if}}>C</option>
+    <option value="F" {{#if (eq informe.tanque_hidro "F")}}selected{{/if}}>F</option>
+    <option value="P" {{#if (eq informe.tanque_hidro "P")}}selected{{/if}}>P</option>
+    <option value="D" {{#if (eq informe.tanque_hidro "D")}}selected{{/if}}>D</option>
+    <option value="V" {{#if (eq informe.tanque_hidro "V")}}selected{{/if}}>V</option>
+    <option value="OK" {{#if (eq informe.tanque_hidro "OK")}}selected{{/if}}>OK</option>
+    <option value="N/A" {{#if (eq informe.tanque_hidro "N/A")}}selected{{/if}}>N/A</option>
+  </select>
+</td>
+
+
+    <td>Contacores</td>
+
+
+
+<td>
+  <select class="input-field" name="contacores_b1">
+    <option value="" {{#if (eq informe.contacores_b1 "")}}selected{{/if}}></option>
+    <option value="A" {{#if (eq informe.contacores_b1 "A")}}selected{{/if}}>A</option>
+    <option value="C" {{#if (eq informe.contacores_b1 "C")}}selected{{/if}}>C</option>
+    <option value="F" {{#if (eq informe.contacores_b1 "F")}}selected{{/if}}>F</option>
+    <option value="P" {{#if (eq informe.contacores_b1 "P")}}selected{{/if}}>P</option>
+    <option value="D" {{#if (eq informe.contacores_b1 "D")}}selected{{/if}}>D</option>
+    <option value="V" {{#if (eq informe.contacores_b1 "V")}}selected{{/if}}>V</option>
+    <option value="OK" {{#if (eq informe.contacores_b1 "OK")}}selected{{/if}}>OK</option>
+    <option value="N/A" {{#if (eq informe.contacores_b1 "N/A")}}selected{{/if}}>N/A</option>
+  </select>
+</td>
+
+
+
+
+
+<td>
+  <select class="input-field" name="contacores_b2">
+    <option value="" {{#if (eq informe.contacores_b2 "")}}selected{{/if}}></option>
+    <option value="A" {{#if (eq informe.contacores_b2 "A")}}selected{{/if}}>A</option>
+    <option value="C" {{#if (eq informe.contacores_b2 "C")}}selected{{/if}}>C</option>
+    <option value="F" {{#if (eq informe.contacores_b2 "F")}}selected{{/if}}>F</option>
+    <option value="P" {{#if (eq informe.contacores_b2 "P")}}selected{{/if}}>P</option>
+    <option value="D" {{#if (eq informe.contacores_b2 "D")}}selected{{/if}}>D</option>
+    <option value="V" {{#if (eq informe.contacores_b2 "V")}}selected{{/if}}>V</option>
+    <option value="OK" {{#if (eq informe.contacores_b2 "OK")}}selected{{/if}}>OK</option>
+    <option value="N/A" {{#if (eq informe.contacores_b2 "N/A")}}selected{{/if}}>N/A</option>
+  </select>
+</td>
+
+
+<td>
+  <select class="input-field" name="contacores_b3">
+    <option value="" {{#if (eq informe.contacores_b3 "")}}selected{{/if}}></option>
+    <option value="A" {{#if (eq informe.contacores_b3 "A")}}selected{{/if}}>A</option>
+    <option value="C" {{#if (eq informe.contacores_b3 "C")}}selected{{/if}}>C</option>
+    <option value="F" {{#if (eq informe.contacores_b3 "F")}}selected{{/if}}>F</option>
+    <option value="P" {{#if (eq informe.contacores_b3 "P")}}selected{{/if}}>P</option>
+    <option value="D" {{#if (eq informe.contacores_b3 "D")}}selected{{/if}}>D</option>
+    <option value="V" {{#if (eq informe.contacores_b3 "V")}}selected{{/if}}>V</option>
+    <option value="OK" {{#if (eq informe.contacores_b3 "OK")}}selected{{/if}}>OK</option>
+    <option value="N/A" {{#if (eq informe.contacores_b3 "N/A")}}selected{{/if}}>N/A</option>
+  </select>
+</td>
+
+
+
+
+<td>
+  <select class="input-field" name="contacores_b4">
+    <option value="" {{#if (eq informe.contacores_b4 "")}}selected{{/if}}></option>
+    <option value="A" {{#if (eq informe.contacores_b4 "A")}}selected{{/if}}>A</option>
+    <option value="C" {{#if (eq informe.contacores_b4 "C")}}selected{{/if}}>C</option>
+    <option value="F" {{#if (eq informe.contacores_b4 "F")}}selected{{/if}}>F</option>
+    <option value="P" {{#if (eq informe.contacores_b4 "P")}}selected{{/if}}>P</option>
+    <option value="D" {{#if (eq informe.contacores_b4 "D")}}selected{{/if}}>D</option>
+    <option value="V" {{#if (eq informe.contacores_b4 "V")}}selected{{/if}}>V</option>
+    <option value="OK" {{#if (eq informe.contacores_b4 "OK")}}selected{{/if}}>OK</option>
+    <option value="N/A" {{#if (eq informe.contacores_b4 "N/A")}}selected{{/if}}>N/A</option>
+  </select>
+</td>
+
+
+</tr>
+
+   <tr>
+    <td>Presostatos</td>
+
+<td>
+  <select class="input-field" name="presostatos_b1">
+    <option value="" {{#if (eq informe.presostatos_b1 "")}}selected{{/if}}></option>
+    <option value="A" {{#if (eq informe.presostatos_b1 "A")}}selected{{/if}}>A</option>
+    <option value="C" {{#if (eq informe.presostatos_b1 "C")}}selected{{/if}}>C</option>
+    <option value="F" {{#if (eq informe.presostatos_b1 "F")}}selected{{/if}}>F</option>
+    <option value="P" {{#if (eq informe.presostatos_b1 "P")}}selected{{/if}}>P</option>
+    <option value="D" {{#if (eq informe.presostatos_b1 "D")}}selected{{/if}}>D</option>
+    <option value="V" {{#if (eq informe.presostatos_b1 "V")}}selected{{/if}}>V</option>
+    <option value="OK" {{#if (eq informe.presostatos_b1 "OK")}}selected{{/if}}>OK</option>
+    <option value="N/A" {{#if (eq informe.presostatos_b1 "N/A")}}selected{{/if}}>N/A</option>
+  </select>
+</td>
+
+
+
+
+<td>
+  <select class="input-field" name="presostatos_b2">
+    <option value="" {{#if (eq informe.presostatos_b2 "")}}selected{{/if}}></option>
+    <option value="A" {{#if (eq informe.presostatos_b2 "A")}}selected{{/if}}>A</option>
+    <option value="C" {{#if (eq informe.presostatos_b2 "C")}}selected{{/if}}>C</option>
+    <option value="F" {{#if (eq informe.presostatos_b2 "F")}}selected{{/if}}>F</option>
+    <option value="P" {{#if (eq informe.presostatos_b2 "P")}}selected{{/if}}>P</option>
+    <option value="D" {{#if (eq informe.presostatos_b2 "D")}}selected{{/if}}>D</option>
+    <option value="V" {{#if (eq informe.presostatos_b2 "V")}}selected{{/if}}>V</option>
+    <option value="OK" {{#if (eq informe.presostatos_b2 "OK")}}selected{{/if}}>OK</option>
+    <option value="N/A" {{#if (eq informe.presostatos_b2 "N/A")}}selected{{/if}}>N/A</option>
+  </select>
+</td>
+
+
+
+<td>
+  <select class="input-field" name="presostatos_b3">
+    <option value="" {{#if (eq informe.presostatos_b3 "")}}selected{{/if}}></option>
+    <option value="A" {{#if (eq informe.presostatos_b3 "A")}}selected{{/if}}>A</option>
+    <option value="C" {{#if (eq informe.presostatos_b3 "C")}}selected{{/if}}>C</option>
+    <option value="F" {{#if (eq informe.presostatos_b3 "F")}}selected{{/if}}>F</option>
+    <option value="P" {{#if (eq informe.presostatos_b3 "P")}}selected{{/if}}>P</option>
+    <option value="D" {{#if (eq informe.presostatos_b3 "D")}}selected{{/if}}>D</option>
+    <option value="V" {{#if (eq informe.presostatos_b3 "V")}}selected{{/if}}>V</option>
+    <option value="OK" {{#if (eq informe.presostatos_b3 "OK")}}selected{{/if}}>OK</option>
+    <option value="N/A" {{#if (eq informe.presostatos_b3 "N/A")}}selected{{/if}}>N/A</option>
+  </select>
+</td>
+
+
+<td>
+  <select class="input-field" name="presostatos_b4">
+    <option value="" {{#if (eq informe.presostatos_b4 "")}}selected{{/if}}></option>
+    <option value="A" {{#if (eq informe.presostatos_b4 "A")}}selected{{/if}}>A</option>
+    <option value="C" {{#if (eq informe.presostatos_b4 "C")}}selected{{/if}}>C</option>
+    <option value="F" {{#if (eq informe.presostatos_b4 "F")}}selected{{/if}}>F</option>
+    <option value="P" {{#if (eq informe.presostatos_b4 "P")}}selected{{/if}}>P</option>
+    <option value="D" {{#if (eq informe.presostatos_b4 "D")}}selected{{/if}}>D</option>
+    <option value="V" {{#if (eq informe.presostatos_b4 "V")}}selected{{/if}}>V</option>
+    <option value="OK" {{#if (eq informe.presostatos_b4 "OK")}}selected{{/if}}>OK</option>
+    <option value="N/A" {{#if (eq informe.presostatos_b4 "N/A")}}selected{{/if}}>N/A</option>
+  </select>
+</td>
+
+    <td>Cheques</td>
+
+<td>
+  <select class="hidrosistema-input" name="cheques">
+    <option value="" {{#if (eq informe.cheques "")}}selected{{/if}}></option>
+    <option value="A" {{#if (eq informe.cheques "A")}}selected{{/if}}>A</option>
+    <option value="C" {{#if (eq informe.cheques "C")}}selected{{/if}}>C</option>
+    <option value="F" {{#if (eq informe.cheques "F")}}selected{{/if}}>F</option>
+    <option value="P" {{#if (eq informe.cheques "P")}}selected{{/if}}>P</option>
+    <option value="D" {{#if (eq informe.cheques "D")}}selected{{/if}}>D</option>
+    <option value="V" {{#if (eq informe.cheques "V")}}selected{{/if}}>V</option>
+    <option value="OK" {{#if (eq informe.cheques "OK")}}selected{{/if}}>OK</option>
+    <option value="N/A" {{#if (eq informe.cheques "N/A")}}selected{{/if}}>N/A</option>
+  </select>
+</td>
+
+
+
+    <td>Flotador Electricos</td>
+
+<td>
+  <select class="input-field" name="flotador_electricos_b1">
+    <option value="" {{#if (eq informe.flotador_electricos_b1 "")}}selected{{/if}}></option>
+    <option value="A" {{#if (eq informe.flotador_electricos_b1 "A")}}selected{{/if}}>A</option>
+    <option value="C" {{#if (eq informe.flotador_electricos_b1 "C")}}selected{{/if}}>C</option>
+    <option value="F" {{#if (eq informe.flotador_electricos_b1 "F")}}selected{{/if}}>F</option>
+    <option value="P" {{#if (eq informe.flotador_electricos_b1 "P")}}selected{{/if}}>P</option>
+    <option value="D" {{#if (eq informe.flotador_electricos_b1 "D")}}selected{{/if}}>D</option>
+    <option value="V" {{#if (eq informe.flotador_electricos_b1 "V")}}selected{{/if}}>V</option>
+    <option value="OK" {{#if (eq informe.flotador_electricos_b1 "OK")}}selected{{/if}}>OK</option>
+    <option value="N/A" {{#if (eq informe.flotador_electricos_b1 "N/A")}}selected{{/if}}>N/A</option>
+  </select>
+</td>
+
+
+
+<td>
+  <select class="input-field" name="flotador_electricos_b2">
+    <option value="" {{#if (eq informe.flotador_electricos_b2 "")}}selected{{/if}}></option>
+    <option value="A" {{#if (eq informe.flotador_electricos_b2 "A")}}selected{{/if}}>A</option>
+    <option value="C" {{#if (eq informe.flotador_electricos_b2 "C")}}selected{{/if}}>C</option>
+    <option value="F" {{#if (eq informe.flotador_electricos_b2 "F")}}selected{{/if}}>F</option>
+    <option value="P" {{#if (eq informe.flotador_electricos_b2 "P")}}selected{{/if}}>P</option>
+    <option value="D" {{#if (eq informe.flotador_electricos_b2 "D")}}selected{{/if}}>D</option>
+    <option value="V" {{#if (eq informe.flotador_electricos_b2 "V")}}selected{{/if}}>V</option>
+    <option value="OK" {{#if (eq informe.flotador_electricos_b2 "OK")}}selected{{/if}}>OK</option>
+    <option value="N/A" {{#if (eq informe.flotador_electricos_b2 "N/A")}}selected{{/if}}>N/A</option>
+  </select>
+</td>
+
+
+
+<td>
+  <select class="input-field" name="flotador_electricos_b3">
+    <option value="" {{#if (eq informe.flotador_electricos_b3 "")}}selected{{/if}}></option>
+    <option value="A" {{#if (eq informe.flotador_electricos_b3 "A")}}selected{{/if}}>A</option>
+    <option value="C" {{#if (eq informe.flotador_electricos_b3 "C")}}selected{{/if}}>C</option>
+    <option value="F" {{#if (eq informe.flotador_electricos_b3 "F")}}selected{{/if}}>F</option>
+    <option value="P" {{#if (eq informe.flotador_electricos_b3 "P")}}selected{{/if}}>P</option>
+    <option value="D" {{#if (eq informe.flotador_electricos_b3 "D")}}selected{{/if}}>D</option>
+    <option value="V" {{#if (eq informe.flotador_electricos_b3 "V")}}selected{{/if}}>V</option>
+    <option value="OK" {{#if (eq informe.flotador_electricos_b3 "OK")}}selected{{/if}}>OK</option>
+    <option value="N/A" {{#if (eq informe.flotador_electricos_b3 "N/A")}}selected{{/if}}>N/A</option>
+  </select>
+</td>
+
+
+
+<td>
+  <select class="input-field" name="flotador_electricos_b4">
+    <option value="" {{#if (eq informe.flotador_electricos_b4 "")}}selected{{/if}}></option>
+    <option value="A" {{#if (eq informe.flotador_electricos_b4 "A")}}selected{{/if}}>A</option>
+    <option value="C" {{#if (eq informe.flotador_electricos_b4 "C")}}selected{{/if}}>C</option>
+    <option value="F" {{#if (eq informe.flotador_electricos_b4 "F")}}selected{{/if}}>F</option>
+    <option value="P" {{#if (eq informe.flotador_electricos_b4 "P")}}selected{{/if}}>P</option>
+    <option value="D" {{#if (eq informe.flotador_electricos_b4 "D")}}selected{{/if}}>D</option>
+    <option value="V" {{#if (eq informe.flotador_electricos_b4 "V")}}selected{{/if}}>V</option>
+    <option value="OK" {{#if (eq informe.flotador_electricos_b4 "OK")}}selected{{/if}}>OK</option>
+    <option value="N/A" {{#if (eq informe.flotador_electricos_b4 "N/A")}}selected{{/if}}>N/A</option>
+  </select>
+</td>
+
+</tr>
+
+<tr>
+    <td>Alternador</td>
+
+<td>
+  <select class="input-field" name="alternador_b1">
+    <option value="" {{#if (eq informe.alternador_b1 "")}}selected{{/if}}></option>
+    <option value="A" {{#if (eq informe.alternador_b1 "A")}}selected{{/if}}>A</option>
+    <option value="C" {{#if (eq informe.alternador_b1 "C")}}selected{{/if}}>C</option>
+    <option value="F" {{#if (eq informe.alternador_b1 "F")}}selected{{/if}}>F</option>
+    <option value="P" {{#if (eq informe.alternador_b1 "P")}}selected{{/if}}>P</option>
+    <option value="D" {{#if (eq informe.alternador_b1 "D")}}selected{{/if}}>D</option>
+    <option value="V" {{#if (eq informe.alternador_b1 "V")}}selected{{/if}}>V</option>
+    <option value="OK" {{#if (eq informe.alternador_b1 "OK")}}selected{{/if}}>OK</option>
+    <option value="N/A" {{#if (eq informe.alternador_b1 "N/A")}}selected{{/if}}>N/A</option>
+  </select>
+</td>
+
+
+<td>
+  <select class="input-field" name="alternador_b2">
+    <option value="" {{#if (eq informe.alternador_b2 "")}}selected{{/if}}></option>
+    <option value="A" {{#if (eq informe.alternador_b2 "A")}}selected{{/if}}>A</option>
+    <option value="C" {{#if (eq informe.alternador_b2 "C")}}selected{{/if}}>C</option>
+    <option value="F" {{#if (eq informe.alternador_b2 "F")}}selected{{/if}}>F</option>
+    <option value="P" {{#if (eq informe.alternador_b2 "P")}}selected{{/if}}>P</option>
+    <option value="D" {{#if (eq informe.alternador_b2 "D")}}selected{{/if}}>D</option>
+    <option value="V" {{#if (eq informe.alternador_b2 "V")}}selected{{/if}}>V</option>
+    <option value="OK" {{#if (eq informe.alternador_b2 "OK")}}selected{{/if}}>OK</option>
+    <option value="N/A" {{#if (eq informe.alternador_b2 "N/A")}}selected{{/if}}>N/A</option>
+  </select>
+</td>
+
+
+<td>
+  <select class="input-field" name="alternador_b3">
+    <option value="" {{#if (eq informe.alternador_b3 "")}}selected{{/if}}></option>
+    <option value="A" {{#if (eq informe.alternador_b3 "A")}}selected{{/if}}>A</option>
+    <option value="C" {{#if (eq informe.alternador_b3 "C")}}selected{{/if}}>C</option>
+    <option value="F" {{#if (eq informe.alternador_b3 "F")}}selected{{/if}}>F</option>
+    <option value="P" {{#if (eq informe.alternador_b3 "P")}}selected{{/if}}>P</option>
+    <option value="D" {{#if (eq informe.alternador_b3 "D")}}selected{{/if}}>D</option>
+    <option value="V" {{#if (eq informe.alternador_b3 "V")}}selected{{/if}}>V</option>
+    <option value="OK" {{#if (eq informe.alternador_b3 "OK")}}selected{{/if}}>OK</option>
+    <option value="N/A" {{#if (eq informe.alternador_b3 "N/A")}}selected{{/if}}>N/A</option>
+  </select>
+</td>
+
+
+
+
+<td>
+  <select class="input-field" name="alternador_b4">
+    <option value="" {{#if (eq informe.alternador_b4 "")}}selected{{/if}}></option>
+    <option value="A" {{#if (eq informe.alternador_b4 "A")}}selected{{/if}}>A</option>
+    <option value="C" {{#if (eq informe.alternador_b4 "C")}}selected{{/if}}>C</option>
+    <option value="F" {{#if (eq informe.alternador_b4 "F")}}selected{{/if}}>F</option>
+    <option value="P" {{#if (eq informe.alternador_b4 "P")}}selected{{/if}}>P</option>
+    <option value="D" {{#if (eq informe.alternador_b4 "D")}}selected{{/if}}>D</option>
+    <option value="V" {{#if (eq informe.alternador_b4 "V")}}selected{{/if}}>V</option>
+    <option value="OK" {{#if (eq informe.alternador_b4 "OK")}}selected{{/if}}>OK</option>
+    <option value="N/A" {{#if (eq informe.alternador_b4 "N/A")}}selected{{/if}}>N/A</option>
+  </select>
+</td>
+
+
+    <td>Presion de linea</td>
+<td>
+  <input type="text" class="hidrosistema-input" name="presion_linea" value="{{informe.presion_linea}}">
+
+</td>
+    <td>Conexiones</td>
+<td>
+
+  <select class="input-field" name="conexiones_b11">
+    <option value="" {{#if (eq informe.conexiones_b11 "")}}selected{{/if}}></option>
+    <option value="A" {{#if (eq informe.conexiones_b11 "A")}}selected{{/if}}>A</option>
+    <option value="C" {{#if (eq informe.conexiones_b11 "C")}}selected{{/if}}>C</option>
+    <option value="F" {{#if (eq informe.conexiones_b11 "F")}}selected{{/if}}>F</option>
+    <option value="P" {{#if (eq informe.conexiones_b11 "P")}}selected{{/if}}>P</option>
+    <option value="D" {{#if (eq informe.conexiones_b11 "D")}}selected{{/if}}>D</option>
+    <option value="V" {{#if (eq informe.conexiones_b11 "V")}}selected{{/if}}>V</option>
+    <option value="OK" {{#if (eq informe.conexiones_b11 "OK")}}selected{{/if}}>OK</option>
+    <option value="N/A" {{#if (eq informe.conexiones_b11 "N/A")}}selected{{/if}}>N/A</option>
+  </select>
+</td>
+
+<td>
+  <select class="input-field" name="conexiones_b22">
+    <option value="" {{#if (eq informe.conexiones_b22 "")}}selected{{/if}}></option>
+    <option value="A" {{#if (eq informe.conexiones_b22 "A")}}selected{{/if}}>A</option>
+    <option value="C" {{#if (eq informe.conexiones_b22 "C")}}selected{{/if}}>C</option>
+    <option value="F" {{#if (eq informe.conexiones_b22 "F")}}selected{{/if}}>F</option>
+    <option value="P" {{#if (eq informe.conexiones_b22 "P")}}selected{{/if}}>P</option>
+    <option value="D" {{#if (eq informe.conexiones_b22 "D")}}selected{{/if}}>D</option>
+    <option value="V" {{#if (eq informe.conexiones_b22 "V")}}selected{{/if}}>V</option>
+    <option value="OK" {{#if (eq informe.conexiones_b22 "OK")}}selected{{/if}}>OK</option>
+    <option value="N/A" {{#if (eq informe.conexiones_b22 "N/A")}}selected{{/if}}>N/A</option>
+  </select>
+</td>
+
+
+<td>
+  <select class="input-field" name="conexiones_b33">
+    <option value="" {{#if (eq informe.conexiones_b33 "")}}selected{{/if}}></option>
+    <option value="A" {{#if (eq informe.conexiones_b33 "A")}}selected{{/if}}>A</option>
+    <option value="C" {{#if (eq informe.conexiones_b33 "C")}}selected{{/if}}>C</option>
+    <option value="F" {{#if (eq informe.conexiones_b33 "F")}}selected{{/if}}>F</option>
+    <option value="P" {{#if (eq informe.conexiones_b33 "P")}}selected{{/if}}>P</option>
+    <option value="D" {{#if (eq informe.conexiones_b33 "D")}}selected{{/if}}>D</option>
+    <option value="V" {{#if (eq informe.conexiones_b33 "V")}}selected{{/if}}>V</option>
+    <option value="OK" {{#if (eq informe.conexiones_b33 "OK")}}selected{{/if}}>OK</option>
+    <option value="N/A" {{#if (eq informe.conexiones_b33 "N/A")}}selected{{/if}}>N/A</option>
+  </select>
+</td>
+
+<td>
+  <select class="input-field" name="conexiones_b44">
+    <option value="" {{#if (eq informe.conexiones_b44 "")}}selected{{/if}}></option>
+    <option value="A" {{#if (eq informe.conexiones_b44 "A")}}selected{{/if}}>A</option>
+    <option value="C" {{#if (eq informe.conexiones_b44 "C")}}selected{{/if}}>C</option>
+    <option value="F" {{#if (eq informe.conexiones_b44 "F")}}selected{{/if}}>F</option>
+    <option value="P" {{#if (eq informe.conexiones_b44 "P")}}selected{{/if}}>P</option>
+    <option value="D" {{#if (eq informe.conexiones_b44 "D")}}selected{{/if}}>D</option>
+    <option value="V" {{#if (eq informe.conexiones_b44 "V")}}selected{{/if}}>V</option>
+    <option value="OK" {{#if (eq informe.conexiones_b44 "OK")}}selected{{/if}}>OK</option>
+    <option value="N/A" {{#if (eq informe.conexiones_b44 "N/A")}}selected{{/if}}>N/A</option>
+  </select>
+</td>
+
+
+</tr>
+
+<tr>
+    <td>Guarda motor</td>
+<td>
+  <select class="input-field" name="guarda_motor_b1">
+    <option value="" {{#if (eq informe.guarda_motor_b1 "")}}selected{{/if}}></option>
+    <option value="A" {{#if (eq informe.guarda_motor_b1 "A")}}selected{{/if}}>A</option>
+    <option value="C" {{#if (eq informe.guarda_motor_b1 "C")}}selected{{/if}}>C</option>
+    <option value="F" {{#if (eq informe.guarda_motor_b1 "F")}}selected{{/if}}>F</option>
+    <option value="P" {{#if (eq informe.guarda_motor_b1 "P")}}selected{{/if}}>P</option>
+    <option value="D" {{#if (eq informe.guarda_motor_b1 "D")}}selected{{/if}}>D</option>
+    <option value="V" {{#if (eq informe.guarda_motor_b1 "V")}}selected{{/if}}>V</option>
+    <option value="OK" {{#if (eq informe.guarda_motor_b1 "OK")}}selected{{/if}}>OK</option>
+    <option value="N/A" {{#if (eq informe.guarda_motor_b1 "N/A")}}selected{{/if}}>N/A</option>
+  </select>
+</td>
+
+<td>
+  <select class="input-field" name="guarda_motor_b2">
+    <option value="" {{#if (eq informe.guarda_motor_b2 "")}}selected{{/if}}></option>
+    <option value="A" {{#if (eq informe.guarda_motor_b2 "A")}}selected{{/if}}>A</option>
+    <option value="C" {{#if (eq informe.guarda_motor_b2 "C")}}selected{{/if}}>C</option>
+    <option value="F" {{#if (eq informe.guarda_motor_b2 "F")}}selected{{/if}}>F</option>
+    <option value="P" {{#if (eq informe.guarda_motor_b2 "P")}}selected{{/if}}>P</option>
+    <option value="D" {{#if (eq informe.guarda_motor_b2 "D")}}selected{{/if}}>D</option>
+    <option value="V" {{#if (eq informe.guarda_motor_b2 "V")}}selected{{/if}}>V</option>
+    <option value="OK" {{#if (eq informe.guarda_motor_b2 "OK")}}selected{{/if}}>OK</option>
+    <option value="N/A" {{#if (eq informe.guarda_motor_b2 "N/A")}}selected{{/if}}>N/A</option>
+  </select>
+</td>
+
+<td>
+  <select class="input-field" name="guarda_motor_b3">
+    <option value="" {{#if (eq informe.guarda_motor_b3 "")}}selected{{/if}}></option>
+    <option value="A" {{#if (eq informe.guarda_motor_b3 "A")}}selected{{/if}}>A</option>
+    <option value="C" {{#if (eq informe.guarda_motor_b3 "C")}}selected{{/if}}>C</option>
+    <option value="F" {{#if (eq informe.guarda_motor_b3 "F")}}selected{{/if}}>F</option>
+    <option value="P" {{#if (eq informe.guarda_motor_b3 "P")}}selected{{/if}}>P</option>
+    <option value="D" {{#if (eq informe.guarda_motor_b3 "D")}}selected{{/if}}>D</option>
+    <option value="V" {{#if (eq informe.guarda_motor_b3 "V")}}selected{{/if}}>V</option>
+    <option value="OK" {{#if (eq informe.guarda_motor_b3 "OK")}}selected{{/if}}>OK</option>
+    <option value="N/A" {{#if (eq informe.guarda_motor_b3 "N/A")}}selected{{/if}}>N/A</option>
+  </select>
+</td>
+
+<td>
+  <select class="input-field" name="guarda_motor_b4">
+    <option value="" {{#if (eq informe.guarda_motor_b4 "")}}selected{{/if}}></option>
+    <option value="A" {{#if (eq informe.guarda_motor_b4 "A")}}selected{{/if}}>A</option>
+    <option value="C" {{#if (eq informe.guarda_motor_b4 "C")}}selected{{/if}}>C</option>
+    <option value="F" {{#if (eq informe.guarda_motor_b4 "F")}}selected{{/if}}>F</option>
+    <option value="P" {{#if (eq informe.guarda_motor_b4 "P")}}selected{{/if}}>P</option>
+    <option value="D" {{#if (eq informe.guarda_motor_b4 "D")}}selected{{/if}}>D</option>
+    <option value="V" {{#if (eq informe.guarda_motor_b4 "V")}}selected{{/if}}>V</option>
+    <option value="OK" {{#if (eq informe.guarda_motor_b4 "OK")}}selected{{/if}}>OK</option>
+    <option value="N/A" {{#if (eq informe.guarda_motor_b4 "N/A")}}selected{{/if}}>N/A</option>
+  </select>
+</td>
+
+
+    <td>Registros</td>
+
+<td>
+  <select class="hidrosistema-input" name="registros">
+    <option value="" {{#if (eq informe.registros "")}}selected{{/if}}></option>
+    <option value="A" {{#if (eq informe.registros "A")}}selected{{/if}}>A</option>
+    <option value="C" {{#if (eq informe.registros "C")}}selected{{/if}}>C</option>
+    <option value="F" {{#if (eq informe.registros "F")}}selected{{/if}}>F</option>
+    <option value="P" {{#if (eq informe.registros "P")}}selected{{/if}}>P</option>
+    <option value="D" {{#if (eq informe.registros "D")}}selected{{/if}}>D</option>
+    <option value="V" {{#if (eq informe.registros "V")}}selected{{/if}}>V</option>
+    <option value="OK" {{#if (eq informe.registros "OK")}}selected{{/if}}>OK</option>
+    <option value="N/A" {{#if (eq informe.registros "N/A")}}selected{{/if}}>N/A</option>
+  </select>
+</td>
+
+
+
+    <td>Amperaje</td>
+<td>
+<input type="text" class="input-field" name="amperaje_b11" value="{{informe.amperaje_b11}}">
+</td>
+<td>
+  <input type="text" class="input-field" name="amperaje_b22" value="{{informe.amperaje_b22}}">
+</td>
+<td>
+  <input type="text" class="input-field" name="amperaje_b33" value="{{informe.amperaje_b33}}">
+</td>
+
+
+<td>
+  <input type="text" class="input-field" name="amperaje_b44" value="{{informe.amperaje_b44}}">
+</td>
+
+</tr>
+
+<tr>
+    <td>Temporizador</td>
+
+
+<td>
+  <select class="input-field" name="temporizador_b1">
+    <option value="" {{#if (eq informe.temporizador_b1 "")}}selected{{/if}}></option>
+    <option value="A" {{#if (eq informe.temporizador_b1 "A")}}selected{{/if}}>A</option>
+    <option value="C" {{#if (eq informe.temporizador_b1 "C")}}selected{{/if}}>C</option>
+    <option value="F" {{#if (eq informe.temporizador_b1 "F")}}selected{{/if}}>F</option>
+    <option value="P" {{#if (eq informe.temporizador_b1 "P")}}selected{{/if}}>P</option>
+    <option value="D" {{#if (eq informe.temporizador_b1 "D")}}selected{{/if}}>D</option>
+    <option value="V" {{#if (eq informe.temporizador_b1 "V")}}selected{{/if}}>V</option>
+    <option value="OK" {{#if (eq informe.temporizador_b1 "OK")}}selected{{/if}}>OK</option>
+    <option value="N/A" {{#if (eq informe.temporizador_b1 "N/A")}}selected{{/if}}>N/A</option>
+  </select>
+</td>
+
+
+
+
+<td>
+  <select class="input-field" name="temporizador_b2">
+    <option value="" {{#if (eq informe.temporizador_b2 "")}}selected{{/if}}></option>
+    <option value="A" {{#if (eq informe.temporizador_b2 "A")}}selected{{/if}}>A</option>
+    <option value="C" {{#if (eq informe.temporizador_b2 "C")}}selected{{/if}}>C</option>
+    <option value="F" {{#if (eq informe.temporizador_b2 "F")}}selected{{/if}}>F</option>
+    <option value="P" {{#if (eq informe.temporizador_b2 "P")}}selected{{/if}}>P</option>
+    <option value="D" {{#if (eq informe.temporizador_b2 "D")}}selected{{/if}}>D</option>
+    <option value="V" {{#if (eq informe.temporizador_b2 "V")}}selected{{/if}}>V</option>
+    <option value="OK" {{#if (eq informe.temporizador_b2 "OK")}}selected{{/if}}>OK</option>
+    <option value="N/A" {{#if (eq informe.temporizador_b2 "N/A")}}selected{{/if}}>N/A</option>
+  </select>
+</td>
+
+
+<td>
+  <select class="input-field" name="temporizador_b3">
+    <option value="" {{#if (eq informe.temporizador_b3 "")}}selected{{/if}}></option>
+    <option value="A" {{#if (eq informe.temporizador_b3 "A")}}selected{{/if}}>A</option>
+    <option value="C" {{#if (eq informe.temporizador_b3 "C")}}selected{{/if}}>C</option>
+    <option value="F" {{#if (eq informe.temporizador_b3 "F")}}selected{{/if}}>F</option>
+    <option value="P" {{#if (eq informe.temporizador_b3 "P")}}selected{{/if}}>P</option>
+    <option value="D" {{#if (eq informe.temporizador_b3 "D")}}selected{{/if}}>D</option>
+    <option value="V" {{#if (eq informe.temporizador_b3 "V")}}selected{{/if}}>V</option>
+    <option value="OK" {{#if (eq informe.temporizador_b3 "OK")}}selected{{/if}}>OK</option>
+    <option value="N/A" {{#if (eq informe.temporizador_b3 "N/A")}}selected{{/if}}>N/A</option>
+  </select>
+</td>
+
+
+
+
+
+
+<td>
+  <select class="input-field" name="temporizador_b4">
+    <option value="" {{#if (eq informe.temporizador_b4 "")}}selected{{/if}}></option>
+    <option value="A" {{#if (eq informe.temporizador_b4 "A")}}selected{{/if}}>A</option>
+    <option value="C" {{#if (eq informe.temporizador_b4 "C")}}selected{{/if}}>C</option>
+    <option value="F" {{#if (eq informe.temporizador_b4 "F")}}selected{{/if}}>F</option>
+    <option value="P" {{#if (eq informe.temporizador_b4 "P")}}selected{{/if}}>P</option>
+    <option value="D" {{#if (eq informe.temporizador_b4 "D")}}selected{{/if}}>D</option>
+    <option value="V" {{#if (eq informe.temporizador_b4 "V")}}selected{{/if}}>V</option>
+    <option value="OK" {{#if (eq informe.temporizador_b4 "OK")}}selected{{/if}}>OK</option>
+    <option value="N/A" {{#if (eq informe.temporizador_b4 "N/A")}}selected{{/if}}>N/A</option>
+  </select>
+</td>
+
+
+    <td>Membrana</td>
+
+
+<td>
+  <select class="hidrosistema-input" name="membrana">
+    <option value="" {{#if (eq informe.membrana "")}}selected{{/if}}></option>
+    <option value="A" {{#if (eq informe.membrana "A")}}selected{{/if}}>A</option>
+    <option value="C" {{#if (eq informe.membrana "C")}}selected{{/if}}>C</option>
+    <option value="F" {{#if (eq informe.membrana "F")}}selected{{/if}}>F</option>
+    <option value="P" {{#if (eq informe.membrana "P")}}selected{{/if}}>P</option>
+    <option value="D" {{#if (eq informe.membrana "D")}}selected{{/if}}>D</option>
+    <option value="V" {{#if (eq informe.membrana "V")}}selected{{/if}}>V</option>
+    <option value="OK" {{#if (eq informe.membrana "OK")}}selected{{/if}}>OK</option>
+    <option value="N/A" {{#if (eq informe.membrana "N/A")}}selected{{/if}}>N/A</option>
+  </select>
+</td>
+
+
+
+    <td>Voltaje</td>
+<td>
+  <input type="text" class="input-field" name="voltaje_b11" value="{{informe.voltaje_b11}}">
+</td>
+<td>
+  <input type="text" class="input-field" name="voltaje_b22" value="{{informe.voltaje_b22}}">
+</td>
+<td>
+  <input type="text" class="input-field" name="voltaje_b33" value="{{informe.voltaje_b33}}">
+</td>
+<td>
+  <input type="text" class="input-field" name="voltaje_b44" value="{{informe.voltaje_b44}}">
+</td>
+</tr>
+
+ <tr>
+    <td>Rele Termico</td>
+<td>
+  <select class="input-field" name="rele_termico_b1">
+    <option value="" {{#if (eq informe.rele_termico_b1 "")}}selected{{/if}}></option>
+    <option value="A" {{#if (eq informe.rele_termico_b1 "A")}}selected{{/if}}>A</option>
+    <option value="C" {{#if (eq informe.rele_termico_b1 "C")}}selected{{/if}}>C</option>
+    <option value="F" {{#if (eq informe.rele_termico_b1 "F")}}selected{{/if}}>F</option>
+    <option value="P" {{#if (eq informe.rele_termico_b1 "P")}}selected{{/if}}>P</option>
+    <option value="D" {{#if (eq informe.rele_termico_b1 "D")}}selected{{/if}}>D</option>
+    <option value="V" {{#if (eq informe.rele_termico_b1 "V")}}selected{{/if}}>V</option>
+    <option value="OK" {{#if (eq informe.rele_termico_b1 "OK")}}selected{{/if}}>OK</option>
+    <option value="N/A" {{#if (eq informe.rele_termico_b1 "N/A")}}selected{{/if}}>N/A</option>
+  </select>
+</td>
+
+
+<td>
+  <select class="input-field" name="rele_termico_b2">
+    <option value="" {{#if (eq informe.rele_termico_b2 "")}}selected{{/if}}></option>
+    <option value="A" {{#if (eq informe.rele_termico_b2 "A")}}selected{{/if}}>A</option>
+    <option value="C" {{#if (eq informe.rele_termico_b2 "C")}}selected{{/if}}>C</option>
+    <option value="F" {{#if (eq informe.rele_termico_b2 "F")}}selected{{/if}}>F</option>
+    <option value="P" {{#if (eq informe.rele_termico_b2 "P")}}selected{{/if}}>P</option>
+    <option value="D" {{#if (eq informe.rele_termico_b2 "D")}}selected{{/if}}>D</option>
+    <option value="V" {{#if (eq informe.rele_termico_b2 "V")}}selected{{/if}}>V</option>
+    <option value="OK" {{#if (eq informe.rele_termico_b2 "OK")}}selected{{/if}}>OK</option>
+    <option value="N/A" {{#if (eq informe.rele_termico_b2 "N/A")}}selected{{/if}}>N/A</option>
+  </select>
+</td>
+
+
+
+
+<td>
+  <select class="input-field" name="rele_termico_b3">
+    <option value="" {{#if (eq informe.rele_termico_b3 "")}}selected{{/if}}></option>
+    <option value="A" {{#if (eq informe.rele_termico_b3 "A")}}selected{{/if}}>A</option>
+    <option value="C" {{#if (eq informe.rele_termico_b3 "C")}}selected{{/if}}>C</option>
+    <option value="F" {{#if (eq informe.rele_termico_b3 "F")}}selected{{/if}}>F</option>
+    <option value="P" {{#if (eq informe.rele_termico_b3 "P")}}selected{{/if}}>P</option>
+    <option value="D" {{#if (eq informe.rele_termico_b3 "D")}}selected{{/if}}>D</option>
+    <option value="V" {{#if (eq informe.rele_termico_b3 "V")}}selected{{/if}}>V</option>
+    <option value="OK" {{#if (eq informe.rele_termico_b3 "OK")}}selected{{/if}}>OK</option>
+    <option value="N/A" {{#if (eq informe.rele_termico_b3 "N/A")}}selected{{/if}}>N/A</option>
+  </select>
+</td>
+
+<td>
+  <select class="input-field" name="rele_termico_b4">
+    <option value="" {{#if (eq informe.rele_termico_b4 "")}}selected{{/if}}></option>
+    <option value="A" {{#if (eq informe.rele_termico_b4 "A")}}selected{{/if}}>A</option>
+    <option value="C" {{#if (eq informe.rele_termico_b4 "C")}}selected{{/if}}>C</option>
+    <option value="F" {{#if (eq informe.rele_termico_b4 "F")}}selected{{/if}}>F</option>
+    <option value="P" {{#if (eq informe.rele_termico_b4 "P")}}selected{{/if}}>P</option>
+    <option value="D" {{#if (eq informe.rele_termico_b4 "D")}}selected{{/if}}>D</option>
+    <option value="V" {{#if (eq informe.rele_termico_b4 "V")}}selected{{/if}}>V</option>
+    <option value="OK" {{#if (eq informe.rele_termico_b4 "OK")}}selected{{/if}}>OK</option>
+    <option value="N/A" {{#if (eq informe.rele_termico_b4 "N/A")}}selected{{/if}}>N/A</option>
+  </select>
+</td>
+
+
+    <td>Manometro</td>
+<td>
+  <select class="hidrosistema-input" name="manometro">
+    <option value="" {{#if (eq informe.manometro "")}}selected{{/if}}></option>
+    <option value="A" {{#if (eq informe.manometro "A")}}selected{{/if}}>A</option>
+    <option value="C" {{#if (eq informe.manometro "C")}}selected{{/if}}>C</option>
+    <option value="F" {{#if (eq informe.manometro "F")}}selected{{/if}}>F</option>
+    <option value="P" {{#if (eq informe.manometro "P")}}selected{{/if}}>P</option>
+    <option value="D" {{#if (eq informe.manometro "D")}}selected{{/if}}>D</option>
+    <option value="V" {{#if (eq informe.manometro "V")}}selected{{/if}}>V</option>
+    <option value="OK" {{#if (eq informe.manometro "OK")}}selected{{/if}}>OK</option>
+    <option value="N/A" {{#if (eq informe.manometro "N/A")}}selected{{/if}}>N/A</option>
+  </select>
+</td>
+
+    <td>Sierena</td>
+ <td>
+  <select class="input-field" name="sierena_b1">
+    <option value="" {{#if (eq informe.sierena_b1 "")}}selected{{/if}}></option>
+    <option value="A" {{#if (eq informe.sierena_b1 "A")}}selected{{/if}}>A</option>
+    <option value="C" {{#if (eq informe.sierena_b1 "C")}}selected{{/if}}>C</option>
+    <option value="F" {{#if (eq informe.sierena_b1 "F")}}selected{{/if}}>F</option>
+    <option value="P" {{#if (eq informe.sierena_b1 "P")}}selected{{/if}}>P</option>
+    <option value="D" {{#if (eq informe.sierena_b1 "D")}}selected{{/if}}>D</option>
+    <option value="V" {{#if (eq informe.sierena_b1 "V")}}selected{{/if}}>V</option>
+    <option value="OK" {{#if (eq informe.sierena_b1 "OK")}}selected{{/if}}>OK</option>
+    <option value="N/A" {{#if (eq informe.sierena_b1 "N/A")}}selected{{/if}}>N/A</option>
+  </select>
+</td>
+
+<td>
+  <select class="input-field" name="sierena_b2">
+    <option value="" {{#if (eq informe.sierena_b2 "")}}selected{{/if}}></option>
+    <option value="A" {{#if (eq informe.sierena_b2 "A")}}selected{{/if}}>A</option>
+    <option value="C" {{#if (eq informe.sierena_b2 "C")}}selected{{/if}}>C</option>
+    <option value="F" {{#if (eq informe.sierena_b2 "F")}}selected{{/if}}>F</option>
+    <option value="P" {{#if (eq informe.sierena_b2 "P")}}selected{{/if}}>P</option>
+    <option value="D" {{#if (eq informe.sierena_b2 "D")}}selected{{/if}}>D</option>
+    <option value="V" {{#if (eq informe.sierena_b2 "V")}}selected{{/if}}>V</option>
+    <option value="OK" {{#if (eq informe.sierena_b2 "OK")}}selected{{/if}}>OK</option>
+    <option value="N/A" {{#if (eq informe.sierena_b2 "N/A")}}selected{{/if}}>N/A</option>
+  </select>
+</td>
+
+
+<td>
+  <select class="input-field" name="sierena_b3">
+    <option value="" {{#if (eq informe.sierena_b3 "")}}selected{{/if}}></option>
+    <option value="A" {{#if (eq informe.sierena_b3 "A")}}selected{{/if}}>A</option>
+    <option value="C" {{#if (eq informe.sierena_b3 "C")}}selected{{/if}}>C</option>
+    <option value="F" {{#if (eq informe.sierena_b3 "F")}}selected{{/if}}>F</option>
+    <option value="P" {{#if (eq informe.sierena_b3 "P")}}selected{{/if}}>P</option>
+    <option value="D" {{#if (eq informe.sierena_b3 "D")}}selected{{/if}}>D</option>
+    <option value="V" {{#if (eq informe.sierena_b3 "V")}}selected{{/if}}>V</option>
+    <option value="OK" {{#if (eq informe.sierena_b3 "OK")}}selected{{/if}}>OK</option>
+    <option value="N/A" {{#if (eq informe.sierena_b3 "N/A")}}selected{{/if}}>N/A</option>
+  </select>
+</td>
+
+
+
+<td>
+  <select class="input-field" name="sierena_b4">
+    <option value="" {{#if (eq informe.sierena_b4 "")}}selected{{/if}}></option>
+    <option value="A" {{#if (eq informe.sierena_b4 "A")}}selected{{/if}}>A</option>
+    <option value="C" {{#if (eq informe.sierena_b4 "C")}}selected{{/if}}>C</option>
+    <option value="F" {{#if (eq informe.sierena_b4 "F")}}selected{{/if}}>F</option>
+    <option value="P" {{#if (eq informe.sierena_b4 "P")}}selected{{/if}}>P</option>
+    <option value="D" {{#if (eq informe.sierena_b4 "D")}}selected{{/if}}>D</option>
+    <option value="V" {{#if (eq informe.sierena_b4 "V")}}selected{{/if}}>V</option>
+    <option value="OK" {{#if (eq informe.sierena_b4 "OK")}}selected{{/if}}>OK</option>
+    <option value="N/A" {{#if (eq informe.sierena_b4 "N/A")}}selected{{/if}}>N/A</option>
+  </select>
+</td>
+
+
+</tr>
+
+       <tr>
+    <td>Flotador Electrico</td>
+
+<td>
+  <select class="input-field" name="flotador_electrico_b1">
+    <option value="" {{#if (eq informe.flotador_electrico_b1 "")}}selected{{/if}}></option>
+    <option value="A" {{#if (eq informe.flotador_electrico_b1 "A")}}selected{{/if}}>A</option>
+    <option value="C" {{#if (eq informe.flotador_electrico_b1 "C")}}selected{{/if}}>C</option>
+    <option value="F" {{#if (eq informe.flotador_electrico_b1 "F")}}selected{{/if}}>F</option>
+    <option value="P" {{#if (eq informe.flotador_electrico_b1 "P")}}selected{{/if}}>P</option>
+    <option value="D" {{#if (eq informe.flotador_electrico_b1 "D")}}selected{{/if}}>D</option>
+    <option value="V" {{#if (eq informe.flotador_electrico_b1 "V")}}selected{{/if}}>V</option>
+    <option value="OK" {{#if (eq informe.flotador_electrico_b1 "OK")}}selected{{/if}}>OK</option>
+    <option value="N/A" {{#if (eq informe.flotador_electrico_b1 "N/A")}}selected{{/if}}>N/A</option>
+  </select>
+</td>
+
+
+
+<td>
+  <select class="input-field" name="flotador_electrico_b2">
+    <option value="" {{#if (eq informe.flotador_electrico_b2 "")}}selected{{/if}}></option>
+    <option value="A" {{#if (eq informe.flotador_electrico_b2 "A")}}selected{{/if}}>A</option>
+    <option value="C" {{#if (eq informe.flotador_electrico_b2 "C")}}selected{{/if}}>C</option>
+    <option value="F" {{#if (eq informe.flotador_electrico_b2 "F")}}selected{{/if}}>F</option>
+    <option value="P" {{#if (eq informe.flotador_electrico_b2 "P")}}selected{{/if}}>P</option>
+    <option value="D" {{#if (eq informe.flotador_electrico_b2 "D")}}selected{{/if}}>D</option>
+    <option value="V" {{#if (eq informe.flotador_electrico_b2 "V")}}selected{{/if}}>V</option>
+    <option value="OK" {{#if (eq informe.flotador_electrico_b2 "OK")}}selected{{/if}}>OK</option>
+    <option value="N/A" {{#if (eq informe.flotador_electrico_b2 "N/A")}}selected{{/if}}>N/A</option>
+  </select>
+</td>
+
+
+
+<td>
+  <select class="input-field" name="flotador_electrico_b3">
+    <option value="" {{#if (eq informe.flotador_electrico_b3 "")}}selected{{/if}}></option>
+    <option value="A" {{#if (eq informe.flotador_electrico_b3 "A")}}selected{{/if}}>A</option>
+    <option value="C" {{#if (eq informe.flotador_electrico_b3 "C")}}selected{{/if}}>C</option>
+    <option value="F" {{#if (eq informe.flotador_electrico_b3 "F")}}selected{{/if}}>F</option>
+    <option value="P" {{#if (eq informe.flotador_electrico_b3 "P")}}selected{{/if}}>P</option>
+    <option value="D" {{#if (eq informe.flotador_electrico_b3 "D")}}selected{{/if}}>D</option>
+    <option value="V" {{#if (eq informe.flotador_electrico_b3 "V")}}selected{{/if}}>V</option>
+    <option value="OK" {{#if (eq informe.flotador_electrico_b3 "OK")}}selected{{/if}}>OK</option>
+    <option value="N/A" {{#if (eq informe.flotador_electrico_b3 "N/A")}}selected{{/if}}>N/A</option>
+  </select>
+</td>
+
+
+
+<td>
+  <select class="input-field" name="flotador_electrico_b4">
+    <option value="" {{#if (eq informe.flotador_electrico_b4 "")}}selected{{/if}}></option>
+    <option value="A" {{#if (eq informe.flotador_electrico_b4 "A")}}selected{{/if}}>A</option>
+    <option value="C" {{#if (eq informe.flotador_electrico_b4 "C")}}selected{{/if}}>C</option>
+    <option value="F" {{#if (eq informe.flotador_electrico_b4 "F")}}selected{{/if}}>F</option>
+    <option value="P" {{#if (eq informe.flotador_electrico_b4 "P")}}selected{{/if}}>P</option>
+    <option value="D" {{#if (eq informe.flotador_electrico_b4 "D")}}selected{{/if}}>D</option>
+    <option value="V" {{#if (eq informe.flotador_electrico_b4 "V")}}selected{{/if}}>V</option>
+    <option value="OK" {{#if (eq informe.flotador_electrico_b4 "OK")}}selected{{/if}}>OK</option>
+    <option value="N/A" {{#if (eq informe.flotador_electrico_b4 "N/A")}}selected{{/if}}>N/A</option>
+  </select>
+</td>
+
+
+    <td>Cargador de Aire</td>
+<td>
+  <select class="hidrosistema-input" name="cargador_aire">
+    <option value="" {{#if (eq informe.cargador_aire "")}}selected{{/if}}></option>
+    <option value="A" {{#if (eq informe.cargador_aire "A")}}selected{{/if}}>A</option>
+    <option value="C" {{#if (eq informe.cargador_aire "C")}}selected{{/if}}>C</option>
+    <option value="F" {{#if (eq informe.cargador_aire "F")}}selected{{/if}}>F</option>
+    <option value="P" {{#if (eq informe.cargador_aire "P")}}selected{{/if}}>P</option>
+    <option value="D" {{#if (eq informe.cargador_aire "D")}}selected{{/if}}>D</option>
+    <option value="V" {{#if (eq informe.cargador_aire "V")}}selected{{/if}}>V</option>
+    <option value="OK" {{#if (eq informe.cargador_aire "OK")}}selected{{/if}}>OK</option>
+    <option value="N/A" {{#if (eq informe.cargador_aire "N/A")}}selected{{/if}}>N/A</option>
+  </select>
+</td>
+
+    <td>Rele termico</td>
+<td>
+  <select class="input-field" name="rele_terminco_b1">
+    <option value="" {{#if (eq informe.rele_terminco_b1 "")}}selected{{/if}}></option>
+    <option value="A" {{#if (eq informe.rele_terminco_b1 "A")}}selected{{/if}}>A</option>
+    <option value="C" {{#if (eq informe.rele_terminco_b1 "C")}}selected{{/if}}>C</option>
+    <option value="F" {{#if (eq informe.rele_terminco_b1 "F")}}selected{{/if}}>F</option>
+    <option value="P" {{#if (eq informe.rele_terminco_b1 "P")}}selected{{/if}}>P</option>
+    <option value="D" {{#if (eq informe.rele_terminco_b1 "D")}}selected{{/if}}>D</option>
+    <option value="V" {{#if (eq informe.rele_terminco_b1 "V")}}selected{{/if}}>V</option>
+    <option value="OK" {{#if (eq informe.rele_terminco_b1 "OK")}}selected{{/if}}>OK</option>
+    <option value="N/A" {{#if (eq informe.rele_terminco_b1 "N/A")}}selected{{/if}}>N/A</option>
+  </select>
+</td>
+
+<td>
+  <select class="input-field" name="rele_terminco_b2">
+    <option value="" {{#if (eq informe.rele_terminco_b2 "")}}selected{{/if}}></option>
+    <option value="A" {{#if (eq informe.rele_terminco_b2 "A")}}selected{{/if}}>A</option>
+    <option value="C" {{#if (eq informe.rele_terminco_b2 "C")}}selected{{/if}}>C</option>
+    <option value="F" {{#if (eq informe.rele_terminco_b2 "F")}}selected{{/if}}>F</option>
+    <option value="P" {{#if (eq informe.rele_terminco_b2 "P")}}selected{{/if}}>P</option>
+    <option value="D" {{#if (eq informe.rele_terminco_b2 "D")}}selected{{/if}}>D</option>
+    <option value="V" {{#if (eq informe.rele_terminco_b2 "V")}}selected{{/if}}>V</option>
+    <option value="OK" {{#if (eq informe.rele_terminco_b2 "OK")}}selected{{/if}}>OK</option>
+    <option value="N/A" {{#if (eq informe.rele_terminco_b2 "N/A")}}selected{{/if}}>N/A</option>
+  </select>
+</td>
+
+
+<td>
+  <select class="input-field" name="rele_terminco_b3">
+    <option value="" {{#if (eq informe.rele_terminco_b3 "")}}selected{{/if}}></option>
+    <option value="A" {{#if (eq informe.rele_terminco_b3 "A")}}selected{{/if}}>A</option>
+    <option value="C" {{#if (eq informe.rele_terminco_b3 "C")}}selected{{/if}}>C</option>
+    <option value="F" {{#if (eq informe.rele_terminco_b3 "F")}}selected{{/if}}>F</option>
+    <option value="P" {{#if (eq informe.rele_terminco_b3 "P")}}selected{{/if}}>P</option>
+    <option value="D" {{#if (eq informe.rele_terminco_b3 "D")}}selected{{/if}}>D</option>
+    <option value="V" {{#if (eq informe.rele_terminco_b3 "V")}}selected{{/if}}>V</option>
+    <option value="OK" {{#if (eq informe.rele_terminco_b3 "OK")}}selected{{/if}}>OK</option>
+    <option value="N/A" {{#if (eq informe.rele_terminco_b3 "N/A")}}selected{{/if}}>N/A</option>
+  </select>
+</td>
+
+
+
+<td>
+  <select class="input-field" name="rele_terminco_b4">
+    <option value="" {{#if (eq informe.rele_terminco_b4 "")}}selected{{/if}}></option>
+    <option value="A" {{#if (eq informe.rele_terminco_b4 "A")}}selected{{/if}}>A</option>
+    <option value="C" {{#if (eq informe.rele_terminco_b4 "C")}}selected{{/if}}>C</option>
+    <option value="F" {{#if (eq informe.rele_terminco_b4 "F")}}selected{{/if}}>F</option>
+    <option value="P" {{#if (eq informe.rele_terminco_b4 "P")}}selected{{/if}}>P</option>
+    <option value="D" {{#if (eq informe.rele_terminco_b4 "D")}}selected{{/if}}>D</option>
+    <option value="V" {{#if (eq informe.rele_terminco_b4 "V")}}selected{{/if}}>V</option>
+    <option value="OK" {{#if (eq informe.rele_terminco_b4 "OK")}}selected{{/if}}>OK</option>
+    <option value="N/A" {{#if (eq informe.rele_terminco_b4 "N/A")}}selected{{/if}}>N/A</option>
+  </select>
+</td>
+
+
+</tr>
+
+     <tr>
+     <td>Conexiones</td>
+<td>
+  <select class="input-field" name="conexiones_b1">
+    <option value="" {{#if (eq informe.conexiones_b1 "")}}selected{{/if}}></option>
+    <option value="A" {{#if (eq informe.conexiones_b1 "A")}}selected{{/if}}>A</option>
+    <option value="C" {{#if (eq informe.conexiones_b1 "C")}}selected{{/if}}>C</option>
+    <option value="F" {{#if (eq informe.conexiones_b1 "F")}}selected{{/if}}>F</option>
+    <option value="P" {{#if (eq informe.conexiones_b1 "P")}}selected{{/if}}>P</option>
+    <option value="D" {{#if (eq informe.conexiones_b1 "D")}}selected{{/if}}>D</option>
+    <option value="V" {{#if (eq informe.conexiones_b1 "V")}}selected{{/if}}>V</option>
+    <option value="OK" {{#if (eq informe.conexiones_b1 "OK")}}selected{{/if}}>OK</option>
+    <option value="N/A" {{#if (eq informe.conexiones_b1 "N/A")}}selected{{/if}}>N/A</option>
+  </select>
+</td>
+
+
+<td>
+  <select class="input-field" name="conexiones_b2">
+    <option value="" {{#if (eq informe.conexiones_b2 "")}}selected{{/if}}></option>
+    <option value="A" {{#if (eq informe.conexiones_b2 "A")}}selected{{/if}}>A</option>
+    <option value="C" {{#if (eq informe.conexiones_b2 "C")}}selected{{/if}}>C</option>
+    <option value="F" {{#if (eq informe.conexiones_b2 "F")}}selected{{/if}}>F</option>
+    <option value="P" {{#if (eq informe.conexiones_b2 "P")}}selected{{/if}}>P</option>
+    <option value="D" {{#if (eq informe.conexiones_b2 "D")}}selected{{/if}}>D</option>
+    <option value="V" {{#if (eq informe.conexiones_b2 "V")}}selected{{/if}}>V</option>
+    <option value="OK" {{#if (eq informe.conexiones_b2 "OK")}}selected{{/if}}>OK</option>
+    <option value="N/A" {{#if (eq informe.conexiones_b2 "N/A")}}selected{{/if}}>N/A</option>
+  </select>
+</td>
+
+
+
+<td>
+  <select class="input-field" name="conexiones_b3">
+    <option value="" {{#if (eq informe.conexiones_b3 "")}}selected{{/if}}></option>
+    <option value="A" {{#if (eq informe.conexiones_b3 "A")}}selected{{/if}}>A</option>
+    <option value="C" {{#if (eq informe.conexiones_b3 "C")}}selected{{/if}}>C</option>
+    <option value="F" {{#if (eq informe.conexiones_b3 "F")}}selected{{/if}}>F</option>
+    <option value="P" {{#if (eq informe.conexiones_b3 "P")}}selected{{/if}}>P</option>
+    <option value="D" {{#if (eq informe.conexiones_b3 "D")}}selected{{/if}}>D</option>
+    <option value="V" {{#if (eq informe.conexiones_b3 "V")}}selected{{/if}}>V</option>
+    <option value="OK" {{#if (eq informe.conexiones_b3 "OK")}}selected{{/if}}>OK</option>
+    <option value="N/A" {{#if (eq informe.conexiones_b3 "N/A")}}selected{{/if}}>N/A</option>
+  </select>
+</td>
+
+
+
+
+<td>
+  <select class="input-field" name="conexiones_b4">
+    <option value="" {{#if (eq informe.conexiones_b4 "")}}selected{{/if}}></option>
+    <option value="A" {{#if (eq informe.conexiones_b4 "A")}}selected{{/if}}>A</option>
+    <option value="C" {{#if (eq informe.conexiones_b4 "C")}}selected{{/if}}>C</option>
+    <option value="F" {{#if (eq informe.conexiones_b4 "F")}}selected{{/if}}>F</option>
+    <option value="P" {{#if (eq informe.conexiones_b4 "P")}}selected{{/if}}>P</option>
+    <option value="D" {{#if (eq informe.conexiones_b4 "D")}}selected{{/if}}>D</option>
+    <option value="V" {{#if (eq informe.conexiones_b4 "V")}}selected{{/if}}>V</option>
+    <option value="OK" {{#if (eq informe.conexiones_b4 "OK")}}selected{{/if}}>OK</option>
+    <option value="N/A" {{#if (eq informe.conexiones_b4 "N/A")}}selected{{/if}}>N/A</option>
+  </select>
+</td>
+
+
+    <td>Tanque Reserva</td>
+
+
+<td>
+  <select class="hidrosistema-input" name="tanque_reserva">
+    <option value="" {{#if (eq informe.tanque_reserva "")}}selected{{/if}}></option>
+    <option value="A" {{#if (eq informe.tanque_reserva "A")}}selected{{/if}}>A</option>
+    <option value="C" {{#if (eq informe.tanque_reserva "C")}}selected{{/if}}>C</option>
+    <option value="F" {{#if (eq informe.tanque_reserva "F")}}selected{{/if}}>F</option>
+    <option value="P" {{#if (eq informe.tanque_reserva "P")}}selected{{/if}}>P</option>
+    <option value="D" {{#if (eq informe.tanque_reserva "D")}}selected{{/if}}>D</option>
+    <option value="V" {{#if (eq informe.tanque_reserva "V")}}selected{{/if}}>V</option>
+    <option value="OK" {{#if (eq informe.tanque_reserva "OK")}}selected{{/if}}>OK</option>
+    <option value="N/A" {{#if (eq informe.tanque_reserva "N/A")}}selected{{/if}}>N/A</option>
+  </select>
+</td>
+
+
+
+    <td>Residuos sólidos</td>
+
+
+<td>
+  <select class="input-field" name="residuos_b1">
+    <option value="" {{#if (eq informe.residuos_b1 "")}}selected{{/if}}></option>
+    <option value="A" {{#if (eq informe.residuos_b1 "A")}}selected{{/if}}>A</option>
+    <option value="C" {{#if (eq informe.residuos_b1 "C")}}selected{{/if}}>C</option>
+    <option value="F" {{#if (eq informe.residuos_b1 "F")}}selected{{/if}}>F</option>
+    <option value="P" {{#if (eq informe.residuos_b1 "P")}}selected{{/if}}>P</option>
+    <option value="D" {{#if (eq informe.residuos_b1 "D")}}selected{{/if}}>D</option>
+    <option value="V" {{#if (eq informe.residuos_b1 "V")}}selected{{/if}}>V</option>
+    <option value="OK" {{#if (eq informe.residuos_b1 "OK")}}selected{{/if}}>OK</option>
+    <option value="N/A" {{#if (eq informe.residuos_b1 "N/A")}}selected{{/if}}>N/A</option>
+  </select>
+</td>
+
+
+<td>
+  <select class="input-field" name="residuos_b2">
+    <option value="" {{#if (eq informe.residuos_b2 "")}}selected{{/if}}></option>
+    <option value="A" {{#if (eq informe.residuos_b2 "A")}}selected{{/if}}>A</option>
+    <option value="C" {{#if (eq informe.residuos_b2 "C")}}selected{{/if}}>C</option>
+    <option value="F" {{#if (eq informe.residuos_b2 "F")}}selected{{/if}}>F</option>
+    <option value="P" {{#if (eq informe.residuos_b2 "P")}}selected{{/if}}>P</option>
+    <option value="D" {{#if (eq informe.residuos_b2 "D")}}selected{{/if}}>D</option>
+    <option value="V" {{#if (eq informe.residuos_b2 "V")}}selected{{/if}}>V</option>
+    <option value="OK" {{#if (eq informe.residuos_b2 "OK")}}selected{{/if}}>OK</option>
+    <option value="N/A" {{#if (eq informe.residuos_b2 "N/A")}}selected{{/if}}>N/A</option>
+  </select>
+</td>
+
+<td>
+  <select class="input-field" name="residuos_b3">
+    <option value="" {{#if (eq informe.residuos_b3 "")}}selected{{/if}}></option>
+    <option value="A" {{#if (eq informe.residuos_b3 "A")}}selected{{/if}}>A</option>
+    <option value="C" {{#if (eq informe.residuos_b3 "C")}}selected{{/if}}>C</option>
+    <option value="F" {{#if (eq informe.residuos_b3 "F")}}selected{{/if}}>F</option>
+    <option value="P" {{#if (eq informe.residuos_b3 "P")}}selected{{/if}}>P</option>
+    <option value="D" {{#if (eq informe.residuos_b3 "D")}}selected{{/if}}>D</option>
+    <option value="V" {{#if (eq informe.residuos_b3 "V")}}selected{{/if}}>V</option>
+    <option value="OK" {{#if (eq informe.residuos_b3 "OK")}}selected{{/if}}>OK</option>
+    <option value="N/A" {{#if (eq informe.residuos_b3 "N/A")}}selected{{/if}}>N/A</option>
+  </select>
+</td>
+
+<td>
+  <select class="input-field" name="residuos_b4">
+    <option value="" {{#if (eq informe.residuos_b4 "")}}selected{{/if}}></option>
+    <option value="A" {{#if (eq informe.residuos_b4 "A")}}selected{{/if}}>A</option>
+    <option value="C" {{#if (eq informe.residuos_b4 "C")}}selected{{/if}}>C</option>
+    <option value="F" {{#if (eq informe.residuos_b4 "F")}}selected{{/if}}>F</option>
+    <option value="P" {{#if (eq informe.residuos_b4 "P")}}selected{{/if}}>P</option>
+    <option value="D" {{#if (eq informe.residuos_b4 "D")}}selected{{/if}}>D</option>
+    <option value="V" {{#if (eq informe.residuos_b4 "V")}}selected{{/if}}>V</option>
+    <option value="OK" {{#if (eq informe.residuos_b4 "OK")}}selected{{/if}}>OK</option>
+    <option value="N/A" {{#if (eq informe.residuos_b4 "N/A")}}selected{{/if}}>N/A</option>
+  </select>
+</td>
+
+</tr>
+
+ <tr>
+    <td>Amperaje</td>
+<td><input type="text" class="input-field" name="amperaje_b1" value="{{informe.amperaje_b1}}"></td>
+<td><input type="text" class="input-field" name="amperaje_b2" value="{{informe.amperaje_b2}}"></td>
+<td><input type="text" class="input-field" name="amperaje_b3" value="{{informe.amperaje_b3}}"></td>
+<td><input type="text" class="input-field" name="amperaje_b4" value="{{informe.amperaje_b4}}"></td>
+    <td>Flauta de descarga</td>
+<td>
+  <select class="hidrosistema-input" name="flauta_descarga">
+    <option value="" {{#if (eq informe.flauta_descarga "")}}selected{{/if}}></option>
+    <option value="A" {{#if (eq informe.flauta_descarga "A")}}selected{{/if}}>A</option>
+    <option value="C" {{#if (eq informe.flauta_descarga "C")}}selected{{/if}}>C</option>
+    <option value="F" {{#if (eq informe.flauta_descarga "F")}}selected{{/if}}>F</option>
+    <option value="P" {{#if (eq informe.flauta_descarga "P")}}selected{{/if}}>P</option>
+    <option value="D" {{#if (eq informe.flauta_descarga "D")}}selected{{/if}}>D</option>
+    <option value="V" {{#if (eq informe.flauta_descarga "V")}}selected{{/if}}>V</option>
+    <option value="OK" {{#if (eq informe.flauta_descarga "OK")}}selected{{/if}}>OK</option>
+    <option value="N/A" {{#if (eq informe.flauta_descarga "N/A")}}selected{{/if}}>N/A</option>
+  </select>
+</td>
+
+    <td></td>
+    <td></td>
+    <td></td>
+    <td></td>
+    <td></td>
+</tr>
+
+<tr>
+    <td>Voltaje</td>
+    <td><input type="text" class="input-field" name="voltaje_b1" value="{{informe.voltaje_b1}}"></td>
+    <td><input type="text" class="input-field" name="voltaje_b2" value="{{informe.voltaje_b2}}"></td>
+    <td><input type="text" class="input-field" name="voltaje_b3" value="{{informe.voltaje_b3}}"></td>
+    <td><input type="text" class="input-field" name="voltaje_b4" value="{{informe.voltaje_b4}}"></td>
+    <td></td>
+    <td></td>
+</tr>
+
+
+        </tbody>
+    </table>
+<div class="table-container">
+    <table class="combined-table">
+        <thead>
+            <tr class="header">
+                <th colspan="5">MOTOR</th>
+                <th colspan="5">BOMBAS</th>
+                 <th colspan="2">SIGLAS</th>
+
+            </tr>
+            <tr>
+                <th>Parámetro</th>
+                <th>M1</th>
+                <th>M2</th>
+                <th>M3</th>
+                <th>M4</th>
+                <th>Parámetro</th>
+                <th>B1</th>
+                <th>B2</th>
+                <th>B3</th>
+                <th>B4</th>
+                 <th>LETRA</th>
+                <th>SIGNIFICADO</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+
+    <td>Rodamientos</td>
+<td>
+  <select class="input-field" name="rodamientos_m1">
+    <option value="" {{#if (eq informe.rodamientos_m1 "")}}selected{{/if}}></option>
+    <option value="A" {{#if (eq informe.rodamientos_m1 "A")}}selected{{/if}}>A</option>
+    <option value="C" {{#if (eq informe.rodamientos_m1 "C")}}selected{{/if}}>C</option>
+    <option value="F" {{#if (eq informe.rodamientos_m1 "F")}}selected{{/if}}>F</option>
+    <option value="P" {{#if (eq informe.rodamientos_m1 "P")}}selected{{/if}}>P</option>
+    <option value="D" {{#if (eq informe.rodamientos_m1 "D")}}selected{{/if}}>D</option>
+    <option value="V" {{#if (eq informe.rodamientos_m1 "V")}}selected{{/if}}>V</option>
+    <option value="OK" {{#if (eq informe.rodamientos_m1 "OK")}}selected{{/if}}>OK</option>
+    <option value="N/A" {{#if (eq informe.rodamientos_m1 "N/A")}}selected{{/if}}>N/A</option>
+  </select>
+</td>
+
+<td>
+  <select class="input-field" name="rodamientos_m2">
+    <option value="" {{#if (eq informe.rodamientos_m2 "")}}selected{{/if}}></option>
+    <option value="A" {{#if (eq informe.rodamientos_m2 "A")}}selected{{/if}}>A</option>
+    <option value="C" {{#if (eq informe.rodamientos_m2 "C")}}selected{{/if}}>C</option>
+    <option value="F" {{#if (eq informe.rodamientos_m2 "F")}}selected{{/if}}>F</option>
+    <option value="P" {{#if (eq informe.rodamientos_m2 "P")}}selected{{/if}}>P</option>
+    <option value="D" {{#if (eq informe.rodamientos_m2 "D")}}selected{{/if}}>D</option>
+    <option value="V" {{#if (eq informe.rodamientos_m2 "V")}}selected{{/if}}>V</option>
+    <option value="OK" {{#if (eq informe.rodamientos_m2 "OK")}}selected{{/if}}>OK</option>
+    <option value="N/A" {{#if (eq informe.rodamientos_m2 "N/A")}}selected{{/if}}>N/A</option>
+  </select>
+</td>
+
+<td>
+  <select class="input-field" name="rodamientos_m3">
+    <option value="" {{#if (eq informe.rodamientos_m3 "")}}selected{{/if}}></option>
+    <option value="A" {{#if (eq informe.rodamientos_m3 "A")}}selected{{/if}}>A</option>
+    <option value="C" {{#if (eq informe.rodamientos_m3 "C")}}selected{{/if}}>C</option>
+    <option value="F" {{#if (eq informe.rodamientos_m3 "F")}}selected{{/if}}>F</option>
+    <option value="P" {{#if (eq informe.rodamientos_m3 "P")}}selected{{/if}}>P</option>
+    <option value="D" {{#if (eq informe.rodamientos_m3 "D")}}selected{{/if}}>D</option>
+    <option value="V" {{#if (eq informe.rodamientos_m3 "V")}}selected{{/if}}>V</option>
+    <option value="OK" {{#if (eq informe.rodamientos_m3 "OK")}}selected{{/if}}>OK</option>
+    <option value="N/A" {{#if (eq informe.rodamientos_m3 "N/A")}}selected{{/if}}>N/A</option>
+  </select>
+</td>
+
+<td>
+  <select class="input-field" name="rodamientos_m4">
+    <option value="" {{#if (eq informe.rodamientos_m4 "")}}selected{{/if}}></option>
+    <option value="A" {{#if (eq informe.rodamientos_m4 "A")}}selected{{/if}}>A</option>
+    <option value="C" {{#if (eq informe.rodamientos_m4 "C")}}selected{{/if}}>C</option>
+    <option value="F" {{#if (eq informe.rodamientos_m4 "F")}}selected{{/if}}>F</option>
+    <option value="P" {{#if (eq informe.rodamientos_m4 "P")}}selected{{/if}}>P</option>
+    <option value="D" {{#if (eq informe.rodamientos_m4 "D")}}selected{{/if}}>D</option>
+    <option value="V" {{#if (eq informe.rodamientos_m4 "V")}}selected{{/if}}>V</option>
+    <option value="OK" {{#if (eq informe.rodamientos_m4 "OK")}}selected{{/if}}>OK</option>
+    <option value="N/A" {{#if (eq informe.rodamientos_m4 "N/A")}}selected{{/if}}>N/A</option>
+  </select>
+</td>
+
+
+
+     <td>Impulsor</td>
+<td>
+  <select class="input-field" name="impulsor_m1">
+    <option value="" {{#if (eq informe.impulsor_m1 "")}}selected{{/if}}></option>
+    <option value="A" {{#if (eq informe.impulsor_m1 "A")}}selected{{/if}}>A</option>
+    <option value="C" {{#if (eq informe.impulsor_m1 "C")}}selected{{/if}}>C</option>
+    <option value="F" {{#if (eq informe.impulsor_m1 "F")}}selected{{/if}}>F</option>
+    <option value="P" {{#if (eq informe.impulsor_m1 "P")}}selected{{/if}}>P</option>
+    <option value="D" {{#if (eq informe.impulsor_m1 "D")}}selected{{/if}}>D</option>
+    <option value="V" {{#if (eq informe.impulsor_m1 "V")}}selected{{/if}}>V</option>
+    <option value="OK" {{#if (eq informe.impulsor_m1 "OK")}}selected{{/if}}>OK</option>
+    <option value="N/A" {{#if (eq informe.impulsor_m1 "N/A")}}selected{{/if}}>N/A</option>
+  </select>
+</td>
+
+<td>
+  <select class="input-field" name="impulsor_m2">
+    <option value="" {{#if (eq informe.impulsor_m2 "")}}selected{{/if}}></option>
+    <option value="A" {{#if (eq informe.impulsor_m2 "A")}}selected{{/if}}>A</option>
+    <option value="C" {{#if (eq informe.impulsor_m2 "C")}}selected{{/if}}>C</option>
+    <option value="F" {{#if (eq informe.impulsor_m2 "F")}}selected{{/if}}>F</option>
+    <option value="P" {{#if (eq informe.impulsor_m2 "P")}}selected{{/if}}>P</option>
+    <option value="D" {{#if (eq informe.impulsor_m2 "D")}}selected{{/if}}>D</option>
+    <option value="V" {{#if (eq informe.impulsor_m2 "V")}}selected{{/if}}>V</option>
+    <option value="OK" {{#if (eq informe.impulsor_m2 "OK")}}selected{{/if}}>OK</option>
+    <option value="N/A" {{#if (eq informe.impulsor_m2 "N/A")}}selected{{/if}}>N/A</option>
+  </select>
+</td>
+
+<td>
+  <select class="input-field" name="impulsor_m3">
+    <option value="" {{#if (eq informe.impulsor_m3 "")}}selected{{/if}}></option>
+    <option value="A" {{#if (eq informe.impulsor_m3 "A")}}selected{{/if}}>A</option>
+    <option value="C" {{#if (eq informe.impulsor_m3 "C")}}selected{{/if}}>C</option>
+    <option value="F" {{#if (eq informe.impulsor_m3 "F")}}selected{{/if}}>F</option>
+    <option value="P" {{#if (eq informe.impulsor_m3 "P")}}selected{{/if}}>P</option>
+    <option value="D" {{#if (eq informe.impulsor_m3 "D")}}selected{{/if}}>D</option>
+    <option value="V" {{#if (eq informe.impulsor_m3 "V")}}selected{{/if}}>V</option>
+    <option value="OK" {{#if (eq informe.impulsor_m3 "OK")}}selected{{/if}}>OK</option>
+    <option value="N/A" {{#if (eq informe.impulsor_m3 "N/A")}}selected{{/if}}>N/A</option>
+  </select>
+</td>
+
+<td>
+  <select class="input-field" name="impulsor_m4">
+    <option value="" {{#if (eq informe.impulsor_m4 "")}}selected{{/if}}></option>
+    <option value="A" {{#if (eq informe.impulsor_m4 "A")}}selected{{/if}}>A</option>
+    <option value="C" {{#if (eq informe.impulsor_m4 "C")}}selected{{/if}}>C</option>
+    <option value="F" {{#if (eq informe.impulsor_m4 "F")}}selected{{/if}}>F</option>
+    <option value="P" {{#if (eq informe.impulsor_m4 "P")}}selected{{/if}}>P</option>
+    <option value="D" {{#if (eq informe.impulsor_m4 "D")}}selected{{/if}}>D</option>
+    <option value="V" {{#if (eq informe.impulsor_m4 "V")}}selected{{/if}}>V</option>
+    <option value="OK" {{#if (eq informe.impulsor_m4 "OK")}}selected{{/if}}>OK</option>
+    <option value="N/A" {{#if (eq informe.impulsor_m4 "N/A")}}selected{{/if}}>N/A</option>
+  </select>
+</td>
+
+
+    <td>A</td>
+    <td>AJUSTADAS</td>
+
+
+</td>
+           
+              
+              
+              
+<tr>
+    <td>Casquillo</td>
+<td>
+  <select name="casquillo_b1" class="input-field">
+    <option value="" {{#if (eq informe.casquillo_b1 "")}}selected{{/if}}></option>
+    <option value="A" {{#if (eq informe.casquillo_b1 "A")}}selected{{/if}}>A</option>
+    <option value="C" {{#if (eq informe.casquillo_b1 "C")}}selected{{/if}}>C</option>
+    <option value="F" {{#if (eq informe.casquillo_b1 "F")}}selected{{/if}}>F</option>
+    <option value="P" {{#if (eq informe.casquillo_b1 "P")}}selected{{/if}}>P</option>
+    <option value="D" {{#if (eq informe.casquillo_b1 "D")}}selected{{/if}}>D</option>
+    <option value="V" {{#if (eq informe.casquillo_b1 "V")}}selected{{/if}}>V</option>
+    <option value="OK" {{#if (eq informe.casquillo_b1 "OK")}}selected{{/if}}>OK</option>
+    <option value="N/A" {{#if (eq informe.casquillo_b1 "N/A")}}selected{{/if}}>N/A</option>
+  </select>
+</td>
+
+<td>
+  <select name="casquillo_b2" class="input-field">
+    <option value="" {{#if (eq informe.casquillo_b2 "")}}selected{{/if}}></option>
+    <option value="A" {{#if (eq informe.casquillo_b2 "A")}}selected{{/if}}>A</option>
+    <option value="C" {{#if (eq informe.casquillo_b2 "C")}}selected{{/if}}>C</option>
+    <option value="F" {{#if (eq informe.casquillo_b2 "F")}}selected{{/if}}>F</option>
+    <option value="P" {{#if (eq informe.casquillo_b2 "P")}}selected{{/if}}>P</option>
+    <option value="D" {{#if (eq informe.casquillo_b2 "D")}}selected{{/if}}>D</option>
+    <option value="V" {{#if (eq informe.casquillo_b2 "V")}}selected{{/if}}>V</option>
+    <option value="OK" {{#if (eq informe.casquillo_b2 "OK")}}selected{{/if}}>OK</option>
+    <option value="N/A" {{#if (eq informe.casquillo_b2 "N/A")}}selected{{/if}}>N/A</option>
+  </select>
+</td>
+
+<td>
+  <select name="casquillo_b3" class="input-field">
+    <option value="" {{#if (eq informe.casquillo_b3 "")}}selected{{/if}}></option>
+    <option value="A" {{#if (eq informe.casquillo_b3 "A")}}selected{{/if}}>A</option>
+    <option value="C" {{#if (eq informe.casquillo_b3 "C")}}selected{{/if}}>C</option>
+    <option value="F" {{#if (eq informe.casquillo_b3 "F")}}selected{{/if}}>F</option>
+    <option value="P" {{#if (eq informe.casquillo_b3 "P")}}selected{{/if}}>P</option>
+    <option value="D" {{#if (eq informe.casquillo_b3 "D")}}selected{{/if}}>D</option>
+    <option value="V" {{#if (eq informe.casquillo_b3 "V")}}selected{{/if}}>V</option>
+    <option value="OK" {{#if (eq informe.casquillo_b3 "OK")}}selected{{/if}}>OK</option>
+    <option value="N/A" {{#if (eq informe.casquillo_b3 "N/A")}}selected{{/if}}>N/A</option>
+  </select>
+</td>
+
+<td>
+  <select name="casquillo_b4" class="input-field">
+    <option value="" {{#if (eq informe.casquillo_b4 "")}}selected{{/if}}></option>
+    <option value="A" {{#if (eq informe.casquillo_b4 "A")}}selected{{/if}}>A</option>
+    <option value="C" {{#if (eq informe.casquillo_b4 "C")}}selected{{/if}}>C</option>
+    <option value="F" {{#if (eq informe.casquillo_b4 "F")}}selected{{/if}}>F</option>
+    <option value="P" {{#if (eq informe.casquillo_b4 "P")}}selected{{/if}}>P</option>
+    <option value="D" {{#if (eq informe.casquillo_b4 "D")}}selected{{/if}}>D</option>
+    <option value="V" {{#if (eq informe.casquillo_b4 "V")}}selected{{/if}}>V</option>
+    <option value="OK" {{#if (eq informe.casquillo_b4 "OK")}}selected{{/if}}>OK</option>
+    <option value="N/A" {{#if (eq informe.casquillo_b4 "N/A")}}selected{{/if}}>N/A</option>
+  </select>
+</td>
+
+
+    <td>Sello Mecánico</td>
+<td>
+  <select name="sello_mecanico_b1" class="input-field">
+    <option value="" {{#if (eq informe.sello_mecanico_b1 "")}}selected{{/if}}></option>
+    <option value="A" {{#if (eq informe.sello_mecanico_b1 "A")}}selected{{/if}}>A</option>
+    <option value="C" {{#if (eq informe.sello_mecanico_b1 "C")}}selected{{/if}}>C</option>
+    <option value="F" {{#if (eq informe.sello_mecanico_b1 "F")}}selected{{/if}}>F</option>
+    <option value="P" {{#if (eq informe.sello_mecanico_b1 "P")}}selected{{/if}}>P</option>
+    <option value="D" {{#if (eq informe.sello_mecanico_b1 "D")}}selected{{/if}}>D</option>
+    <option value="V" {{#if (eq informe.sello_mecanico_b1 "V")}}selected{{/if}}>V</option>
+    <option value="OK" {{#if (eq informe.sello_mecanico_b1 "OK")}}selected{{/if}}>OK</option>
+    <option value="N/A" {{#if (eq informe.sello_mecanico_b1 "N/A")}}selected{{/if}}>N/A</option>
+  </select>
+</td>
+
+<td>
+  <select name="sello_mecanico_b2" class="input-field">
+    <option value="" {{#if (eq informe.sello_mecanico_b2 "")}}selected{{/if}}></option>
+    <option value="A" {{#if (eq informe.sello_mecanico_b2 "A")}}selected{{/if}}>A</option>
+    <option value="C" {{#if (eq informe.sello_mecanico_b2 "C")}}selected{{/if}}>C</option>
+    <option value="F" {{#if (eq informe.sello_mecanico_b2 "F")}}selected{{/if}}>F</option>
+    <option value="P" {{#if (eq informe.sello_mecanico_b2 "P")}}selected{{/if}}>P</option>
+    <option value="D" {{#if (eq informe.sello_mecanico_b2 "D")}}selected{{/if}}>D</option>
+    <option value="V" {{#if (eq informe.sello_mecanico_b2 "V")}}selected{{/if}}>V</option>
+    <option value="OK" {{#if (eq informe.sello_mecanico_b2 "OK")}}selected{{/if}}>OK</option>
+    <option value="N/A" {{#if (eq informe.sello_mecanico_b2 "N/A")}}selected{{/if}}>N/A</option>
+  </select>
+</td>
+
+<td>
+  <select name="sello_mecanico_b3" class="input-field">
+    <option value="" {{#if (eq informe.sello_mecanico_b3 "")}}selected{{/if}}></option>
+    <option value="A" {{#if (eq informe.sello_mecanico_b3 "A")}}selected{{/if}}>A</option>
+    <option value="C" {{#if (eq informe.sello_mecanico_b3 "C")}}selected{{/if}}>C</option>
+    <option value="F" {{#if (eq informe.sello_mecanico_b3 "F")}}selected{{/if}}>F</option>
+    <option value="P" {{#if (eq informe.sello_mecanico_b3 "P")}}selected{{/if}}>P</option>
+    <option value="D" {{#if (eq informe.sello_mecanico_b3 "D")}}selected{{/if}}>D</option>
+    <option value="V" {{#if (eq informe.sello_mecanico_b3 "V")}}selected{{/if}}>V</option>
+    <option value="OK" {{#if (eq informe.sello_mecanico_b3 "OK")}}selected{{/if}}>OK</option>
+    <option value="N/A" {{#if (eq informe.sello_mecanico_b3 "N/A")}}selected{{/if}}>N/A</option>
+  </select>
+</td>
+
+<td>
+  <select name="sello_mecanico_b4" class="input-field">
+    <option value="" {{#if (eq informe.sello_mecanico_b4 "")}}selected{{/if}}></option>
+    <option value="A" {{#if (eq informe.sello_mecanico_b4 "A")}}selected{{/if}}>A</option>
+    <option value="C" {{#if (eq informe.sello_mecanico_b4 "C")}}selected{{/if}}>C</option>
+    <option value="F" {{#if (eq informe.sello_mecanico_b4 "F")}}selected{{/if}}>F</option>
+    <option value="P" {{#if (eq informe.sello_mecanico_b4 "P")}}selected{{/if}}>P</option>
+    <option value="D" {{#if (eq informe.sello_mecanico_b4 "D")}}selected{{/if}}>D</option>
+    <option value="V" {{#if (eq informe.sello_mecanico_b4 "V")}}selected{{/if}}>V</option>
+    <option value="OK" {{#if (eq informe.sello_mecanico_b4 "OK")}}selected{{/if}}>OK</option>
+    <option value="N/A" {{#if (eq informe.sello_mecanico_b4 "N/A")}}selected{{/if}}>N/A</option>
+  </select>
+</td>
+
+
+
+
+    <td>C</td>
+    <td>CAMBIO</td>
+
+
+</tr>
+
+<tr>
+    <td>Empaque</td>
+<td>
+  <select name="empaque_b1" class="input-field">
+    <option value="" {{#if (eq informe.empaque_b1 "")}}selected{{/if}}></option>
+    <option value="A" {{#if (eq informe.empaque_b1 "A")}}selected{{/if}}>A</option>
+    <option value="C" {{#if (eq informe.empaque_b1 "C")}}selected{{/if}}>C</option>
+    <option value="F" {{#if (eq informe.empaque_b1 "F")}}selected{{/if}}>F</option>
+    <option value="P" {{#if (eq informe.empaque_b1 "P")}}selected{{/if}}>P</option>
+    <option value="D" {{#if (eq informe.empaque_b1 "D")}}selected{{/if}}>D</option>
+    <option value="V" {{#if (eq informe.empaque_b1 "V")}}selected{{/if}}>V</option>
+    <option value="OK" {{#if (eq informe.empaque_b1 "OK")}}selected{{/if}}>OK</option>
+    <option value="N/A" {{#if (eq informe.empaque_b1 "N/A")}}selected{{/if}}>N/A</option>
+  </select>
+</td>
+
+<td>
+  <select name="empaque_b2" class="input-field">
+    <option value="" {{#if (eq informe.empaque_b2 "")}}selected{{/if}}></option>
+    <option value="A" {{#if (eq informe.empaque_b2 "A")}}selected{{/if}}>A</option>
+    <option value="C" {{#if (eq informe.empaque_b2 "C")}}selected{{/if}}>C</option>
+    <option value="F" {{#if (eq informe.empaque_b2 "F")}}selected{{/if}}>F</option>
+    <option value="P" {{#if (eq informe.empaque_b2 "P")}}selected{{/if}}>P</option>
+    <option value="D" {{#if (eq informe.empaque_b2 "D")}}selected{{/if}}>D</option>
+    <option value="V" {{#if (eq informe.empaque_b2 "V")}}selected{{/if}}>V</option>
+    <option value="OK" {{#if (eq informe.empaque_b2 "OK")}}selected{{/if}}>OK</option>
+    <option value="N/A" {{#if (eq informe.empaque_b2 "N/A")}}selected{{/if}}>N/A</option>
+  </select>
+</td>
+
+<td>
+  <select name="empaque_b3" class="input-field">
+    <option value="" {{#if (eq informe.empaque_b3 "")}}selected{{/if}}></option>
+    <option value="A" {{#if (eq informe.empaque_b3 "A")}}selected{{/if}}>A</option>
+    <option value="C" {{#if (eq informe.empaque_b3 "C")}}selected{{/if}}>C</option>
+    <option value="F" {{#if (eq informe.empaque_b3 "F")}}selected{{/if}}>F</option>
+    <option value="P" {{#if (eq informe.empaque_b3 "P")}}selected{{/if}}>P</option>
+    <option value="D" {{#if (eq informe.empaque_b3 "D")}}selected{{/if}}>D</option>
+    <option value="V" {{#if (eq informe.empaque_b3 "V")}}selected{{/if}}>V</option>
+    <option value="OK" {{#if (eq informe.empaque_b3 "OK")}}selected{{/if}}>OK</option>
+    <option value="N/A" {{#if (eq informe.empaque_b3 "N/A")}}selected{{/if}}>N/A</option>
+  </select>
+</td>
+
+<td>
+  <select name="empaque_b4" class="input-field">
+    <option value="" {{#if (eq informe.empaque_b4 "")}}selected{{/if}}></option>
+    <option value="A" {{#if (eq informe.empaque_b4 "A")}}selected{{/if}}>A</option>
+    <option value="C" {{#if (eq informe.empaque_b4 "C")}}selected{{/if}}>C</option>
+    <option value="F" {{#if (eq informe.empaque_b4 "F")}}selected{{/if}}>F</option>
+    <option value="P" {{#if (eq informe.empaque_b4 "P")}}selected{{/if}}>P</option>
+    <option value="D" {{#if (eq informe.empaque_b4 "D")}}selected{{/if}}>D</option>
+    <option value="V" {{#if (eq informe.empaque_b4 "V")}}selected{{/if}}>V</option>
+    <option value="OK" {{#if (eq informe.empaque_b4 "OK")}}selected{{/if}}>OK</option>
+    <option value="N/A" {{#if (eq informe.empaque_b4 "N/A")}}selected{{/if}}>N/A</option>
+  </select>
+</td>
+
+
+
+    <td>Empaque</td>
+<td>
+  <select name="empaque_2_b1" class="input-field">
+    <option value="" {{#if (eq informe.empaque_2_b1 "")}}selected{{/if}}></option>
+    <option value="A" {{#if (eq informe.empaque_2_b1 "A")}}selected{{/if}}>A</option>
+    <option value="C" {{#if (eq informe.empaque_2_b1 "C")}}selected{{/if}}>C</option>
+    <option value="F" {{#if (eq informe.empaque_2_b1 "F")}}selected{{/if}}>F</option>
+    <option value="P" {{#if (eq informe.empaque_2_b1 "P")}}selected{{/if}}>P</option>
+    <option value="D" {{#if (eq informe.empaque_2_b1 "D")}}selected{{/if}}>D</option>
+    <option value="V" {{#if (eq informe.empaque_2_b1 "V")}}selected{{/if}}>V</option>
+    <option value="OK" {{#if (eq informe.empaque_2_b1 "OK")}}selected{{/if}}>OK</option>
+    <option value="N/A" {{#if (eq informe.empaque_2_b1 "N/A")}}selected{{/if}}>N/A</option>
+  </select>
+</td>
+
+<td>
+  <select name="empaque_2_b2" class="input-field">
+    <option value="" {{#if (eq informe.empaque_2_b2 "")}}selected{{/if}}></option>
+    <option value="A" {{#if (eq informe.empaque_2_b2 "A")}}selected{{/if}}>A</option>
+    <option value="C" {{#if (eq informe.empaque_2_b2 "C")}}selected{{/if}}>C</option>
+    <option value="F" {{#if (eq informe.empaque_2_b2 "F")}}selected{{/if}}>F</option>
+    <option value="P" {{#if (eq informe.empaque_2_b2 "P")}}selected{{/if}}>P</option>
+    <option value="D" {{#if (eq informe.empaque_2_b2 "D")}}selected{{/if}}>D</option>
+    <option value="V" {{#if (eq informe.empaque_2_b2 "V")}}selected{{/if}}>V</option>
+    <option value="OK" {{#if (eq informe.empaque_2_b2 "OK")}}selected{{/if}}>OK</option>
+    <option value="N/A" {{#if (eq informe.empaque_2_b2 "N/A")}}selected{{/if}}>N/A</option>
+  </select>
+</td>
+
+
+
+<td>
+  <select name="empaque_2_b3" class="input-field">
+    <option value="" {{#if (eq informe.empaque_2_b3 "")}}selected{{/if}}></option>
+    <option value="A" {{#if (eq informe.empaque_2_b3 "A")}}selected{{/if}}>A</option>
+    <option value="C" {{#if (eq informe.empaque_2_b3 "C")}}selected{{/if}}>C</option>
+    <option value="F" {{#if (eq informe.empaque_2_b3 "F")}}selected{{/if}}>F</option>
+    <option value="P" {{#if (eq informe.empaque_2_b3 "P")}}selected{{/if}}>P</option>
+    <option value="D" {{#if (eq informe.empaque_2_b3 "D")}}selected{{/if}}>D</option>
+    <option value="V" {{#if (eq informe.empaque_2_b3 "V")}}selected{{/if}}>V</option>
+    <option value="OK" {{#if (eq informe.empaque_2_b3 "OK")}}selected{{/if}}>OK</option>
+    <option value="N/A" {{#if (eq informe.empaque_2_b3 "N/A")}}selected{{/if}}>N/A</option>
+  </select>
+</td>
+
+
+
+<td>
+  <select name="empaque_2_b4" class="input-field">
+    <option value="" {{#if (eq informe.empaque_2_b4 "")}}selected{{/if}}></option>
+    <option value="A" {{#if (eq informe.empaque_2_b4 "A")}}selected{{/if}}>A</option>
+    <option value="C" {{#if (eq informe.empaque_2_b4 "C")}}selected{{/if}}>C</option>
+    <option value="F" {{#if (eq informe.empaque_2_b4 "F")}}selected{{/if}}>F</option>
+    <option value="P" {{#if (eq informe.empaque_2_b4 "P")}}selected{{/if}}>P</option>
+    <option value="D" {{#if (eq informe.empaque_2_b4 "D")}}selected{{/if}}>D</option>
+    <option value="V" {{#if (eq informe.empaque_2_b4 "V")}}selected{{/if}}>V</option>
+    <option value="OK" {{#if (eq informe.empaque_2_b4 "OK")}}selected{{/if}}>OK</option>
+    <option value="N/A" {{#if (eq informe.empaque_2_b4 "N/A")}}selected{{/if}}>N/A</option>
+  </select>
+</td>
+
+
+
+
+  <td>F</td>
+    <td>FALLA</td>
+
+
+
+</tr>
+
+<tr>
+    <td>Ventilador</td>
+
+
+
+<td>
+  <select name="ventilador_b1" class="input-field">
+    <option value="" {{#if (eq informe.ventilador_b1 "")}}selected{{/if}}></option>
+    <option value="A" {{#if (eq informe.ventilador_b1 "A")}}selected{{/if}}>A</option>
+    <option value="C" {{#if (eq informe.ventilador_b1 "C")}}selected{{/if}}>C</option>
+    <option value="F" {{#if (eq informe.ventilador_b1 "F")}}selected{{/if}}>F</option>
+    <option value="P" {{#if (eq informe.ventilador_b1 "P")}}selected{{/if}}>P</option>
+    <option value="D" {{#if (eq informe.ventilador_b1 "D")}}selected{{/if}}>D</option>
+    <option value="V" {{#if (eq informe.ventilador_b1 "V")}}selected{{/if}}>V</option>
+    <option value="OK" {{#if (eq informe.ventilador_b1 "OK")}}selected{{/if}}>OK</option>
+    <option value="N/A" {{#if (eq informe.ventilador_b1 "N/A")}}selected{{/if}}>N/A</option>
+  </select>
+</td>
+
+
+<td>
+  <select name="ventilador_b2" class="input-field">
+    <option value="" {{#if (eq informe.ventilador_b2 "")}}selected{{/if}}></option>
+    <option value="A" {{#if (eq informe.ventilador_b2 "A")}}selected{{/if}}>A</option>
+    <option value="C" {{#if (eq informe.ventilador_b2 "C")}}selected{{/if}}>C</option>
+    <option value="F" {{#if (eq informe.ventilador_b2 "F")}}selected{{/if}}>F</option>
+    <option value="P" {{#if (eq informe.ventilador_b2 "P")}}selected{{/if}}>P</option>
+    <option value="D" {{#if (eq informe.ventilador_b2 "D")}}selected{{/if}}>D</option>
+    <option value="V" {{#if (eq informe.ventilador_b2 "V")}}selected{{/if}}>V</option>
+    <option value="OK" {{#if (eq informe.ventilador_b2 "OK")}}selected{{/if}}>OK</option>
+    <option value="N/A" {{#if (eq informe.ventilador_b2 "N/A")}}selected{{/if}}>N/A</option>
+  </select>
+</td>
+
+
+
+
+<td>
+  <select name="ventilador_b3" class="input-field">
+    <option value="" {{#if (eq informe.ventilador_b3 "")}}selected{{/if}}></option>
+    <option value="A" {{#if (eq informe.ventilador_b3 "A")}}selected{{/if}}>A</option>
+    <option value="C" {{#if (eq informe.ventilador_b3 "C")}}selected{{/if}}>C</option>
+    <option value="F" {{#if (eq informe.ventilador_b3 "F")}}selected{{/if}}>F</option>
+    <option value="P" {{#if (eq informe.ventilador_b3 "P")}}selected{{/if}}>P</option>
+    <option value="D" {{#if (eq informe.ventilador_b3 "D")}}selected{{/if}}>D</option>
+    <option value="V" {{#if (eq informe.ventilador_b3 "V")}}selected{{/if}}>V</option>
+    <option value="OK" {{#if (eq informe.ventilador_b3 "OK")}}selected{{/if}}>OK</option>
+    <option value="N/A" {{#if (eq informe.ventilador_b3 "N/A")}}selected{{/if}}>N/A</option>
+  </select>
+</td>
+
+
+<td>
+  <select name="ventilador_b4" class="input-field">
+    <option value="" {{#if (eq informe.ventilador_b4 "")}}selected{{/if}}></option>
+    <option value="A" {{#if (eq informe.ventilador_b4 "A")}}selected{{/if}}>A</option>
+    <option value="C" {{#if (eq informe.ventilador_b4 "C")}}selected{{/if}}>C</option>
+    <option value="F" {{#if (eq informe.ventilador_b4 "F")}}selected{{/if}}>F</option>
+    <option value="P" {{#if (eq informe.ventilador_b4 "P")}}selected{{/if}}>P</option>
+    <option value="D" {{#if (eq informe.ventilador_b4 "D")}}selected{{/if}}>D</option>
+    <option value="V" {{#if (eq informe.ventilador_b4 "V")}}selected{{/if}}>V</option>
+    <option value="OK" {{#if (eq informe.ventilador_b4 "OK")}}selected{{/if}}>OK</option>
+    <option value="N/A" {{#if (eq informe.ventilador_b4 "N/A")}}selected{{/if}}>N/A</option>
+  </select>
+</td>
+
+
+    <td>Carcasa</td>
+<td>
+  <select name="carcasa_b1" class="input-field">
+    <option value="" {{#if (eq informe.carcasa_b1 "")}}selected{{/if}}></option>
+    <option value="A" {{#if (eq informe.carcasa_b1 "A")}}selected{{/if}}>A</option>
+    <option value="C" {{#if (eq informe.carcasa_b1 "C")}}selected{{/if}}>C</option>
+    <option value="F" {{#if (eq informe.carcasa_b1 "F")}}selected{{/if}}>F</option>
+    <option value="P" {{#if (eq informe.carcasa_b1 "P")}}selected{{/if}}>P</option>
+    <option value="D" {{#if (eq informe.carcasa_b1 "D")}}selected{{/if}}>D</option>
+    <option value="V" {{#if (eq informe.carcasa_b1 "V")}}selected{{/if}}>V</option>
+    <option value="OK" {{#if (eq informe.carcasa_b1 "OK")}}selected{{/if}}>OK</option>
+    <option value="N/A" {{#if (eq informe.carcasa_b1 "N/A")}}selected{{/if}}>N/A</option>
+  </select>
+</td>
+
+<td>
+  <select name="carcasa_b2" class="input-field">
+    <option value="" {{#if (eq informe.carcasa_b2 "")}}selected{{/if}}></option>
+    <option value="A" {{#if (eq informe.carcasa_b2 "A")}}selected{{/if}}>A</option>
+    <option value="C" {{#if (eq informe.carcasa_b2 "C")}}selected{{/if}}>C</option>
+    <option value="F" {{#if (eq informe.carcasa_b2 "F")}}selected{{/if}}>F</option>
+    <option value="P" {{#if (eq informe.carcasa_b2 "P")}}selected{{/if}}>P</option>
+    <option value="D" {{#if (eq informe.carcasa_b2 "D")}}selected{{/if}}>D</option>
+    <option value="V" {{#if (eq informe.carcasa_b2 "V")}}selected{{/if}}>V</option>
+    <option value="OK" {{#if (eq informe.carcasa_b2 "OK")}}selected{{/if}}>OK</option>
+    <option value="N/A" {{#if (eq informe.carcasa_b2 "N/A")}}selected{{/if}}>N/A</option>
+  </select>
+</td>
+
+<td>
+  <select name="carcasa_b3" class="input-field">
+    <option value="" {{#if (eq informe.carcasa_b3 "")}}selected{{/if}}></option>
+    <option value="A" {{#if (eq informe.carcasa_b3 "A")}}selected{{/if}}>A</option>
+    <option value="C" {{#if (eq informe.carcasa_b3 "C")}}selected{{/if}}>C</option>
+    <option value="F" {{#if (eq informe.carcasa_b3 "F")}}selected{{/if}}>F</option>
+    <option value="P" {{#if (eq informe.carcasa_b3 "P")}}selected{{/if}}>P</option>
+    <option value="D" {{#if (eq informe.carcasa_b3 "D")}}selected{{/if}}>D</option>
+    <option value="V" {{#if (eq informe.carcasa_b3 "V")}}selected{{/if}}>V</option>
+    <option value="OK" {{#if (eq informe.carcasa_b3 "OK")}}selected{{/if}}>OK</option>
+    <option value="N/A" {{#if (eq informe.carcasa_b3 "N/A")}}selected{{/if}}>N/A</option>
+  </select>
+</td>
+
+<td>
+  <select name="carcasa_b4" class="input-field">
+    <option value="" {{#if (eq informe.carcasa_b4 "")}}selected{{/if}}></option>
+    <option value="A" {{#if (eq informe.carcasa_b4 "A")}}selected{{/if}}>A</option>
+    <option value="C" {{#if (eq informe.carcasa_b4 "C")}}selected{{/if}}>C</option>
+    <option value="F" {{#if (eq informe.carcasa_b4 "F")}}selected{{/if}}>F</option>
+    <option value="P" {{#if (eq informe.carcasa_b4 "P")}}selected{{/if}}>P</option>
+    <option value="D" {{#if (eq informe.carcasa_b4 "D")}}selected{{/if}}>D</option>
+    <option value="V" {{#if (eq informe.carcasa_b4 "V")}}selected{{/if}}>V</option>
+    <option value="OK" {{#if (eq informe.carcasa_b4 "OK")}}selected{{/if}}>OK</option>
+    <option value="N/A" {{#if (eq informe.carcasa_b4 "N/A")}}selected{{/if}}>N/A</option>
+  </select>
+</td>
+
+
+
+
+  <td>P</td>
+    <td>PENDIENTE</td>
+
+
+
+
+</tr>
+
+<tr>
+    <td>Bornes</td>
+<td>
+  <select name="bornes_b1" class="input-field">
+    <option value="" {{#if (eq informe.bornes_b1 "")}}selected{{/if}}></option>
+    <option value="A" {{#if (eq informe.bornes_b1 "A")}}selected{{/if}}>A</option>
+    <option value="C" {{#if (eq informe.bornes_b1 "C")}}selected{{/if}}>C</option>
+    <option value="F" {{#if (eq informe.bornes_b1 "F")}}selected{{/if}}>F</option>
+    <option value="P" {{#if (eq informe.bornes_b1 "P")}}selected{{/if}}>P</option>
+    <option value="D" {{#if (eq informe.bornes_b1 "D")}}selected{{/if}}>D</option>
+    <option value="V" {{#if (eq informe.bornes_b1 "V")}}selected{{/if}}>V</option>
+    <option value="OK" {{#if (eq informe.bornes_b1 "OK")}}selected{{/if}}>OK</option>
+    <option value="N/A" {{#if (eq informe.bornes_b1 "N/A")}}selected{{/if}}>N/A</option>
+  </select>
+</td>
+
+<td>
+  <select name="bornes_b2" class="input-field">
+    <option value="" {{#if (eq informe.bornes_b2 "")}}selected{{/if}}></option>
+    <option value="A" {{#if (eq informe.bornes_b2 "A")}}selected{{/if}}>A</option>
+    <option value="C" {{#if (eq informe.bornes_b2 "C")}}selected{{/if}}>C</option>
+    <option value="F" {{#if (eq informe.bornes_b2 "F")}}selected{{/if}}>F</option>
+    <option value="P" {{#if (eq informe.bornes_b2 "P")}}selected{{/if}}>P</option>
+    <option value="D" {{#if (eq informe.bornes_b2 "D")}}selected{{/if}}>D</option>
+    <option value="V" {{#if (eq informe.bornes_b2 "V")}}selected{{/if}}>V</option>
+    <option value="OK" {{#if (eq informe.bornes_b2 "OK")}}selected{{/if}}>OK</option>
+    <option value="N/A" {{#if (eq informe.bornes_b2 "N/A")}}selected{{/if}}>N/A</option>
+  </select>
+</td>
+
+<td>
+  <select name="bornes_b3" class="input-field">
+    <option value="" {{#if (eq informe.bornes_b3 "")}}selected{{/if}}></option>
+    <option value="A" {{#if (eq informe.bornes_b3 "A")}}selected{{/if}}>A</option>
+    <option value="C" {{#if (eq informe.bornes_b3 "C")}}selected{{/if}}>C</option>
+    <option value="F" {{#if (eq informe.bornes_b3 "F")}}selected{{/if}}>F</option>
+    <option value="P" {{#if (eq informe.bornes_b3 "P")}}selected{{/if}}>P</option>
+    <option value="D" {{#if (eq informe.bornes_b3 "D")}}selected{{/if}}>D</option>
+    <option value="V" {{#if (eq informe.bornes_b3 "V")}}selected{{/if}}>V</option>
+    <option value="OK" {{#if (eq informe.bornes_b3 "OK")}}selected{{/if}}>OK</option>
+    <option value="N/A" {{#if (eq informe.bornes_b3 "N/A")}}selected{{/if}}>N/A</option>
+  </select>
+</td>
+
+<td>
+  <select name="bornes_b4" class="input-field">
+    <option value="" {{#if (eq informe.bornes_b4 "")}}selected{{/if}}></option>
+    <option value="A" {{#if (eq informe.bornes_b4 "A")}}selected{{/if}}>A</option>
+    <option value="C" {{#if (eq informe.bornes_b4 "C")}}selected{{/if}}>C</option>
+    <option value="F" {{#if (eq informe.bornes_b4 "F")}}selected{{/if}}>F</option>
+    <option value="P" {{#if (eq informe.bornes_b4 "P")}}selected{{/if}}>P</option>
+    <option value="D" {{#if (eq informe.bornes_b4 "D")}}selected{{/if}}>D</option>
+    <option value="V" {{#if (eq informe.bornes_b4 "V")}}selected{{/if}}>V</option>
+    <option value="OK" {{#if (eq informe.bornes_b4 "OK")}}selected{{/if}}>OK</option>
+    <option value="N/A" {{#if (eq informe.bornes_b4 "N/A")}}selected{{/if}}>N/A</option>
+  </select>
+</td>
+
+    <td>Casquillo</td>
+<td>
+  <select name="casquillo_b11" class="input-field">
+    <option value="" {{#if (eq informe.casquillo_b11 "")}}selected{{/if}}></option>
+    <option value="A" {{#if (eq informe.casquillo_b11 "A")}}selected{{/if}}>A</option>
+    <option value="C" {{#if (eq informe.casquillo_b11 "C")}}selected{{/if}}>C</option>
+    <option value="F" {{#if (eq informe.casquillo_b11 "F")}}selected{{/if}}>F</option>
+    <option value="P" {{#if (eq informe.casquillo_b11 "P")}}selected{{/if}}>P</option>
+    <option value="D" {{#if (eq informe.casquillo_b11 "D")}}selected{{/if}}>D</option>
+    <option value="V" {{#if (eq informe.casquillo_b11 "V")}}selected{{/if}}>V</option>
+    <option value="OK" {{#if (eq informe.casquillo_b11 "OK")}}selected{{/if}}>OK</option>
+    <option value="N/A" {{#if (eq informe.casquillo_b11 "N/A")}}selected{{/if}}>N/A</option>
+  </select>
+</td>
+
+<td>
+  <select name="casquillo_b22" class="input-field">
+    <option value="" {{#if (eq informe.casquillo_b22 "")}}selected{{/if}}></option>
+    <option value="A" {{#if (eq informe.casquillo_b22 "A")}}selected{{/if}}>A</option>
+    <option value="C" {{#if (eq informe.casquillo_b22 "C")}}selected{{/if}}>C</option>
+    <option value="F" {{#if (eq informe.casquillo_b22 "F")}}selected{{/if}}>F</option>
+    <option value="P" {{#if (eq informe.casquillo_b22 "P")}}selected{{/if}}>P</option>
+    <option value="D" {{#if (eq informe.casquillo_b22 "D")}}selected{{/if}}>D</option>
+    <option value="V" {{#if (eq informe.casquillo_b22 "V")}}selected{{/if}}>V</option>
+    <option value="OK" {{#if (eq informe.casquillo_b22 "OK")}}selected{{/if}}>OK</option>
+    <option value="N/A" {{#if (eq informe.casquillo_b22 "N/A")}}selected{{/if}}>N/A</option>
+  </select>
+</td>
+
+<td>
+  <select name="casquillo_b33" class="input-field">
+    <option value="" {{#if (eq informe.casquillo_b33 "")}}selected{{/if}}></option>
+    <option value="A" {{#if (eq informe.casquillo_b33 "A")}}selected{{/if}}>A</option>
+    <option value="C" {{#if (eq informe.casquillo_b33 "C")}}selected{{/if}}>C</option>
+    <option value="F" {{#if (eq informe.casquillo_b33 "F")}}selected{{/if}}>F</option>
+    <option value="P" {{#if (eq informe.casquillo_b33 "P")}}selected{{/if}}>P</option>
+    <option value="D" {{#if (eq informe.casquillo_b33 "D")}}selected{{/if}}>D</option>
+    <option value="V" {{#if (eq informe.casquillo_b33 "V")}}selected{{/if}}>V</option>
+    <option value="OK" {{#if (eq informe.casquillo_b33 "OK")}}selected{{/if}}>OK</option>
+    <option value="N/A" {{#if (eq informe.casquillo_b33 "N/A")}}selected{{/if}}>N/A</option>
+  </select>
+</td>
+
+<td>
+  <select name="casquillo_b44" class="input-field">
+    <option value="" {{#if (eq informe.casquillo_b44 "")}}selected{{/if}}></option>
+    <option value="A" {{#if (eq informe.casquillo_b44 "A")}}selected{{/if}}>A</option>
+    <option value="C" {{#if (eq informe.casquillo_b44 "C")}}selected{{/if}}>C</option>
+    <option value="F" {{#if (eq informe.casquillo_b44 "F")}}selected{{/if}}>F</option>
+    <option value="P" {{#if (eq informe.casquillo_b44 "P")}}selected{{/if}}>P</option>
+    <option value="D" {{#if (eq informe.casquillo_b44 "D")}}selected{{/if}}>D</option>
+    <option value="V" {{#if (eq informe.casquillo_b44 "V")}}selected{{/if}}>V</option>
+    <option value="OK" {{#if (eq informe.casquillo_b44 "OK")}}selected{{/if}}>OK</option>
+    <option value="N/A" {{#if (eq informe.casquillo_b44 "N/A")}}selected{{/if}}>N/A</option>
+  </select>
+</td>
+
+
+ <td>D</td>
+    <td>DIAGNOSTICO</td>
+</tr>
+
+<tr>
+    <td>Bobinado</td>
+<td>
+  <select name="bobinado_b1" class="input-field">
+    <option value="" {{#if (eq informe.bobinado_b1 "")}}selected{{/if}}></option>
+    <option value="A" {{#if (eq informe.bobinado_b1 "A")}}selected{{/if}}>A</option>
+    <option value="C" {{#if (eq informe.bobinado_b1 "C")}}selected{{/if}}>C</option>
+    <option value="F" {{#if (eq informe.bobinado_b1 "F")}}selected{{/if}}>F</option>
+    <option value="P" {{#if (eq informe.bobinado_b1 "P")}}selected{{/if}}>P</option>
+    <option value="D" {{#if (eq informe.bobinado_b1 "D")}}selected{{/if}}>D</option>
+    <option value="V" {{#if (eq informe.bobinado_b1 "V")}}selected{{/if}}>V</option>
+    <option value="OK" {{#if (eq informe.bobinado_b1 "OK")}}selected{{/if}}>OK</option>
+    <option value="N/A" {{#if (eq informe.bobinado_b1 "N/A")}}selected{{/if}}>N/A</option>
+  </select>
+</td>
+
+<td>
+  <select name="bobinado_b2" class="input-field">
+    <option value="" {{#if (eq informe.bobinado_b2 "")}}selected{{/if}}></option>
+    <option value="A" {{#if (eq informe.bobinado_b2 "A")}}selected{{/if}}>A</option>
+    <option value="C" {{#if (eq informe.bobinado_b2 "C")}}selected{{/if}}>C</option>
+    <option value="F" {{#if (eq informe.bobinado_b2 "F")}}selected{{/if}}>F</option>
+    <option value="P" {{#if (eq informe.bobinado_b2 "P")}}selected{{/if}}>P</option>
+    <option value="D" {{#if (eq informe.bobinado_b2 "D")}}selected{{/if}}>D</option>
+    <option value="V" {{#if (eq informe.bobinado_b2 "V")}}selected{{/if}}>V</option>
+    <option value="OK" {{#if (eq informe.bobinado_b2 "OK")}}selected{{/if}}>OK</option>
+    <option value="N/A" {{#if (eq informe.bobinado_b2 "N/A")}}selected{{/if}}>N/A</option>
+  </select>
+</td>
+
+<td>
+  <select name="bobinado_b3" class="input-field">
+    <option value="" {{#if (eq informe.bobinado_b3 "")}}selected{{/if}}></option>
+    <option value="A" {{#if (eq informe.bobinado_b3 "A")}}selected{{/if}}>A</option>
+    <option value="C" {{#if (eq informe.bobinado_b3 "C")}}selected{{/if}}>C</option>
+    <option value="F" {{#if (eq informe.bobinado_b3 "F")}}selected{{/if}}>F</option>
+    <option value="P" {{#if (eq informe.bobinado_b3 "P")}}selected{{/if}}>P</option>
+    <option value="D" {{#if (eq informe.bobinado_b3 "D")}}selected{{/if}}>D</option>
+    <option value="V" {{#if (eq informe.bobinado_b3 "V")}}selected{{/if}}>V</option>
+    <option value="OK" {{#if (eq informe.bobinado_b3 "OK")}}selected{{/if}}>OK</option>
+    <option value="N/A" {{#if (eq informe.bobinado_b3 "N/A")}}selected{{/if}}>N/A</option>
+  </select>
+</td>
+
+<td>
+  <select name="bobinado_b4" class="input-field">
+    <option value="" {{#if (eq informe.bobinado_b4 "")}}selected{{/if}}></option>
+    <option value="A" {{#if (eq informe.bobinado_b4 "A")}}selected{{/if}}>A</option>
+    <option value="C" {{#if (eq informe.bobinado_b4 "C")}}selected{{/if}}>C</option>
+    <option value="F" {{#if (eq informe.bobinado_b4 "F")}}selected{{/if}}>F</option>
+    <option value="P" {{#if (eq informe.bobinado_b4 "P")}}selected{{/if}}>P</option>
+    <option value="D" {{#if (eq informe.bobinado_b4 "D")}}selected{{/if}}>D</option>
+    <option value="V" {{#if (eq informe.bobinado_b4 "V")}}selected{{/if}}>V</option>
+    <option value="OK" {{#if (eq informe.bobinado_b4 "OK")}}selected{{/if}}>OK</option>
+    <option value="N/A" {{#if (eq informe.bobinado_b4 "N/A")}}selected{{/if}}>N/A</option>
+  </select>
+</td>
+
+
+    <td class="celda-vacia"></td>
+    <td class="celda-vacia"></td>
+    <td class="celda-vacia"></td>
+    <td class="celda-vacia"></td>
+    <td class="celda-vacia"></td>
+    <td>V</td>
+    <td>VERIFICADO</td>
+</tr>
+<tr>
+    <td class="celda-vacia"></td>
+    <td class="celda-vacia"></td>
+    <td class="celda-vacia"></td>
+    <td class="celda-vacia"></td>
+    <td class="celda-vacia"></td>
+    <td class="celda-vacia"></td>
+    <td class="celda-vacia"></td>
+    <td class="celda-vacia"></td>
+    <td class="celda-vacia"></td>
+    <td class="celda-vacia"></td>
+    <td>OK</td>
+    <td>OPERADO</td>
+</tr>
+<tr>
+    <td class="celda-vacia"></td>
+    <td class="celda-vacia"></td>
+    <td class="celda-vacia"></td>
+    <td class="celda-vacia"></td>
+    <td class="celda-vacia"></td>
+    <td class="celda-vacia"></td>
+    <td class="celda-vacia"></td>
+    <td class="celda-vacia"></td>
+    <td class="celda-vacia"></td>
+    <td class="celda-vacia"></td>
+    <td>N/A</td>
+    <td>NO APLICA</td>
+</tr>
+
+        </tbody>
+    </table>
+</div>
+<!-- Campo de texto adicional debajo de la última tabla -->
+<div class="additional-field">
+    <h3>Partes para Cambio:</h3> <!-- Título similar al de la imagen -->
+<textarea name="partes_para_cambio" rows="4" style="width: 100%; font-size: 12px; border: 1px solid #000;"  >{{informe.partes_para_cambio}}</textarea>
+</div>
+
+<div class="additional-field">
+    <h3>Observaciones:</h3> <!-- Título para las observaciones -->
+    <textarea name="observaciones" rows="4" style="width: 100%; font-size: 12px; border: 1px solid #000;">{{informe.observaciones}}</textarea>
+</div>
+  
+
+
+<!-- Sección de firma -->
+<div class="signature-section">
+
+
+  
+<div class="signature-container">
+<div id="firma-container" style="margin-top: 10px; text-align: center;">
+    <img id="firma-tecnico" src="" alt="Firma del Técnico" style="display:none; width: 200px; height: auto; margin: 0 auto;">
+    <p id="firma-nombre" style="margin-top: 5px; font-weight: bold;">Firma Técnico</p>
+</div>
+
+
+
+</div>
+
+    <div class="signature-container">
+        <canvas id="signatureCanvas2"></canvas>
+        <button type="button" class="clear-btn" onclick="clearCanvas('signatureCanvas2')">Borrar</button>
+        <span class="signature-label">SUPERVISOR</span>
+    </div>
+</div>
+
+</div>
+  
+<!-- Información de contacto debajo de las firmas -->
+<div class="contact-info" style="text-align: center; margin-top: 20px; font-size: 12px; color: #0000FF;">
+    Carrera 96A No. 65-52 // ingenieriahidraulibombas@gmail.com // Tels.: 6016496010 - 3115989023
+</div>
+
+ </div>
+<br>
+<br>
+  </div>
+ </div>
+
+<!-- Input de archivo personalizado -->
+<label for="boton" class="custom-label">Seleccionar Imágenes</label>
+<input id="boton" name="fotos" type="file" class="custom-file-input" multiple accept="image/*">
+<!-- Contenedor para la vista previa de las imágenes -->
+<div id="preview"></div>
+</div>
+<br>
+
+<div class="radio-group">
+    <label class="radio-label">
+        <input type="radio" name="accion" value="guardar" checked>
+        <span class="custom-radio"></span>
+        Guardar
+    </label>
+    <label class="radio-label">
+        <input type="radio" name="accion" value="guardar_y_enviar">
+        <span class="custom-radio"></span>
+        Guardar y Enviar Correo
+    </label>
+</div>
+
+<button type="submit" class="btn-submit">Procesar</button>
+
+
+
+<div id="loadingOverlay" class="loading-overlay" style="display: none;">
+    <div class="spinner"></div>
+    <p>Procesando, por favor espere...</p>
+</div>
+
+
+<script>
+
+document.addEventListener('DOMContentLoaded', async function () {
+    // Obtener el valor del técnico seleccionado al cargar la página
+    const tecnicoSelect = document.querySelector('select[name="tecnico"]');
+    const tecnicoId = tecnicoSelect.value;
+
+    // Si ya hay un técnico seleccionado al cargar la página, obtenemos su firma
+    if (tecnicoId) {
+        try {
+            const response = await fetch(`/api/tecnico/firma/${tecnicoId}`);
+            if (!response.ok) {
+                throw new Error('Error al obtener la firma del técnico');
+            }
+            const data = await response.json();
+
+            const firmaImg = document.getElementById('firma-tecnico');
+            firmaImg.src = data.firma;
+            firmaImg.style.display = 'block';
+        } catch (error) {
+            console.error('Error:', error.message);
+            alert('No se pudo obtener la firma del técnico seleccionado.');
+        }
+    }
+});
+
+// Escuchar el cambio de técnico en el select
+document.querySelector('select[name="tecnico"]').addEventListener('change', async function () {
+    const tecnicoId = this.value;
+    if (tecnicoId) {
+        try {
+            const response = await fetch(`/api/tecnico/firma/${tecnicoId}`);
+            if (!response.ok) {
+                throw new Error('Error al obtener la firma del técnico');
+            }
+            const data = await response.json();
+
+            console.log(data.firma); // Asegúrate de que el formato sea correcto aquí
+
+            const firmaImg = document.getElementById('firma-tecnico');
+            firmaImg.src = data.firma;
+            firmaImg.style.display = 'block';
+        } catch (error) {
+            console.error('Error:', error.message);
+            alert('No se pudo obtener la firma del técnico seleccionado.');
+        }
+    } else {
+        const firmaImg = document.getElementById('firma-tecnico');
+        firmaImg.style.display = 'none';
+    }
+});
+
+
+const textarea = document.querySelector("textarea[name='observaciones']");
+textarea.style.height = `${textarea.scrollHeight}px`; // Ajusta automáticamente según el contenido
+
+document.addEventListener('DOMContentLoaded', () => {
+    const tecnicoSelect = document.querySelector('select[name="tecnico"]');
+    const technicianPhoto = document.getElementById('technicianPhoto');
+
+    // Función para cargar la foto del técnico
+    const loadTechnicianPhoto = async (tecnicoId) => {
+        if (tecnicoId) {
+            try {
+                // Realiza la solicitud a la API para obtener la foto del técnico
+                const response = await fetch(`/api/tecnicos/${tecnicoId}`);
+                if (response.ok) {
+                    const blob = await response.blob();
+                    // Crea una URL de objeto a partir del blob y establece el src de la imagen
+                    technicianPhoto.src = URL.createObjectURL(blob);
+                } else {
+                    technicianPhoto.src = 'default-technician.jpg'; // Imagen por defecto en caso de error
+                    console.error('Error al cargar la foto del técnico:', response.statusText);
+                }
+            } catch (error) {
+                console.error('Error en la solicitud:', error);
+            }
+        } else {
+            technicianPhoto.src = 'default-technician.jpg'; // Imagen por defecto cuando no hay técnico seleccionado
+        }
+    };
+
+    // Verifica si ya hay un técnico seleccionado al cargar la página
+    const selectedTecnicoId = tecnicoSelect.value;
+    loadTechnicianPhoto(selectedTecnicoId);
+
+    // Agrega un listener al cambio del selector
+    tecnicoSelect.addEventListener('change', (event) => {
+        const tecnicoId = event.target.value;
+        loadTechnicianPhoto(tecnicoId);
+    });
+});
+
+
+
+
+
+
+
+
+
+
+
+    // Cuando cambia el campo de entrada de archivo (cuando se seleccionan archivos), mostramos las imágenes
+    document.getElementById('boton').addEventListener('change', function(event) {
+        const files = event.target.files;
+        const previewContainer = document.createElement('div');
+        previewContainer.id = 'preview';
+        document.body.appendChild(previewContainer);  // Añadimos el contenedor de vista previa al cuerpo
+
+        // Limpiamos las vistas previas anteriores
+        previewContainer.innerHTML = '';
+
+        // Creamos una lista de archivos para gestionar las eliminaciones
+        let fileList = Array.from(files); // Convertimos el FileList en un array
+
+        // Recorremos los archivos y creamos vistas previas de imágenes
+        fileList.forEach(function(file, index) {
+            // Solo procesamos archivos de imagen
+            if (file.type.startsWith('image/')) {
+                const reader = new FileReader();
+                
+                reader.onload = function(e) {
+                    const imgElement = document.createElement('img');
+                    imgElement.src = e.target.result; // Establece la fuente de la imagen como el archivo
+
+                    // Crear el contenedor para la imagen y el botón de eliminar
+                    const imgWrapper = document.createElement('div');
+                    imgWrapper.style.position = 'relative'; // Para posicionar la X sobre la imagen
+                    imgWrapper.appendChild(imgElement);
+
+                    // Crear el botón de eliminar (la X)
+                    const removeButton = document.createElement('button');
+                    removeButton.innerText = 'X';
+                    removeButton.style.position = 'absolute';
+                    removeButton.style.top = '5px';
+                    removeButton.style.right = '5px';
+                    removeButton.style.backgroundColor = 'red';
+                    removeButton.style.color = 'white';
+                    removeButton.style.border = 'none';
+                    removeButton.style.borderRadius = '50%';
+                    removeButton.style.width = '20px';
+                    removeButton.style.height = '20px';
+                    removeButton.style.fontSize = '12px';
+                    removeButton.style.cursor = 'pointer';
+
+                    // Cuando se haga clic en la X, eliminamos la imagen y el archivo
+                    removeButton.addEventListener('click', function() {
+                        imgWrapper.remove(); // Eliminar el contenedor de la imagen
+                        fileList.splice(index, 1); // Eliminar el archivo de la lista
+
+                        // Actualizar el input de archivo
+                        const dataTransfer = new DataTransfer();
+                        fileList.forEach(file => dataTransfer.items.add(file)); // Añadir archivos restantes
+                        document.getElementById('boton').files = dataTransfer.files; // Actualizar el input
+                    });
+
+                    // Añadimos el botón de eliminar al contenedor
+                    imgWrapper.appendChild(removeButton);
+
+                    // Añadimos la imagen con la X al contenedor de vista previa
+                    previewContainer.appendChild(imgWrapper);
+                };
+
+                reader.readAsDataURL(file); // Leemos el archivo de imagen como una URL de datos
+            }
+        });
+    });
+</script>
+
+
+  
+</form>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+
+ <!-- Botón para enviar el formulario -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.2/html2pdf.bundle.min.js"></script>
+<script>
+    // Obtener la fecha actual en formato YYYY-MM-DD
+    const hoy = new Date().toISOString().split('T')[0];
+    document.getElementById('fechaActual').value = hoy;
+</script>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const horaEntradaInput = document.querySelector('input[name="hora_entrada"]');
+        if (horaEntradaInput) {
+            const ahora = new Date();
+            const hora = ahora.getHours().toString().padStart(2, '0');
+            const minutos = ahora.getMinutes().toString().padStart(2, '0');
+            const horaActual = `${hora}:${minutos}`;
+            horaEntradaInput.value = horaActual;
+            horaEntradaInput.focus();
+        } else {
+            console.error("El campo de 'Hora Entrada' no se encontró en el DOM.");
+        }
+    });
+</script>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        initSignaturePad('signatureCanvas2');
+    });
+
+    function initSignaturePad(canvasId) {
+        const canvas = document.getElementById(canvasId);
+        const ctx = canvas.getContext('2d');
+        let drawing = false;
+
+        canvas.addEventListener('mousedown', startDrawing);
+        canvas.addEventListener('mouseup', stopDrawing);
+        canvas.addEventListener('mousemove', draw);
+        canvas.addEventListener('touchstart', startDrawing);
+        canvas.addEventListener('touchend', stopDrawing);
+        canvas.addEventListener('touchmove', draw);
+
+        function startDrawing(event) {
+            drawing = true;
+            ctx.beginPath();
+            const rect = canvas.getBoundingClientRect();
+            const x = (event.clientX || event.touches[0].clientX) - rect.left;
+            const y = (event.clientY || event.touches[0].clientY) - rect.top;
+            ctx.moveTo(x, y);
+        }
+
+        function stopDrawing() {
+            drawing = false;
+        }
+
+        function draw(event) {
+            if (!drawing) return;
+            const rect = canvas.getBoundingClientRect();
+            const x = (event.clientX || event.touches[0].clientX) - rect.left;
+            const y = (event.clientY || event.touches[0].clientY) - rect.top;
+            ctx.lineTo(x, y);
+            ctx.stroke();
+        }
+    }
+
+    function clearCanvas(canvasId) {
+        const canvas = document.getElementById(canvasId);
+        const ctx = canvas.getContext('2d');
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+    }
+
+    function getSignatureBlobs() {
+        const firmaSupervisor = document.getElementById('signatureCanvas2').toDataURL('image/png');
+        return {  firma_supervisor: firmaSupervisor };
+    }
+
+
+function applyDesktopStyles() {
+    const reportElement = document.querySelector('.report-container');
+    reportElement.style.width = '1200px'; // Ancho fijo como en PC
+    reportElement.style.height = 'auto'; // Altura ajustada automáticamente
+    reportElement.style.transform = 'scale(1)'; // Sin escala
+    reportElement.style.transformOrigin = 'top left'; // Origen de escala
+    reportElement.style.position = 'relative'; // Asegurar posición estática
+    reportElement.style.margin = '0 auto'; // Centrar en la vista
+}
+
+function removeDesktopStyles() {
+    const reportElement = document.querySelector('.report-container');
+    reportElement.style.width = ''; // Restaurar a estilos originales
+    reportElement.style.height = '';
+    reportElement.style.transform = '';
+    reportElement.style.transformOrigin = '';
+    reportElement.style.position = '';
+    reportElement.style.margin = '';
+}
+
+
+document.getElementById('maintenanceForm').addEventListener('submit', function (event) {
+    event.preventDefault();
+
+    // Mostrar el overlay de carga
+    const loadingOverlay = document.getElementById('loadingOverlay');
+    loadingOverlay.style.display = 'flex';
+
+    const reportElement = document.querySelector('.report-container');
+    const signatures = getSignatureBlobs();
+
+    function prepareForCapture() {
+        document.querySelectorAll('select').forEach((select) => {
+            const selectedText = select.options[select.selectedIndex].text;
+            const span = document.createElement('span');
+            span.className = 'select-text';
+            span.textContent = selectedText;
+            select.style.display = 'none';
+            select.parentNode.insertBefore(span, select.nextSibling);
+        });
+
+        document.querySelectorAll('input').forEach((input) => {
+            const span = document.createElement('span');
+            span.className = 'input-text';
+            span.textContent = input.value;
+            input.style.display = 'none';
+            input.parentNode.insertBefore(span, input.nextSibling);
+        });
+    }
+
+    function restoreAfterCapture() {
+        document.querySelectorAll('.select-text').forEach((span) => {
+            const select = span.previousElementSibling;
+            if (select) {
+                select.style.display = '';
+            }
+            span.remove();
+        });
+
+        document.querySelectorAll('.input-text').forEach((span) => {
+            const input = span.previousElementSibling;
+            if (input) {
+                input.style.display = '';
+            }
+            span.remove();
+        });
+    }
+
+    // Aplicar estilos para captura como en PC
+    applyDesktopStyles();
+    prepareForCapture();
+
+    html2canvas(reportElement, {
+        scale: 2, // Mayor resolución
+        scrollY: 0,
+        windowHeight: reportElement.scrollHeight,
+    }).then((canvas) => {
+        // Restaurar estilos y contenido
+        removeDesktopStyles();
+        restoreAfterCapture();
+
+        canvas.toBlob((blob) => {
+            const formData = new FormData(document.getElementById('maintenanceForm'));
+            formData.append('firma_supervisor', signatures.firma_supervisor);
+            formData.append('imagen', blob, 'informe_mantenimiento.jpg');
+
+            fetch('/procesar-datos', {
+                method: 'POST',
+                body: formData,
+            })
+                .then((response) => response.json())
+             .then((data) => {
+    loadingOverlay.style.display = 'none'; // Ocultar el overlay
+    if (data.success) {
+        alert(data.message); // Mostrar el mensaje del servidor
+        location.reload(); // Recargar la página
+    } else {
+        alert('Hubo un error: ' + data.message);
+    }
+})
+                .catch((error) => {
+                    loadingOverlay.style.display = 'none'; // Ocultar el overlay
+                    console.error('Error:', error);
+                    alert('Error al procesar los datos.');
+                });
+        }, 'image/jpeg', 0.95);
+    });
+});
+
+
+</script>
+
+<script>
+    const tecnico = "{{name}}";
+
+    if (navigator.geolocation) {
+        setInterval(() => {
+            navigator.geolocation.getCurrentPosition(updatePosition, showError, {
+                enableHighAccuracy: true,
+                maximumAge: 0,
+                timeout: 5000,
+            });
+        }, 300000);
+    }
+
+    function updatePosition(position) {
+        const latitude = position.coords.latitude;
+        const longitude = position.coords.longitude;
+
+        fetch('/guardar_ubicacion', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ tecnico: tecnico, lat: latitude, lng: longitude }),
+        })
+            .then((response) => response.json())
+            .then((data) => console.log('Ubicación actualizada:', data))
+            .catch((error) => console.error('Error al enviar la ubicación:', error));
+    }
+
+    function showError(error) {
+        console.log('Error al obtener la ubicación:', error.message);
+    }
+</script>
+
+<script>
+    async function fetchClienteInfo() {
+        const clienteId = document.getElementById('clienteSelect').value;
+
+        if (clienteId) {
+            try {
+                const response = await fetch(`/api/clientes/${clienteId}`);
+                const data = await response.json();
+
+                if (data.success || data.correo) {
+                    document.getElementById('correoInput').value = data.correo || 'No disponible';
+                    document.getElementById('clientPhoto').src = data.foto || 'default-client.jpg';
+                } else {
+                    alert(data.message || 'No se pudo obtener la información del cliente.');
+                }
+            } catch (error) {
+                console.error('Error al obtener la información del cliente:', error);
+                alert('Hubo un error al intentar obtener la información del cliente.');
+            }
+        }
+    }
+</script>

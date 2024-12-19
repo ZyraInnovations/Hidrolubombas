@@ -212,7 +212,7 @@ color: black;
                     <td data-label="Acciones">
                         <div class="action-buttons">
                             <button onclick="window.location.href='/mostrarInforme/{{id}}'">🖨️</button>
-                            <button title="Editar">✏️</button>
+        <button title="Editar" data-id="{{id}}" onclick="editarMantenimiento(this)">✏️</button>
                             <button title="Eliminar">❌</button>
                         </div>
                     </td>
@@ -225,6 +225,14 @@ color: black;
 </html>
 
     <script>
+           function editarMantenimiento(button) {
+        const id = button.getAttribute('data-id');
+        if (id) {
+            window.location.href = `/editarMantenimiento/${id}`;
+        } else {
+            console.error('No se encontró el ID para la edición.');
+        }
+    }
         document.addEventListener('DOMContentLoaded', function () {
             const table = document.getElementById('dataTable');
             const rows = table.querySelectorAll('tbody tr');

@@ -1462,6 +1462,65 @@ app.get('/mostrarInforme/:id', async (req, res) => {
 });
 
 
+
+hbs.registerHelper('not', function(value) {
+    return !value;
+});
+
+
+
+
+
+app.get('/editarMantenimiento/:id', async (req, res) => {
+    const mantenimientoId = req.params.id;
+    try {
+        // Obtener datos del mantenimiento
+        const queryMantenimiento = 'SELECT * FROM mantenimiento_hidro WHERE id = ?';
+        const [rows] = await pool.query(queryMantenimiento, [mantenimientoId]);
+
+        if (rows.length === 0) {
+            return res.status(404).send('Mantenimiento no encontrado');
+        }
+
+        const mantenimiento = rows[0];
+        const tecnicoId = mantenimiento.tecnico; // ID del técnico
+
+        console.log('ID del mantenimiento:', mantenimientoId);
+        console.log('ID del técnico en mantenimiento:', tecnicoId);
+
+        // Obtener lista de técnicos
+        const tecnicosQuery = `SELECT id, nombre FROM usuarios_hidro WHERE role = "tecnico"`;
+        const [tecnicos] = await pool.query(tecnicosQuery);
+
+        console.log('Lista de técnicos:', tecnicos);
+
+        // Encontrar el técnico correcto en la lista de técnicos
+        const selectedTecnico = tecnicos.find(tec => tec.id === parseInt(tecnicoId)) || null;
+
+        console.log('Técnico encontrado en la lista:', selectedTecnico);
+
+        // Compara el técnico encontrado con el nombre del técnico en el mantenimiento
+        const tecnicoSeleccionadoNombre = selectedTecnico ? selectedTecnico.nombre : 'Ninguno';
+        console.log('Comparando con el técnico del mantenimiento:', tecnicoSeleccionadoNombre);
+
+        // Verificar el nombre que se pasa al frontend
+        console.log('Nombre del técnico que se pasa a la vista:', tecnicoSeleccionadoNombre);
+
+        // Enviar datos a la vista
+        res.render('administrativo/informes/editar.hbs', {
+            informe: mantenimiento,
+            tecnicos, // Lista completa de técnicos
+            selectedTecnicoId: selectedTecnico ? selectedTecnico.id : null, // Solo el ID del técnico
+            layout: 'layouts/nav_admin.hbs'
+        });
+    } catch (error) {
+        console.error('Error al obtener la firma:', error);
+        res.status(500).json({ error: 'Error del servidor' });
+    }
+});
+
+
+
 // Iniciar el servidor
 app.listen(3000, () => {
     console.log('Servidor corriendo en el puerto 3000');
