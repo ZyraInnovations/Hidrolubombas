@@ -954,19 +954,15 @@ textarea {
 <div class="info-row full-width">
 <div class="info-section">
 
-
-
-  <div class="info-row">
+<div class="info-row">
     <strong>Cliente:</strong>
     <select name="cliente" id="clienteSelect" onchange="fetchClienteInfo()" required>
         <option value="" disabled selected>Seleccione un cliente</option>
         {{#each clientes}}
-            <option value="{{this.id}}" {{#if (eq this.id informe.cliente)}}selected{{/if}}>{{this.nombre}}</option>
+            <option value="{{this.id}}" {{#if (eq this.id ../selectedClienteId)}}selected{{/if}}>{{this.nombre}}</option>
         {{/each}}
     </select>
 </div>
-
-
 
 
 
@@ -3840,24 +3836,33 @@ document.getElementById('maintenanceForm').addEventListener('submit', function (
 </script>
 
 <script>
-    async function fetchClienteInfo() {
-        const clienteId = document.getElementById('clienteSelect').value;
+document.addEventListener('DOMContentLoaded', function() {
+    // Llamar a la función para cargar la información del cliente si ya está seleccionado
+    fetchClienteInfo();
+});
 
-        if (clienteId) {
-            try {
-                const response = await fetch(`/api/clientes/${clienteId}`);
-                const data = await response.json();
+async function fetchClienteInfo() {
+    const clienteId = document.getElementById('clienteSelect').value;
 
-                if (data.success || data.correo) {
-                    document.getElementById('correoInput').value = data.correo || 'No disponible';
-                    document.getElementById('clientPhoto').src = data.foto || 'default-client.jpg';
-                } else {
-                    alert(data.message || 'No se pudo obtener la información del cliente.');
-                }
-            } catch (error) {
-                console.error('Error al obtener la información del cliente:', error);
-                alert('Hubo un error al intentar obtener la información del cliente.');
+    if (clienteId) {
+        try {
+            const response = await fetch(`/api/clientes/${clienteId}`);
+            const data = await response.json();
+
+            if (data.success || data.correo) {
+                document.getElementById('correoInput').value = data.correo || 'No disponible';
+                document.getElementById('clientPhoto').src = data.foto || 'default-client.jpg';
+            } else {
+                alert(data.message || 'No se pudo obtener la información del cliente.');
             }
+        } catch (error) {
+            console.error('Error al obtener la información del cliente:', error);
+            alert('Hubo un error al intentar obtener la información del cliente.');
         }
     }
+}
+
+// También puedes agregar un evento al cambio del selector de cliente para actualizar la información cuando el usuario selecciona otro cliente
+document.getElementById('clienteSelect').addEventListener('change', fetchClienteInfo);
+
 </script>

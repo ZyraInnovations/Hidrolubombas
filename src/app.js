@@ -1468,9 +1468,6 @@ hbs.registerHelper('not', function(value) {
 });
 
 
-
-
-
 app.get('/editarMantenimiento/:id', async (req, res) => {
     const mantenimientoId = req.params.id;
     try {
@@ -1482,33 +1479,47 @@ app.get('/editarMantenimiento/:id', async (req, res) => {
             return res.status(404).send('Mantenimiento no encontrado');
         }
 
-        const mantenimiento = rows[0];
-        const tecnicoId = mantenimiento.tecnico; // ID del técnico
+        // Obtener el ID del cliente desde el mantenimiento
+        const clienteId = rows[0].cliente;
 
-        console.log('ID del mantenimiento:', mantenimientoId);
-        console.log('ID del técnico en mantenimiento:', tecnicoId);
+        // Consulta para obtener la lista de clientes
+        const clientsQuery = 'SELECT id, nombre FROM clientes_hidrolubombas';
+        const [clientes] = await pool.query(clientsQuery);
+
+        // Encontrar el cliente correspondiente al ID
+        const selectedCliente = clientes.find(client => client.id === parseInt(clienteId)) || null;
+
+        // Imprimir en consola el ID y nombre del cliente, y lo que se está comparando
+        console.log('ID del cliente en mantenimiento:', clienteId);
+        if (selectedCliente) {
+            console.log('Cliente encontrado:', selectedCliente);
+        } else {
+            console.log('Cliente no encontrado');
+        }
+
+        // Obtener el ID del técnico desde el mantenimiento
+        const tecnicoId = rows[0].tecnico; // ID del técnico
 
         // Obtener lista de técnicos
         const tecnicosQuery = `SELECT id, nombre FROM usuarios_hidro WHERE role = "tecnico"`;
         const [tecnicos] = await pool.query(tecnicosQuery);
 
-        console.log('Lista de técnicos:', tecnicos);
-
         // Encontrar el técnico correcto en la lista de técnicos
         const selectedTecnico = tecnicos.find(tec => tec.id === parseInt(tecnicoId)) || null;
 
-        console.log('Técnico encontrado en la lista:', selectedTecnico);
-
-        // Compara el técnico encontrado con el nombre del técnico en el mantenimiento
+        // Comparar el técnico encontrado con el nombre del técnico en el mantenimiento
         const tecnicoSeleccionadoNombre = selectedTecnico ? selectedTecnico.nombre : 'Ninguno';
-        console.log('Comparando con el técnico del mantenimiento:', tecnicoSeleccionadoNombre);
 
-        // Verificar el nombre que se pasa al frontend
-        console.log('Nombre del técnico que se pasa a la vista:', tecnicoSeleccionadoNombre);
+        // Imprimir en consola el ID y nombre del técnico
+        console.log('ID del técnico en mantenimiento:', tecnicoId);
+        console.log('Técnico encontrado:', tecnicoSeleccionadoNombre);
 
         // Enviar datos a la vista
         res.render('administrativo/informes/editar.hbs', {
-            informe: mantenimiento,
+            informe: rows[0],
+            clientes,
+            selectedClienteId: selectedCliente ? selectedCliente.id : null, // ID del cliente seleccionado
+            selectedClienteNombre: selectedCliente ? selectedCliente.nombre : '', // Nombre del cliente seleccionado
             tecnicos, // Lista completa de técnicos
             selectedTecnicoId: selectedTecnico ? selectedTecnico.id : null, // Solo el ID del técnico
             layout: 'layouts/nav_admin.hbs'
