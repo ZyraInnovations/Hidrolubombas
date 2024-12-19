@@ -944,13 +944,13 @@ textarea {
         </div>
         <div class="header-info">
         <div class="logo-container">
-        <img id="logo" src="imagenes/logo_ingenieria.jpeg-removebg-preview.png" alt="Logo" />
+        <img id="logo" src="../imagenes/logo_ingenieria.jpeg-removebg-preview.png" alt="Logo" />
         </div>
 
 
 
 
-<form id="maintenanceForm">
+<form id="mantenimientoForm">
 <div class="info-row full-width">
 <div class="info-section">
 
@@ -3389,10 +3389,13 @@ textarea {
 
 </div>
 
-    <div class="signature-container">
-        <canvas id="signatureCanvas2"></canvas>
-        <button type="button" class="clear-btn" onclick="clearCanvas('signatureCanvas2')">Borrar</button>
-        <span class="signature-label">SUPERVISOR</span>
+  <div style="text-align: center; width: 45%;">
+        {{#if informe.firma_supervisor}}
+            <h3>Firma del Supervisor</h3>
+            <img src="data:image/png;base64,{{informe.firma_supervisor}}" alt="Firma Supervisor" style="max-width: 100%; height: auto;">
+        {{else}}
+            <p>No se encontró una firma del supervisor.</p>
+        {{/if}}
     </div>
 </div>
 
@@ -3409,38 +3412,11 @@ textarea {
   </div>
  </div>
 
-<!-- Input de archivo personalizado -->
-<label for="boton" class="custom-label">Seleccionar Imágenes</label>
-<input id="boton" name="fotos" type="file" class="custom-file-input" multiple accept="image/*">
-<!-- Contenedor para la vista previa de las imágenes -->
-<div id="preview"></div>
-</div>
-<br>
-
-<div class="radio-group">
-    <label class="radio-label">
-        <input type="radio" name="accion" value="guardar" checked>
-        <span class="custom-radio"></span>
-        Guardar
-    </label>
-    <label class="radio-label">
-        <input type="radio" name="accion" value="guardar_y_enviar">
-        <span class="custom-radio"></span>
-        Guardar y Enviar Correo
-    </label>
-</div>
-
-<button type="submit" class="btn-submit">Procesar</button>
-
-
-
-<div id="loadingOverlay" class="loading-overlay" style="display: none;">
-    <div class="spinner"></div>
-    <p>Procesando, por favor espere...</p>
-</div>
-
+    <button type="submit" id="guardarBtn">Guardar</button>
 
 <script>
+
+
 
 document.addEventListener('DOMContentLoaded', async function () {
     // Obtener el valor del técnico seleccionado al cargar la página
@@ -3710,95 +3686,6 @@ function removeDesktopStyles() {
     reportElement.style.position = '';
     reportElement.style.margin = '';
 }
-
-
-document.getElementById('maintenanceForm').addEventListener('submit', function (event) {
-    event.preventDefault();
-
-    // Mostrar el overlay de carga
-    const loadingOverlay = document.getElementById('loadingOverlay');
-    loadingOverlay.style.display = 'flex';
-
-    const reportElement = document.querySelector('.report-container');
-    const signatures = getSignatureBlobs();
-
-    function prepareForCapture() {
-        document.querySelectorAll('select').forEach((select) => {
-            const selectedText = select.options[select.selectedIndex].text;
-            const span = document.createElement('span');
-            span.className = 'select-text';
-            span.textContent = selectedText;
-            select.style.display = 'none';
-            select.parentNode.insertBefore(span, select.nextSibling);
-        });
-
-        document.querySelectorAll('input').forEach((input) => {
-            const span = document.createElement('span');
-            span.className = 'input-text';
-            span.textContent = input.value;
-            input.style.display = 'none';
-            input.parentNode.insertBefore(span, input.nextSibling);
-        });
-    }
-
-    function restoreAfterCapture() {
-        document.querySelectorAll('.select-text').forEach((span) => {
-            const select = span.previousElementSibling;
-            if (select) {
-                select.style.display = '';
-            }
-            span.remove();
-        });
-
-        document.querySelectorAll('.input-text').forEach((span) => {
-            const input = span.previousElementSibling;
-            if (input) {
-                input.style.display = '';
-            }
-            span.remove();
-        });
-    }
-
-    // Aplicar estilos para captura como en PC
-    applyDesktopStyles();
-    prepareForCapture();
-
-    html2canvas(reportElement, {
-        scale: 2, // Mayor resolución
-        scrollY: 0,
-        windowHeight: reportElement.scrollHeight,
-    }).then((canvas) => {
-        // Restaurar estilos y contenido
-        removeDesktopStyles();
-        restoreAfterCapture();
-
-        canvas.toBlob((blob) => {
-            const formData = new FormData(document.getElementById('maintenanceForm'));
-            formData.append('firma_supervisor', signatures.firma_supervisor);
-            formData.append('imagen', blob, 'informe_mantenimiento.jpg');
-
-            fetch('/procesar-datos', {
-                method: 'POST',
-                body: formData,
-            })
-                .then((response) => response.json())
-             .then((data) => {
-    loadingOverlay.style.display = 'none'; // Ocultar el overlay
-    if (data.success) {
-        alert(data.message); // Mostrar el mensaje del servidor
-        location.reload(); // Recargar la página
-    } else {
-        alert('Hubo un error: ' + data.message);
-    }
-})
-                .catch((error) => {
-                    loadingOverlay.style.display = 'none'; // Ocultar el overlay
-                    console.error('Error:', error);
-                    alert('Error al procesar los datos.');
-                });
-        }, 'image/jpeg', 0.95);
-    });
-});
 
 
 </script>
