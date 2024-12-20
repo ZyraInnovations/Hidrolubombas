@@ -1,0 +1,312 @@
+<style>
+  .grid-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 20px;
+    padding: 20px;
+  }
+
+  .card {
+    background-color: #1f335c; /* Dark background color */
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    display: flex;
+    align-items: center;
+    transition: transform 0.2s;
+    color: #fff; /* White text for readability */
+  }
+
+  .card:hover {
+    transform: translateY(-10px);
+  }
+
+  .stat-icon {
+    font-size: 3rem;
+    color: #0769B3; /* Primary icon color */
+    margin-right: 15px;
+  }
+
+  .card div {
+    flex: 1;
+  }
+
+  .card h3 {
+    font-size: 2rem;
+    margin: 0;
+    color: #90c9a7; /* Light accent color */
+  }
+
+  .card p {
+    margin: 5px 0 0;
+    font-size: 1.2rem;
+    color: #d9d9d9; /* Subtle text color */
+  }
+
+  /* Chart Card Styling */
+  .chart-container {
+    background-color: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    height: 400px; /* Increased height for larger charts */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  /* Make the canvas take up full space within the container */
+  .chart-container canvas {
+    width: 100% !important;
+    height: 100% !important;
+  }
+</style>
+
+<div class="grid-container">
+  <div class="card stat">
+    <i class="fas fa-file-alt stat-icon"></i>
+    <div>
+      <h3 id="edificios-count">Cargando...</h3>
+      <p>Informes</p>
+    </div>
+  </div>
+
+  <div class="card stat">
+    <i class="fas fa-tools stat-icon"></i>
+    <div>
+      <h3 id="tecnicos-count">Cargando...</h3>
+      <p>Técnicos</p>
+    </div>
+  </div>
+
+  <div class="card stat">
+    <i class="fas fa-users stat-icon"></i>
+    <div>
+      <h3 id="clientes-count">Cargando...</h3>
+      <p>Clientes</p>
+    </div>
+  </div>
+  </div>
+  <div class="card chart-container">
+    <canvas id="barChart"></canvas>
+  </div>
+  <div class="card chart-container">
+    <canvas id="lineChart"></canvas>
+
+</div>
+
+
+    <!-- Include Chart.js library -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.6.0/chart.min.js"></script>
+    <script>
+document.addEventListener("DOMContentLoaded", function () {
+    // Obtener datos de mantenimiento de la API
+    fetch('/api/mantenimientos-por-mes')
+        .then(response => response.json())
+        .then(data => {
+            console.log(data); // Verifica los datos recibidos
+
+            // Definir los nombres de los meses
+const monthNames = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"];
+
+            // Procesar los datos para obtener el mes y los tipos de mantenimiento
+            const processedData = data.map(item => {
+                const monthIndex = new Date(item.fecha).getMonth(); // Extraer el índice del mes (0-11)
+                return {
+                    mes: monthNames[monthIndex], // Obtener el nombre del mes
+                    tipo_de_mantenimiento: item.tipo_de_mantenimiento,
+                    count: item.count
+                };
+            });
+
+            // Tipos de mantenimiento únicos presentes en los datos
+            const tipos = [...new Set(processedData.map(item => item.tipo_de_mantenimiento))];
+            const meses = monthNames; // Todos los meses en orden
+
+            // Crear los datasets para cada tipo de mantenimiento
+            const datasets = tipos.map((tipo, index) => {
+                // Para cada tipo de mantenimiento, obtiene la cantidad para cada mes
+                const counts = meses.map(mes => {
+                    const record = processedData.find(item => item.mes === mes && item.tipo_de_mantenimiento === tipo);
+                    return record ? record.count : 0;
+                });
+                return {
+                    label: tipo,
+                    data: counts,
+                    backgroundColor: `hsl(${index * 60}, 70%, 50%)`, // Color distinto para cada tipo
+                };
+            });
+
+            // Crear la gráfica de barras con los datos reales
+            const barCtx = document.getElementById('barChart').getContext('2d');
+            new Chart(barCtx, {
+                type: 'bar',
+                data: {
+                    labels: meses,
+                    datasets: datasets
+                },
+                options: {
+                    responsive: true,
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
+        })
+        .catch(error => console.error('Error al obtener datos de mantenimiento:', error));
+});
+
+
+        // Line Chart
+     document.addEventListener("DOMContentLoaded", function () {
+    // Obtener datos de mantenimiento de la API
+    fetch('/api/mantenimientos-por-mes')
+        .then(response => response.json())
+        .then(data => {
+            console.log(data); // Verifica los datos recibidos
+
+            // Definir los nombres de los meses en español
+            const monthNames = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"];
+
+            // Procesar los datos para obtener el mes y los tipos de mantenimiento
+            const processedData = data.map(item => {
+                const monthIndex = new Date(item.fecha).getMonth(); // Extraer el índice del mes (0-11)
+                return {
+                    mes: monthNames[monthIndex], // Obtener el nombre del mes
+                    tipo_de_mantenimiento: item.tipo_de_mantenimiento,
+                    count: item.count
+                };
+            });
+
+            // Tipos de mantenimiento únicos presentes en los datos
+            const tipos = [...new Set(processedData.map(item => item.tipo_de_mantenimiento))];
+            const meses = monthNames; // Todos los meses en orden
+
+            // Definir colores específicos para cada tipo (para replicar la imagen)
+            const colores = ["#0769b3", "#C92458"]; // Ajusta los colores según el número de tipos de mantenimiento
+
+            // Crear los datasets para cada tipo de mantenimiento
+            const datasets = tipos.map((tipo, index) => {
+                // Para cada tipo de mantenimiento, obtiene la cantidad para cada mes
+                const counts = meses.map(mes => {
+                    const record = processedData.find(item => item.mes === mes && item.tipo_de_mantenimiento === tipo);
+                    return record ? record.count : 0;
+                });
+                return {
+                    label: tipo,
+                    data: counts,
+                    borderColor: colores[index % colores.length], // Color distinto para cada tipo
+                    backgroundColor: colores[index % colores.length], // Color de fondo de los puntos
+                    fill: false,
+                    tension: 0.3, // Suaviza las líneas como en la imagen
+                    borderWidth: 3, // Hacer la línea más gruesa
+                    pointRadius: 5, // Tamaño de los puntos en las líneas
+                    pointHoverRadius: 7,
+                    pointBackgroundColor: colores[index % colores.length], // Color del punto
+                    pointBorderWidth: 2
+                };
+            });
+
+            // Crear la gráfica de líneas con los datos reales
+            const lineCtx = document.getElementById('lineChart').getContext('2d');
+            new Chart(lineCtx, {
+                type: 'line',
+                data: {
+                    labels: meses,
+                    datasets: datasets
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: {
+                            display: true,
+                            position: 'top',
+                            labels: {
+                                usePointStyle: true, // Usar puntos para hacer la leyenda más clara
+                                boxWidth: 20 // Tamaño de las cajas en la leyenda
+                            }
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            title: {
+                                display: true,
+                                text: 'Cantidad de Mantenimientos'
+                            }
+                        },
+                        x: {
+                            title: {
+                                display: true,
+                                text: 'Meses'
+                            }
+                        }
+                    },
+                    elements: {
+                        line: {
+                            tension: 0.3 // Suavizar las líneas, pero sin demasiada curvatura
+                        }
+                    }
+                }
+            });
+        })
+        .catch(error => console.error('Error al obtener datos de mantenimiento:', error));
+});
+
+
+    
+  
+document.addEventListener("DOMContentLoaded", function () {
+    // Fetch the informes count from the API
+    fetch('/api/informes-count')
+        .then(response => response.json())
+        .then(data => {
+            // Update the number in the HTML
+            document.getElementById('edificios-count').innerText = data.count;
+        })
+        .catch(error => console.error('Error fetching informes count:', error));
+});
+
+document.addEventListener("DOMContentLoaded", function () {
+    // Fetch the edificios count from the API
+    fetch('/api/apartamentos-count')
+        .then(response => response.json())
+        .then(data => {
+            // Update the number in the HTML
+            document.getElementById('apartamentos-count').innerText = data.count;
+        })
+        .catch(error => console.error('Error fetching apartamentos count:', error));
+});
+
+
+
+
+   document.addEventListener("DOMContentLoaded", function () {
+        // Fetch the técnicos count from the API
+        fetch('/api/tecnicos-count')
+            .then(response => response.json())
+            .then(data => {
+                // Update the number in the HTML
+                document.getElementById('tecnicos-count').innerText = data.count;
+            })
+            .catch(error => console.error('Error fetching técnicos count:', error));
+    });
+
+
+    document.addEventListener("DOMContentLoaded", function () {
+        // Hacer una petición a la API para obtener el conteo de clientes
+        fetch('/api/clientes-count')
+            .then(response => response.json())
+            .then(data => {
+                // Actualizar el número de clientes en el HTML
+                document.getElementById('clientes-count').innerText = data.count;
+            })
+            .catch(error => console.error('Error al obtener el conteo de clientes:', error));
+    });
+
+
+    </script>
+</body>
+</html>

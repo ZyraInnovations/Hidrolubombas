@@ -11,7 +11,6 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.6.0/chart.min.css" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
-
   <style>
     :root {
       --primary-color: #0769B3;
@@ -2137,19 +2136,6 @@ body {
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
         </section>
     </div>
    </div>
@@ -2158,24 +2144,48 @@ body {
 
 <button id="resendEmail" type="button">Reenviar</button>
 <input type="file" id="imagenesAdicionales" accept="image/*" multiple>
-<div id="imagenesPreview" style="display: flex; margin-top: 10px;"></div>
+<div id="imagenesPreview" style="display: flex; margin-top: 10px; flex-wrap: wrap;"></div>
+
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.2/html2pdf.bundle.min.js"></script>
 
-<script>document.getElementById('imagenesAdicionales').addEventListener('change', function (event) {
-    const archivos = event.target.files; // Archivos seleccionados
-    const previewContainer = document.getElementById('imagenesPreview');
-    previewContainer.innerHTML = ''; // Limpiar las imágenes previas
+<script>
+    
+  // Almacenar las imágenes seleccionadas previamente
+    let imagenesPrevias = [];
 
-    if (archivos.length > 0) {
-        // Iterar sobre los archivos seleccionados
-        Array.from(archivos).forEach(archivo => {
+    document.getElementById('imagenesAdicionales').addEventListener('change', function (event) {
+        const archivosNuevos = Array.from(event.target.files); // Archivos seleccionados
+
+        // Agregar los archivos nuevos a la lista de imágenes previas, evitando duplicados
+        archivosNuevos.forEach(nuevoArchivo => {
+            if (!imagenesPrevias.some(img => img.name === nuevoArchivo.name && img.lastModified === nuevoArchivo.lastModified)) {
+                imagenesPrevias.push(nuevoArchivo);
+            }
+        });
+
+        // Actualizar la vista previa
+        actualizarVistaPrevia();
+
+        // Limpiar el input file para permitir volver a seleccionar los mismos archivos si se desea
+        event.target.value = '';
+    });
+
+    // Función para actualizar la vista previa
+    function actualizarVistaPrevia() {
+        const previewContainer = document.getElementById('imagenesPreview');
+        previewContainer.innerHTML = ''; // Limpiar el contenedor
+
+        // Mostrar las imágenes almacenadas en imagenesPrevias
+        imagenesPrevias.forEach((archivo, index) => {
             const reader = new FileReader();
-            
+
             reader.onloadend = function () {
-                // Crear un contenedor para la imagen
+                // Crear un contenedor para la imagen y el botón de eliminación
                 const imgContainer = document.createElement('div');
+                imgContainer.style.position = 'relative';
                 imgContainer.style.marginRight = '10px';
+                imgContainer.style.marginBottom = '10px';
 
                 // Crear la imagen
                 const img = document.createElement('img');
@@ -2183,9 +2193,33 @@ body {
                 img.style.width = '100px'; // Tamaño de la miniatura
                 img.style.height = '100px';
                 img.style.objectFit = 'cover'; // Mantener la relación de aspecto
+                img.style.border = '1px solid #ddd';
+                img.style.borderRadius = '4px';
 
-                // Agregar la imagen al contenedor
+                // Crear el botón de eliminación
+                const btnEliminar = document.createElement('button');
+                btnEliminar.innerText = 'X';
+                btnEliminar.style.position = 'absolute';
+                btnEliminar.style.top = '5px';
+                btnEliminar.style.right = '5px';
+                btnEliminar.style.background = 'red';
+                btnEliminar.style.color = 'white';
+                btnEliminar.style.border = 'none';
+                btnEliminar.style.borderRadius = '50%';
+                btnEliminar.style.width = '20px';
+                btnEliminar.style.height = '20px';
+                btnEliminar.style.cursor = 'pointer';
+                btnEliminar.style.fontSize = '12px';
+
+                // Agregar el evento para eliminar la imagen
+                btnEliminar.addEventListener('click', function () {
+                    imagenesPrevias.splice(index, 1); // Eliminar la imagen del arreglo
+                    actualizarVistaPrevia(); // Actualizar la vista previa
+                });
+
+                // Agregar la imagen y el botón al contenedor
                 imgContainer.appendChild(img);
+                imgContainer.appendChild(btnEliminar);
                 previewContainer.appendChild(imgContainer);
             };
 
@@ -2193,16 +2227,14 @@ body {
             reader.readAsDataURL(archivo);
         });
     }
-});
 </script>
 
 
 
 
-
 <script>
-   document.getElementById('resendEmail').addEventListener('click', function (event) {
-    console.log('Botón "Reenviar" presionado'); // Confirmar que el evento click se dispara
+ document.getElementById('resendEmail').addEventListener('click', function (event) {
+    console.log('Botón "Reenviar" presionado');
 
     event.preventDefault();
 
@@ -2234,80 +2266,61 @@ body {
         const imagenBase64 = canvas.toDataURL('image/png');
         console.log('Longitud de la imagen Base64:', imagenBase64.length);
 
-        const enlaceDescarga = document.createElement('a');
-        enlaceDescarga.href = imagenBase64;
-        enlaceDescarga.download = 'captura.png';
-        enlaceDescarga.innerText = 'Descargar imagen PNG';
-        document.body.appendChild(enlaceDescarga);
-        enlaceDescarga.click();
+        const imagenesAdicionalesBase64 = []; // Lista para almacenar las imágenes en Base64
 
-        // Obtener las imágenes adicionales seleccionadas
-        const imagenesAdicionales = document.getElementById('imagenesAdicionales').files;
-        let imagenesAdicionalesBase64 = [];
+        if (imagenesPrevias.length > 0) {
+            // Procesar las imágenes de `imagenesPrevias`
+            const promesas = imagenesPrevias.map(imagen => {
+                return new Promise(resolve => {
+                    const reader = new FileReader();
+                    reader.onloadend = function () {
+                        resolve(reader.result.split('base64,')[1]); // Convertir a Base64
+                    };
+                    reader.readAsDataURL(imagen);
+                });
+            });
 
-        if (imagenesAdicionales.length > 0) {
-            // Leer todas las imágenes seleccionadas
-            Array.from(imagenesAdicionales).forEach(imagen => {
-                const reader = new FileReader();
-                reader.onloadend = function () {
-                    imagenesAdicionalesBase64.push(reader.result.split('base64,')[1]);
+            // Esperar a que todas las imágenes se procesen
+            Promise.all(promesas).then(resultados => {
+                imagenesAdicionalesBase64.push(...resultados);
 
-                    // Cuando todas las imágenes han sido leídas, enviar los datos
-                    if (imagenesAdicionalesBase64.length === imagenesAdicionales.length) {
-                        // Envía las imágenes al servidor
-                        fetch('/enviar-correoo', {
-                            method: 'POST',
-                            headers: {
-                                'Content-Type': 'application/json'
-                            },
-                            body: JSON.stringify({
-                                correo: correo,
-                                imagen: imagenBase64,
-                                imagenesAdicionales: imagenesAdicionalesBase64 // Enviar todas las imágenes adicionales
-                            })
-                        })
-                        .then(response => response.json())
-                        .then(data => {
-                            console.log('Respuesta del servidor:', data);
-                            if (data.success) {
-                                alert('Correo reenviado exitosamente.');
-                            } else {
-                                alert('Error al reenviar el correo.');
-                            }
-                        })
-                        .catch(error => console.error('Error al enviar el correo:', error));
-                    }
-                };
-                reader.readAsDataURL(imagen);
+                // Enviar los datos al servidor
+                enviarCorreo(correo, imagenBase64, imagenesAdicionalesBase64);
             });
         } else {
-            // Si no hay imágenes adicionales, enviar solo el PNG
-            fetch('/enviar-correoo', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({
-                    correo: correo,
-                    imagen: imagenBase64
-                })
-            })
-            .then(response => response.json())
-            .then(data => {
-                console.log('Respuesta del servidor:', data);
-                if (data.success) {
-                    alert('Correo reenviado exitosamente.');
-                } else {
-                    alert('Error al reenviar el correo.');
-                }
-            })
-            .catch(error => console.error('Error al enviar el correo:', error));
+            // Si no hay imágenes adicionales, enviar solo la captura
+            enviarCorreo(correo, imagenBase64, []);
         }
     }).catch(error => {
         console.error('Error generando PNG:', error);
         element.classList.remove('pdf-mode');
     });
 });
+
+// Función para enviar el correo
+function enviarCorreo(correo, imagenBase64, imagenesAdicionalesBase64) {
+    fetch('/enviar-correoo', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            correo: correo,
+            imagen: imagenBase64,
+            imagenesAdicionales: imagenesAdicionalesBase64
+        })
+    })
+    .then(response => response.json())
+    .then(data => {
+        console.log('Respuesta del servidor:', data);
+        if (data.success) {
+            alert('Correo reenviado exitosamente.');
+        } else {
+            alert('Error al reenviar el correo.');
+        }
+    })
+    .catch(error => console.error('Error al enviar el correo:', error));
+}
 
 </script>
 
