@@ -1493,7 +1493,7 @@ body {
     </div>
 <div class="info-row">
     <strong>Correo:</strong>
-        <span>{{informe.Correo}}</span>
+        <span id="correo" >{{informe.Correo}}</span>
 </div>
 
 
@@ -2130,7 +2130,108 @@ body {
 
         </section>
     </div>
+   </div>
+
+   
+<button id="resendEmail" type="button">Reenviar</button>
+
+
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.2/html2pdf.bundle.min.js"></script>
+<script>
+    
+document.getElementById('resendEmail').addEventListener('click', function (event) {
+    console.log('Botón "Reenviar" presionado'); // Confirmar que el evento click se dispara
+
+    // Prevenir el comportamiento predeterminado del formulario (si lo hay)
+    event.preventDefault();
+
+    // Obtén el elemento con el ID 'correo'
+    const correoElemento = document.getElementById('correo');
+
+    // Verifica si el elemento existe
+    if (!correoElemento) {
+        console.error('Elemento con id="correo" no encontrado.');
+        return; // Detener la ejecución si no existe
+    }
+
+    // Obtén el texto del correo
+    const correo = correoElemento.innerText.trim();
+    console.log('Correo a reenviar:', correo); // Verificar que el correo se obtiene correctamente
+
+    if (!correo) {
+        console.error('No se encontró una dirección de correo válida.');
+        return;
+    }
+
+    // Selecciona el elemento a capturar
+    const element = document.querySelector('.report-container');
+
+    // Verifica si el elemento existe
+    if (!element) {
+        console.error('Elemento con la clase "report-container" no encontrado.');
+        return;
+    }
+
+    // Agregar la clase de "modo PC" antes de capturar
+    element.classList.add('pdf-mode');
+
+    // Usa html2canvas para capturar el PNG
+    html2canvas(element, { scale: 2 }).then(canvas => {
+        console.log('Captura de imagen completada'); // Confirmar que la captura se realiza
+
+        // Eliminar la clase de "modo PC" después de capturar
+        element.classList.remove('pdf-mode');
+
+        // Convierte el canvas a una imagen en base64
+        const imagenBase64 = canvas.toDataURL('image/png');
+        console.log('Longitud de la imagen Base64:', imagenBase64.length); // Verificar que la imagen no esté vacía
+
+        // Crea un enlace para descargar la imagen
+        const enlaceDescarga = document.createElement('a');
+        enlaceDescarga.href = imagenBase64;
+        enlaceDescarga.download = 'captura.png';  // Asegura el nombre del archivo de descarga
+        enlaceDescarga.innerText = 'Descargar imagen PNG';
+        document.body.appendChild(enlaceDescarga); // Añadir el enlace a la página
+        console.log('Enlace para descargar la imagen creado.');
+
+        // Simula un clic para iniciar la descarga inmediatamente
+        enlaceDescarga.click();
+
+        // Envía la imagen al servidor para reenviarla
+        fetch('/enviar-correoo', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                correo: correo,
+                imagen: imagenBase64 // Enviar la imagen como Base64
+            })
+        })
+        .then(response => {
+            console.log('Respuesta del servidor recibida'); // Confirmar que se recibe una respuesta
+            return response.json();
+        })
+        .then(data => {
+            console.log('Respuesta del servidor:', data); // Verificar el contenido de la respuesta
+            if (data.success) {
+                alert('Correo reenviado exitosamente.');
+            } else {
+                alert('Error al reenviar el correo.');
+            }
+        })
+        .catch(error => console.error('Error al enviar el correo:', error));
+    }).catch(error => {
+        console.error('Error generando PNG:', error);
+        element.classList.remove('pdf-mode');
+    });
+});
+
+
+</script>
+
+
+
 
 <script>
 // Copiar el ID seleccionado del dropdown de Cliente al campo de entrada manual

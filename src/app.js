@@ -9,9 +9,10 @@ const hbs = require('hbs');
 
 const app = express();
 // Middleware para analizar el cuerpo de las 
-app.use(bodyParser.urlencoded({ extended: true }));
-app.use(bodyParser.json());
 
+// Configura los límites de tamaño de carga para JSON y URL-encoded
+app.use(bodyParser.urlencoded({ extended: true, limit: '50mb' }));
+app.use(bodyParser.json({ limit: '50mb' }));  // Limitar el tamaño de la carga JSON a 50MB
 // Configurar la sesión
 app.use(session({
     secret: 'secret-key',
@@ -400,9 +401,6 @@ app.post('/procesar-datos', upload.fields([
 
         const insertedId = result.insertId;
 
-
-
-
         if (accion === 'guardar_y_enviar') {
             const correoDestino = datos.Correo;
             let imagenHTML = req.files['imagen'] ? req.files['imagen'][0] : null;
@@ -454,9 +452,6 @@ app.post('/procesar-datos', upload.fields([
         }
     });
 });
-
-
-
 
 
 
@@ -1664,6 +1659,50 @@ for (const key in updates) {
 
 
 
+// Establecemos el límite de tamaño de la carga
+const maxSize = 50 * 1024 * 1024; // 50MB
+
+app.post('/enviar-correoo', (req, res) => {
+    const { correo, imagen } = req.body;
+
+    if (!correo || !imagen) {
+        return res.status(400).json({ success: false, message: 'Faltan parámetros' });
+    }
+
+    // Configurar el transporter de nodemailer
+    const transporter = nodemailer.createTransport({
+        service: 'gmail',
+        auth: {
+            user: 'ingeoperativos@gmail.com',
+            pass: 'gwkdpbzedomryivi', // Asegúrate de usar una forma segura de almacenar las credenciales
+        },
+    });
+
+    const mailOptions = {
+        from: 'ingeoperativos@gmail.com',
+        to: correo,
+        subject: 'Reenvío de reporte',
+        text: 'Aquí está el reporte solicitado.',
+        attachments: [
+            {
+                filename: 'captura.png',
+                content: imagen.split('base64,')[1], // Decodificar la imagen de Base64
+                encoding: 'base64', // Indicar que el contenido es base64
+            },
+        ],
+    };
+
+    // Enviar el correo
+    transporter.sendMail(mailOptions, (error, info) => {
+        if (error) {
+            console.error('Error al enviar correo:', error);
+            return res.status(500).json({ success: false, message: 'Error al enviar el correo.' });
+        }
+
+        console.log('Correo enviado:', info.response);
+        res.json({ success: true, message: 'Correo reenviado exitosamente.' });
+    });
+});
 
 
 // Iniciar el servidor
