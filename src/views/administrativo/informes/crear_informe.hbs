@@ -3504,55 +3504,63 @@ document.addEventListener('DOMContentLoaded', () => {
 </script>
 
 <script>
-    document.addEventListener('DOMContentLoaded', function () {
-        initSignaturePad('signatureCanvas2');
+
+
+document.addEventListener('DOMContentLoaded', function () {
+    initSignaturePad('signatureCanvas2');
+});
+
+function initSignaturePad(canvasId) {
+    const canvas = document.getElementById(canvasId);
+    const ctx = canvas.getContext('2d');
+    let drawing = false;
+
+    // Ajuste para evitar el desplazamiento en dispositivos móviles
+    canvas.addEventListener('touchstart', startDrawing);
+    canvas.addEventListener('touchmove', draw);
+    canvas.addEventListener('touchend', stopDrawing);
+    canvas.addEventListener('touchmove', function(event) {
+        event.preventDefault(); // Evita el desplazamiento
     });
 
-    function initSignaturePad(canvasId) {
-        const canvas = document.getElementById(canvasId);
-        const ctx = canvas.getContext('2d');
-        let drawing = false;
+    // Eventos de mouse para escritorio
+    canvas.addEventListener('mousedown', startDrawing);
+    canvas.addEventListener('mouseup', stopDrawing);
+    canvas.addEventListener('mousemove', draw);
 
-        canvas.addEventListener('mousedown', startDrawing);
-        canvas.addEventListener('mouseup', stopDrawing);
-        canvas.addEventListener('mousemove', draw);
-        canvas.addEventListener('touchstart', startDrawing);
-        canvas.addEventListener('touchend', stopDrawing);
-        canvas.addEventListener('touchmove', draw);
-
-        function startDrawing(event) {
-            drawing = true;
-            ctx.beginPath();
-            const rect = canvas.getBoundingClientRect();
-            const x = (event.clientX || event.touches[0].clientX) - rect.left;
-            const y = (event.clientY || event.touches[0].clientY) - rect.top;
-            ctx.moveTo(x, y);
-        }
-
-        function stopDrawing() {
-            drawing = false;
-        }
-
-        function draw(event) {
-            if (!drawing) return;
-            const rect = canvas.getBoundingClientRect();
-            const x = (event.clientX || event.touches[0].clientX) - rect.left;
-            const y = (event.clientY || event.touches[0].clientY) - rect.top;
-            ctx.lineTo(x, y);
-            ctx.stroke();
-        }
+    function startDrawing(event) {
+        drawing = true;
+        ctx.beginPath();
+        const rect = canvas.getBoundingClientRect();
+        const x = (event.clientX || event.touches[0].clientX) - rect.left;
+        const y = (event.clientY || event.touches[0].clientY) - rect.top;
+        ctx.moveTo(x, y);
     }
 
-    function clearCanvas(canvasId) {
-        const canvas = document.getElementById(canvasId);
-        const ctx = canvas.getContext('2d');
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
+    function stopDrawing() {
+        drawing = false;
     }
 
-    function getSignatureBlobs() {
-        const firmaSupervisor = document.getElementById('signatureCanvas2').toDataURL('image/png');
-        return {  firma_supervisor: firmaSupervisor };
+    function draw(event) {
+        if (!drawing) return;
+        const rect = canvas.getBoundingClientRect();
+        const x = (event.clientX || event.touches[0].clientX) - rect.left;
+        const y = (event.clientY || event.touches[0].clientY) - rect.top;
+        ctx.lineTo(x, y);
+        ctx.stroke();
     }
+}
+
+function clearCanvas(canvasId) {
+    const canvas = document.getElementById(canvasId);
+    const ctx = canvas.getContext('2d');
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+}
+
+function getSignatureBlobs() {
+    const firmaSupervisor = document.getElementById('signatureCanvas2').toDataURL('image/png');
+    return { firma_supervisor: firmaSupervisor };
+}
 
 
 function applyDesktopStyles() {
