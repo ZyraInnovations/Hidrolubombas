@@ -1661,38 +1661,48 @@ for (const key in updates) {
 
 // Establecemos el límite de tamaño de la carga
 const maxSize = 50 * 1024 * 1024; // 50MB
-
 app.post('/enviar-correoo', (req, res) => {
-    const { correo, imagen } = req.body;
+    const { correo, imagen, imagenesAdicionales } = req.body;
 
     if (!correo || !imagen) {
         return res.status(400).json({ success: false, message: 'Faltan parámetros' });
     }
 
-    // Configurar el transporter de nodemailer
     const transporter = nodemailer.createTransport({
         service: 'gmail',
         auth: {
             user: 'ingeoperativos@gmail.com',
-            pass: 'gwkdpbzedomryivi', // Asegúrate de usar una forma segura de almacenar las credenciales
+            pass: 'gwkdpbzedomryivi',
         },
     });
+
+    const attachments = [
+        {
+            filename: 'captura.png',
+            content: imagen.split('base64,')[1],
+            encoding: 'base64',
+        },
+    ];
+
+    // Si hay imágenes adicionales, las agregamos a los adjuntos
+    if (imagenesAdicionales && Array.isArray(imagenesAdicionales)) {
+        imagenesAdicionales.forEach((imagenBase64, index) => {
+            attachments.push({
+                filename: `imagen_adicional_${index + 1}.jpg`,
+                content: imagenBase64,
+                encoding: 'base64',
+            });
+        });
+    }
 
     const mailOptions = {
         from: 'ingeoperativos@gmail.com',
         to: correo,
         subject: 'Reenvío de reporte',
         text: 'Aquí está el reporte solicitado.',
-        attachments: [
-            {
-                filename: 'captura.png',
-                content: imagen.split('base64,')[1], // Decodificar la imagen de Base64
-                encoding: 'base64', // Indicar que el contenido es base64
-            },
-        ],
+        attachments: attachments,
     };
 
-    // Enviar el correo
     transporter.sendMail(mailOptions, (error, info) => {
         if (error) {
             console.error('Error al enviar correo:', error);
@@ -1703,6 +1713,8 @@ app.post('/enviar-correoo', (req, res) => {
         res.json({ success: true, message: 'Correo reenviado exitosamente.' });
     });
 });
+
+
 
 
 // Iniciar el servidor
