@@ -1522,7 +1522,7 @@ body {
     <div class="info-row">
         <strong>Tipo de Mantenimiento:</strong> 
    
-           <span>{{informe.tipo_de_mantenimiento}}</span>
+           <span id="tipoDeMantenimiento" >{{informe.tipo_de_mantenimiento}}</span>
 
     </div>
 
@@ -1559,7 +1559,7 @@ body {
 </div>
   <div class="info-row">
         <strong>Número:</strong>
-        <span>{{informe.id}}</span>
+<span id="informeId">{{informe.id}}</span>
     </div>
 </div>
 </div>
@@ -2233,7 +2233,10 @@ body {
 
 
 <script>
- document.getElementById('resendEmail').addEventListener('click', function (event) {
+
+
+const tipoDeMantenimiento = document.getElementById('tipoDeMantenimiento').innerText.trim();
+document.getElementById('resendEmail').addEventListener('click', function (event) {
     console.log('Botón "Reenviar" presionado');
 
     event.preventDefault();
@@ -2247,6 +2250,19 @@ body {
     const correo = correoElemento.innerText.trim();
     if (!correo) {
         console.error('No se encontró una dirección de correo válida.');
+        return;
+    }
+
+    const tipoDeMantenimiento = document.getElementById('tipoDeMantenimiento').innerText.trim();
+    if (!tipoDeMantenimiento) {
+        console.error('No se encontró un tipo de mantenimiento válido.');
+        return;
+    }
+
+    // Obtener el ID del informe
+    const informeId = document.getElementById('informeId').innerText.trim();
+    if (!informeId) {
+        console.error('No se encontró un ID de informe válido.');
         return;
     }
 
@@ -2285,11 +2301,11 @@ body {
                 imagenesAdicionalesBase64.push(...resultados);
 
                 // Enviar los datos al servidor
-                enviarCorreo(correo, imagenBase64, imagenesAdicionalesBase64);
+                enviarCorreo(correo, imagenBase64, imagenesAdicionalesBase64, tipoDeMantenimiento, informeId);
             });
         } else {
             // Si no hay imágenes adicionales, enviar solo la captura
-            enviarCorreo(correo, imagenBase64, []);
+            enviarCorreo(correo, imagenBase64, [], tipoDeMantenimiento, informeId);
         }
     }).catch(error => {
         console.error('Error generando PNG:', error);
@@ -2298,7 +2314,7 @@ body {
 });
 
 // Función para enviar el correo
-function enviarCorreo(correo, imagenBase64, imagenesAdicionalesBase64) {
+function enviarCorreo(correo, imagenBase64, imagenesAdicionalesBase64, tipoDeMantenimiento, informeId) {
     fetch('/enviar-correoo', {
         method: 'POST',
         headers: {
@@ -2307,7 +2323,9 @@ function enviarCorreo(correo, imagenBase64, imagenesAdicionalesBase64) {
         body: JSON.stringify({
             correo: correo,
             imagen: imagenBase64,
-            imagenesAdicionales: imagenesAdicionalesBase64
+            imagenesAdicionales: imagenesAdicionalesBase64,
+            tipoDeMantenimiento: tipoDeMantenimiento, // Aquí se incluye el tipo de mantenimiento
+            informeId: informeId // Incluir el ID del informe
         })
     })
     .then(response => response.json())
@@ -2321,7 +2339,6 @@ function enviarCorreo(correo, imagenBase64, imagenesAdicionalesBase64) {
     })
     .catch(error => console.error('Error al enviar el correo:', error));
 }
-
 </script>
 
 

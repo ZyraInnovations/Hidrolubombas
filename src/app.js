@@ -1707,11 +1707,38 @@ for (const key in updates) {
 
 // Establecemos el límite de tamaño de la carga
 const maxSize = 50 * 1024 * 1024; // 50MB
-app.post('/enviar-correoo', (req, res) => {
-    const { correo, imagen, imagenesAdicionales } = req.body;
 
-    if (!correo || !imagen) {
+app.post('/enviar-correoo', (req, res) => {
+    const { correo, imagen, imagenesAdicionales, tipoDeMantenimiento, informeId } = req.body;
+
+    if (!correo || !imagen || !tipoDeMantenimiento || !informeId) {
+        console.log('Faltan parámetros:', { correo, imagen, tipoDeMantenimiento, informeId });
         return res.status(400).json({ success: false, message: 'Faltan parámetros' });
+    }
+
+    // Lógica para determinar el asunto y el texto del correo según el tipo de mantenimiento
+    let asunto = '';
+    let texto = '';
+
+    console.log('Tipo de mantenimiento recibido:', tipoDeMantenimiento);
+    console.log('ID del informe recibido:', informeId);
+
+    switch (tipoDeMantenimiento) {
+        case 'Preventivo':
+            asunto = ` Envío de Bitácora digital  – Mantenimiento preventivo  -  N° ${informeId}`;
+            texto = `Señores, ADMINISTRACIÓN\n\nReciban un atento saludo.\n\nAdjunto a este mensaje encontrarán la bitácora digital correspondiente al mantenimiento preventivo mensual del mes en curso; también encontrará las imágenes del estado final.\n\nPor favor, confirmar la recepción de este mensaje.`;
+            break;
+        case 'Correctivo':
+            asunto = `Mantenimiento Correctivo - Informe N° ${informeId}`;
+            texto = 'Se realizó un mantenimiento correctivo para corregir fallas detectadas.';
+            break;
+        case 'Emergencia':
+            asunto = ` Envío de Bitácora digital  – Asistencia a emergencia N° ${informeId}`;
+            texto = `Señores, ADMINISTRACIÓN\n\nReciban un atento saludo.\n\nAdjunto a este mensaje encontrarán la bitácora digital correspondiente a la asistencia técnica realizada, debido a la emergencia presentada en los equipos. También encontrará imágenes anexas.\n\nPor favor, confirmar la recepción de este mensaje.`;
+            break;
+        default:
+            asunto = `Informe de Mantenimiento - N° ${informeId}`;
+            texto = 'Adjunto se encuentra el informe solicitado.';
     }
 
     const transporter = nodemailer.createTransport({
@@ -1730,7 +1757,6 @@ app.post('/enviar-correoo', (req, res) => {
         },
     ];
 
-    // Si hay imágenes adicionales, las agregamos a los adjuntos
     if (imagenesAdicionales && Array.isArray(imagenesAdicionales)) {
         imagenesAdicionales.forEach((imagenBase64, index) => {
             attachments.push({
@@ -1744,8 +1770,8 @@ app.post('/enviar-correoo', (req, res) => {
     const mailOptions = {
         from: 'ingeoperativos@gmail.com',
         to: correo,
-        subject: 'Reenvío de reporte',
-        text: 'Aquí está el reporte solicitado.',
+        subject: asunto,
+        text: texto,
         attachments: attachments,
     };
 
