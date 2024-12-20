@@ -1454,7 +1454,7 @@ app.get('/mostrarInforme/:id', async (req, res) => {
         }
 
         // Renderizar la plantilla con los datos
-        res.render('administrativo/informes/plantilla.hbs', { informe });
+        res.render('administrativo/informes/plantilla.hbs', { informe , layout: 'layouts/nav_admin.hbs'});
     } catch (error) {
         console.error('Error al generar el informe:', error);
         res.status(500).send('Error interno del servidor.');
@@ -1466,6 +1466,11 @@ app.get('/mostrarInforme/:id', async (req, res) => {
 hbs.registerHelper('not', function(value) {
     return !value;
 });
+
+
+
+
+
 
 
 
@@ -1547,6 +1552,20 @@ app.get('/editarMantenimiento/:id', async (req, res) => {
 
 
 
+
+
+
+
+
+
+
+const fs = require('fs');
+
+
+
+
+
+
 app.post('/actualizar-informe', async (req, res) => {
     try {
         // Extraer todos los campos del formulario
@@ -1587,64 +1606,56 @@ app.post('/actualizar-informe', async (req, res) => {
 
         console.log("Firma Supervisor:", firma_supervisor); // Esto te permitirá ver si la firma se está recibiendo correctamente
 
-     // Si hay una firma en base64, convertirla a binario
-     let firmaPath = null;
-     // Verificar si se ha recibido una nueva firma
-     if (firma_supervisor) {
-         const buffer = Buffer.from(firma_supervisor, 'base64');
-         const firmaFileName = `firma_${id}.png`;
-         firmaPath = path.join(__dirname, 'uploads', firmaFileName);
-
-         // Guardar la firma en un archivo PNG
-         fs.writeFileSync(firmaPath, buffer);
-     } else {
-         // Si no se recibe una nueva firma, conservar la firma actual
-         firmaPath = null;
-     }
-
         if (!id || isNaN(parseInt(id))) {
             return res.status(400).json({ error: "El ID es requerido y debe ser un número válido." });
         }
 
-        // Crear un objeto 'updates' con solo los campos que no son null o undefined
+        // Crear un objeto 'updates' para almacenar los valores que se actualizarán
         let updates = {};
         Object.entries(req.body).forEach(([key, value]) => {
             if (value !== null && value !== undefined) {
                 updates[key] = value;
             }
         });
-
+        // Si hay una firma, convertirla de base64 a un buffer binario
+    
+// Si hay una firma nueva, convertirla de base64 a un buffer binario
+if (req.body.firma_supervisor) {
+    updates.firma_supervisor = Buffer.from(req.body.firma_supervisor, 'base64');
+}
         let setClauses = [];
         let values = [];
 
-        // Verificar si 'updates' contiene algún campo
-        if (Object.keys(updates).length > 0) {
-            for (const key in updates) {
-                setClauses.push(`${key} = ?`);
-                values.push(updates[key]);
-            }
-        } else {
+     // Construir las cláusulas SET de la consulta
+for (const key in updates) {
+    setClauses.push(`${key} = ?`);
+    values.push(updates[key]);
+}
+
+        if (setClauses.length === 0) {
             return res.status(400).json({ error: "No se recibieron datos para actualizar además del ID." });
         }
 
-        // Incluir el ID al final de los valores
+        // Agregar el ID al final de los valores
         const query = `UPDATE mantenimiento_hidro SET ${setClauses.join(', ')} WHERE id = ?`;
         values.push(id);
 
+        // Ejecutar la consulta
         const [result] = await pool.query(query, values);
 
         if (result.affectedRows === 0) {
             return res.status(404).json({ error: "No se encontró ningún informe con ese ID." });
         }
-        res.redirect(`/mostrarInforme/${id}`);
+
+      
+        // Enviar URL de redirección al cliente
+        res.json({ redirectUrl: `/mostrarInforme/${id}` });
 
     } catch (err) {
         console.error("Error en la actualización:", err);
         res.status(500).json({ error: "Hubo un error al actualizar el informe." });
     }
 });
-
-
 
 
 
