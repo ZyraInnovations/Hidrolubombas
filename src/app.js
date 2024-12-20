@@ -301,7 +301,9 @@ app.post('/procesar-datos', upload.fields([
 ]), (req, res) => {
     const datos = req.body;
     const accion = datos.accion; // Asegúrate de definir "accion" al inicio
- 
+    const tipoDeMantenimiento = datos.tipo_de_mantenimiento; // Tipo de mantenimiento seleccionado
+    
+
   
     // Convertir las firmas a buffers
     const firmaSupervisorBlob = bufferFromBase64(datos.firma_supervisor);
@@ -344,7 +346,7 @@ app.post('/procesar-datos', upload.fields([
       ) VALUES ?`;
 
       const values = [
-        [
+        [ 
           datos.cliente, datos.equipo, datos.tecnico,datos.torre, datos.hora_entrada, datos.hora_salida,
           datos.fecha, datos.numero, datos.variador_b1, datos.variador_b2, datos.variador_b3,
           datos.variador_b4, datos.precarga, datos.guarda_motor_b11, datos.guarda_motor_b22,
@@ -401,6 +403,50 @@ app.post('/procesar-datos', upload.fields([
 
         const insertedId = result.insertId;
 
+
+
+
+
+
+
+    // Configurar asunto y texto según tipo_de_mantenimiento
+    let correoAsunto = 'Informe de Mantenimiento';
+    let correoTexto = 'Adjunto se encuentra el informe solicitado.';
+
+    switch (tipoDeMantenimiento) {
+        case 'Preventivo':
+            correoAsunto = ` Envío de Bitácora digital  – Mantenimiento preventivo  -  N° ${insertedId}`;
+            correoTexto = `Señores, ADMINISTRACIÓN\n\nReciban un atento saludo.\n\nAdjunto a este mensaje encontrarán la bitácora digital correspondiente al mantenimiento preventivo mensual del mes en curso; también encontrará las imágenes del estado final.\n\nPor favor, confirmar la recepción de este mensaje.`;
+            break;
+        case 'Correctivo':
+            correoAsunto = `Mantenimiento Correctivo - Informe N° ${insertedId}`;
+            correoTexto = 'Se realizó un mantenimiento correctivo para corregir fallas detectadas.';
+            break;
+        case 'Emergencia':
+            correoAsunto = ` Envío de Bitácora digital  – Asistencia a emergencia N° ${insertedId}`;
+            correoTexto = `Señores,
+            ADMINISTRACIÓN
+            
+            Reciban un atento saludo.
+            
+            Adjunto a este mensaje encontrarán la bitácora digital correspondiente a la asistencia técnica realizada, debido a la emergencia presentada en los equipos. También encontrará imágenes anexas.
+            
+            Por favor, confirmar la recepción de este mensaje.`;
+            break;
+        default:
+            correoAsunto = `Informe de Mantenimiento - N° ${insertedId}`;
+            correoTexto = 'Adjunto se encuentra el informe solicitado.';
+    }
+
+
+
+
+
+
+
+
+
+
         if (accion === 'guardar_y_enviar') {
             const correoDestino = datos.Correo;
             let imagenHTML = req.files['imagen'] ? req.files['imagen'][0] : null;
@@ -427,8 +473,8 @@ app.post('/procesar-datos', upload.fields([
             const mailOptions = {
                 from: 'ingeoperativos@gmail.com',
                 to: correoDestino,
-                subject: `Informe de Mantenimiento N° ${insertedId}`, // Agrega el número de informe al asunto
-                text: 'Adjunto se encuentra el informe de mantenimiento en formato imagen, junto con las imágenes seleccionadas.',
+                subject: correoAsunto, // Usar el asunto dinámico
+                text: correoTexto,     // Usar el texto dinámico
                 attachments: attachments
             };
 
