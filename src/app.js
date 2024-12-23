@@ -194,16 +194,22 @@ const crypto = require('crypto'); // Importa el módulo crypto
 
 
 
+// Arreglo con los nombres de los meses
+const months = [
+    "Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", 
+    "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"
+];
+
+// Obtener el nombre del mes actual
+const mes = months[new Date().getMonth()]; // Obtiene el nombre del mes actual
+console.log('Mes:', mes); // Verifica que el mes sea el correcto
 
 app.get("/menuAdministrativo", (req, res) => {
     if (req.session.loggedin === true) {
         const nombreUsuario = req.session.name || req.session.user.name; 
-        
-          // Asegúrate de que el ID del usuario esté guardado en la sesión
-          const usuarioId = req.session.usuario_id;
-        // Use the session name or fallback
+        const usuarioId = req.session.usuario_id;
         console.log(`El usuario ${nombreUsuario} está autenticado.`);
-        req.session.nombreGuardado = nombreUsuario; // Guarda el nombre en la sesión
+        req.session.nombreGuardado = nombreUsuario;
 
         const rolesString = req.session.roles;
         const roles = Array.isArray(rolesString) ? rolesString : [];
@@ -211,23 +217,34 @@ app.get("/menuAdministrativo", (req, res) => {
         const jefe = roles.includes('jefe');
         const empleado = roles.includes('empleado');
 
-        res.render("administrativo/menuadministrativo.hbs", {
-            name: nombreUsuario, // Pass the name to the template
-            jefe,
-            usuario_id: usuarioId,  // Pasa el ID del usuario
+        // Usar el nombre del mes en lugar del número
+        console.log('Mes que se envía a la consulta:', mes);  // Verifica el valor de `mes`
 
-            layout: 'layouts/nav_admin.hbs',
-            empleado
+        const query = 'SELECT tipo_mantenimiento, observaciones FROM alertas_hidraulibombas WHERE mes = ? AND estado = 1';
+
+        // Ejecutar la consulta a la base de datos
+        db.query(query, [mes], (err, results) => {
+            if (err) {
+                console.error('Error al obtener los datos:', err);
+                return res.status(500).send('Error al obtener los datos');
+            }
+
+            console.log('Resultados de la consulta:', results); // Ver los resultados en la consola
+
+            // Pasar los resultados a la vista
+            res.render("administrativo/menuadministrativo.hbs", {
+                name: nombreUsuario,
+                jefe,
+                usuario_id: usuarioId,
+                layout: 'layouts/nav_admin.hbs',
+                empleado,
+                mantenimientos: results // Aquí se pasan los datos de la consulta
+            });
         });
     } else {
         res.redirect("/login");
     }
 });
-
-
-
-
-
 
 
 
@@ -1985,7 +2002,7 @@ io.on('connection', (socket) => {
 
 
 
-  cron.schedule('18 11 * * *', async () => {
+  cron.schedule('0 7 */2 * *', async () => {
     try {
       // Obtener todas las alertas pendientes (estado = 1)
       const [alertas] = await pool.query('SELECT * FROM alertas_hidraulibombas WHERE estado = 1');
@@ -2035,8 +2052,7 @@ io.on('connection', (socket) => {
       console.error('Error al obtener las alertas:', err);
     }
   });
-
-
+  
 
 
 
@@ -2081,7 +2097,44 @@ app.post('/mark-notifications-read', async (req, res) => {
 
 
 
+
+
+
+
+
+  app.get('/mantenimientos-pendientes', (req, res) => {
+    const mesActual = new Date().toLocaleString('default', { month: 'long' }).replace(/^\w/, c => c.toUpperCase()); // Convierte la primera letra a mayúscula
+    console.log('Mes Actual:', mesActual); // Verifica si es "Diciembre"
+
+    const query = `
+      SELECT tipo_mantenimiento, observaciones
+      FROM alertas_hidraulibombas
+      WHERE mes = ? 
+      AND estado = 1
+    `;
   
+    pool.query(query, [mesActual], (err, results) => {
+      if (err) {
+        console.error('Error en la consulta:', err);
+        res.status(500).send('Error en la consulta');
+        return;
+      }
+      
+      console.log('Resultados de la consulta:', results); // Verifica los resultados antes de enviar
+      if (results.length === 0) {
+        console.log('No hay datos para este mes');
+      }
+      res.json(results); // Enviar los datos al frontend
+    });
+});
+
+
+
+
+
+
+
+
   // Inicia el servidor en un puerto específico
   httpServer.listen(4000, () => {
     console.log('Servidor corriendo en http://localhost:4000');

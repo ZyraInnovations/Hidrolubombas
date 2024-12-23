@@ -217,7 +217,7 @@
     {{name}}
   </div>
   <div class="relative">
-    <i class="fas fa-bell text-xl cursor-pointer" id="notificationBell" onclick="toggleNotificationPopup()"></i>
+  <i class="fas fa-bell text-xl cursor-pointer" id="notificationBell" onclick="toggleNotificationPopup()"></i>
     <span id="notificationCount" class="badge hidden">0</span>
   </div>
 </div>
@@ -308,10 +308,9 @@
 <div id="notificationPopup" class="hidden fixed top-16 right-16 bg-white p-4 shadow-lg rounded-lg z-50 w-80">
     <h3 class="text-lg font-bold mb-2">Notificaciones</h3>
     <ul id="notificationList" class="text-gray-700 space-y-2"></ul>
-    <button onclick="markNotificationsAsRead({{userId}})" class="mt-3 text-blue-500 w-full text-center py-2 rounded-lg bg-blue-100 hover:bg-blue-200">
-        Marcar todas como leídas
-    </button>
-</div>
+<button onclick="markNotificationsAsRead(usuario_id)" class="mt-3 text-blue-500 w-full text-center py-2 rounded-lg bg-blue-100 hover:bg-blue-200">
+  Marcar todas como leídas
+</button>
 
 
 
@@ -321,12 +320,94 @@
     </div>
   </div>
 
+<audio id="notificationSound" src="alertas/level-up-2-199574.mp3" preload="auto"></audio>
 
 
 
 <script>
   const nombre = "{{name}}";
 </script>
+
+
+<script>
+
+// Function to toggle the notification popup
+function toggleNotificationPopup() {
+    const popup = document.getElementById('notificationPopup');
+    popup.classList.toggle('hidden'); // Solo mostrar o esconder el popup al hacer clic
+
+    // Si el popup está visible, agregamos un event listener para hacer clic fuera de él
+    if (!popup.classList.contains('hidden')) {
+        document.addEventListener('click', closePopupOnClickOutside);
+    } else {
+        document.removeEventListener('click', closePopupOnClickOutside);
+    }
+}
+
+// Function to close the popup when clicking outside
+function closePopupOnClickOutside(event) {
+    const popup = document.getElementById('notificationPopup');
+    const bell = document.getElementById('notificationBell');
+    
+    // Verificar si el clic ocurrió fuera del popup y de la campana de notificaciones
+    if (!popup.contains(event.target) && event.target !== bell) {
+        popup.classList.add('hidden'); // Ocultar el popup
+        document.removeEventListener('click', closePopupOnClickOutside); // Remover el listener
+    }
+}
+
+
+// Hamburger menu toggle
+const hamburger = document.getElementById('hamburger-menu');
+const sidebar = document.getElementById('sidebar');
+
+hamburger.addEventListener('click', () => {
+    sidebar.classList.toggle('open');
+});
+
+
+
+
+// Theme toggle logic
+const themeToggle = document.getElementById('theme-toggle');
+const htmlElement = document.documentElement;
+
+themeToggle.addEventListener('click', () => {
+    htmlElement.classList.toggle('dark');
+    if (htmlElement.classList.contains('dark')) {
+        localStorage.setItem('theme', 'dark');
+    } else {
+        localStorage.setItem('theme', 'light');
+    }
+});
+
+// Load theme from localStorage
+const storedTheme = localStorage.getItem('theme');
+if (storedTheme === 'dark') {
+    htmlElement.classList.add('dark');
+}
+
+// Mark the active link in the sidebar
+const currentPath = window.location.pathname;
+const menuLinks = document.querySelectorAll('.sidebar ul li a');
+
+menuLinks.forEach(link => {
+    if (link.dataset.link === currentPath) {
+        link.classList.add('active');
+    }
+});
+
+// Submenu toggle
+function toggleSubmenu(id) {
+    const submenu = document.getElementById(id);
+    submenu.classList.toggle('hidden');
+}
+
+
+</script>
+
+
+
 
 <script>
 

@@ -427,6 +427,7 @@
 
 </div>
 
+<audio id="notificationSound" src="alertas/level-up-2-199574.mp3" preload="auto"></audio>
 
 
 
@@ -462,12 +463,36 @@
     alert('No se pudo conectar al servidor de notificaciones.');
   });
 
+// Variable para almacenar el intervalo
+let notificationInterval;
+
+// Función para reproducir el sonido
+function playNotificationSound() {
+  const notificationSound = document.getElementById('notificationSound');
+  notificationSound.play().catch(error => {
+    console.error("Error al intentar reproducir el sonido:", error);
+  });
+}
+
+// Función para iniciar la repetición del sonido cada 7 segundos
+function startNotificationSound() {
+  // Reproducir el sonido de inmediato y luego cada 7 segundos
+  playNotificationSound();
+  notificationInterval = setInterval(playNotificationSound, 7000);  // 7000 ms = 7 segundos
+}
+
+// Función para detener el sonido
+function stopNotificationSound() {
+  clearInterval(notificationInterval);  // Detener el intervalo
+}
+
 // Función para obtener las notificaciones del backend
 async function getNotifications() {
   try {
     const response = await fetch('/notifications');
     const data = await response.json();
 
+    // Verificar si hay notificaciones no leídas
     if (data.notificaciones.length > 0) {
       // Mostrar el contador de notificaciones
       document.getElementById('notificationCount').innerText = data.notificaciones.length;
@@ -481,20 +506,54 @@ async function getNotifications() {
         listItem.innerText = `Alerta ID: ${notification.alerta_id} - Tienes un mantenimiento pendiente.`;
         notificationList.appendChild(listItem);
       });
+
+      // Iniciar el sonido solo si hay notificaciones pendientes
+      startNotificationSound();
+    } else {
+      // Detener el sonido si no hay notificaciones pendientes
+      stopNotificationSound();
     }
   } catch (error) {
     console.error('Error al obtener las notificaciones:', error);
   }
 }
 
-// Función para alternar la visibilidad del popup de notificaciones
-function toggleNotificationPopup() {
-  const popup = document.getElementById('notificationPopup');
-  popup.classList.toggle('hidden');
+// Función para marcar las notificaciones como leídas
+async function markNotificationsAsRead(userId) {
+  try {
+    const response = await fetch(`/notifications/markAsRead/${userId}`, { method: 'POST' });
+
+    if (response.ok) {
+      // Detener el sonido cuando las notificaciones sean marcadas como leídas
+      stopNotificationSound();
+
+      // Opcional: Actualizar el contador de notificaciones a 0
+      document.getElementById('notificationCount').innerText = '0';
+      document.getElementById('notificationCount').classList.add('hidden');
+    } else {
+      console.error('Error al marcar las notificaciones como leídas.');
+    }
+  } catch (error) {
+    console.error('Error al hacer la solicitud:', error);
+  }
 }
 
 // Llamar a la función al cargar la página o cuando sea necesario
-getNotifications();
+window.addEventListener('load', () => {
+  // Asegúrate de que el sonido solo suene si hay notificaciones no leídas
+  getNotifications();
+});
+
+// Detectar la primera interacción del usuario en la página para permitir el sonido
+document.addEventListener('click', function() {
+  // Asegurarse de que el sonido solo suene si hay notificaciones pendientes
+  getNotifications();
+}, { once: true });  // Asegura que el evento se dispare solo una vez
+
+
+
+
+
 
 
 // Función para marcar todas las notificaciones como leídas
@@ -512,7 +571,9 @@ async function markNotificationsAsRead(usuarioId) {
     
     if (response.ok) {
       console.log(data.message);  // Mensaje de éxito
-      getNotifications();  // Actualizar las notificaciones en el frontend después de marcarlas como leídas
+
+      // Recargar la página después de marcar las notificaciones como leídas
+      location.reload();  // Recarga la página para actualizar el estado de las notificaciones
     } else {
       console.error('Error al marcar las notificaciones como leídas:', data.error);
     }
@@ -520,6 +581,10 @@ async function markNotificationsAsRead(usuarioId) {
     console.error('Error al realizar la solicitud:', error);
   }
 }
+
+
+
+
 
 
 </script>
