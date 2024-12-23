@@ -1,0 +1,200 @@
+<head>
+    <style>
+        /* Estilo general para la página */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+        }
+
+        /* Estilo para el encabezado */
+        h1 {
+            text-align: center;
+            margin: 20px 0;
+            color: #333;
+        }
+
+        /* Estilo para los botones de filtro */
+        div a {
+            margin: 10px;
+            text-decoration: none;
+        }
+
+        div button {
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+        }
+
+        div button:hover {
+            background-color: #45a049;
+        }
+
+        /* Estilo para la tabla */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        table, th, td {
+            border: 1px solid #ddd;
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+
+        td {
+            background-color: #fff;
+        }
+
+        /* Estilo para las celdas del técnico */
+        td select {
+            padding: 8px;
+            width: 200px;
+            border-radius: 4px;
+            border: 1px solid #ddd;
+            font-size: 14px;
+        }
+
+        td p {
+            margin: 0;
+        }
+
+        /* Estilo para los formularios */
+        form {
+            display: inline;
+        }
+
+        /* Estilo para el botón "Completada" */
+        button[type="submit"] {
+            background-color: #008CBA;
+            padding: 10px 20px;
+            border: none;
+            color: white;
+            cursor: pointer;
+            font-size: 16px;
+            border-radius: 5px;
+        }
+
+        button[type="submit"]:hover {
+            background-color: #007bb5;
+        }
+    </style>
+</head>
+
+
+
+
+
+<h1>Consultar Alertas</h1>
+
+<!-- Botones para filtrar las alertas -->
+<div>
+    <a href="/consultar_alertas?estado=pendiente">
+        <button>Pendientes</button>
+    </a>
+    <a href="/consultar_alertas?estado=completada">
+        <button>Completadas</button>
+    </a>
+    <a href="/consultar_alertas?estado=todas">
+        <button>Todas</button>
+    </a>
+</div>
+
+<!-- Tabla de alertas -->
+<table>
+    <thead>
+        <tr>
+            <th style="display: none;">ID</th>
+            <th>Mes</th>
+            <th>Cliente</th>
+            <th>Tipo de Mantenimiento</th>
+            <th>Estado</th>
+            <th>Técnico</th> <!-- Columna para seleccionar técnico -->
+            <th>Acción</th>
+        </tr>
+    </thead>
+    <tbody>
+        {{#each alertas}}
+        <tr>
+            <td style="display: none;">{{this.id}}</td>
+            <td>{{this.mes}}</td>
+            <td>{{this.cliente_id}}</td>
+            <td>{{this.tipo_mantenimiento}}</td>
+            <td>{{this.estado}}</td>
+            <td>
+                {{#ifCond this.estado '==' 'Completada'}}
+                    <!-- Mostrar el técnico asignado si existe el tecnico_id -->
+                    {{#if this.tecnico_id}} 
+                        {{#each ../tecnicos}}
+                            {{#ifCond ../this.tecnico_id '==' this.id}} 
+                                <p>{{this.nombre}}</p>
+                            {{/ifCond}}
+                        {{/each}}
+                    {{else}}
+                        <p>No asignado</p>
+                    {{/if}}
+                {{else}}
+                    <!-- Mostrar el select de técnicos cuando la alerta está pendiente -->
+                    {{#if this.tecnico_id}}
+                        <p>
+                            {{#each ../tecnicos}}
+                                {{#ifCond ../this.tecnico_id '==' this.id}} 
+                                    {{this.nombre}}
+                                {{/ifCond}}
+                            {{/each}}
+                        </p>
+                    {{else}}
+                        <select name="tecnico_id_{{this.id}}" required>
+                            <option value="">Seleccionar Técnico</option>
+                            {{#each ../tecnicos}}
+                                <option value="{{this.id}}" {{#ifCond this.id ../tecnicoSeleccionado '=='}}selected{{/ifCond}}>{{this.nombre}}</option>
+                            {{/each}}
+                        </select>
+                    {{/if}}
+                {{/ifCond}}
+            </td>
+            <td>
+                <!-- Formulario para actualizar el estado de la alerta solo si el estado es Pendiente -->
+                {{#ifCond this.estado '==' 'Pendiente'}}
+                    <form action="/actualizar_alerta" method="POST">
+                        <input type="hidden" name="alerta_id" value="{{this.id}}">
+                        <input type="hidden" name="estado" value="2"> <!-- Estado 2 = Completada -->
+                        <!-- Se pasa el técnico seleccionado en el select -->
+                        <input type="hidden" name="tecnico_id" id="tecnico_id_hidden_{{this.id}}">
+                        <button type="submit">Completada</button>
+                    </form>
+                {{else}}
+                    <!-- Si el estado es Completada, no se muestra el botón -->
+                    <p>Estado Completada</p>
+                {{/ifCond}}
+            </td>
+        </tr>
+        {{/each}}
+    </tbody>
+</table>
+
+<!-- Script para asignar el técnico seleccionado a cada alerta -->
+<script>
+    // Función para actualizar el valor oculto de técnico al cambiar el select
+    document.querySelectorAll('select[name^="tecnico_id_"]').forEach(function(selectElement) {
+        selectElement.addEventListener('change', function() {
+            const alertaId = selectElement.name.split('_')[2];
+            const tecnicoId = selectElement.value;
+            document.getElementById(`tecnico_id_hidden_${alertaId}`).value = tecnicoId;
+        });
+    });
+</script>

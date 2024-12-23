@@ -1837,6 +1837,113 @@ app.post('/guardar_alerta', async (req, res) => {
 });
 
 
+hbs.registerHelper('ifCond', function (v1, operator, v2, options) {
+    switch (operator) {
+        case '==':
+            return (v1 == v2) ? options.fn(this) : options.inverse(this);
+        case '===':
+            return (v1 === v2) ? options.fn(this) : options.inverse(this);
+        case '!=':
+            return (v1 != v2) ? options.fn(this) : options.inverse(this);
+        case '!==':
+            return (v1 !== v2) ? options.fn(this) : options.inverse(this);
+        case '<':
+            return (v1 < v2) ? options.fn(this) : options.inverse(this);
+        case '<=':
+            return (v1 <= v2) ? options.fn(this) : options.inverse(this);
+        case '>':
+            return (v1 > v2) ? options.fn(this) : options.inverse(this);
+        case '>=':
+            return (v1 >= v2) ? options.fn(this) : options.inverse(this);
+        case '&&':
+            return (v1 && v2) ? options.fn(this) : options.inverse(this);
+        case '||':
+            return (v1 || v2) ? options.fn(this) : options.inverse(this);
+        default:
+            return options.inverse(this);
+    }
+});
+
+app.get('/consultar_alertas', async (req, res) => {
+    if (req.session.loggedin === true) {
+        const nombreUsuario = req.session.user.name; // Usa los datos de la sesión del usuario
+        const estado = req.query.estado || 'todas'; // Tomamos el parámetro de estado, por defecto es 'todas'
+
+        try {
+            let query = "SELECT a.*, u.nombre AS tecnico_nombre, u.id AS tecnico_id FROM alertas_hidraulibombas a LEFT JOIN usuarios_hidro u ON a.tecnico_id = u.id";
+            let queryParams = [];
+
+            // Filtrar según el estado (1 = Pendiente, 2 = Completada)
+            if (estado !== 'todas') {
+                if (estado === 'pendiente') {
+                    query += " WHERE a.estado = 1"; // Estado 1 = Pendiente
+                } else if (estado === 'completada') {
+                    query += " WHERE a.estado = 2"; // Estado 2 = Completada
+                }
+            }
+
+            // Hacemos la consulta a la base de datos para obtener las alertas
+            const [alertas] = await pool.query(query, queryParams);
+            
+            // Hacemos la consulta a la base de datos para obtener la lista de técnicos
+            const [tecnicos] = await pool.query("SELECT id, nombre FROM usuarios_hidro");
+
+            // Depuración para ver los datos que se están enviando
+            console.log('Alertas:', alertas);
+            console.log('Técnicos:', tecnicos);
+
+            // Procesamos las alertas para marcar el estado
+            const alertasProcesadas = alertas.map(alerta => {
+                if (alerta.estado === 1) {
+                    alerta.estado = 'Pendiente'; // Estado 1 = Pendiente
+                } else if (alerta.estado === 2) {
+                    alerta.estado = 'Completada'; // Estado 2 = Completada
+                }
+                return alerta;
+            });
+
+            // Pasamos las alertas y técnicos al template
+            res.render('administrativo/alertas/consultar.hbs', { 
+                nombreUsuario,
+                alertas: alertasProcesadas,
+                tecnicos,
+                layout: 'layouts/nav_admin.hbs' 
+            });
+        } catch (err) {
+            console.error(err);
+            res.status(500).send('Error en la consulta de alertas');
+        }
+        
+    } else {
+        res.redirect('/login');
+    }
+});
+
+
+
+// Ruta para actualizar el técnico y el estado de la alerta
+app.post('/actualizar_alerta', async (req, res) => {
+    if (req.session.loggedin === true) {
+        const { alerta_id, tecnico_id, estado } = req.body;
+        
+        try {
+            // Actualizamos el técnico de la alerta
+            await pool.query(
+                "UPDATE alertas_hidraulibombas SET tecnico_id = ?, estado = ? WHERE id = ?",
+                [tecnico_id, estado, alerta_id]
+            );
+            
+            // Redirigimos a la página de consultar alertas
+            res.redirect('/consultar_alertas');
+        } catch (err) {
+            console.error(err);
+            res.status(500).send('Error al actualizar la alerta');
+        }
+    } else {
+        res.redirect('/login');
+    }
+});
+
 
 // Iniciar el servidor
 app.listen(3000, () => {
