@@ -22,10 +22,11 @@ const app = express();
 const httpServer = http.createServer(app);
 const io = require('socket.io')(httpServer, {
     cors: {
-      origin: "http://localhost:3000",  // Cambia esto por la URL de tu cliente
-      methods: ["GET", "POST"]
+        origin: ["http://localhost:3000", "https://hidrolubombas-r20i.onrender.com"],
+        methods: ["GET", "POST"]
     }
-  });
+});
+
   
 
 // Middleware para analizar el cuerpo de las 
@@ -2036,7 +2037,7 @@ io.on('connection', (socket) => {
 
 
 
-  cron.schedule('0 7 */2 * *', async () => {
+  cron.schedule('46 14 * * *', async () => {
     try {
       // Obtener todas las alertas pendientes (estado = 1)
       const [alertas] = await pool.query('SELECT * FROM alertas_hidraulibombas WHERE estado = 1');

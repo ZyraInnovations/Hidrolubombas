@@ -450,18 +450,9 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.6.1/socket.io.min.js"></script>
 <script>
   // Conexión al servidor de Socket.IO
-const socket = io('https://hidrolubombas-r20i.onrender.com');
 
-  // Verifica si la conexión es exitosa
-  socket.on('connect', () => {
-    console.log('Conectado al servidor de Socket.IO');
-  });
 
-  // Manejo de errores de conexión
-  socket.on('connect_error', (error) => {
-    console.error('Error de conexión a Socket.IO:', error);
-    alert('No se pudo conectar al servidor de notificaciones.');
-  });
+
 
 // Variable para almacenar el intervalo
 let notificationInterval;
