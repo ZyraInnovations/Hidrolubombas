@@ -359,116 +359,6 @@ function closePopupOnClickOutside(event) {
 }
 
 
-// Variable to control notification sound interval
-let notificationSoundInterval;
-let isUserInteracted = false;
-
-// Detect user interaction to allow sound playback
-window.addEventListener('click', () => {
-    isUserInteracted = true;
-});
-
-// Function to play the notification sound
-function playNotificationSound() {
-    const audio = new Audio('sonidos/level-up-2-199574.mp3');
-    audio.play().catch(error => console.error("Error al reproducir sonido:", error));
-}
-
-// Function to start sound at 5-second intervals
-function startNotificationSound() {
-    if (isUserInteracted) {
-        playNotificationSound();
-        notificationSoundInterval = setInterval(playNotificationSound, 5000);
-    }
-}
-
-// Function to stop sound when notifications are marked as read
-// Function to stop sound when notifications are marked as read
-function stopNotificationSound() {
-    if (notificationSoundInterval) {
-        clearInterval(notificationSoundInterval);
-        notificationSoundInterval = null; // Reiniciar el intervalo
-    }
-}
-
-async function loadNotifications() {
-    try {
-        const response = await fetch('/notificaciones');
-        const data = await response.json();
-        
-        const notificationCount = data.notificaciones.length;
-        const notificationBadge = document.getElementById('notificationCount');
-        const notificationList = document.getElementById('notificationList');
-
-        // Actualiza el conteo de notificaciones
-        if (notificationCount > 0) {
-            notificationBadge.classList.remove('hidden');
-            notificationBadge.textContent = notificationCount;
-            notificationList.innerHTML = '';
-
-            // Llena la lista de notificaciones
-            data.notificaciones.forEach(notificacion => {
-                const listItem = document.createElement('li');
-                listItem.className = notificacion.leido ? 'bg-gray-200 p-2 rounded-lg' : 'bg-blue-100 p-2 rounded-lg font-bold';
-                
-                listItem.innerHTML = `
-                    <div class="flex justify-between items-center">
-                        <span>${notificacion.actividad}</span>
-                        <span class="text-xs text-gray-500">${new Date(notificacion.fecha).toLocaleString()}</span>
-                    </div>
-                `;
-                notificationList.appendChild(listItem);
-            });
-
-        } else {
-            notificationBadge.classList.add('hidden');
-            notificationList.innerHTML = '<li class="text-center text-gray-500">No hay notificaciones nuevas</li>';
-        }
-    } catch (error) {
-        console.error("Error al cargar notificaciones:", error);
-    }
-}
-
-
-function markNotificationsAsRead(userId) {
-    const notificationBadge = document.getElementById('notificationCount');
-    const notificationList = document.getElementById('notificationList');
-    const popup = document.getElementById('notificationPopup');
-
-    // Ocultar la notificación visualmente
-    notificationBadge.classList.add('hidden');
-    notificationBadge.textContent = '0';
-    notificationList.innerHTML = '<li>No hay notificaciones nuevas</li>';
-    popup.classList.add('hidden'); // Ocultar el popup después de marcar como leídas
-
-    // Verificar si el userId está definidotoggleNotificationPopup
-    if (!userId) {
-        console.error('El user_id no está definido.');
-        return;
-    }
-
-    // Llamar a la API para marcar como leídas
-    fetch(`/marcarNotificacionesComoLeidas/${userId}`, { method: 'POST' })
-        .then(response => response.json())
-        .then(data => {
-            if (data.success) {
-                console.log("Notificaciones marcadas como leídas:", data);
-            } else {
-                console.error("No se pudo marcar como leído:", data.message);
-            }
-        })
-        .catch(error => {
-            console.error("Error al marcar notificaciones como leídas:", error);
-        });
-}
-
-
-
-// Cargar las notificaciones automáticamente al cargar la página y cada 30 segundos
-window.onload = function() {
-    loadNotifications(); // Cargar notificaciones automáticamente al cargar la página
-    setInterval(loadNotifications, 30000); // Cargar notificaciones cada 30 segundos
-};
 
 // Hamburger menu toggle
 const hamburger = document.getElementById('hamburger-menu');
@@ -572,6 +462,19 @@ window.onload = function () {
     saveLocation(); // Guarda la ubicación inmediatamente al cargar
     saveLocationInterval = setInterval(saveLocation, 30000); // Cada 30 segundos
 };
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 </script>

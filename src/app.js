@@ -6,8 +6,28 @@ const bodyParser = require('body-parser');
 const moment = require('moment-timezone');
 const exphbs = require('express-handlebars');
 const hbs = require('hbs');
+const cron = require('node-cron');
+const socketIo = require('socket.io');
+
+
+
+
+const http = require('http');
+
+
+
 
 const app = express();
+
+const httpServer = http.createServer(app);
+const io = require('socket.io')(httpServer, {
+    cors: {
+      origin: "http://localhost:3000",  // Cambia esto por la URL de tu cliente
+      methods: ["GET", "POST"]
+    }
+  });
+  
+
 // Middleware para analizar el cuerpo de las 
 
 // Configura los límites de tamaño de carga para JSON y URL-encoded
@@ -74,7 +94,6 @@ app.use('/manifest.json', (req, res) => {
 
 
 
-
 // Ruta para manejar el login
 app.post('/login', async (req, res) => {
     const { email, password } = req.body;
@@ -89,6 +108,7 @@ app.post('/login', async (req, res) => {
             req.session.name = results[0].nombre;  // Save the user name to session
             req.session.loggedin = true;  // Set logged-in status
             req.session.roles = results[0].role;  // Save roles in session
+            req.session.usuario_id = results[0].id;  // Guardar el ID del usuario en la sesión
 
             const role = results[0].role;  // Fetch user role
 
@@ -109,6 +129,7 @@ app.post('/login', async (req, res) => {
         res.status(500).json({ error: err.message });
     }
 });
+
 
 
 
@@ -176,7 +197,11 @@ const crypto = require('crypto'); // Importa el módulo crypto
 
 app.get("/menuAdministrativo", (req, res) => {
     if (req.session.loggedin === true) {
-        const nombreUsuario = req.session.name || req.session.user.name;  // Use the session name or fallback
+        const nombreUsuario = req.session.name || req.session.user.name; 
+        
+          // Asegúrate de que el ID del usuario esté guardado en la sesión
+          const usuarioId = req.session.usuario_id;
+        // Use the session name or fallback
         console.log(`El usuario ${nombreUsuario} está autenticado.`);
         req.session.nombreGuardado = nombreUsuario; // Guarda el nombre en la sesión
 
@@ -189,6 +214,8 @@ app.get("/menuAdministrativo", (req, res) => {
         res.render("administrativo/menuadministrativo.hbs", {
             name: nombreUsuario, // Pass the name to the template
             jefe,
+            usuario_id: usuarioId,  // Pasa el ID del usuario
+
             layout: 'layouts/nav_admin.hbs',
             empleado
         });
@@ -1943,6 +1970,122 @@ app.post('/actualizar_alerta', async (req, res) => {
         res.redirect('/login');
     }
 });
+
+
+io.on('connection', (socket) => {
+    console.log('Usuario conectado: ' + socket.id);
+    socket.on('disconnect', () => {
+      console.log('Usuario desconectado: ' + socket.id);
+    });
+  });
+
+
+
+
+
+
+
+  cron.schedule('18 11 * * *', async () => {
+    try {
+      // Obtener todas las alertas pendientes (estado = 1)
+      const [alertas] = await pool.query('SELECT * FROM alertas_hidraulibombas WHERE estado = 1');
+      
+      if (alertas.length === 0) {
+        console.log('No hay alertas pendientes');
+        return;
+      }
+  
+      // Obtener todos los usuarios (suponiendo que tienes una tabla usuarios)
+      const [usuarios] = await pool.query('SELECT * FROM usuarios_hidro');
+  
+      if (usuarios.length === 0) {
+        console.log('No hay usuarios registrados');
+        return;
+      }
+  
+      // Enviar notificación a todos los usuarios conectados y registrar en la tabla notificaciones_hidro
+      for (const alerta of alertas) {
+        for (const usuario of usuarios) {
+          try {
+            // Emitir alerta a cada usuario conectado
+            if (usuario.socketId) {
+              io.to(usuario.socketId).emit('new-alert', {
+                tipo_mantenimiento: 'Mantenimiento pendiente',
+                mensaje: 'Tienes un mantenimiento pendiente, por favor revisa.',
+              });
+              console.log(`Notificación enviada a ${usuario.socketId}`);
+            }
+  
+            // Guardar la notificación en la tabla notificaciones_hidro
+            await pool.query(
+              'INSERT INTO notificaciones_hidro (usuario_id, alerta_id, estado) VALUES (?, ?, ?)',
+              [usuario.id, alerta.id, 'no leído']
+            );
+            console.log(`Notificación guardada para el usuario ${usuario.id} y alerta ${alerta.id}`);
+            
+          } catch (error) {
+            console.error(`Error al enviar notificación a ${usuario.socketId} o al guardar en la base de datos:`, error);
+          }
+        }
+      }
+  
+      // Ya no estamos actualizando el estado de las alertas aquí
+  
+    } catch (err) {
+      console.error('Error al obtener las alertas:', err);
+    }
+  });
+
+
+
+
+
+
+
+// Ruta para obtener las notificaciones del usuario
+app.get('/notifications', async (req, res) => {
+    const usuario_id = req.session.usuario_id;  // Obtener el id del usuario de la sesión
+  
+    try {
+      // Obtener las notificaciones del usuario
+      const [notificaciones] = await pool.query(
+        'SELECT * FROM notificaciones_hidro WHERE usuario_id = ? AND estado = "no leído"',
+        [usuario_id]
+      );
+  
+      // Enviar las notificaciones al frontend
+      res.json({ notificaciones });
+    } catch (err) {
+      res.status(500).json({ error: err.message });
+    }
+  });
+  
+
+// Ruta para marcar todas las notificaciones como leídas
+app.post('/mark-notifications-read', async (req, res) => {
+    const usuario_id = req.session.usuario_id;  // Obtener el id del usuario de la sesión
+  
+    try {
+      // Actualizar el estado de las notificaciones a "leído"
+      await pool.query(
+        'UPDATE notificaciones_hidro SET estado = "leído" WHERE usuario_id = ? AND estado = "no leído"',
+        [usuario_id]
+      );
+  
+      res.status(200).json({ message: 'Notificaciones marcadas como leídas' });
+    } catch (err) {
+      res.status(500).json({ error: err.message });
+    }
+  });
+
+
+
+
+  
+  // Inicia el servidor en un puerto específico
+  httpServer.listen(4000, () => {
+    console.log('Servidor corriendo en http://localhost:4000');
+  });
 
 
 // Iniciar el servidor
