@@ -116,7 +116,7 @@ app.post('/login', async (req, res) => {
             if (role === 'admin') {
                 return res.redirect('/menuAdministrativo');
             } else if (role === 'tecnico') {
-                return res.redirect('/menutecnicos');
+                return res.redirect('/menuAdministrativo');
             } else if (role === 'cliente') {
                 return res.redirect('/cliente');
             }
@@ -250,12 +250,9 @@ app.get("/menuAdministrativo", (req, res) => {
 
 
 
-
-
-
 app.get("/menutecnicos", (req, res) => {
     if (req.session.loggedin === true) {
-        const nombreUsuario = req.session.name || req.session.user.name;  // Use the session name or fallback
+        const nombreUsuario = req.session.name || req.session.user.name;  // Usa el nombre de la sesión o un fallback
         console.log(`El usuario ${nombreUsuario} está autenticado.`);
         req.session.nombreGuardado = nombreUsuario; // Guarda el nombre en la sesión
 
@@ -265,10 +262,32 @@ app.get("/menutecnicos", (req, res) => {
         const jefe = roles.includes('jefe');
         const empleado = roles.includes('empleado');
 
-        res.render("tecnicos/menu_tecnicos.hbs", {
-            name: nombreUsuario, // Pass the name to the template
-            jefe,
-            layout: 'layouts/nav_tecnico.hbs'
+        // Aquí es necesario definir el mes antes de usarlo
+        const months = [
+            "Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", 
+            "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"
+        ];
+        const mes = months[new Date().getMonth()]; // Obtiene el nombre del mes actual
+        console.log('Mes que se envía a la consulta:', mes);  // Verifica el valor de `mes`
+
+        const query = 'SELECT tipo_mantenimiento, observaciones FROM alertas_hidraulibombas WHERE mes = ? AND estado = 1';
+
+        // Ejecutar la consulta a la base de datos
+        db.query(query, [mes], (err, results) => {
+            if (err) {
+                console.error('Error al obtener los datos:', err);
+                return res.status(500).send('Error al obtener los datos');
+            }
+
+            console.log('Resultados de la consulta:', results); // Ver los resultados en la consola
+
+            // Pasa los resultados a la vista
+            res.render("tecnicos/menu_tecnicos.hbs", {
+                name: nombreUsuario, // Pasa el nombre a la plantilla
+                jefe,
+                layout: 'layouts/nav_tecnico.hbs',
+                mantenimientos: results // Aquí se pasan los datos de la consulta
+            });
         });
     } else {
         res.redirect("/login");
