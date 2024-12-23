@@ -1927,13 +1927,29 @@ hbs.registerHelper('ifCond', function (v1, operator, v2, options) {
     }
 });
 
+
+
+
+
+
+
+
 app.get('/consultar_alertas', async (req, res) => {
     if (req.session.loggedin === true) {
         const nombreUsuario = req.session.user.name; // Usa los datos de la sesión del usuario
         const estado = req.query.estado || 'todas'; // Tomamos el parámetro de estado, por defecto es 'todas'
 
         try {
-            let query = "SELECT a.*, u.nombre AS tecnico_nombre, u.id AS tecnico_id FROM alertas_hidraulibombas a LEFT JOIN usuarios_hidro u ON a.tecnico_id = u.id";
+            let query = `
+                SELECT 
+                    a.*, 
+                    u.nombre AS tecnico_nombre, 
+                    u.id AS tecnico_id, 
+                    c.nombre AS cliente_nombre
+                FROM alertas_hidraulibombas a
+                LEFT JOIN usuarios_hidro u ON a.tecnico_id = u.id
+                LEFT JOIN clientes_hidrolubombas c ON a.cliente_id = c.id
+            `;
             let queryParams = [];
 
             // Filtrar según el estado (1 = Pendiente, 2 = Completada)
@@ -1981,7 +1997,6 @@ app.get('/consultar_alertas', async (req, res) => {
         res.redirect('/login');
     }
 });
-
 
 
 // Ruta para actualizar el técnico y el estado de la alerta
