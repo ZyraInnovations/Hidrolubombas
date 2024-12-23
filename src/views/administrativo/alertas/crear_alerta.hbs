@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Crear Alerta</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f7fc;
+            margin: 0;
+            padding: 0;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        #formAlertas {
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 500px;
+            box-sizing: border-box;
+        }
+        h3 {
+            color: #333;
+            text-align: center;
+            font-size: 24px;
+        }
+        label {
+            font-size: 14px;
+            color: #555;
+            margin-bottom: 8px;
+            display: block;
+        }
+        select, textarea, button {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border-radius: 5px;
+            border: 1px solid #ddd;
+            font-size: 16px;
+        }
+        select:focus, textarea:focus, button:focus {
+            outline: none;
+            border-color: #66afe9;
+            box-shadow: 0 0 8px rgba(102, 175, 233, 0.6);
+        }
+        button {
+            background-color: #28a745;
+            color: white;
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        button:hover {
+            background-color: #218838;
+        }
+        #mensajeExito {
+            background-color: #d4edda;
+            color: #155724;
+            padding: 10px;
+            border-radius: 5px;
+            margin-bottom: 15px;
+            display: none;
+            font-size: 16px;
+        }
+        textarea {
+            resize: vertical;
+        }
+    </style>
+</head>
+<body>
+    <form id="formAlertas">
+        <h3>Crear Alerta</h3>
+        <div id="mensajeExito"></div>
+
+        <label for="mes">Seleccionar Mes:</label>
+        <select name="mes" id="mes" required>
+            <option value="">-- Seleccionar Mes --</option>
+            <option value="Enero">Enero</option>
+            <option value="Febrero">Febrero</option>
+            <option value="Marzo">Marzo</option>
+            <option value="Abril">Abril</option>
+            <option value="Mayo">Mayo</option>
+            <option value="Junio">Junio</option>
+            <option value="Julio">Julio</option>
+            <option value="Agosto">Agosto</option>
+            <option value="Septiembre">Septiembre</option>
+            <option value="Octubre">Octubre</option>
+            <option value="Noviembre">Noviembre</option>
+            <option value="Diciembre">Diciembre</option>
+        </select>
+
+        <label for="cliente">Seleccionar Cliente:</label>
+        <select name="cliente" id="cliente" required>
+            <option value="">-- Seleccionar Cliente --</option>
+            {{#each clientes}}
+                <option value="{{this.id}}">{{this.nombre}}</option>
+            {{/each}}
+        </select>
+
+        <label for="tipo_mantenimiento">Seleccionar Tipo de Mantenimiento:</label>
+        <select name="tipo_de_mantenimiento" required>
+            <option value="">Seleccione un tipo</option>
+            <option value="Preventivo">Preventivo</option>
+            <option value="Correctivo">Correctivo</option>
+            <option value="Emergencia">Emergencia</option>
+        </select>
+
+        <label for="observaciones">Observaciones:</label>
+        <textarea name="observaciones" id="observaciones" rows="4" placeholder="Agrega detalles adicionales..."></textarea>
+
+        <button type="submit">Guardar Alerta</button>
+    </form>
+
+    <script>
+        document.getElementById('formAlertas').addEventListener('submit', function(event) {
+            event.preventDefault(); // Evita el envío tradicional del formulario
+
+            const formData = new FormData(this);
+            const data = {}; // Objeto para almacenar los datos del formulario
+            formData.forEach((value, key) => {
+                data[key] = value;
+            });
+            console.log('Datos del formulario:', data);  // Verificar que los datos están correctos
+
+            fetch('/guardar_alerta', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'  // Indicar que el cuerpo es JSON
+                },
+                body: JSON.stringify(data)  // Enviar los datos como JSON
+            })
+            .then(response => {
+                if (!response.ok) {
+                    return response.text().then(text => { throw new Error(text); });
+                }
+                return response.json();
+            })
+            .then(data => {
+                if (data.success) {
+                    const mensajeExitoDiv = document.getElementById('mensajeExito');
+                    mensajeExitoDiv.textContent = data.message;
+                    mensajeExitoDiv.style.display = 'block';
+                    alert(data.message);
+                    
+                    // Limpiar el formulario
+                    document.getElementById('formAlertas').reset();
+                } else {
+                    alert('Hubo un error al guardar la alerta.');
+                }
+            })
+            .catch(error => {
+                console.error('Error al guardar la alerta:', error);
+                alert('Error al enviar la solicitud.');
+            });
+        });
+
+
+    </script>
+</body>
+</html>

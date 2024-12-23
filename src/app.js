@@ -1789,6 +1789,55 @@ app.post('/enviar-correoo', (req, res) => {
 
 
 
+// Ruta para el menú administrativo - Mostrar formulario para nuevo usuario
+app.get('/agregar_alertas', async (req, res) => {
+    if (req.session.loggedin === true) {
+        try {
+            const nombreUsuario = req.session.user.name;
+
+            // Obtener todos los clientes de la tabla
+            const [clientes] = await pool.query('SELECT id, nombre FROM clientes_hidrolubombas');
+
+            // Renderizar la vista y pasar los datos de clientes
+            res.render('administrativo/alertas/crear_alerta.hbs', {
+                nombreUsuario,
+                clientes, // Pasamos los clientes al frontend
+                layout: 'layouts/nav_admin.hbs'
+            });
+        } catch (err) {
+            console.error('Error al obtener clientes:', err);
+            res.status(500).send('Error en el servidor al obtener los clientes.');
+        }
+    } else {
+        res.redirect('/login');
+    }
+});
+
+
+
+
+
+app.post('/guardar_alerta', async (req, res) => {
+    try {
+        const { mes, cliente, tipo_de_mantenimiento, observaciones } = req.body;
+
+        // Verificar que los campos no estén vacíos
+        if (!mes || !cliente || !tipo_de_mantenimiento) {
+            return res.status(400).json({ success: false, message: 'Todos los campos son obligatorios.' });
+        }
+
+        // Insertar la alerta en la base de datos
+        await pool.query('INSERT INTO alertas_hidraulibombas (mes, cliente_id, tipo_mantenimiento, observaciones) VALUES (?, ?, ?, ?)', [mes, cliente, tipo_de_mantenimiento, observaciones]);
+
+        res.json({ success: true, message: 'Alerta guardada exitosamente' });
+    } catch (err) {
+        console.error('Error al guardar la alerta:', err);
+        res.status(500).json({ success: false, message: 'Hubo un error al guardar la alerta' });
+    }
+});
+
+
+
 // Iniciar el servidor
 app.listen(3000, () => {
     console.log('Servidor corriendo en el puerto 3000');
