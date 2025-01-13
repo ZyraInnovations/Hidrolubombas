@@ -1,8 +1,11 @@
 const mysql = require('mysql2');
+
+
+
 // Configuración del pool de conexiones
 const pool = mysql.createPool({
-    host: '34.56.87.125',
-    user: 'Julian',
+    host: '35.238.176.167',
+    user: 'julian',
     password: '1034277764C',
     database: 'cerceta',
     port: 3306,
@@ -11,6 +14,8 @@ const pool = mysql.createPool({
     queueLimit: 0,  // Sin límite en la cola de conexiones
     connectTimeout: 5000  // Reducido a 5 segundos para intentar conexiones más rápidas
 }).promise();  // Esto convierte el pool en una versión que utiliza promesas
+
+
 
 
 
