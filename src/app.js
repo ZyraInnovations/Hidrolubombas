@@ -1623,7 +1623,7 @@ app.get('/editarMantenimiento/:id', async (req, res) => {
         const tecnicoId = rows[0].tecnico; // ID del técnico
 
         // Obtener lista de técnicos
-        const tecnicosQuery = `SELECT id, nombre FROM usuarios_hidro WHERE role = "tecnico"`;
+        const tecnicosQuery = `SELECT id, nombre FROM usuarios_hidro WHERE role = "admin"`;
         const [tecnicos] = await pool.query(tecnicosQuery);
 
         // Encontrar el técnico correcto en la lista de técnicos
