@@ -742,7 +742,7 @@ app.get('/realizar_informe', async (req, res) => {
 
                 // Consulta para obtener la lista de técnicos
                 const tecnicosQuery = `
-                SELECT id, nombre FROM usuarios_hidro WHERE role = "admin"
+                SELECT id, nombre FROM usuarios_hidro WHERE role = "tecnico"
                 UNION
                 SELECT id, nombre FROM usuarios_hidro WHERE id = 6
             `;
@@ -1623,7 +1623,7 @@ app.get('/editarMantenimiento/:id', async (req, res) => {
         const tecnicoId = rows[0].tecnico; // ID del técnico
 
         // Obtener lista de técnicos
-        const tecnicosQuery = `SELECT id, nombre FROM usuarios_hidro WHERE role = "admin"`;
+        const tecnicosQuery = `SELECT id, nombre FROM usuarios_hidro WHERE role = "tecnico"`;
         const [tecnicos] = await pool.query(tecnicosQuery);
 
         // Encontrar el técnico correcto en la lista de técnicos

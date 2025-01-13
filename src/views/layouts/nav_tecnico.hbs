@@ -5,10 +5,10 @@
   <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
   <title>HIDRAULIBOMBAS</title>
   <script src="https://cdn.tailwindcss.com"></script>
-  <link rel="manifest" href="/manifest.json">
-
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet"/>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet"/>
+  <link rel="manifest" href="/manifest.json">
+
   <link rel="icon" href="/imagenes/Recurso 1.png" type="image/x-icon"/>
 
 <style>
@@ -187,6 +187,7 @@
 .dark #user-name {
   color: #e2e8f0; /* Ajuste para modo oscuro */
 }
+
 </style>
 
 </head>
@@ -212,15 +213,16 @@
 
 
 
+
 <div class="flex items-center justify-end space-x-4 p-4">
   <div id="user-name" class="text-gray-700 dark:text-gray-300 font-semibold">
     {{name}}
   </div>
- 
+  <div class="relative">
+  <i class="fas fa-bell text-xl cursor-pointer" id="notificationBell" onclick="toggleNotificationPopup()"></i>
+    <span id="notificationCount" class="badge hidden">0</span>
+  </div>
 </div>
-
-
-
 
 
       <!-- Search Bar -->
@@ -231,14 +233,88 @@
 
       <!-- Navigation Links -->
       <nav>
+
+        
         <ul>
           <!-- General Section -->
           <div class="section-title">General</div>
           <li class="mb-2">
-  <a class="flex items-center" href="/menutecnicos" data-link="/menuAdministrativo" title="Vista General">
+  <a class="flex items-center" href="/menuAdministrativo" data-link="/menuAdministrativo" title="Vista General">
               <i class="fas fa-home mr-2"></i> Vista General
             </a>
           </li>
+
+
+
+  <!-- Property Management Section -->
+          <div class="section-title">--Usuarios--</div>
+       
+ <!-- edificios Section -->
+<!-- Usuarios Section -->
+<li class="mb-2">
+  <a class="flex items-center justify-between cursor-pointer"  data-links="/agregar_usuarios,/menuOperativo,/menuFinanciero"  href="#" onclick="toggleSubmenu('submenu-Usuarios')">
+    <i class="fas fa-user mr-2"></i> Usuarios
+    <i class="fas fa-chevron-down"></i>
+  </a>
+  <ul id="submenu-Usuarios" class="hidden ml-4">
+    <li class="mb-2">
+      <a class="flex items-center" href="/agregar_usuario" title="Usuarios">
+        <i class="fas fa-user-plus mr-2"></i> Agregar
+      </a>
+    </li>
+
+    <li class="mb-2">
+      <a class="flex items-center" href="/consultar_usuarios" title="Consultar Usuarios">
+        <i class="fas fa-user-check mr-2"></i> Consultar
+      </a>
+    </li>
+  </ul>
+</li>
+
+
+
+
+
+
+
+
+
+
+
+  <!-- Property Management Section -->
+          <div class="section-title">--Clientes--</div>
+       
+ <!-- edificios Section -->
+<!-- Usuarios Section -->
+<li class="mb-2">
+  <a class="flex items-center justify-between cursor-pointer"  data-links="/agregar_usuarios,/menuOperativo,/menuFinanciero"  href="#" onclick="toggleSubmenu('submenu-Clientes')">
+    <i class="fas fa-user mr-2"></i> Clientes
+    <i class="fas fa-chevron-down"></i>
+  </a>
+  <ul id="submenu-Clientes" class="hidden ml-4">
+    <li class="mb-2">
+      <a class="flex items-center" href="/agregar_clientes" title="Clientes">
+        <i class="fas fa-user-plus mr-2"></i> Agregar
+      </a>
+    </li>
+
+    <li class="mb-2">
+      <a class="flex items-center" href="/consultar_clientes" title="Consultar Clientes">
+        <i class="fas fa-user-check mr-2"></i> Consultar
+      </a>
+    </li>
+  </ul>
+</li>
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -258,12 +334,38 @@
   <ul id="submenu-Informe" class="hidden ml-4">
     <li class="mb-2">
       <a class="flex items-center" href="/realizar_informe" title="Usar Plantilla">
-        <i class="fas fa-file-alt mr-2"></i> Crear Informe supervisor
+        <i class="fas fa-file-alt mr-2"></i> Crear Informe
       </a>
     </li>
     <li class="mb-2">
       <a class="flex items-center" href="/Consulta_informes_realizados" title="Nueva Publicación">
-        <i class="fas fa-eye mr-2"></i> Consultar Informe  supervisor
+        <i class="fas fa-eye mr-2"></i> Consultar Informes 
+      </a>
+    </li>
+  </ul>
+</li>
+
+
+<!-- Property Management Section -->
+<div class="section-title">--Alertas--</div>
+
+
+
+<!-- Blog para Residentes Section -->
+<li class="mb-2">
+  <a class="flex items-center justify-between cursor-pointer" href="#" onclick="toggleSubmenu('submenu-ALERTA')">
+    <i class="fas fa-bell mr-2"></i>  Alertas
+    <i class="fas fa-chevron-down"></i>
+  </a>
+  <ul id="submenu-ALERTA" class="hidden ml-4">
+    <li class="mb-2">
+      <a class="flex items-center" href="/agregar_alertas" title="Usar Plantilla">
+        <i class="fas fa-file-alt mr-2"></i> Crear alertas
+      </a>
+    </li>
+    <li class="mb-2">
+      <a class="flex items-center" href="/consultar_alertas" title="Nueva Publicación">
+        <i class="fas fa-eye mr-2"></i> Consultar alertas
       </a>
     </li>
   </ul>
@@ -274,10 +376,23 @@
 
 
 
+<!-- apartamentos Section -->
+<li class="mb-2">
+  <a class="flex items-center justify-between cursor-pointer" href="#" onclick="toggleSubmenu('submenu-apartamentos')"  data-links="/agregar_apartamento,/Consulta_apartamentos">
+    <i class="fas fa-city mr-2"></i> Geolocalizaion
+    <i class="fas fa-chevron-down"></i>
+  </a>
+  <ul id="submenu-apartamentos" class="hidden ml-4">
+    <li class="mb-2">
+      <a class="flex items-center" href="/geolocalizacion" title="Inmuebles">
+        <i class="fas fa-folder-open mr-2"></i> consultar
+      </a>
+    </li>
+  
+  </ul>
+</li>
 
-       
-         
-    
+      
 <li class="mb-2">
   <a class="flex items-center" href="/logout" title="Cerrar sesión">
     <i class="fas fa-sign-out-alt mr-2"></i> Cerrar sesión 
@@ -310,255 +425,258 @@
 </button>
 
 
-
-    {{{body}}}
 </div>
-
-    </div>
-  </div>
 
 <audio id="notificationSound" src="alertas/level-up-2-199574.mp3" preload="auto"></audio>
 
 
 
+    {{{body}}}
+    
+</div>
+
+    </div>
+  </div>
+
+
+
+
+<script>
+  const usuario_id = {{usuario_id}};
+  console.log('ID del usuario:', usuario_id);
+
+  // Ahora puedes usar `usuario_id` para lo que necesites en el frontend.
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.6.1/socket.io.min.js"></script>
+<script>
+  // Conexión al servidor de Socket.IO
+
+
+
+
+// Variable para almacenar el intervalo
+let notificationInterval;
+
+// Función para reproducir el sonido
+function playNotificationSound() {
+  const notificationSound = document.getElementById('notificationSound');
+  notificationSound.play().catch(error => {
+    console.error("Error al intentar reproducir el sonido:", error);
+  });
+}
+
+// Función para iniciar la repetición del sonido cada 7 segundos
+function startNotificationSound() {
+  // Reproducir el sonido de inmediato y luego cada 7 segundos
+  playNotificationSound();
+  notificationInterval = setInterval(playNotificationSound, 7000);  // 7000 ms = 7 segundos
+}
+
+// Función para detener el sonido
+function stopNotificationSound() {
+  clearInterval(notificationInterval);  // Detener el intervalo
+}
+
+// Función para obtener las notificaciones del backend
+async function getNotifications() {
+  try {
+    const response = await fetch('/notifications');
+    const data = await response.json();
+
+    // Verificar si hay notificaciones no leídas
+    if (data.notificaciones.length > 0) {
+      // Mostrar el contador de notificaciones
+      document.getElementById('notificationCount').innerText = data.notificaciones.length;
+      document.getElementById('notificationCount').classList.remove('hidden');
+
+      // Mostrar las notificaciones en el popup
+      const notificationList = document.getElementById('notificationList');
+      notificationList.innerHTML = '';  // Limpiar lista de notificaciones
+      data.notificaciones.forEach(notification => {
+        const listItem = document.createElement('li');
+        listItem.innerText = `Alerta ID: ${notification.alerta_id} - Tienes un mantenimiento pendiente.`;
+        notificationList.appendChild(listItem);
+      });
+
+      // Iniciar el sonido solo si hay notificaciones pendientes
+      startNotificationSound();
+    } else {
+      // Detener el sonido si no hay notificaciones pendientes
+      stopNotificationSound();
+    }
+  } catch (error) {
+    console.error('Error al obtener las notificaciones:', error);
+  }
+}
+
+// Función para marcar las notificaciones como leídas
+async function markNotificationsAsRead(userId) {
+  try {
+    const response = await fetch(`/notifications/markAsRead/${userId}`, { method: 'POST' });
+
+    if (response.ok) {
+      // Detener el sonido cuando las notificaciones sean marcadas como leídas
+      stopNotificationSound();
+
+      // Opcional: Actualizar el contador de notificaciones a 0
+      document.getElementById('notificationCount').innerText = '0';
+      document.getElementById('notificationCount').classList.add('hidden');
+    } else {
+      console.error('Error al marcar las notificaciones como leídas.');
+    }
+  } catch (error) {
+    console.error('Error al hacer la solicitud:', error);
+  }
+}
+
+// Llamar a la función al cargar la página o cuando sea necesario
+window.addEventListener('load', () => {
+  // Asegúrate de que el sonido solo suene si hay notificaciones no leídas
+  getNotifications();
+});
+
+// Detectar la primera interacción del usuario en la página para permitir el sonido
+document.addEventListener('click', function() {
+  // Asegurarse de que el sonido solo suene si hay notificaciones pendientes
+  getNotifications();
+}, { once: true });  // Asegura que el evento se dispare solo una vez
+
+
+
+
+
+
+
+// Función para marcar todas las notificaciones como leídas
+async function markNotificationsAsRead(usuarioId) {
+  try {
+    const response = await fetch('/mark-notifications-read', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ usuario_id: usuarioId }),
+    });
+
+    const data = await response.json();
+    
+    if (response.ok) {
+      console.log(data.message);  // Mensaje de éxito
+
+      // Recargar la página después de marcar las notificaciones como leídas
+      location.reload();  // Recarga la página para actualizar el estado de las notificaciones
+    } else {
+      console.error('Error al marcar las notificaciones como leídas:', data.error);
+    }
+  } catch (error) {
+    console.error('Error al realizar la solicitud:', error);
+  }
+}
+
+
+
+
+
+
+</script>
+<script>
+
+// Function to toggle the notification popup
+function toggleNotificationPopup() {
+    const popup = document.getElementById('notificationPopup');
+    popup.classList.toggle('hidden'); // Solo mostrar o esconder el popup al hacer clic
+
+    // Si el popup está visible, agregamos un event listener para hacer clic fuera de él
+    if (!popup.classList.contains('hidden')) {
+        document.addEventListener('click', closePopupOnClickOutside);
+    } else {
+        document.removeEventListener('click', closePopupOnClickOutside);
+    }
+}
+
+// Function to close the popup when clicking outside
+function closePopupOnClickOutside(event) {
+    const popup = document.getElementById('notificationPopup');
+    const bell = document.getElementById('notificationBell');
+    
+    // Verificar si el clic ocurrió fuera del popup y de la campana de notificaciones
+    if (!popup.contains(event.target) && event.target !== bell) {
+        popup.classList.add('hidden'); // Ocultar el popup
+        document.removeEventListener('click', closePopupOnClickOutside); // Remover el listener
+    }
+}
+
+
+// Hamburger menu toggle
+const hamburger = document.getElementById('hamburger-menu');
+const sidebar = document.getElementById('sidebar');
+
+hamburger.addEventListener('click', () => {
+    sidebar.classList.toggle('open');
+});
+
+
+
+
+// Theme toggle logic
+const themeToggle = document.getElementById('theme-toggle');
+const htmlElement = document.documentElement;
+
+themeToggle.addEventListener('click', () => {
+    htmlElement.classList.toggle('dark');
+    if (htmlElement.classList.contains('dark')) {
+        localStorage.setItem('theme', 'dark');
+    } else {
+        localStorage.setItem('theme', 'light');
+    }
+});
+
+// Load theme from localStorage
+const storedTheme = localStorage.getItem('theme');
+if (storedTheme === 'dark') {
+    htmlElement.classList.add('dark');
+}
+
+// Mark the active link in the sidebar
+const currentPath = window.location.pathname;
+const menuLinks = document.querySelectorAll('.sidebar ul li a');
+
+menuLinks.forEach(link => {
+    if (link.dataset.link === currentPath) {
+        link.classList.add('active');
+    }
+});
+
+// Submenu toggle
+function toggleSubmenu(id) {
+    const submenu = document.getElementById(id);
+    submenu.classList.toggle('hidden');
+}
+
+
+</script>
+
+
+
+
+
+
+
+
+<script>
+
+
+
+
+
+
+
+
+
+
+
+</script>
 <script>
   const nombre = "{{name}}";
 </script>
-
-
-<script>
-
-// Function to toggle the notification popup
-function toggleNotificationPopup() {
-    const popup = document.getElementById('notificationPopup');
-    popup.classList.toggle('hidden'); // Solo mostrar o esconder el popup al hacer clic
-
-    // Si el popup está visible, agregamos un event listener para hacer clic fuera de él
-    if (!popup.classList.contains('hidden')) {
-        document.addEventListener('click', closePopupOnClickOutside);
-    } else {
-        document.removeEventListener('click', closePopupOnClickOutside);
-    }
-}
-
-// Function to close the popup when clicking outside
-function closePopupOnClickOutside(event) {
-    const popup = document.getElementById('notificationPopup');
-    const bell = document.getElementById('notificationBell');
-    
-    // Verificar si el clic ocurrió fuera del popup y de la campana de notificaciones
-    if (!popup.contains(event.target) && event.target !== bell) {
-        popup.classList.add('hidden'); // Ocultar el popup
-        document.removeEventListener('click', closePopupOnClickOutside); // Remover el listener
-    }
-}
-
-
-// Hamburger menu toggle
-const hamburger = document.getElementById('hamburger-menu');
-const sidebar = document.getElementById('sidebar');
-
-hamburger.addEventListener('click', () => {
-    sidebar.classList.toggle('open');
-});
-
-
-
-
-// Theme toggle logic
-const themeToggle = document.getElementById('theme-toggle');
-const htmlElement = document.documentElement;
-
-themeToggle.addEventListener('click', () => {
-    htmlElement.classList.toggle('dark');
-    if (htmlElement.classList.contains('dark')) {
-        localStorage.setItem('theme', 'dark');
-    } else {
-        localStorage.setItem('theme', 'light');
-    }
-});
-
-// Load theme from localStorage
-const storedTheme = localStorage.getItem('theme');
-if (storedTheme === 'dark') {
-    htmlElement.classList.add('dark');
-}
-
-// Mark the active link in the sidebar
-const currentPath = window.location.pathname;
-const menuLinks = document.querySelectorAll('.sidebar ul li a');
-
-menuLinks.forEach(link => {
-    if (link.dataset.link === currentPath) {
-        link.classList.add('active');
-    }
-});
-
-// Submenu toggle
-function toggleSubmenu(id) {
-    const submenu = document.getElementById(id);
-    submenu.classList.toggle('hidden');
-}
-
-
-</script>
-
-
-
-
-<script>
-
-
-
-    
-// Function to toggle the notification popup
-function toggleNotificationPopup() {
-    const popup = document.getElementById('notificationPopup');
-    popup.classList.toggle('hidden'); // Solo mostrar o esconder el popup al hacer clic
-
-    // Si el popup está visible, agregamos un event listener para hacer clic fuera de él
-    if (!popup.classList.contains('hidden')) {
-        document.addEventListener('click', closePopupOnClickOutside);
-    } else {
-        document.removeEventListener('click', closePopupOnClickOutside);
-    }
-}
-
-// Function to close the popup when clicking outside
-function closePopupOnClickOutside(event) {
-    const popup = document.getElementById('notificationPopup');
-    const bell = document.getElementById('notificationBell');
-    
-    // Verificar si el clic ocurrió fuera del popup y de la campana de notificaciones
-    if (!popup.contains(event.target) && event.target !== bell) {
-        popup.classList.add('hidden'); // Ocultar el popup
-        document.removeEventListener('click', closePopupOnClickOutside); // Remover el listener
-    }
-}
-
-
-
-// Hamburger menu toggle
-const hamburger = document.getElementById('hamburger-menu');
-const sidebar = document.getElementById('sidebar');
-
-hamburger.addEventListener('click', () => {
-    sidebar.classList.toggle('open');
-});
-
-// Theme toggle logic
-const themeToggle = document.getElementById('theme-toggle');
-const htmlElement = document.documentElement;
-
-themeToggle.addEventListener('click', () => {
-    htmlElement.classList.toggle('dark');
-    if (htmlElement.classList.contains('dark')) {
-        localStorage.setItem('theme', 'dark');
-    } else {
-        localStorage.setItem('theme', 'light');
-    }
-});
-
-// Load theme from localStorage
-const storedTheme = localStorage.getItem('theme');
-if (storedTheme === 'dark') {
-    htmlElement.classList.add('dark');
-}
-
-// Mark the active link in the sidebar
-const currentPath = window.location.pathname;
-const menuLinks = document.querySelectorAll('.sidebar ul li a');
-
-menuLinks.forEach(link => {
-    if (link.dataset.link === currentPath) {
-        link.classList.add('active');
-    }
-});
-
-// Submenu toggle
-function toggleSubmenu(id) {
-    const submenu = document.getElementById(id);
-    submenu.classList.toggle('hidden');
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-let saveLocationInterval;
-
-async function saveLocation() {
-    if (!navigator.geolocation) {
-        console.error("La geolocalización no es compatible con este navegador.");
-        return;
-    }
-
-    const tecnico = document.querySelector("#perfil").alt || "Técnico desconocido"; // Extrae el nombre del técnico como alternativa
-
-    navigator.geolocation.getCurrentPosition(
-        async (position) => {
-            const lat = position.coords.latitude;
-            const lng = position.coords.longitude;
-
-            try {
-                const response = await fetch("/guardar_ubicacion", {
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "application/json",
-                    },
-                    body: JSON.stringify({ tecnico, lat, lng }),
-                });
-
-                const result = await response.json();
-
-                if (result.success) {
-                    console.log("Ubicación guardada correctamente:", { lat, lng });
-                } else {
-                    console.error("Error al guardar la ubicación en el servidor.");
-                }
-            } catch (error) {
-                console.error("Error de conexión al guardar la ubicación:", error);
-            }
-        },
-        (error) => {
-            console.error("Error al obtener la ubicación:", error);
-        }
-    );
-}
-
-// Inicia el guardado automático al cargar la página
-window.onload = function () {
-    saveLocation(); // Guarda la ubicación inmediatamente al cargar
-    saveLocationInterval = setInterval(saveLocation, 30000); // Cada 30 segundos
-};
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-</script>
-
-<script>
-
-</script>
-
 

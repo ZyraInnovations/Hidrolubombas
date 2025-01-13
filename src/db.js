@@ -1,3 +1,6 @@
+
+
+
 const mysql = require('mysql2');
 
 
@@ -14,7 +17,6 @@ const pool = mysql.createPool({
     queueLimit: 0,  // Sin límite en la cola de conexiones
     connectTimeout: 5000  // Reducido a 5 segundos para intentar conexiones más rápidas
 }).promise();  // Esto convierte el pool en una versión que utiliza promesas
-
 
 
 
