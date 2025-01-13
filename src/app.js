@@ -742,7 +742,7 @@ app.get('/realizar_informe', async (req, res) => {
 
                 // Consulta para obtener la lista de técnicos
                 const tecnicosQuery = `
-                SELECT id, nombre FROM usuarios_hidro WHERE role = "tecnico"
+                SELECT id, nombre FROM usuarios_hidro WHERE role = "admin"
                 UNION
                 SELECT id, nombre FROM usuarios_hidro WHERE id = 6
             `;
