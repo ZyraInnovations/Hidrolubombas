@@ -325,9 +325,9 @@ app.use(express.urlencoded({ extended: true })); // Esto es importante para mane
 
 // Configuración de la base de datos
 const db = mysql.createConnection({
-    host: '34.44.185.78',
+    host: '34.46.79.235',
     user: 'julian',
-    password: '1034277764C',
+    password: '41607421dora',
     database: 'hidraulibombas',
     port: 3306,
     waitForConnections: true,
