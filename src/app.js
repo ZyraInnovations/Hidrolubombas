@@ -333,7 +333,7 @@ const db = mysql.createConnection({
     waitForConnections: true,
     connectionLimit: 100,  // Aumentado para permitir más conexiones simultáneas si es necesario
     queueLimit: 0,  // Sin límite en la cola de conexiones
-    connectTimeout: 5000  // Reducido a 5 segundos para intentar conexiones más rápidas
+    connectTimeout: 5000  
   });
   
   // Conectar a la base de datos
