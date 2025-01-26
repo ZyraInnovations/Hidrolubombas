@@ -7,9 +7,9 @@ const mysql = require('mysql2');
 
 // Configuración del pool de conexiones
 const pool = mysql.createPool({
-    host: '34.46.79.235',
-    user: 'julian',
-    password: '41607421dora',
+    host: '147.93.113.198',
+    user: 'root',
+    password: 'PuS4ENP0tvqLuWQGkG3CQ06rpzi5Q63VX3PJimxnCz62lE7M4wRsXPf92uLnil1N',
     database: 'hidraulibombas',
     port: 3306,
     waitForConnections: true,
