@@ -2179,6 +2179,6 @@ app.post('/mark-notifications-read', async (req, res) => {
 
 
 // Iniciar el servidor
-app.listen(8000, () => {
+app.listen(3000, () => {
     console.log('Servidor corriendo en el puerto 3000');
 });
