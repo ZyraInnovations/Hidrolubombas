@@ -13,9 +13,9 @@ const pool = mysql.createPool({
     database: 'hidraulibombas',
     port: 3306,
     waitForConnections: true,
-    connectionLimit: 100,  // Aumentado para permitir más conexiones simultáneas si es necesario
+    connectionLimit: 1000,  // Aumentado para permitir más conexiones simultáneas si es necesario
     queueLimit: 0,  // Sin límite en la cola de conexiones
-    connectTimeout: 5000  // Reducido a 5 segundos para intentar conexiones más rápidas
+    connectTimeout: 10000  // Reducido a 5 segundos para intentar conexiones más rápidas
 }).promise();  // Esto conversión que utiliza promesas
 
 

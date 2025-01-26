@@ -205,7 +205,7 @@ const months = [
 const mes = months[new Date().getMonth()]; // Obtiene el nombre del mes actual
 console.log('Mes:', mes); // Verifica que el mes sea el correcto
 
-app.get("/menuAdministrativo", (req, res) => {
+app.get("/menuAdministrativo", async (req, res) => {
     if (req.session.loggedin === true) {
         const nombreUsuario = req.session.name || req.session.user.name; 
         const usuarioId = req.session.usuario_id;
@@ -223,13 +223,9 @@ app.get("/menuAdministrativo", (req, res) => {
 
         const query = 'SELECT tipo_mantenimiento, observaciones FROM alertas_hidraulibombas WHERE mes = ? AND estado = 1';
 
-        // Ejecutar la consulta a la base de datos
-        db.query(query, [mes], (err, results) => {
-            if (err) {
-                console.error('Error al obtener los datos:', err);
-                return res.status(500).send('Error al obtener los datos');
-            }
-
+        try {
+            // Ejecutar la consulta a la base de datos utilizando el pool
+            const [results] = await pool.query(query, [mes]);
             console.log('Resultados de la consulta:', results); // Ver los resultados en la consola
 
             // Pasar los resultados a la vista
@@ -241,7 +237,10 @@ app.get("/menuAdministrativo", (req, res) => {
                 empleado,
                 mantenimientos: results // Aquí se pasan los datos de la consulta
             });
-        });
+        } catch (err) {
+            console.error('Error al obtener los datos:', err);
+            return res.status(500).send('Error al obtener los datos');
+        }
     } else {
         res.redirect("/login");
     }
@@ -250,8 +249,7 @@ app.get("/menuAdministrativo", (req, res) => {
 
 
 
-
-app.get("/menutecnicos", (req, res) => {
+app.get("/menutecnicos", async (req, res) => {
     if (req.session.loggedin === true) {
         const nombreUsuario = req.session.name || req.session.user.name;  // Usa el nombre de la sesión o un fallback
         console.log(`El usuario ${nombreUsuario} está autenticado.`);
@@ -273,13 +271,9 @@ app.get("/menutecnicos", (req, res) => {
 
         const query = 'SELECT tipo_mantenimiento, observaciones FROM alertas_hidraulibombas WHERE mes = ? AND estado = 1';
 
-        // Ejecutar la consulta a la base de datos
-        db.query(query, [mes], (err, results) => {
-            if (err) {
-                console.error('Error al obtener los datos:', err);
-                return res.status(500).send('Error al obtener los datos');
-            }
-
+        try {
+            // Ejecutar la consulta a la base de datos utilizando el pool
+            const [results] = await pool.query(query, [mes]);
             console.log('Resultados de la consulta:', results); // Ver los resultados en la consola
 
             // Pasa los resultados a la vista
@@ -289,7 +283,10 @@ app.get("/menutecnicos", (req, res) => {
                 layout: 'layouts/nav_tecnico.hbs',
                 mantenimientos: results // Aquí se pasan los datos de la consulta
             });
-        });
+        } catch (err) {
+            console.error('Error al obtener los datos:', err);
+            return res.status(500).send('Error al obtener los datos');
+        }
     } else {
         res.redirect("/login");
     }
@@ -324,29 +321,7 @@ app.use(express.urlencoded({ extended: true })); // Esto es importante para mane
 
 
 // Configuración de la base de datos
-const db = mysql.createConnection({
-    host: '147.93.113.198',
-    user: 'root',
-    password: 'PuS4ENP0tvqLuWQGkG3CQ06rpzi5Q63VX3PJimxnCz62lE7M4wRsXPf92uLnil1N',
-    database: 'hidraulibombas',
-    port: 3306,
-    waitForConnections: true,
-    connectionLimit: 100,  // Aumentado para permitir más conexiones simultáneas si es necesario
-    queueLimit: 0,  // Sin límite en la cola de conexiones
-    connectTimeout: 5000  // Reducido a 5 segundos para intentar conexiones más rápidas
-})  // Esto convierte el pool en una versión que utiliza promesas
 
-
-  
-  // Conectar a la base de datos
-  db.connect((err) => {
-    if (err) {
-      console.error('Error conectando a la base de datos:', err);
-    } else {
-      console.log('Conectado a la base de datos.');
-    }
-  });
-  
 
 
 
@@ -356,6 +331,11 @@ function bufferFromBase64(base64Data) {
     const base64String = base64Data.split(';base64,').pop();
     return Buffer.from(base64String, 'base64');
 }
+
+
+
+
+
 
 
 
@@ -459,22 +439,13 @@ app.post('/procesar-datos', upload.fields([
       ];
 
     // Insertar los datos
-    db.query(query, [values], (err, result) => {
-        if (err) {
-            console.error('Error al insertar los datos:', err);
-            return res.status(500).json({ success: false, message: 'Error al insertar los datos' });
-        }
-
-        console.log('Datos insertados correctamente:', result);
-
-        const insertedId = result.insertId;
-
-
-
-
-
-
-
+    pool.query(query, [values])
+    .then(result => {
+        // El resultado es un array, así que accedemos al primer elemento
+        const insertedId = result[0].insertId; // Acceder a insertId dentro de ResultSetHeader
+    
+        console.log('ID insertado:', insertedId);
+    
     // Configurar asunto y texto según tipo_de_mantenimiento
     let correoAsunto = 'Informe de Mantenimiento';
     let correoTexto = 'Adjunto se encuentra el informe solicitado.';
@@ -503,13 +474,6 @@ app.post('/procesar-datos', upload.fields([
             correoAsunto = `Informe de Mantenimiento - N° ${insertedId}`;
             correoTexto = 'Adjunto se encuentra el informe solicitado.';
     }
-
-
-
-
-
-
-
 
 
 
@@ -807,69 +771,54 @@ app.get('/get_cliente_correo/:id', async (req, res) => {
 
 
 
-app.get('/consulta_informe', (req, res) => {
+app.get('/consulta_informe', async (req, res) => {
     if (req.session.loggedin === true) {
         const userId = req.session.user.id; // Obtén el ID del usuario desde la sesión
         const nombreUsuario = req.session.user.name;
 
-        // Consulta el rol del usuario en la base de datos
-        const roleQuery = 'SELECT role FROM usuarios_hidro WHERE id = ?';
-        db.query(roleQuery, [userId], (err, roleResults) => {
-            if (err) {
-                console.error('Error al obtener el rol del usuario:', err);
-                res.status(500).send('Error en el servidor');
-            } else if (roleResults.length > 0) {
+        try {
+            // Consulta el rol del usuario en la base de datos
+            const [roleResults] = await pool.query('SELECT role FROM usuarios_hidro WHERE id = ?', [userId]);
+            if (roleResults.length > 0) {
                 const userRole = roleResults[0].role;
                 const layout = userRole === 'admin' ? 'layouts/nav_admin.hbs' : 'layouts/nav_tecnico.hbs';
 
                 // Obtener la lista de clientes
-                const clientesQuery = 'SELECT id, nombre FROM clientes_hidrolubombas';
-                db.query(clientesQuery, (err, clientes) => {
-                    if (err) {
-                        console.error('Error al obtener los clientes:', err);
-                        res.status(500).send('Error en el servidor');
-                    } else {
-                        // Obtener la lista de técnicos
-                        const query = `
-                            SELECT DISTINCT m.tecnico, u.nombre AS tecnico_name 
-                            FROM mantenimiento_hidro m
-                            LEFT JOIN usuarios_hidro u ON m.tecnico = u.id
-                        `;
-                        db.query(query, (err, results) => {
-                            if (err) {
-                                console.error('Error al obtener la lista de técnicos:', err);
-                                res.status(500).send('Error en el servidor');
-                            } else {
-                                // Extraer los nombres de los técnicos de los resultados
-                                const tecnicos = results.map(row => ({
-                                    id: row.tecnico,
-                                    name: row.tecnico_name
-                                }));
+                const [clientes] = await pool.query('SELECT id, nombre FROM clientes_hidrolubombas');
+                
+                // Obtener la lista de técnicos
+                const [results] = await pool.query(`
+                    SELECT DISTINCT m.tecnico, u.nombre AS tecnico_name 
+                    FROM mantenimiento_hidro m
+                    LEFT JOIN usuarios_hidro u ON m.tecnico = u.id
+                `);
 
-                                // Renderizar la vista
-                                res.render('administrativo/informes/consulta_informe.hbs', {
-                                    nombreUsuario,
-                                    layout,
-                                    tecnicos,
-                                    clientes // Pasamos la lista de clientes
-                                });
-                            }
-                        });
-                    }
+                // Extraer los nombres de los técnicos de los resultados
+                const tecnicos = results.map(row => ({
+                    id: row.tecnico,
+                    name: row.tecnico_name
+                }));
+
+                // Renderizar la vista
+                res.render('administrativo/informes/consulta_informe.hbs', {
+                    nombreUsuario,
+                    layout,
+                    tecnicos,
+                    clientes // Pasamos la lista de clientes
                 });
             } else {
                 res.redirect('/login'); // Si no hay rol, redirige al login
             }
-        });
+        } catch (err) {
+            console.error('Error al obtener los datos:', err);
+            res.status(500).send('Error en el servidor');
+        }
     } else {
         res.redirect('/login');
     }
 });
 
-
-
-
-app.get('/ver_informe', (req, res) => {
+app.get('/ver_informe', async (req, res) => {
     if (req.session.loggedin === true) {
         const nombreUsuario = req.session.user.name;
         let informeId = req.query.id;
@@ -882,19 +831,23 @@ app.get('/ver_informe', (req, res) => {
 
         // Validar que el ID sea un número válido
         if (!informeId || !/^\d+$/.test(informeId)) {
-            obtenerListas((err, tecnicos, clientes) => {
-                if (err) {
-                    res.status(500).send('Error en el servidor.');
-                } else {
-                    res.render('administrativo/informes/consulta_informe.hbs', {
-                        layout: 'layouts/nav_admin.hbs',
-                        nombreUsuario,
-                        tecnicos,
-                        clientes,
-                        mensajeError: 'Por favor, ingresa un ID válido para buscar el informe.'
-                    });
-                }
-            });
+            try {
+                obtenerListas((err, tecnicos, clientes) => {
+                    if (err) {
+                        res.status(500).send('Error en el servidor.');
+                    } else {
+                        res.render('administrativo/informes/consulta_informe.hbs', {
+                            layout: 'layouts/nav_admin.hbs',
+                            nombreUsuario,
+                            tecnicos,
+                            clientes,
+                            mensajeError: 'Por favor, ingresa un ID válido para buscar el informe.'
+                        });
+                    }
+                });
+            } catch (err) {
+                res.status(500).send('Error en el servidor.');
+            }
             return;
         }
 
@@ -906,11 +859,11 @@ app.get('/ver_informe', (req, res) => {
             FROM mantenimiento_hidro 
             WHERE id = ?
         `;
-        db.query(query, [informeId], (err, results) => {
-            if (err) {
-                console.error('Error al realizar la consulta:', err);
-                res.status(500).send('Error en el servidor.');
-            } else if (results.length > 0) {
+        
+        try {
+            const [results] = await pool.query(query, [informeId]);
+
+            if (results.length > 0) {
                 const informe = results[0];
 
                 // Asignar las firmas en formato Base64 al objeto `informe`
@@ -923,47 +876,36 @@ app.get('/ver_informe', (req, res) => {
                     FROM clientes_hidrolubombas 
                     WHERE id = ?
                 `;
-                db.query(clienteQuery, [informe.cliente], (err, clienteResult) => {
-                    if (err) {
-                        console.error('Error al obtener el cliente:', err);
-                        res.status(500).send('Error en el servidor.');
-                    } else if (clienteResult.length > 0) {
-                        informe.cliente = clienteResult[0].nombre;
-                        informe.clienteFoto = clienteResult[0].foto_base64; // Añadir la foto Base64
+                const [clienteResult] = await pool.query(clienteQuery, [informe.cliente]);
 
-                        // Obtener el técnico relacionado con la foto
-                        const tecnicoQuery = `
-                            SELECT nombre, TO_BASE64(foto) AS foto_base64 
-                            FROM usuarios_hidro 
-                            WHERE id = ?
-                        `;
-                        db.query(tecnicoQuery, [informe.tecnico], (err, tecnicoResult) => {
+                if (clienteResult.length > 0) {
+                    informe.cliente = clienteResult[0].nombre;
+                    informe.clienteFoto = clienteResult[0].foto_base64; // Añadir la foto Base64
+
+                    // Obtener el técnico relacionado con la foto
+                    const tecnicoQuery = `
+                        SELECT nombre, TO_BASE64(foto) AS foto_base64 
+                        FROM usuarios_hidro 
+                        WHERE id = ?
+                    `;
+                    const [tecnicoResult] = await pool.query(tecnicoQuery, [informe.tecnico]);
+
+                    if (tecnicoResult.length > 0) {
+                        informe.tecnico = tecnicoResult[0].nombre;
+                        informe.tecnicoFoto = tecnicoResult[0].foto_base64; // Añadir la foto Base64 del técnico
+
+                        // Obtener las listas de técnicos y clientes
+                        obtenerListas((err, tecnicos, clientes) => {
                             if (err) {
-                                console.error('Error al obtener el técnico:', err);
                                 res.status(500).send('Error en el servidor.');
-                            } else if (tecnicoResult.length > 0) {
-                                informe.tecnico = tecnicoResult[0].nombre;
-                                informe.tecnicoFoto = tecnicoResult[0].foto_base64; // Añadir la foto Base64 del técnico
-
-                                obtenerListas((err, tecnicos, clientes) => {
-                                    if (err) {
-                                        res.status(500).send('Error en el servidor.');
-                                    } else {
-                                        // Renderizar la vista con el informe y las listas
-                                        res.render('administrativo/informes/consulta_informe.hbs', {
-                                            layout: 'layouts/nav_admin.hbs',
-                                            nombreUsuario,
-                                            informe,
-                                            tecnicos,
-                                            clientes
-                                        });
-                                    }
-                                });
                             } else {
+                                // Renderizar la vista con el informe y las listas
                                 res.render('administrativo/informes/consulta_informe.hbs', {
                                     layout: 'layouts/nav_admin.hbs',
                                     nombreUsuario,
-                                    mensajeError: 'No se encontró el técnico relacionado.'
+                                    informe,
+                                    tecnicos,
+                                    clientes
                                 });
                             }
                         });
@@ -971,10 +913,16 @@ app.get('/ver_informe', (req, res) => {
                         res.render('administrativo/informes/consulta_informe.hbs', {
                             layout: 'layouts/nav_admin.hbs',
                             nombreUsuario,
-                            mensajeError: 'No se encontró el cliente relacionado.'
+                            mensajeError: 'No se encontró el técnico relacionado.'
                         });
                     }
-                });
+                } else {
+                    res.render('administrativo/informes/consulta_informe.hbs', {
+                        layout: 'layouts/nav_admin.hbs',
+                        nombreUsuario,
+                        mensajeError: 'No se encontró el cliente relacionado.'
+                    });
+                }
             } else {
                 obtenerListas((err, tecnicos, clientes) => {
                     if (err) {
@@ -990,65 +938,66 @@ app.get('/ver_informe', (req, res) => {
                     }
                 });
             }
-        });
+        } catch (err) {
+            console.error('Error al realizar la consulta:', err);
+            res.status(500).send('Error en el servidor.');
+        }
     } else {
         res.redirect('/login');
     }
 });
 
-// Función para obtener listas de técnicos y clientes
-function obtenerListas(callback) {
-    const clientesQuery = 'SELECT id, nombre FROM clientes_hidrolubombas';
-    db.query(clientesQuery, (err, clientes) => {
-        if (err) {
-            console.error('Error al obtener los clientes:', err);
-            return callback(err);
-        }
 
+
+
+// Función para obtener listas de técnicos y clientes
+async function obtenerListas() {
+    try {
+        // Consultar los clientes
+        const clientesQuery = 'SELECT id, nombre FROM clientes_hidrolubombas';
+        const [clientes] = await pool.query(clientesQuery);
+
+        // Consultar los técnicos
         const tecnicosQuery = `
             SELECT DISTINCT m.tecnico, u.nombre AS tecnico_name 
             FROM mantenimiento_hidro m
             LEFT JOIN usuarios_hidro u ON m.tecnico = u.id
         `;
-        db.query(tecnicosQuery, (err, tecnicosResults) => {
-            if (err) {
-                console.error('Error al obtener los técnicos:', err);
-                return callback(err);
-            }
+        const [tecnicosResults] = await pool.query(tecnicosQuery);
 
-            const tecnicos = tecnicosResults.map(row => ({
-                id: row.tecnico,
-                name: row.tecnico_name
-            }));
-            callback(null, tecnicos, clientes);
-        });
-    });
+        const tecnicos = tecnicosResults.map(row => ({
+            id: row.tecnico,
+            name: row.tecnico_name
+        }));
+
+        return { tecnicos, clientes };
+    } catch (err) {
+        console.error('Error al obtener las listas:', err);
+        throw err;
+    }
 }
 
 
 
-
-app.get('/get_ids_mantenimiento', (req, res) => {
+app.get('/get_ids_mantenimiento', async (req, res) => {
     const clienteId = req.query.cliente;
     console.log('Cliente seleccionado:', clienteId); // Verificar que el clienteId sea correcto
 
     const query = 'SELECT id FROM mantenimiento_hidro WHERE cliente = ?';
-    db.query(query, [clienteId], (err, results) => {
-        if (err) {
-            console.error('Error al obtener los IDs de mantenimiento:', err);
-            res.status(500).send('Error en el servidor');
-        } else {
-            console.log('IDs de mantenimiento:', results); // Verificar que los resultados sean correctos
-            res.json(results);
-        }
-    });
+
+    try {
+        const [results] = await pool.query(query, [clienteId]);
+        console.log('IDs de mantenimiento:', results); // Verificar que los resultados sean correctos
+        res.json(results);
+    } catch (err) {
+        console.error('Error al obtener los IDs de mantenimiento:', err);
+        res.status(500).send('Error en el servidor');
+    }
 });
 
 
 
-
-
-app.get('/get_informe_ids', (req, res) => {
+app.get('/get_informe_ids', async (req, res) => {
     const tecnico = req.query.tecnico;
 
     if (!tecnico) {
@@ -1056,55 +1005,50 @@ app.get('/get_informe_ids', (req, res) => {
     }
 
     const query = 'SELECT id FROM mantenimiento_hidro WHERE tecnico = ?';
-    db.query(query, [tecnico], (err, results) => {
-        if (err) {
-            console.error('Error al obtener los IDs del informe:', err);
-            return res.status(500).json({ error: 'Error en el servidor' });
-        }
 
-        res.json(results); // Send back the list of IDs as JSON
-    });
+    try {
+        const [results] = await pool.query(query, [tecnico]);
+        res.json(results); // Enviar de vuelta la lista de IDs como JSON
+    } catch (err) {
+        console.error('Error al obtener los IDs del informe:', err);
+        res.status(500).json({ error: 'Error en el servidor' });
+    }
 });
 
 
 
 
 
-
-
-app.get('/api/informes-count', (req, res) => {
+app.get('/api/informes-count', async (req, res) => {
     const query = 'SELECT COUNT(*) AS count FROM mantenimiento_hidro';
 
-    db.query(query, (error, results) => {
-        if (error) {
-            console.error('Error al contar los informes:', error);
-            return res.status(500).json({ error: 'Error al contar los informes' });
-        }
+    try {
+        const [results] = await pool.query(query);
         res.json({ count: results[0].count });
-    });
+    } catch (error) {
+        console.error('Error al contar los informes:', error);
+        res.status(500).json({ error: 'Error al contar los informes' });
+    }
 });
 
 
 
-
-app.get('/api/tecnicos-count', (req, res) => {
+app.get('/api/tecnicos-count', async (req, res) => {
     const query = 'SELECT COUNT(*) AS count FROM usuarios_hidro WHERE role = "tecnico"';
 
-    db.query(query, (error, results) => {
-        if (error) {
-            console.error('Error al contar los técnicos:', error);
-            return res.status(500).json({ error: 'Error al contar los técnicos' });
-        }
+    try {
+        const [results] = await pool.query(query);
         res.json({ count: results[0].count });
-    });
+    } catch (error) {
+        console.error('Error al contar los técnicos:', error);
+        res.status(500).json({ error: 'Error al contar los técnicos' });
+    }
 });
 
 
 
 
-
-
-app.get('/api/mantenimientos-por-mes', (req, res) => {
+app.get('/api/mantenimientos-por-mes', async (req, res) => {
     const query = `
         SELECT 
             fecha,
@@ -1115,28 +1059,26 @@ app.get('/api/mantenimientos-por-mes', (req, res) => {
         ORDER BY fecha
     `;
     
-    db.query(query, (error, results) => {
-        if (error) {
-            console.error('Error al obtener los datos de mantenimiento:', error);
-            return res.status(500).json({ error: 'Error al obtener los datos' });
-        }
+    try {
+        const [results] = await pool.query(query);
         res.json(results);
-    });
+    } catch (error) {
+        console.error('Error al obtener los datos de mantenimiento:', error);
+        res.status(500).json({ error: 'Error al obtener los datos' });
+    }
 });
 
-
-app.get('/api/clientes-count', (req, res) => {
+app.get('/api/clientes-count', async (req, res) => {
     const query = `SELECT COUNT(DISTINCT cliente) AS count FROM mantenimiento_hidro`;
 
-    db.query(query, (error, results) => {
-        if (error) {
-            console.error('Error al obtener el conteo de clientes:', error);
-            return res.status(500).json({ error: 'Error al obtener el conteo de clientes' });
-        }
+    try {
+        const [results] = await pool.query(query);
         res.json(results[0]);
-    });
+    } catch (error) {
+        console.error('Error al obtener el conteo de clientes:', error);
+        res.status(500).json({ error: 'Error al obtener el conteo de clientes' });
+    }
 });
-
 
 
 
@@ -1372,14 +1314,11 @@ app.post('/editar_cliente/:id', upload.single('foto'), async (req, res) => {
 });
 
 
-app.get('/api/clientes/:id', (req, res) => {
+app.get('/api/clientes/:id', async (req, res) => {
     const { id } = req.params;
 
-    db.query('SELECT correo, foto FROM clientes_hidrolubombas WHERE id = ?', [id], (error, results) => {
-        if (error) {
-            console.error('Error al obtener los datos del cliente:', error);
-            return res.status(500).json({ success: false, message: 'Error del servidor' });
-        }
+    try {
+        const [results] = await pool.query('SELECT correo, foto FROM clientes_hidrolubombas WHERE id = ?', [id]);
 
         if (results.length > 0) {
             const { correo, foto } = results[0];
@@ -1388,7 +1327,10 @@ app.get('/api/clientes/:id', (req, res) => {
         } else {
             res.status(404).json({ success: false, message: 'Cliente no encontrado' });
         }
-    });
+    } catch (error) {
+        console.error('Error al obtener los datos del cliente:', error);
+        res.status(500).json({ success: false, message: 'Error del servidor' });
+    }
 });
 
 
@@ -2179,6 +2121,6 @@ app.post('/mark-notifications-read', async (req, res) => {
 
 
 // Iniciar el servidor
-app.listen(3000, () => {
+app.listen(2000, () => {
     console.log('Servidor corriendo en el puerto 3000');
 });
