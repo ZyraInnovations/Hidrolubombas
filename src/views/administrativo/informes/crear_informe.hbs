@@ -3313,6 +3313,11 @@ textarea {
 <div id="preview"></div>
 </div>
 <br>
+<!-- Input de archivo para videos -->
+<label for="videos" class="custom-label">Seleccionar Videos</label>
+<input id="videos" name="videos" type="file" class="custom-file-input" multiple accept="video/*">
+<div id="videoPreview"></div>
+<br>
 
 <div class="radio-group">
     <label class="radio-label">
@@ -3423,7 +3428,47 @@ document.addEventListener('DOMContentLoaded', () => {
         // Recorremos los archivos y creamos vistas previas de imágenes
         fileList.forEach(function(file, index) {
             // Solo procesamos archivos de imagen
-            if (file.type.startsWith('image/')) {
+if (file.type.startsWith('image/')) {
+    // Código de vista previa de imagen (como lo tienes)
+} else if (file.type.startsWith('video/')) {
+    const videoElement = document.createElement('video');
+    videoElement.src = URL.createObjectURL(file);
+    videoElement.controls = true;
+    videoElement.style.maxWidth = '200px';
+
+    const videoWrapper = document.createElement('div');
+    videoWrapper.style.position = 'relative';
+    videoWrapper.appendChild(videoElement);
+
+    const removeButton = document.createElement('button');
+    removeButton.innerText = 'X';
+    removeButton.style.position = 'absolute';
+    removeButton.style.top = '5px';
+    removeButton.style.right = '5px';
+    removeButton.style.backgroundColor = 'red';
+    removeButton.style.color = 'white';
+    removeButton.style.border = 'none';
+    removeButton.style.borderRadius = '50%';
+    removeButton.style.width = '20px';
+    removeButton.style.height = '20px';
+    removeButton.style.fontSize = '12px';
+    removeButton.style.cursor = 'pointer';
+
+    removeButton.addEventListener('click', function() {
+        videoWrapper.remove();
+        fileList.splice(index, 1);
+        const dataTransfer = new DataTransfer();
+        fileList.forEach(file => dataTransfer.items.add(file));
+        document.getElementById('boton').files = dataTransfer.files;
+    });
+
+    videoWrapper.appendChild(removeButton);
+    previewContainer.appendChild(videoWrapper);
+}
+
+
+
+
                 const reader = new FileReader();
                 
                 reader.onload = function(e) {

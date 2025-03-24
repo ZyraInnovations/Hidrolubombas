@@ -343,8 +343,12 @@ function bufferFromBase64(base64Data) {
 // Ruta combinada para insertar datos y enviar correo
 app.post('/procesar-datos', upload.fields([
     { name: 'imagen', maxCount: 1 },    // Imagen generada obligatoria
-    { name: 'fotos', maxCount: 10 }    // Imágenes adicionales opcionales
-]), (req, res) => {
+    { name: 'fotos', maxCount: 10 },    // Imágenes adicionales opcionales
+    { name: 'videos', maxCount: 5 }       // 🎥 Videos opcionales (puedes ajustar el maxCount)
+
+
+])
+, (req, res) => {
     const datos = req.body;
     const accion = datos.accion; // Asegúrate de definir "accion" al inicio
     const tipoDeMantenimiento = datos.tipo_de_mantenimiento; // Tipo de mantenimiento seleccionado
@@ -503,6 +507,16 @@ app.post('/procesar-datos', upload.fields([
                     content: imagen.buffer
                 });
             });
+
+            let videosAdjuntos = req.files['videos'] || [];
+
+// Adjuntar videos
+videosAdjuntos.forEach((video, index) => {
+    attachments.push({
+        filename: `video_${index + 1}.mp4`,  // O usa la extensión original si quieres
+        content: video.buffer
+    });
+});
 
             const mailOptions = {
                 from: 'ingeoperativos@gmail.com',
