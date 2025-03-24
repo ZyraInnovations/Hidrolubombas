@@ -109,9 +109,9 @@
             <label for="nit">NIT:</label>
             <input type="text" id="nit" name="nit" required>
             
-            <label for="correo">Correo:</label>
-            <input type="email" id="correo" name="correo" required>
-            
+     <label for="correo">Correo:</label>
+<input type="text" id="correo" name="correo" placeholder="Ej: correo1@gmail.com; correo2@gmail.com" required>
+
             <label for="numero">Número:</label>
             <input type="text" id="numero" name="numero" required>
             
@@ -119,10 +119,20 @@
             <input type="text" id="direccion" name="direccion" required>
             
             <label for="foto">Foto:</label>
-            <input type="file" id="foto" name="foto" accept="image/*" required>
+            <input type="file" id="foto" name="foto" accept="image/*" >
             
             <button type="submit">Guardar Cliente</button>
         </form>
     </div>
 </body>
+<script>
+    const correoInput = document.getElementById('correo');
+
+    correoInput.addEventListener('keyup', function (e) {
+        // Si el usuario presiona ";", agregamos un espacio después
+        if (e.key === ';') {
+            correoInput.value = correoInput.value.replace(/;+/g, '; ').replace(/\s+;/g, ';');
+        }
+    });
+</script>
 </html>

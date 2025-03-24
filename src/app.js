@@ -478,8 +478,12 @@ app.post('/procesar-datos', upload.fields([
 
 
         if (accion === 'guardar_y_enviar') {
-            const correoDestino = datos.Correo;
-            let imagenHTML = req.files['imagen'] ? req.files['imagen'][0] : null;
+            const correoDestinoRaw = datos.Correo;
+            // Verificar si hay ';' y convertir en array si es necesario
+            const correoDestino = correoDestinoRaw.includes(';') 
+                ? correoDestinoRaw.split(';').map(correo => correo.trim()) 
+                : correoDestinoRaw;
+                        let imagenHTML = req.files['imagen'] ? req.files['imagen'][0] : null;
             let imagenesAdjuntas = req.files['fotos'] || [];
 
             if (!imagenHTML) {
