@@ -3411,7 +3411,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
 
-
     // Cuando cambia el campo de entrada de archivo (cuando se seleccionan archivos), mostramos las imágenes
     document.getElementById('boton').addEventListener('change', function(event) {
         const files = event.target.files;
@@ -3425,98 +3424,85 @@ document.addEventListener('DOMContentLoaded', () => {
         // Creamos una lista de archivos para gestionar las eliminaciones
         let fileList = Array.from(files); // Convertimos el FileList en un array
 
-        // Recorremos los archivos y creamos vistas previas de imágenes
-        fileList.forEach(function(file, index) {
-            // Solo procesamos archivos de imagen
-if (file.type.startsWith('image/')) {
-    // Código de vista previa de imagen (como lo tienes)
-} else if (file.type.startsWith('video/')) {
-    const videoElement = document.createElement('video');
-    videoElement.src = URL.createObjectURL(file);
-    videoElement.controls = true;
-    videoElement.style.maxWidth = '200px';
 
-    const videoWrapper = document.createElement('div');
-    videoWrapper.style.position = 'relative';
-    videoWrapper.appendChild(videoElement);
+fileList.forEach(function(file, index) {
+    // Solo procesamos archivos de imagen
+    if (file.type.startsWith('image/')) {
+        const reader = new FileReader();
 
-    const removeButton = document.createElement('button');
-    removeButton.innerText = 'X';
-    removeButton.style.position = 'absolute';
-    removeButton.style.top = '5px';
-    removeButton.style.right = '5px';
-    removeButton.style.backgroundColor = 'red';
-    removeButton.style.color = 'white';
-    removeButton.style.border = 'none';
-    removeButton.style.borderRadius = '50%';
-    removeButton.style.width = '20px';
-    removeButton.style.height = '20px';
-    removeButton.style.fontSize = '12px';
-    removeButton.style.cursor = 'pointer';
+        reader.onload = function(e) {
+            const imgElement = document.createElement('img');
+            imgElement.src = e.target.result;
 
-    removeButton.addEventListener('click', function() {
-        videoWrapper.remove();
-        fileList.splice(index, 1);
-        const dataTransfer = new DataTransfer();
-        fileList.forEach(file => dataTransfer.items.add(file));
-        document.getElementById('boton').files = dataTransfer.files;
-    });
+            const imgWrapper = document.createElement('div');
+            imgWrapper.style.position = 'relative';
+            imgWrapper.appendChild(imgElement);
 
-    videoWrapper.appendChild(removeButton);
-    previewContainer.appendChild(videoWrapper);
-}
+            const removeButton = document.createElement('button');
+            removeButton.innerText = 'X';
+            removeButton.style.position = 'absolute';
+            removeButton.style.top = '5px';
+            removeButton.style.right = '5px';
+            removeButton.style.backgroundColor = 'red';
+            removeButton.style.color = 'white';
+            removeButton.style.border = 'none';
+            removeButton.style.borderRadius = '50%';
+            removeButton.style.width = '20px';
+            removeButton.style.height = '20px';
+            removeButton.style.fontSize = '12px';
+            removeButton.style.cursor = 'pointer';
 
+            removeButton.addEventListener('click', function() {
+                imgWrapper.remove();
+                fileList.splice(index, 1);
+                const dataTransfer = new DataTransfer();
+                fileList.forEach(file => dataTransfer.items.add(file));
+                document.getElementById('boton').files = dataTransfer.files;
+            });
 
+            imgWrapper.appendChild(removeButton);
+            previewContainer.appendChild(imgWrapper);
+        };
 
+        reader.readAsDataURL(file);
+    } else if (file.type.startsWith('video/')) {
+        // El bloque para video ya está bien
+        const videoElement = document.createElement('video');
+        videoElement.src = URL.createObjectURL(file);
+        videoElement.controls = true;
+        videoElement.style.maxWidth = '200px';
 
-                const reader = new FileReader();
-                
-                reader.onload = function(e) {
-                    const imgElement = document.createElement('img');
-                    imgElement.src = e.target.result; // Establece la fuente de la imagen como el archivo
+        const videoWrapper = document.createElement('div');
+        videoWrapper.style.position = 'relative';
+        videoWrapper.appendChild(videoElement);
 
-                    // Crear el contenedor para la imagen y el botón de eliminar
-                    const imgWrapper = document.createElement('div');
-                    imgWrapper.style.position = 'relative'; // Para posicionar la X sobre la imagen
-                    imgWrapper.appendChild(imgElement);
+        const removeButton = document.createElement('button');
+        removeButton.innerText = 'X';
+        removeButton.style.position = 'absolute';
+        removeButton.style.top = '5px';
+        removeButton.style.right = '5px';
+        removeButton.style.backgroundColor = 'red';
+        removeButton.style.color = 'white';
+        removeButton.style.border = 'none';
+        removeButton.style.borderRadius = '50%';
+        removeButton.style.width = '20px';
+        removeButton.style.height = '20px';
+        removeButton.style.fontSize = '12px';
+        removeButton.style.cursor = 'pointer';
 
-                    // Crear el botón de eliminar (la X)
-                    const removeButton = document.createElement('button');
-                    removeButton.innerText = 'X';
-                    removeButton.style.position = 'absolute';
-                    removeButton.style.top = '5px';
-                    removeButton.style.right = '5px';
-                    removeButton.style.backgroundColor = 'red';
-                    removeButton.style.color = 'white';
-                    removeButton.style.border = 'none';
-                    removeButton.style.borderRadius = '50%';
-                    removeButton.style.width = '20px';
-                    removeButton.style.height = '20px';
-                    removeButton.style.fontSize = '12px';
-                    removeButton.style.cursor = 'pointer';
-
-                    // Cuando se haga clic en la X, eliminamos la imagen y el archivo
-                    removeButton.addEventListener('click', function() {
-                        imgWrapper.remove(); // Eliminar el contenedor de la imagen
-                        fileList.splice(index, 1); // Eliminar el archivo de la lista
-
-                        // Actualizar el input de archivo
-                        const dataTransfer = new DataTransfer();
-                        fileList.forEach(file => dataTransfer.items.add(file)); // Añadir archivos restantes
-                        document.getElementById('boton').files = dataTransfer.files; // Actualizar el input
-                    });
-
-                    // Añadimos el botón de eliminar al contenedor
-                    imgWrapper.appendChild(removeButton);
-
-                    // Añadimos la imagen con la X al contenedor de vista previa
-                    previewContainer.appendChild(imgWrapper);
-                };
-
-                reader.readAsDataURL(file); // Leemos el archivo de imagen como una URL de datos
-            }
+        removeButton.addEventListener('click', function() {
+            videoWrapper.remove();
+            fileList.splice(index, 1);
+            const dataTransfer = new DataTransfer();
+            fileList.forEach(file => dataTransfer.items.add(file));
+            document.getElementById('boton').files = dataTransfer.files;
         });
-    });
+
+        videoWrapper.appendChild(removeButton);
+        previewContainer.appendChild(videoWrapper);
+    }
+});
+});
 </script>
 
 
