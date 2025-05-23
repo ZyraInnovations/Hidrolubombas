@@ -39,7 +39,7 @@
       max-width: 98vw;
       margin: 0 auto;
       background: #fff;
-      padding: 20px;
+  padding: 10px; /* antes 20px */
       border-radius: 15px;
       box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
     }
@@ -71,7 +71,7 @@
     .combined-table {
       width: 100%;
       border-collapse: collapse;
-      font-size: 12px;
+    font-size: 8px;
       table-layout: fixed;
     }
 
@@ -169,7 +169,7 @@
 .combined-table {
     width: 100%;
     table-layout: fixed;
-    font-size: 8px;
+    font-size: 14px; /* antes 8px */
 }
 
 .combined-table th, .combined-table td {
@@ -432,8 +432,8 @@
 
     /* Estilo para el contenedor general */
     .report-container {
-        margin: 20px 0;
-        padding: 10px;
+  margin: 10px 0; /* antes 20px 0 */
+  padding: 5px;    /* antes 10px */
         background-color: #f9f9f9;
         border: 1px solid var(--border-color);
         border-radius: 10px;
@@ -666,7 +666,7 @@
 .combined-table {
     width: 100%;
     table-layout: fixed;
-    font-size: 8px;
+    font-size: 15px; /* antes 8px */
 }
 
 .combined-table th, .combined-table td {
@@ -1173,7 +1173,7 @@ select.input-field option, select.hidrosistema-input option {
     .marcar {
         position: relative;
         z-index: 1;
-        padding: 10px;
+  padding: 5px;    /* antes 10px */
         background: linear-gradient(135deg, #ffffff, #f0f4f9);
         border-radius: 15px;
         box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
@@ -1439,6 +1439,13 @@ body {
 #resendEmail:focus {
     outline: none; /* Eliminar el borde de enfoque predeterminado */
     box-shadow: 0 0 10px rgba(0, 128, 0, 0.5); /* Agregar sombra verde */
+}
+body {
+  background-color: white;
+  color: var(--text-color);
+  margin: 0;
+  padding: 0 !important;
+  overflow-x: hidden;
 }
 
 </style>
@@ -2129,8 +2136,6 @@ body {
     Carrera 96A No. 65-52 // ingenieriahidraulibombas@gmail.com // Tels.: 6016496010 - 3115989023
 </div>
 
-
-<br>
 
 </div>
 
