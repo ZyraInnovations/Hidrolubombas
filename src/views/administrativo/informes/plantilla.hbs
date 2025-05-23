@@ -39,7 +39,7 @@
       max-width: 98vw;
       margin: 0 auto;
       background: #fff;
-  padding: 10px; /* antes 20px */
+      padding: 20px;
       border-radius: 15px;
       box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
     }
@@ -71,7 +71,7 @@
     .combined-table {
       width: 100%;
       border-collapse: collapse;
-    font-size: 8px;
+      font-size: 12px;
       table-layout: fixed;
     }
 
@@ -169,7 +169,7 @@
 .combined-table {
     width: 100%;
     table-layout: fixed;
-    font-size: 14px; /* antes 8px */
+    font-size: 8px;
 }
 
 .combined-table th, .combined-table td {
@@ -432,8 +432,8 @@
 
     /* Estilo para el contenedor general */
     .report-container {
-  margin: 10px 0; /* antes 20px 0 */
-  padding: 5px;    /* antes 10px */
+        margin: 20px 0;
+        padding: 10px;
         background-color: #f9f9f9;
         border: 1px solid var(--border-color);
         border-radius: 10px;
@@ -666,7 +666,7 @@
 .combined-table {
     width: 100%;
     table-layout: fixed;
-    font-size: 15px; /* antes 8px */
+    font-size: 8px;
 }
 
 .combined-table th, .combined-table td {
@@ -1173,7 +1173,7 @@ select.input-field option, select.hidrosistema-input option {
     .marcar {
         position: relative;
         z-index: 1;
-  padding: 5px;    /* antes 10px */
+        padding: 10px;
         background: linear-gradient(135deg, #ffffff, #f0f4f9);
         border-radius: 15px;
         box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
@@ -1440,21 +1440,83 @@ body {
     outline: none; /* Eliminar el borde de enfoque predeterminado */
     box-shadow: 0 0 10px rgba(0, 128, 0, 0.5); /* Agregar sombra verde */
 }
-body {
-  background-color: white;
-  color: var(--text-color);
-  margin: 0;
-  padding: 0 !important;
-  overflow-x: hidden;
+.compact-info-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 12px;
+  margin-bottom: 10px;
+}
+
+.compact-info-table td {
+  padding: 4px 6px;
+  border: 1px solid var(--border-color);
+  vertical-align: top;
 }
 
 </style>
+<style>
+@media print {
+  .photo-section {
+    display: none !important;
+  }
+
+  .no-pdf, #resendEmail, #imagenesAdicionales, #imagenesPreview {
+    display: none !important;
+  }
+}
+</style>
+<style>
+@media print {
+  /* Elimina los márgenes de la impresora */
+  @page {
+    margin: 0;
+    size: A4 portrait;
+  }
+
+  body {
+    margin: 0;
+    padding: 0;
+  }
+
+  .container,
+  .report-container,
+  .marcar {
+    width: 100% !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+
+  .photo-section,
+  .no-pdf,
+  #resendEmail,
+  #imagenesAdicionales,
+  #imagenesPreview {
+    display: none !important;
+  }
+
+  table {
+    width: 100% !important;
+    font-size: 11px;
+    table-layout: fixed;
+    word-wrap: break-word;
+  }
+
+  td, th {
+    padding: 4px !important;
+    word-break: break-word;
+  }
+}
+</style>
+
 <body>
 
  
 
 
 
+<button id="printPage" class="btn btn-secondary no-pdf">
+  <i class="fas fa-print"></i> Imprimir
+</button>
 
 
 <button id="downloadPdf" class="btn btn-primary no-pdf">
@@ -1499,74 +1561,15 @@ body {
 <form id="maintenanceForm">
 
 <div class="info-row full-width">
+<table class="compact-info-table">
+  <tr><td>Cliente:</td><td>{{informe.clienteNombre}}</td><td>Torre:</td><td>{{informe.torre}}</td></tr>
+  <tr><td>Correo:</td><td id="correo">{{informe.Correo}}</td><td>Tipo de Mantenimiento:</td><td id="tipoDeMantenimiento">{{informe.tipo_de_mantenimiento}}</td></tr>
+  <tr><td>Equipo:</td><td>{{informe.equipo}}</td><td>Técnico:</td><td>{{informe.tecnicoNombre}}</td></tr>
+  <tr><td>Hora Entrada:</td><td>{{informe.hora_entrada}}</td><td>Hora Salida:</td><td>{{informe.hora_salida}}</td></tr>
+  <tr><td>Fecha:</td><td>{{informe.fecha}}</td><td>Número:</td><td id="informeId">{{informe.id}}</td></tr>
+</table>
 
-<div class="info-section">
-
-
-    <div class="info-row">
-    <strong>Cliente:</strong>
-    <span>{{informe.clienteNombre}}</span>
-
-
-    </div>
-
-
-
-
-
-
-    <div class="info-row">
-        <strong>torre:</strong> 
-              <span>{{informe.torre}}</span>
-    </div>
-<div class="info-row">
-    <strong>Correo:</strong>
-        <span id="correo" >{{informe.Correo}}</span>
-</div>
-
-
-
-    <div class="info-row">
-        <strong>Tipo de Mantenimiento:</strong> 
-   
-           <span id="tipoDeMantenimiento" >{{informe.tipo_de_mantenimiento}}</span>
-
-    </div>
-
-
-
-<div class="info-row">
-    <strong>Equipo:</strong>
-          <span>{{informe.equipo}}</span>
-
-</div>
-
-<div class="info-row">
-    <strong>Técnico:</strong>
-    <span>{{informe.tecnicoNombre}}</span>
-
-</div>
-
-
-
-    <div class="info-row">
-        <strong>Hora Entrada:</strong> 
-        <span>{{informe.hora_entrada}}</span>
-
-    </div>
-    <div class="info-row">
-        <strong>Hora Salida:</strong> 
-                <span>{{informe.hora_salida}}</span>
-
-    </div>
- <div class="info-row">
-    <strong>Fecha:</strong>
-        <span>{{informe.fecha}}</span>
-
-</div>
   <div class="info-row">
-        <strong>Número:</strong>
-<span id="informeId">{{informe.id}}</span>
     </div>
 </div>
 </div>
@@ -2137,6 +2140,8 @@ body {
 </div>
 
 
+<br>
+
 </div>
 
 
@@ -2596,5 +2601,56 @@ document.getElementById('toggle-menu').addEventListener('click', function () {
 
 
     </script>
+    <script>
+document.getElementById('printPage').addEventListener('click', function () {
+    const element = document.querySelector('.report-container');
+    if (!element) {
+        alert('No se encontró el contenido para imprimir.');
+        return;
+    }
+
+    // Aplicar estilo de impresión temporal
+    element.classList.add('pdf-mode');
+
+    // Crear una nueva ventana para impresión
+    const printWindow = window.open('', '_blank');
+    if (!printWindow) {
+        alert('No se pudo abrir la ventana de impresión. Revisa el bloqueo de pop-ups.');
+        element.classList.remove('pdf-mode');
+        return;
+    }
+
+    const styles = [...document.styleSheets].map(styleSheet => {
+        try {
+            return [...styleSheet.cssRules].map(rule => rule.cssText).join('\n');
+        } catch (e) {
+            return '';
+        }
+    }).join('\n');
+
+    printWindow.document.write(`
+        <html>
+        <head>
+            <title>Imprimir Informe</title>
+            <style>${styles}</style>
+        </head>
+        <body>
+            ${element.outerHTML}
+        </body>
+        </html>
+    `);
+
+    printWindow.document.close();
+    printWindow.focus();
+
+    // Esperar a que cargue el contenido antes de imprimir
+    setTimeout(() => {
+        printWindow.print();
+        printWindow.close();
+        element.classList.remove('pdf-mode');
+    }, 1000);
+});
+</script>
+
 </body>
 </html>
