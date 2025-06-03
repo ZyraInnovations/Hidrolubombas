@@ -9,8 +9,8 @@ const mysql = require('mysql2');
 const pool = mysql.createPool({
     host: '147.93.113.198',
     user: 'root',
-    password: 'PuS4ENP0tvqLuWQGkG3CQ06rpzi5Q63VX3PJimxnCz62lE7M4wRsXPf92uLnil1N',
-    database: 'hidraulibombas',
+    password: 'w2gF5JMh69BteTQo063lU2UgNDSikeglo35gMb5VDBPdKZQZfdNEdmYP4yliNHo9',
+    database: 'default',
     port: 3306,
     waitForConnections: true,
     connectionLimit: 1000,  // Aumentado para permitir más conexiones simultáneas si es necesario
