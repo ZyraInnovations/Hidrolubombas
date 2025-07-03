@@ -1456,11 +1456,8 @@ body {
 </style>
 <style>
 @media print {
-  .photo-section {
-    display: none !important;
-  }
 
-  .no-pdf, #resendEmail, #imagenesAdicionales, #imagenesPreview {
+  .no-pdf, #resendEmail,  {
     display: none !important;
   }
 }
@@ -1506,6 +1503,40 @@ body {
     word-break: break-word;
   }
 }
+@media print {
+  .photo-section {
+    display: flex !important;
+    justify-content: space-around !important;
+    gap: 20px !important;
+    flex-wrap: nowrap !important;
+  }
+
+  .photo-container {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    text-align: center !important;
+    width: 50% !important;
+  }
+
+  .photo-container img {
+    width: 100px !important;
+    height: 100px !important;
+    border-radius: 50% !important;
+    object-fit: cover !important;
+    border: 2px solid var(--primary-color) !important;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1) !important;
+    display: inline-block !important;
+  }
+
+  .photo-label {
+    margin-top: 10px !important;
+    font-size: 14px !important;
+    font-weight: bold !important;
+    color: var(--primary-color) !important;
+  }
+}
+
 </style>
 
 <body>
@@ -1929,7 +1960,7 @@ body {
                 <th>B3</th>
                 <th>B4</th>
                       <th>LETRA</th>
-                <th>SIGNIFICADO</th>z
+                <th>SIGNIFICADO</th>
             </tr>
         </thead>
         <tbody>
