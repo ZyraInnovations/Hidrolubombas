@@ -480,51 +480,53 @@ app.post('/procesar-datos', upload.fields([
     }
 
 
+   if (accion === 'guardar_y_enviar') {
+        const correoDestinoRaw = datos.Correo;
+        const correoDestino = correoDestinoRaw.includes(';') 
+            ? correoDestinoRaw.split(';').map(correo => correo.trim()) 
+            : correoDestinoRaw;
+            
+        let pdfFile = req.files['imagen'] ? req.files['imagen'][0] : null;
+        let imagenesAdjuntas = req.files['fotos'] || [];
 
-        if (accion === 'guardar_y_enviar') {
-            const correoDestinoRaw = datos.Correo;
-            // Verificar si hay ';' y convertir en array si es necesario
-            const correoDestino = correoDestinoRaw.includes(';') 
-                ? correoDestinoRaw.split(';').map(correo => correo.trim()) 
-                : correoDestinoRaw;
-                        let imagenHTML = req.files['imagen'] ? req.files['imagen'][0] : null;
-            let imagenesAdjuntas = req.files['fotos'] || [];
+        if (!pdfFile) {
+            return res.status(400).json({ success: false, message: 'El PDF generado es obligatorio.' });
+        }
 
-            if (!imagenHTML) {
-                return res.status(400).json({ success: false, message: 'La imagen generada es obligatoria.' });
+        const attachments = [
+            {
+                filename: 'informe_mantenimiento.pdf',
+                content: pdfFile.buffer,
+                contentType: 'application/pdf'
             }
+        ];
 
-            const attachments = [
-                {
-                    filename: 'informe_mantenimiento.jpg',
-                    content: imagenHTML.buffer
-                }
-            ];
-
-            imagenesAdjuntas.forEach((imagen, index) => {
-                attachments.push({
-                    filename: `imagen_${index + 1}.jpg`,
-                    content: imagen.buffer
-                });
+        imagenesAdjuntas.forEach((imagen, index) => {
+            attachments.push({
+                filename: `imagen_${index + 1}.jpg`,
+                content: imagen.buffer
             });
+        });
 
-            let videosAdjuntos = req.files['videos'] || [];
+        let videosAdjuntos = req.files['videos'] || [];
+        videosAdjuntos.forEach((video, index) => {
+            attachments.push({
+                filename: `video_${index + 1}.mp4`,
+                content: video.buffer
+            });
+        });
 
-// Adjuntar videos
-videosAdjuntos.forEach((video, index) => {
-    attachments.push({
-        filename: `video_${index + 1}.mp4`,  // O usa la extensión original si quieres
-        content: video.buffer
-    });
-});
+        const mailOptions = {
+            from: 'ingeoperativos@gmail.com',
+            to: correoDestino,
+            subject: correoAsunto,
+            text: correoTexto,
+            attachments: attachments
+        };
 
-            const mailOptions = {
-                from: 'ingeoperativos@gmail.com',
-                to: correoDestino,
-                subject: correoAsunto, // Usar el asunto dinámico
-                text: correoTexto,     // Usar el texto dinámico
-                attachments: attachments
-            };
+
+
+
 
             transporter.sendMail(mailOptions, (error, info) => {
                 if (error) {

@@ -927,15 +927,48 @@ textarea {
     background: transparent; /* Fondo transparente */
 }
 
+
+</style>
+<style>
+
+
+  .pdf-mode {
+    font-size: 22px;
+    line-height: 1.6;
+  }
+
+  .pdf-mode h1 { font-size: 32px; }
+  .pdf-mode h2 { font-size: 28px; }
+  .pdf-mode h3 { font-size: 24px; }
+
+  .pdf-mode p,
+  .pdf-mode span,
+  .pdf-mode td,
+  .pdf-mode th,
+  .pdf-mode label,
+  .pdf-mode input,
+  .pdf-mode select,
+  .pdf-mode textarea,
+  .pdf-mode button {
+    font-size: 20px !important;
+  }
 </style>
 
+
+
+
+
+
+
+  
+</style>
 </head>
 <body>
 
 
 
 
-    <div class="report-container">
+<div class="report-container">
           <div class="marcar">
         <!-- Company information section -->
         <div class="company-info">
@@ -3341,7 +3374,14 @@ textarea {
     <p>Procesando, por favor espere...</p>
 </div>
 
-
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<!-- incluye html2pdf.js -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.2/html2pdf.bundle.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script>
+  // extrae el constructor jsPDF del namespace window.jspdf
+  const { jsPDF } = window.jspdf;
+</script>
 <script>
 
 document.querySelector('select[name="tecnico"]').addEventListener('change', async function () {
@@ -3512,6 +3552,10 @@ fileList.forEach(function(file, index) {
 
  <!-- Botón para enviar el formulario -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.2/html2pdf.bundle.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+
+
+
 <script>
     // Obtener la fecha actual en formato YYYY-MM-DD
     const hoy = new Date().toISOString().split('T')[0];
@@ -3598,7 +3642,6 @@ function applyDesktopStyles() {
     const reportElement = document.querySelector('.report-container');
     reportElement.style.width = '1200px'; // Ancho fijo como en PC
     reportElement.style.height = 'auto'; // Altura ajustada automáticamente
-    reportElement.style.transform = 'scale(1)'; // Sin escala
     reportElement.style.transformOrigin = 'top left'; // Origen de escala
     reportElement.style.position = 'relative'; // Asegurar posición estática
     reportElement.style.margin = '0 auto'; // Centrar en la vista
@@ -3615,15 +3658,35 @@ function removeDesktopStyles() {
 }
 
 
+
+
+function aplicarEstilosGrandes() {
+  const container = document.querySelector('.report-container');
+  container.style.transform = 'scale(1.8)';
+  container.style.transformOrigin = 'top left';
+  container.style.width = 'calc(100% / 1.8)'; // Para que quepa en pantalla
+}
+
+function restaurarEstilosOriginales() {
+  const container = document.querySelector('.report-container');
+  container.style.transform = '';
+  container.style.transformOrigin = '';
+  container.style.width = '';
+}
+
+
 document.getElementById('maintenanceForm').addEventListener('submit', function (event) {
     event.preventDefault();
 
-    // Mostrar el overlay de carga
+    // Mostrar overlay de carga
     const loadingOverlay = document.getElementById('loadingOverlay');
     loadingOverlay.style.display = 'flex';
 
     const reportElement = document.querySelector('.report-container');
     const signatures = getSignatureBlobs();
+
+    // ✅ Aplica clase con letras grandes
+    reportElement.classList.add('pdf-mode');
 
     function prepareForCapture() {
         document.querySelectorAll('select').forEach((select) => {
@@ -3635,7 +3698,8 @@ document.getElementById('maintenanceForm').addEventListener('submit', function (
             select.parentNode.insertBefore(span, select.nextSibling);
         });
 
-        document.querySelectorAll('input').forEach((input) => {
+
+      document.querySelectorAll('input').forEach((input) => {
             const span = document.createElement('span');
             span.className = 'input-text';
             span.textContent = input.value;
@@ -3644,23 +3708,29 @@ document.getElementById('maintenanceForm').addEventListener('submit', function (
         });
     }
 
-    function restoreAfterCapture() {
-        document.querySelectorAll('.select-text').forEach((span) => {
-            const select = span.previousElementSibling;
-            if (select) {
-                select.style.display = '';
-            }
-            span.remove();
-        });
 
-        document.querySelectorAll('.input-text').forEach((span) => {
-            const input = span.previousElementSibling;
-            if (input) {
-                input.style.display = '';
-            }
-            span.remove();
-        });
-    }
+
+
+ function restoreAfterCapture() {
+    document.querySelectorAll('.select-text').forEach((span) => {
+        const select = span.previousElementSibling;
+        if (select) {
+            select.style.display = '';
+        }
+        span.remove();
+    });
+
+    document.querySelectorAll('.input-text').forEach((span) => {
+        const input = span.previousElementSibling;
+        if (input) {
+            input.style.display = '';
+        }
+        span.remove();
+    });
+
+    // ✅ Quitar clase pdf-mode después de capturar
+    reportElement.classList.remove('pdf-mode');
+}
 
     // Aplicar estilos para captura como en PC
     applyDesktopStyles();
@@ -3670,38 +3740,63 @@ document.getElementById('maintenanceForm').addEventListener('submit', function (
         scale: 2, // Mayor resolución
         scrollY: 0,
         windowHeight: reportElement.scrollHeight,
-    }).then((canvas) => {
-        // Restaurar estilos y contenido
-        removeDesktopStyles();
-        restoreAfterCapture();
+    })
+ .then((canvas) => {
+    // Restaurar estilos y contenido
+    removeDesktopStyles();
+    restoreAfterCapture();
 
-        canvas.toBlob((blob) => {
-            const formData = new FormData(document.getElementById('maintenanceForm'));
-            formData.append('firma_supervisor', signatures.firma_supervisor);
-            formData.append('imagen', blob, 'informe_mantenimiento.jpg');
+    // Crear PDF con múltiples páginas si es necesario
+    const imgData = canvas.toDataURL('image/jpeg', 0.95);
+    const pdf = new jsPDF('p', 'mm', 'a4');
+    const pdfWidth = pdf.internal.pageSize.getWidth();
+    const pdfHeight = pdf.internal.pageSize.getHeight();
 
-            fetch('/procesar-datos', {
-                method: 'POST',
-                body: formData,
-            })
-                .then((response) => response.json())
-             .then((data) => {
-    loadingOverlay.style.display = 'none'; // Ocultar el overlay
-    if (data.success) {
-        alert(data.message); // Mostrar el mensaje del servidor
-        location.reload(); // Recargar la página
+    const imgProps = pdf.getImageProperties(imgData);
+    const imgWidth = pdfWidth;
+    const imgHeight = (imgProps.height * imgWidth) / imgProps.width;
+
+    let position = 0;
+
+    // Si la imagen es más alta que una página, añadir múltiples páginas
+    if (imgHeight <= pdfHeight) {
+        pdf.addImage(imgData, 'JPEG', 0, 0, imgWidth, imgHeight);
     } else {
-        alert('Hubo un error: ' + data.message);
+        while (position < imgHeight) {
+            pdf.addImage(imgData, 'JPEG', 0, -position, imgWidth, imgHeight);
+            position += pdfHeight;
+            if (position < imgHeight) pdf.addPage();
+        }
     }
-})
-                .catch((error) => {
-                    loadingOverlay.style.display = 'none'; // Ocultar el overlay
-                    console.error('Error:', error);
-                    alert('Error al procesar los datos.');
-                });
-        }, 'image/jpeg', 0.95);
+
+    const pdfBlob = pdf.output('blob');
+
+    const formData = new FormData(document.getElementById('maintenanceForm'));
+    formData.append('firma_supervisor', signatures.firma_supervisor);
+    formData.append('imagen', pdfBlob, 'informe_mantenimiento.pdf');
+
+    fetch('/procesar-datos', {
+        method: 'POST',
+        body: formData,
+    })
+    .then((response) => response.json())
+    .then((data) => {
+        loadingOverlay.style.display = 'none';
+        if (data.success) {
+            alert(data.message);
+            location.reload();
+        } else {
+            alert('Hubo un error: ' + data.message);
+        }
+    })
+    .catch((error) => {
+        loadingOverlay.style.display = 'none';
+        console.error('Error:', error);
+        alert('Error al procesar los datos.');
     });
 });
+
+    });
 
 
 </script>
